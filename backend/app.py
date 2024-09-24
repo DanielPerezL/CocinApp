@@ -37,7 +37,6 @@ def login():
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(access_token=access_token, refresh_token=refresh_token), 200
-    
 
 @app.route('/profile', methods=['GET'])
 @jwt_required()
@@ -57,7 +56,6 @@ def users():
     users = User.query.all()
     users_data = [user.to_dict() for user in users]
     return jsonify(users_data), 200
-
 
 with app.app_context():
     db.create_all()
