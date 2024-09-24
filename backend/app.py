@@ -1,12 +1,9 @@
 from config import *
 from flask import Flask, jsonify, request
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from models import User
 
 
-
-# Rutas y funciones
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
@@ -18,13 +15,10 @@ def register():
     email = data.get('email')
     password = data.get('password')
 
-
     if User.query.filter_by(email=email).first() is not None:
         return jsonify({"msg": "Email already registered"}), 400
 
-    hashed_password = generate_password_hash(password, method='sha256')
-
-    new_user = User(nickname=nickname, email=email, password=hashed_password)
+    new_user = User(nickname=nickname, email=email, password=password)
     db.session.add(new_user)
     db.session.commit()
 
@@ -37,18 +31,18 @@ def login():
     password = data.get('password')
 
     user = User.query.filter_by(email=email).first()
-    if user is None or not check_password_hash(user.password, password):
+    if user is None or not user.check_password(password):
         return jsonify({"msg": "Bad email or password"}), 401
 
-    access_token = create_access_token(identity={"id": user.id, "nickname": user.nickname})
-    return jsonify(access_token=access_token), 200
-
+    access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
+    return jsonify(access_token=access_token, refresh_token=refresh_token), 200
 
 @app.route('/profile', methods=['GET'])
 @jwt_required()
 def profile():
-    current_user = get_jwt_identity()
-    user = User.query.get(current_user['id'])
+    current_user_id = get_jwt_identity()
+    user = User.get_user_by_id(current_user_id)
     if user is None:
         return jsonify({"msg": "User not found"}), 404
 
@@ -63,6 +57,8 @@ def users():
     users_data = [user.to_dict() for user in users]
     return jsonify(users_data), 200
 
+with app.app_context():
+    db.create_all()
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
