@@ -57,6 +57,13 @@ def users():
     users_data = [user.to_dict() for user in users]
     return jsonify(users_data), 200
 
+@app.route('/refresh_access_token', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh_access_token():
+    current_user_id = get_jwt_identity()
+    new_access_token = create_access_token(identity=current_user_id)
+    return jsonify(access_token=new_access_token), 200
+
 with app.app_context():
     db.create_all()
 
