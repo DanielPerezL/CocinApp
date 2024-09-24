@@ -5,10 +5,9 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from sqlalchemy.exc import OperationalError
-from models import db, User
+
 
 time.sleep(20) #Para asegurar que la BD se despliega correctamente
-
 # Inicializar Flask, SQLAlchemy y JWT
 app = Flask(__name__)
 
@@ -20,10 +19,7 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15) #¿?
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30) #TO-DO: arreglar fallo jijiji
 
 jwt = JWTManager(app)
-db.init_app(app)
-
-with app.app_context():
-    db.create_all()
+db = SQLAlchemy(app)
 
 # Manejo de errores de base de datos
 @app.errorhandler(OperationalError)
