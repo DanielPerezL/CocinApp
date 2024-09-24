@@ -1,6 +1,6 @@
 from config import *
 from flask import Flask, jsonify, request
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User
 
@@ -40,9 +40,10 @@ def login():
     if user is None or not check_password_hash(user.password, password):
         return jsonify({"msg": "Bad email or password"}), 401
 
-    access_token = create_access_token(identity={"id": user.id, "nickname": user.nickname})
-    return jsonify(access_token=access_token), 200
-
+    access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
+    return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+    
 
 @app.route('/profile', methods=['GET'])
 @jwt_required()
