@@ -1,16 +1,18 @@
 import time
 from datetime import timedelta
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from sqlalchemy.exc import OperationalError
 
 
+ALLOWED_ORIGINS = ['https://cocinapp.com']
+
 time.sleep(20) #Para asegurar que la BD se despliega correctamente
+
 # Inicializar Flask, SQLAlchemy y JWT
 app = Flask(__name__)
-
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.environ['DATABASE_USER']}:{os.environ['DATABASE_PASSWORD']}@{os.environ['DATABASE_HOST']}/{os.environ['DATABASE_NAME']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -25,3 +27,15 @@ db = SQLAlchemy(app)
 @app.errorhandler(OperationalError)
 def handle_db_error(error):
     return jsonify({"msg": "Database connection error"}), 500
+
+#Ademas de protegernos contra ataques CSRF con JWT, comprobamos el origen de la solicitud
+'''@app.before_request
+def check_origin():
+    # Verifica el header 'Origin'
+    origin = request.headers.get('Origin')
+
+    print("origin:",origin)
+
+    # Si el 'Origin' no está permitido, rechaza la solicitud
+    if origin not in ALLOWED_ORIGINS:
+        abort(403)'''
