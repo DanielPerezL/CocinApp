@@ -7,7 +7,7 @@ from flask_jwt_extended import JWTManager
 from sqlalchemy.exc import OperationalError
 
 
-ALLOWED_ORIGINS = ['https://cocinapp.com']
+#ALLOWED_ORIGINS = ['https://cocinapp.com']
 
 time.sleep(20) #Para asegurar que la BD se despliega correctamente
 
