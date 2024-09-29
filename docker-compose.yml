@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+  mysql:
+    image: mysql:9.0.1
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: 45ae1c2fa53cecfd23fd14e3d9523d915909d2e915b64d1ab0d4ec143cce03ec37d9b7cc7e7297ff8f72ee025a44990f297f318e1ea68cc3ad79f025932ae891
+      MYSQL_DATABASE: cocinappDB
+      MYSQL_USER: backend_user
+      MYSQL_PASSWORD: a5a7204dd776bbd48b3b7bda6865bfc2ae646e8adecfb1deb3a8398b01c881a1a6400738cb663d175a44117fa09131c1603081e727a87ef664f411c92d02a09c
+    ports: 
+      - "3306:3306" #eliminar para produccion
+    networks:
+      - my_network
+    volumes:
+    - mysql_data:/var/lib/mysql
+
+
   backend:
     build: ./backend
     container_name: flask_backend
@@ -19,18 +35,6 @@ services:
     networks:
       - my_network
 
-  mysql:
-    image: mysql:8.0
-    container_name: mysql_db
-    environment:
-      MYSQL_ROOT_PASSWORD: 45ae1c2fa53cecfd23fd14e3d9523d915909d2e915b64d1ab0d4ec143cce03ec37d9b7cc7e7297ff8f72ee025a44990f297f318e1ea68cc3ad79f025932ae891
-      MYSQL_DATABASE: cocinappDB
-      MYSQL_USER: backend_user
-      MYSQL_PASSWORD: a5a7204dd776bbd48b3b7bda6865bfc2ae646e8adecfb1deb3a8398b01c881a1a6400738cb663d175a44117fa09131c1603081e727a87ef664f411c92d02a09c
-    ports: 
-      - "3306:3306" #eliminar para produccion
-    networks:
-      - my_network
 
 networks:
   my_network:
