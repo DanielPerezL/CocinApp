@@ -81,20 +81,16 @@ def delete_account():
 
 # Zona para la gestiond de las recetas
 @app.route('/new_recipe', methods=['POST'])
-#@jwt_required()
+@jwt_required()
 def new_recipe():
     data = request.json
-    print(data)
-
-    '''current_user_id = get_jwt_identity()
+    current_user_id = get_jwt_identity()
     user = User.get_user_by_id(current_user_id)
     if user is None:
         return jsonify({"msg": "User not found"}), 404
-        '''
-    user_id = 1
-
+    
     new_recipe = Recipe(title = data.get('title'),
-                        user_id = user_id,
+                        user_id = user.id,
                         ingredients = data.get('ingredients'),
                         procedure = data.get('procedure'),
                         )
@@ -105,6 +101,27 @@ def new_recipe():
     except SQLAlchemyError as e:
         db.session.rollback()
     return jsonify({"msg": "Get sure to provide all requested data"}), 400
+
+@app.route('/delete_recipe', methods=['DELETE'])
+@jwt_required()
+def delete_recipe():
+    current_user_id = get_jwt_identity()
+    user = User.get_user_by_id(current_user_id)
+    if user is None:
+        return jsonify({"msg": "User not found"}), 404
+    
+    data = request.json
+    recipe = Recipe.query.get(data.get('recipe_id'))
+    if recipe is None:
+        return jsonify({"msg": "Recipe not found"}), 404
+    try:
+        db.session.delete(recipe)
+        db.session.commit()
+        return 204
+    except SQLAlchemyError as e:
+        db.session.rollback()
+    return jsonify({"msg": "Unexpected error occurred"}), 500
+
 
 #Zona para comprobar tablas
 @app.route('/users', methods=['GET'])
