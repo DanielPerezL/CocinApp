@@ -1,32 +1,32 @@
 from config import db
+from .user import User
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nickname = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(200), nullable=False)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('user.id'),
+                        nullable = False,
+                        )
+    title = db.Column(db.String(80), nullable=False)
+    ingredients = db.Column(db.Text, nullable=False)
+    procedure = db.Column(db.Text, nullable=False)
 
-    def __init__(self, nickname, email, password):
-        self.nickname = nickname
-        self.email = email
-        self.password_hash = password #generate_password_hash(password)
+    def __init__(self, title, user_id, ingredients, procedure):
+        self.title = title
+        self.user_id = user_id
+        self.ingredients = ingredients
+        self.procedure = procedure
 
     def __repr__(self):
         return f'<p>{self.nickname}</p>'
     
     def to_dict(self):
+        user = User.query.get(self.user_id)
+        assert user is not None
+        #No debe esta situacion (eliminar usuario en cascada)
         return {
-            'id': self.id,
-            'nickname': self.nickname,
-            'email': self.email,
-            'hashed_password': self.password_hash
+            "title" : self.title,
+            "user" : user.to_dict(),
+            "ingredients" : self.ingredients,
+            "procedure" : self.procedure,
         }
-
-    
-    @staticmethod
-    def get_user_by_email(email):
-        return Recipe.query.filter_by(email=email).first()
-
-    @staticmethod
-    def get_user_by_id(user_id):
-        return Recipe.query.get(user_id)

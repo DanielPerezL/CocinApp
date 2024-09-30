@@ -6,6 +6,11 @@ class User(db.Model):
     nickname = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
+    recipes = db.relationship('Recipe',
+                              backref='user',
+                              lazy=True,
+                              cascade='all, delete-orphan',
+                              )
 
     def __init__(self, nickname, email, password):
         self.nickname = nickname
@@ -20,7 +25,7 @@ class User(db.Model):
             'id': self.id,
             'nickname': self.nickname,
             'email': self.email,
-            'hashed_password': self.password_hash
+            #'hashed_password': self.password_hash
         }
 
     def set_password(self, password):
