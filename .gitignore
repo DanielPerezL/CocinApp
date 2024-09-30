@@ -2,7 +2,7 @@ backend/__pycache__/
 backend/models/__pycache__/
 
 # dependencies
-fronted/node_modules
+fronted/node_modules/
 /.pnp
 .pnp.js
 
