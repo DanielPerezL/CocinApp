@@ -16,7 +16,6 @@ services:
     volumes:
     - mysql_data:/var/lib/mysql
 
-
   backend:
     build: ./backend
     container_name: flask_backend
@@ -34,7 +33,6 @@ services:
       - mysql
     networks:
       - my_network
-
 
 networks:
   my_network:
