@@ -1,13 +1,326 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html {
+  font-size: 16px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  padding-bottom: 4rem; /* Dejar espacio para la barra inferior en móviles */
+}
+
+/* Estilo del encabezado */
+header {
+  text-align: center; /* Centrar el texto */
+  padding: 2rem 1rem; /* Espacio alrededor del contenido del header */
+}
+
+header h1 {
+  font-size: 2rem; /* Tamaño del título */
+  margin-bottom: 1rem; /* Espacio debajo del título */
+}
+
+header p {
+  font-size: 1.125rem; /* Tamaño del párrafo */
+  color: #666;
+}
+
+/* Grilla de recetas */
+.recipe-grid {
+  display: grid;
+  gap: 1.25rem; /* 20px */
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas por defecto */
+  padding: 1rem;
+}
+
+.recipe-card {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.625rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+}
+
+.recipe-card img {
+  width: 100%;
+  border-radius: 0.625rem;
+}
+
+.recipe-card h2 {
+  margin: 0.9375rem 0; /* 15px */
+  font-size: 1.5rem;
+}
+
+.recipe-card p {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Barra de navegación inferior (visible solo en pantallas pequeñas) */
+.bottom-nav {
+  display: none; /* Oculta la barra por defecto */
+}
+
+/* Contenedor principal de la receta */
+.recipe-container {
+  max-width: 80%;
+  min-width: 0.4em;
+  margin: 1.5rem auto;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-header {
+  display: flex;
+  justify-content: space-between; /* Espacia los elementos en ambos extremos */
+  align-items: center;
+  margin-bottom: 1rem;
+  height: 4rem; /* Altura por defecto del encabezado */
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  max-width: calc(100% - 6rem); /* Ajusta el ancho máximo del contenedor, dejando espacio para los botones */
+  overflow: hidden; /* Oculta el contenido que se desborda */
+}
+
+.author-info img {
+  width: 3rem; /* Tamaño del icono del autor */
+  height: 3rem;
+  border-radius: 50%;
+  margin-right: 0.75rem; /* Espacio entre la imagen y el nombre */
+}
+
+.author-info p {
+  font-size: 1.25rem; /* Tamaño del texto del nombre del autor */
+  font-weight: bold;
+  white-space: nowrap; /* Evita el salto de línea */
+  overflow: hidden; /* Oculta el texto que se desborda */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos cuando el texto no cabe */
+}
+
+.recipe-buttons {
+  display: flex;
+  gap: 0.5rem; /* Espacio entre los botones */
+}
+
+.recipe-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipe-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Título de la receta */
+.recipe-container h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Estilos del carrusel */
+.recipe-image-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 80vw; /* Ancho relativo basado en la ventana del navegador */
+  height: 50vh; /* Altura relativa al viewport para que se adapte a la pantalla */
+  margin: auto;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.recipe-image-carousel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* La imagen se adapta al espacio y se ve completamente */
+  object-position: center; /* Centra la imagen si sobra espacio */
+  display: block;
+  border-radius: 0.5rem;
+}
+
+/* Botones del carrusel */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.left-btn {
+  left: 2%;
+}
+
+.right-btn {
+  right: 2%;
+}
+
+.carousel-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Puntos de navegación */
+.carousel-dots {
+position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem; /* Añade espacio alrededor de los puntos */
+  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente para el contenedor de los puntos */
+  border-radius: 1rem; /* Redondear los bordes del fondo */
+}
+
+.dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.dot.active {
+  opacity: 1;
+}
+
+/* Detalles de la receta */
+.recipe-details {
+  margin-top: 1rem;
+}
+
+.recipe-details h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ingredients-list {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+}
+
+.recipe-instructions {
+  white-space: pre-wrap;
+  margin-top: 1rem;
+  line-height: 1.5;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 767px) {
+  .bottom-nav {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #fc9920;
+      justify-content: space-around;
+      padding: 0.75rem 0;
+      z-index: 1000; /* Asegurarnos de que esté por encima del contenido */
+  }
+
+  .bottom-nav .nav-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem; /* Tamaño mayor para que los íconos sean visibles en móviles */
+      cursor: pointer;
+  }
+
+  .bottom-nav .nav-btn:hover {
+      color: #ffb3b3;
+  }
+
+  /* Ocultar los botones de navegación en la barra superior en pantallas pequeñas */
+  .nav-buttons {
+      display: none;
+  }
+
+  /* Cambiar el logo en pantallas pequeñas */
+  .logo-img {
+      display: none
+  }
+
+  .recipe-image-carousel {
+      max-height: 30vh;
+  }
+}
+
+/* Ajustes para pantallas medianas */
+@media (min-width: 768px) {
+  .recipe-grid {
+      grid-template-columns: repeat(3, 1fr); /* Tres columnas a partir de 768px */
+width: 90%; /* Establecer un ancho fijo en lugar de max-width */
+      margin: 0 auto; /* Centrar el contenedor */
+  }
+
+  /* Cambiar el logo en pantallas pequeñas */
+  .icono-img {
+      display: none
+  }
+}
+
+/* Ajustes para pantallas grandes*/
+@media (min-width: 1025px) {
+  .recipe-grid {
+      grid-template-columns: repeat(4, 1fr); /* Cuatro columnas a partir de 1024px */
+    width: 80%; /* Establecer un ancho fijo en lugar de max-width */
+      margin: 0 auto; /* Centrar el contenedor */
+  }
+
+  /* Logo más grande en pantallas grandes */
+  .logo-img {
+      height: 4rem; /* Ajustar altura del logo en pantallas grandes */
+  }
+
+  /* Ocultar la barra inferior y mostrar botones en la barra superior */
+  .bottom-nav {
+      display: none; /* Oculta la barra por defecto */
+  }
+
+  .nav-buttons {
+      display: flex; /* Muestra los botones en pantallas grandes */
+  }
+  
+  .nav-btn {
+      width: 3rem; /* Ajustar el ancho del botón en pantallas grandes */
+      height: 3rem; /* Ajustar la altura del botón en pantallas grandes */
+  }
+
+  .recipe-header {
+      height: 6rem;
+  }
+  .recipe-btn {
+      width: 3rem;
+      height: 3rem;
+  }
+  .author-info img {
+      width: 4rem; /* Tamaño del icono del autor */
+      height: 4rem;
+  }
+
+  .author-info p {
+      font-size: 1.5rem; 
+  }
+
 }
