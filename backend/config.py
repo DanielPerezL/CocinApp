@@ -9,7 +9,7 @@ from sqlalchemy.exc import OperationalError
 
 #ALLOWED_ORIGINS = ['https://cocinapp.com']
 
-time.sleep(10) #Para asegurar que la BD se despliega correctamente
+#time.sleep(10) #Para asegurar que la BD se despliega correctamente
 
 # Inicializar Flask, SQLAlchemy y JWT
 app = Flask(__name__)
