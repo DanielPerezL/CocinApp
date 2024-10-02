@@ -9,8 +9,6 @@ from sqlalchemy.exc import OperationalError
 
 #ALLOWED_ORIGINS = ['https://cocinapp.com']
 
-#time.sleep(10) #Para asegurar que la BD se despliega correctamente
-
 # Inicializar Flask, SQLAlchemy y JWT
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.environ['DATABASE_USER']}:{os.environ['DATABASE_PASSWORD']}@{os.environ['DATABASE_HOST']}/{os.environ['DATABASE_NAME']}"
