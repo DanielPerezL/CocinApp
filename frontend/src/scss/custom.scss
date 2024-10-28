@@ -1,0 +1,22 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+$primary: #ff5733; // Naranja
+$secondary: #33c4ff; // Azul Claro
+$success: #28a745; // Verde
+$danger: #dc3545; // Rojo
+$warning: #ffc107; // Amarillo
+$info: #17a2b8; // Cyan
+$light: #f8f9fa; // Gris Claro
+$dark: #343a40; // Gris Oscuro
+
+// Merge con el mapa existente de colores del tema
+$theme-colors: map-merge($theme-colors, (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "danger": $danger,
+  "warning": $warning,
+  "info": $info,
+  "light": $light,
+  "dark": $dark,
+));

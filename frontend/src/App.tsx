@@ -1,40 +1,28 @@
-import { useState } from "react";
-import Alert from "./components/Alert";
-import Button from "./components/Button";
-import ListGroup from "./components/ListGroup";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Layout from "./pages/Layout";
+import Home from "./pages/Home";
+import Receta from "./pages/Receta";
+import NoPage from "./pages/NoPage";
+import UnderConstruction from "./pages/UnderConstruction";
 
 function App() {
-  let items = ["Paris", `Tokio`, "Rio", "Madrid", "Cartagena"];
-  const handleSelectItem = (item: string) => {
-    console.log(item);
-  };
-  const [visible, setVisible] = useState(false);
-
   return (
-    <div>
-      {visible && (
-        <Alert
-          onClick={() => {
-            setVisible(false);
-          }}
-        >
-          Button Clicked
-        </Alert>
-      )}
-      <Button
-        onClick={() => {
-          setVisible(true);
-        }}
-      >
-        Show alert
-      </Button>
-
-      <ListGroup
-        items={items}
-        heading="Cities"
-        onSelectItem={handleSelectItem}
-      />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="receta" element={<Receta />} />
+          <Route path="about" element={<UnderConstruction />} />
+          <Route path="contact" element={<UnderConstruction />} />
+          <Route path="privacy" element={<UnderConstruction />} />
+          <Route path="terms" element={<UnderConstruction />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
