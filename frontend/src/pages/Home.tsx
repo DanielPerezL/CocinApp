@@ -1,19 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/NavBar";
 import Receta from "./Receta";
 import RecetaCard from "../components/RecetaCard";
 
 interface Receta {
-  titulo: string;
+  title: string;
+  procedure: string;
 }
 
 const Home = () => {
-  const recetas = [
-    { titulo: "Tortilla" },
-    { titulo: "Huevo frito" },
-    { titulo: "Ensalada César" },
-    { titulo: "Pasta al pesto" },
-  ];
+  // Estado para almacenar las recetas
+  const [recetas, setRecetas] = useState<Receta[]>([]);
+
+  // Función para obtener las recetas desde la API
+  const fetchRecetas = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/recipes");
+      const data = await response.json();
+      setRecetas(data);
+    } catch (error) {
+      console.error("Error al obtener recetas:", error);
+    }
+  };
+
+  // useEffect para hacer la solicitud a la API una vez que el componente carga
+  useEffect(() => {
+    fetchRecetas();
+  }, []);
 
   return (
     <>
@@ -26,8 +39,8 @@ const Home = () => {
           {recetas.map((receta, index) => (
             <RecetaCard
               key={index}
-              titulo={receta.titulo}
-              descripcion={"Esta es la receta nº " + (index + 1)}
+              titulo={receta.title}
+              descripcion={receta.procedure}
             />
           ))}
         </div>
