@@ -5,6 +5,13 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_identity
 
+@app.route('/api/recipes', methods=['GET'])
+def recipes():
+    recipes = Recipe.query.all()
+    recipes_data = [recipe.to_dict() for recipe in recipes]
+    return jsonify(recipes_data), 200
+
+
 @app.route('/api/new_recipe', methods=['POST'])
 @jwt_required()
 def new_recipe():

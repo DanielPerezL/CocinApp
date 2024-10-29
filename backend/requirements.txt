@@ -1,5 +1,5 @@
 Flask
-flask_cors
+flask_cors #eliminar para prod
 Flask-JWT-Extended
 Flask-SQLAlchemy
 mysql-connector-python

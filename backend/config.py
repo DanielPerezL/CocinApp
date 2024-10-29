@@ -11,8 +11,8 @@ from sqlalchemy.exc import OperationalError
 #ALLOWED_ORIGINS = ['https://cocinapp.com']
 
 # Inicializar Flask, SQLAlchemy y JWT
-app = Flask(__name__)
-CORS(app, origins=["http://localhost:*"])
+app = Flask(__name__, static_folder='./static')
+CORS(app, origins=["http://localhost:*"]) #eliminar para prod
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.environ['DATABASE_USER']}:{os.environ['DATABASE_PASSWORD']}@{os.environ['DATABASE_HOST']}/{os.environ['DATABASE_NAME']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

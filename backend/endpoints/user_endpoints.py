@@ -5,6 +5,12 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_identity
 
+@app.route('/api/users', methods=['GET'])
+def users():
+    users = User.query.all()
+    users_data = [user.to_dict() for user in users]
+    return jsonify(users_data), 200
+
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json

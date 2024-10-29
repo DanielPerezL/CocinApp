@@ -1,23 +1,24 @@
 from config import *
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import *
-
 from endpoints import *
 
-@app.route('/api/users', methods=['GET'])
-def users():
-    users = User.query.all()
-    users_data = [user.to_dict() for user in users]
-    return jsonify(users_data), 200
+'''@app.route('/')
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/api/recipes', methods=['GET'])
-def recipes():
-    recipes = Recipe.query.all()
-    recipes_data = [recipe.to_dict() for recipe in recipes]
-    return jsonify(recipes_data), 200
+# Ruta para servir cualquier recurso estático (CSS, JS, imágenes)
+@app.route('/<path:path>')
+def static_files(path):
+    return send_from_directory(app.static_folder, path)
+
+@app.errorhandler(404)
+def not_found(e):
+    return send_from_directory(app.static_folder, 'index.html')'''
+
 
 with app.app_context():
     db.create_all()
