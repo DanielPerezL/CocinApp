@@ -22,8 +22,8 @@
 
 /* Estilo para el título de la receta */
 .card-title {
-    max-height: 0.8em; /* Ajusta la altura máxima */
-    overflow: visible;  /* Oculta el desbordamiento */
+    max-height: 1.2em; /* Ajusta la altura máxima */
+    overflow: hidden;
     text-overflow: ellipsis; /* Muestra puntos suspensivos al final */
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }

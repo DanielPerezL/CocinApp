@@ -1,0 +1,34 @@
+/* Estilos para las imágenes del carrusel */
+.carousel-img {
+    width: 100%;
+    height: 400px; /* Altura ajustable */
+    object-fit: cover;
+}
+
+/* Estilos personalizados para los botones de control */
+.custom-control {
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+/* Indicadores debajo del carrusel */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    background-color: gray;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.active-indicator {
+    background-color: white; /* Indicador activo en blanco */
+}

@@ -9,7 +9,7 @@ const UnderConstruction: React.FC = () => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center">
+    <div className="d-flex align-items-center justify-content-center main-container mx-5">
       <div className="text-center">
         <h1 className="display-3 fw-bold text-warning">⚠️ En Desarrollo</h1>
         <p className="fs-4">

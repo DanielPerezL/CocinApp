@@ -1,3 +1,16 @@
 body {
-  background-color: #fbfbfb; /* Color de fondo gris claro */
+  background-color: #e7e7e7; /* Color de fondo gris claro */
+}
+
+/* Estilo del contenedor principal para destacar el componente */
+.main-container {
+  background-color: #fbfbfb; /* Fondo gris claro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px; /* Separación del borde superior */
+}
+
+.mian-container h3 {
+  color: #343a40; /* Color oscuro para los títulos */
 }
