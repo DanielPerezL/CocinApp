@@ -1,0 +1,29 @@
+/* src/css/RecetaCard.css */
+.receta-img {
+    width: 100%;          /* Ocupa todo el ancho del contenedor */
+    height: 200px;        /* Altura fija para uniformidad */
+    object-fit: cover;    /* Ajusta la imagen para cubrir el espacio, cortando si es necesario */
+}
+
+.card {
+    position: relative; /* Necesario para el posicionamiento del pseudo-elemento */
+    overflow: hidden; /* Para ocultar cualquier desbordamiento de la imagen */
+}
+
+/* Fondo de la tarjeta con gradiente */
+.card-body {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0)); /* Gradiente de negro a transparente */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 200px; 
+}
+
+/* Estilo para el título de la receta */
+.card-title {
+    max-height: 0.8em; /* Ajusta la altura máxima */
+    overflow: visible;  /* Oculta el desbordamiento */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos al final */
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}

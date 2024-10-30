@@ -20,13 +20,18 @@ class Recipe(db.Model):
     def __repr__(self):
         return f'<p>{self.nickname}</p>'
     
+    #Voy a necesitar un DTO para la vista de la receta completa
+    #Y otro DTO para la vista del /home (menos detallada)
+
     def to_dict(self):
-        user = User.query.get(self.user_id)
-        assert user is not None
+        #Receta DTO
+        #user = User.query.get(self.user_id)
+        #assert user is not None
         #No debe esta situacion (eliminar usuario en cascada)
         return {
+            "id" : self.id,
             "title" : self.title,
-            "user" : user.to_dict(),
+            "user" : self.user_id,
             "ingredients" : self.ingredients,
             "procedure" : self.procedure,
         }

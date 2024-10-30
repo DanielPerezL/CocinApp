@@ -1,33 +1,58 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../components/NavBar";
-import Receta from "./Receta";
+// src/pages/Home.tsx
+import React from "react";
 import RecetaCard from "../components/RecetaCard";
 
+// DTO de RECETA
 interface Receta {
   title: string;
-  procedure: string;
+  image: string;
 }
 
+// Array de recetas de ejemplo
+const recetasDeEjemplo: Receta[] = [
+  {
+    title: "Spaghetti Carbonara",
+    image: "https://via.placeholder.com/100x100",
+  },
+  {
+    title: "Ensalada César",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    title: "Ensalada de Pasta",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    title: "Pollo al Curry",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    title: "Paella",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    title: "Sushi Variado",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    title: "Hamburguesa Clásica",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    title: "Tacos Mexicanos",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    title: "Ratatouille",
+    image: "https://via.placeholder.com/300x200",
+  },
+  {
+    title: "Ratatouille 2 (ahora es personal)",
+    image: "https://via.placeholder.com/300x200",
+  },
+];
+
 const Home = () => {
-  // Estado para almacenar las recetas
-  const [recetas, setRecetas] = useState<Receta[]>([]);
-
-  // Función para obtener las recetas desde la API
-  const fetchRecetas = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/recipes");
-      const data = await response.json();
-      setRecetas(data);
-    } catch (error) {
-      console.error("Error al obtener recetas:", error);
-    }
-  };
-
-  // useEffect para hacer la solicitud a la API una vez que el componente carga
-  useEffect(() => {
-    fetchRecetas();
-  }, []);
-
   return (
     <>
       <div className="container my-5">
@@ -36,11 +61,11 @@ const Home = () => {
           <p className="fs-5">Descubre y comparte tus recetas favoritas</p>
         </div>
         <div className="row">
-          {recetas.map((receta, index) => (
+          {recetasDeEjemplo.map((receta, index) => (
             <RecetaCard
               key={index}
               titulo={receta.title}
-              descripcion={receta.procedure}
+              imagen={receta.image}
             />
           ))}
         </div>
@@ -48,4 +73,5 @@ const Home = () => {
     </>
   );
 };
+
 export default Home;

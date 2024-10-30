@@ -5,13 +5,14 @@ import Footer from "../components/Footer";
 
 const Layout = () => {
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       <Navbar />
-      <div className="vh-100">
+      <div className="flex-grow-1 mx-1">
         <Outlet />
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
+
 export default Layout;

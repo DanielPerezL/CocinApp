@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav>
+    <nav className="mb-3">
       <ul>
         <li>
           <Link to="/">Home</Link>

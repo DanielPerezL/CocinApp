@@ -21,6 +21,7 @@ class User(db.Model):
         return f'<p>{self.nickname}</p>'
     
     def to_dict(self):
+        #Usuario DTO
         return {
             'id': self.id,
             'nickname': self.nickname,
