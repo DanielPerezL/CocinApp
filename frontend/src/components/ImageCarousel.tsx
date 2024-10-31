@@ -42,7 +42,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ imagenes }) => {
         </div>
 
         <button
-          className="carousel-control-prev custom-control"
+          className="carousel-control-prev"
           type="button"
           onClick={handlePrev}
         >
@@ -54,7 +54,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ imagenes }) => {
         </button>
 
         <button
-          className="carousel-control-next custom-control"
+          className="carousel-control-next"
           type="button"
           onClick={handleNext}
         >

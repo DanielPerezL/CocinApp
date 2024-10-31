@@ -55,7 +55,7 @@ const recetasDeEjemplo: Receta[] = [
 const Home = () => {
   return (
     <>
-      <div className="container main-container my-5">
+      <div className="container my-5">
         <div className="text-center mb-4">
           <h1 className="display-4 text-primary">Bienvenido a CocinApp</h1>
           <p className="fs-5">Descubre y comparte tus recetas favoritas</p>

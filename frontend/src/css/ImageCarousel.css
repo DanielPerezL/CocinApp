@@ -1,22 +1,16 @@
+.carousel-container{
+    background-color: #e7e7e7;
+    align-self: center;
+    margin-left: 20vw;
+    margin-right: 20vw;
+}
+
 /* Estilos para las imágenes del carrusel */
 .carousel-img {
     width: 100%;
-    height: 400px; /* Altura ajustable */
-    object-fit: cover;
-}
-
-/* Estilos personalizados para los botones de control */
-.custom-control {
-    border: 2px solid white;
-    border-radius: 50%;
-}
-
-/* Indicadores debajo del carrusel */
-.carousel-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
+    height: 30vh; /* Altura fija del carrusel */
+    
+    object-fit: contain; /* Ajusta la imagen para que se vea completa */
 }
 
 .indicator {
@@ -27,8 +21,10 @@
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin: 0.2vw;
 }
 
 .active-indicator {
     background-color: white; /* Indicador activo en blanco */
+    border: 1px solid rgba(0, 0, 0, 0.5); /* Borde más oscuro para destacar */
 }
