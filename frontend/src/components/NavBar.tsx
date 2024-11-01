@@ -1,39 +1,41 @@
-// src/components/Navbar.tsx
 import React from "react";
 import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
 import icono from "../assets/icono.png";
 import NavButtons from "./NavButtons"; // Importa el componente NavButtons
-import "../css/ Navbar.css"; // Archivo CSS para estilos personalizados
+import "../css/Navbar.css"; // Archivo CSS para estilos personalizados
 import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   return (
-    <>
-      {/* Barra de navegación superior */}
-      <nav className="navbar navbar-expand-lg top-nav bg-light p-2">
-        <div className="container-fluid">
-          <div className="logo-container d-flex align-items-center">
-            <img src={logo} alt="Logo de CocinApp" className="logo-img me-2" />
-            <img src={icono} alt="Icono de CocinApp" className="icono-img" />
-          </div>
-          <div className="search-container flex-grow-1 mx-3">
+    <nav className="navbar bg-primary">
+      <div className="container" style={{ maxWidth: "1400px" }}>
+        <div className="d-flex align-items-center w-100">
+          <Link to="/" className="btn" title="CocinApp">
+            <img
+              src={icono}
+              alt="CocinApp icono"
+              className="icono-img d-block d-sm-none"
+            />
+            <img
+              src={logo}
+              alt="CocinApp logo"
+              className="logo-img d-none d-sm-block"
+            />
+          </Link>
+          <div className="mx-2 flex-grow-1">
             <input
               type="text"
               placeholder="Buscar recetas..."
+              name="search-input"
               className="form-control search-input"
             />
           </div>
-          {/* Uso del componente NavButtons */}
-          <NavButtons />
+          <div className="d-flex align-items-center d-none d-md-block">
+            <NavButtons />
+          </div>
         </div>
-      </nav>
-
-      {/* Barra de navegación inferior */}
-      <nav className="bottom-nav d-lg-none bg-light p-2">
-        {/* Uso del componente NavButtons */}
-        <NavButtons />
-      </nav>
-    </>
+      </div>
+    </nav>
   );
 };
 

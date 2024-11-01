@@ -54,15 +54,15 @@ const Footer = () => {
           </div>
 
           {/* Sección de derechos de autor */}
-          <div className="col-md-4 text-center text-md-left">
+          <div className="col-md-4 text-center">
             <img
               src={logo}
               alt="CocinApp Logo"
               className="mb-2"
-              style={{ maxWidth: "200px" }}
+              style={{ maxWidth: "200px", margin: "0 auto", display: "block" }}
             />
             <p className="mb-0">
-              © {currentYear} CocinApp. Ningun derecho reservado.
+              © {currentYear} CocinApp. Ningún derecho reservado.
             </p>
           </div>
         </div>
