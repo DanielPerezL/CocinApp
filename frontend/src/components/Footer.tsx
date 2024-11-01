@@ -1,6 +1,6 @@
 // Footer.tsx
-
 import React from "react";
+import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -56,7 +56,7 @@ const Footer = () => {
           {/* Sección de derechos de autor */}
           <div className="col-md-4 text-center text-md-left">
             <img
-              src="/img/logo.png"
+              src={logo}
               alt="CocinApp Logo"
               className="mb-2"
               style={{ maxWidth: "200px" }}
