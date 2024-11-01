@@ -11,10 +11,10 @@ const Layout = () => {
       <div className="flex-grow-1 mx-1">
         <Outlet />
       </div>
+      <Footer />
       <nav className="bottom-nav d-block d-md-none bg-primary p-2">
         <NavButtons />
       </nav>
-      <Footer />
     </div>
   );
 };

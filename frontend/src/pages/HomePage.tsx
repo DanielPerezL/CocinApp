@@ -9,7 +9,7 @@ interface Receta {
 }
 
 // Array de recetas de ejemplo
-const recetasDeEjemplo: Receta[] = [
+let recetasDeEjemplo: Receta[] = [
   {
     title: "Spaghetti Carbonara",
     image: "https://via.placeholder.com/100x100",

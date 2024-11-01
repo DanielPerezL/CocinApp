@@ -1,4 +1,3 @@
-// Footer.tsx
 import React from "react";
 import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
 
@@ -6,8 +5,8 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-dark text-white py-4 mt-5">
-      <div className="container">
+    <footer className="bg-dark text-white py-4 mt-5 pb-5 pb-md-0">
+      <div className="container pb-5 pb-md-0">
         <div className="row">
           {/* Sección de enlaces de navegación */}
           <div className="col-md-4 mb-3">

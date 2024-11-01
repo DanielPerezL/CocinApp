@@ -14,3 +14,11 @@ body {
 .mian-container h3 {
   color: #343a40; /* Color oscuro para los títulos */
 }
+
+.bottom-nav {
+  position: fixed; /* Fija la posición de los botones en la parte inferior */
+  left: 0;
+  bottom: 0;
+  width: 100%; /* Asegúrate de que ocupe todo el ancho */
+  z-index: 1000; /* Asegúrate de que estén encima del contenido */
+}
