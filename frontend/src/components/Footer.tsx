@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="container pb-5 pb-md-0">
         <div className="row">
           {/* Sección de enlaces de navegación */}
-          <div className="col-md-4 mb-3">
+          <div className="col-md-4 mb-3 ms-3 ms-md-0">
             <h5>Navegación</h5>
             <ul className="list-unstyled">
               <li>
@@ -36,7 +36,7 @@ const Footer = () => {
           </div>
 
           {/* Sección de redes sociales */}
-          <div className="col-md-4 mb-3">
+          <div className="col-md-4 mb-3 ms-3 ms-md-0">
             <h5>Síguenos</h5>
             <ul className="list-unstyled">
               <li>
