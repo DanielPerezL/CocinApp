@@ -2,37 +2,30 @@
 import React from "react";
 import ImageCarousel from "./ImageCarousel";
 import "../css/RecetaDetails.css";
+import { RecetaDetailsDTO } from "../App";
 
 interface RecetaDetailsProps {
-  titulo: string;
-  imagenes: string[];
-  ingredientes: string;
-  procedimiento: string;
+  receta: RecetaDetailsDTO;
 }
 
-const RecetaDetails: React.FC<RecetaDetailsProps> = ({
-  titulo,
-  imagenes,
-  ingredientes,
-  procedimiento,
-}) => {
+const RecetaDetails: React.FC<RecetaDetailsProps> = ({ receta }) => {
   return (
     <div className="container my-5 main-container">
-      <h1 className="display-5 text-primary mb-4">{titulo}</h1>
+      <h1 className="display-5 text-primary mb-4">{receta.title}</h1>
 
       {/* Carrusel de imágenes */}
-      <ImageCarousel imagenes={imagenes} />
+      <ImageCarousel imagenes={receta.images} />
 
       {/* Sección de ingredientes */}
       <div className="mb-4">
         <h3>Ingredientes</h3>
-        <p className="receta-text">{ingredientes}</p>
+        <p className="receta-text">{receta.ingredientes}</p>
       </div>
 
       {/* Sección de procedimiento */}
       <div className="mb-4">
         <h3>Procedimiento</h3>
-        <p className="receta-text">{procedimiento}</p>
+        <p className="receta-text">{receta.procedimiento}</p>
       </div>
     </div>
   );

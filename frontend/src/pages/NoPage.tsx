@@ -1,13 +1,7 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NoPage: React.FC = () => {
-  const navigate = useNavigate();
-
-  const handleBackToHome = () => {
-    navigate("/");
-  };
-
   return (
     <div className="d-flex align-items-center justify-content-center main-container">
       <div className="text-center">
@@ -18,9 +12,15 @@ const NoPage: React.FC = () => {
         <p className="lead">
           La página que estás buscando no existe o ha sido movida.
         </p>
-        <button className="btn btn-primary" onClick={handleBackToHome}>
+        <Link
+          to="/"
+          className="btn btn-primary"
+          onClick={() => {
+            window.scrollTo(0, 0);
+          }}
+        >
           Volver al Inicio
-        </button>
+        </Link>
       </div>
     </div>
   );

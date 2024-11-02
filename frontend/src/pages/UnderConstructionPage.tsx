@@ -1,13 +1,7 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const UnderConstruction: React.FC = () => {
-  const navigate = useNavigate();
-
-  const handleBackToHome = () => {
-    navigate("/");
-  };
-
   return (
     <div className="d-flex align-items-center justify-content-center main-container mx-5">
       <div className="text-center">
@@ -19,9 +13,15 @@ const UnderConstruction: React.FC = () => {
           La página que intentas visitar aún está en construcción. Vuelve pronto
           para ver las novedades.
         </p>
-        <button className="btn btn-primary" onClick={handleBackToHome}>
+        <Link
+          to="/"
+          className="btn btn-primary"
+          onClick={() => {
+            window.scrollTo(0, 0);
+          }}
+        >
           Volver al Inicio
-        </button>
+        </Link>
       </div>
     </div>
   );
