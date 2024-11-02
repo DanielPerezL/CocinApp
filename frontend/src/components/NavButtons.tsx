@@ -8,7 +8,7 @@ const NavButtons: React.FC = () => {
   return (
     <div className="d-flex justify-content-around">
       <Link
-        to="/favoritas"
+        to="/favorites"
         className="btn nav-btn mx-1"
         title="Favoritos"
         onClick={() => {
@@ -28,7 +28,7 @@ const NavButtons: React.FC = () => {
         <img src={publish} alt="publish" />
       </Link>
       <Link
-        to="/perfil"
+        to="/profile"
         className="btn nav-btn mx-1"
         title="Perfil"
         onClick={() => {

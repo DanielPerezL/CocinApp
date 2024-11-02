@@ -28,10 +28,6 @@
   transition: background-color 0.3s; /* Transición suave para el hover */
 }
 
-.carousel-button:hover {
-  background-color: #0056b3; /* Color de fondo al pasar el ratón */
-}
-
 .carousel-button:disabled {
   background-color: #6c757d; /* Color de fondo para botones deshabilitados */
   cursor: not-allowed; /* Cursor indicando que está deshabilitado */

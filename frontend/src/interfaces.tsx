@@ -15,5 +15,6 @@ export interface RecipeDetailsDTO {
 //DTOs de USUARIO
 export interface UserDTO {
   id: number;
-  name: string;
+  nickname: string;
+  email: string;
 }

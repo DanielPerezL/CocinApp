@@ -7,9 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from sqlalchemy.exc import OperationalError
 
-
-#ALLOWED_ORIGINS = ['https://cocinapp.com']
-
 # Inicializar Flask, SQLAlchemy y JWT
 app = Flask(__name__, static_folder='./static')
 CORS(app, origins=["http://localhost:*"]) #eliminar para prod
@@ -28,15 +25,3 @@ db = SQLAlchemy(app)
 @app.errorhandler(OperationalError)
 def handle_db_error(error):
     return jsonify({"msg": "Database connection error"}), 500
-
-#Ademas de protegernos contra ataques CSRF con JWT, comprobamos el origen de la solicitud
-'''@app.before_request
-def check_origin():
-    # Verifica el header 'Origin'
-    origin = request.headers.get('Origin')
-
-    print("origin:",origin)
-
-    # Si el 'Origin' no está permitido, rechaza la solicitud
-    if origin not in ALLOWED_ORIGINS:
-        abort(403)'''

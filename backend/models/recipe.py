@@ -23,15 +23,19 @@ class Recipe(db.Model):
     #Voy a necesitar un DTO para la vista de la receta completa
     #Y otro DTO para la vista del /home (menos detallada)
 
-    def to_dict(self):
+    def to_details_dto(self):
         #Receta DTO
-        #user = User.query.get(self.user_id)
-        #assert user is not None
-        #No debe esta situacion (eliminar usuario en cascada)
         return {
             "id" : self.id,
             "title" : self.title,
             "user" : self.user_id,
             "ingredients" : self.ingredients,
             "procedure" : self.procedure,
+        }
+    
+    def to_simple_dto(self):
+        return {
+            "id" : self.id,
+            "title" : self.title,
+            "user" : self.user_id,
         }

@@ -1,4 +1,3 @@
-// src/components/RecipeCarousel.tsx
 import React, { useState, useEffect } from "react";
 import RecipeCard from "./RecipeCard"; // Asegúrate de importar correctamente tu componente
 import { RecipeGridDTO } from "../interfaces";
@@ -15,11 +14,11 @@ const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ recipes }) => {
 
   // Función para actualizar el número de elementos por página según el tamaño de la ventana
   const updateItemsPerPage = () => {
+    setCurrentIndex(0);
     const width = window.innerWidth;
-
-    if (width < 576) {
+    if (width < 768) {
       setItemsPerPage(2); // Muestra 2 recetas en pantallas pequeñas
-    } else if (width < 768) {
+    } else if (width < 992) {
       setItemsPerPage(3); // Muestra 3 recetas en pantallas medianas
     } else {
       setItemsPerPage(4); // Muestra 4 recetas en pantallas grandes

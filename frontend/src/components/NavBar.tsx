@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="navbar bg-primary">
+    <nav className="navbar top-nav bg-primary">
       <div className="container" style={{ maxWidth: "1400px" }}>
         <div className="d-flex align-items-center w-100">
           <Link to="/" className="btn" title="CocinApp">

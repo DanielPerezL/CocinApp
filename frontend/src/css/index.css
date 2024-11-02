@@ -12,7 +12,7 @@
 }
 
 .bottom-nav {
-  position: sticky; /* Fija la posición de los botones en la parte inferior */
+  position: fixed; /* Fija la posición de los botones en la parte inferior */
   left: 0;
   bottom: 0;
   width: 100%; /* Asegúrate de que ocupe todo el ancho */

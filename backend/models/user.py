@@ -26,7 +26,6 @@ class User(db.Model):
             'id': self.id,
             'nickname': self.nickname,
             'email': self.email,
-            #'hashed_password': self.password_hash
         }
 
     def set_password(self, password):

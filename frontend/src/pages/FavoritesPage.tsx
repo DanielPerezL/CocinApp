@@ -40,17 +40,18 @@ let favRecipes: RecipeGridDTO[] = [
 
 let testUser: UserDTO = {
   id: 0,
-  name: "Daniel",
+  nickname: "Daniel",
+  email: "daniel@mail.com",
 };
 
 const FavoritesPage = () => {
   return (
     <>
-      <div className="container my-5 main-container">
+      <div className="container mb-5 main-container">
         <div className="text-center mb-4">
           <h1 className="display-5 text-primary">Tus Recetas Favoritas</h1>
           <p className="fs-6 fw-light">
-            Aquí tienes tus recetas favoritas, {testUser.name}!
+            Aquí tienes tus recetas favoritas, {testUser.nickname}!
           </p>
         </div>
         <RecetaGrid recipes={favRecipes} />

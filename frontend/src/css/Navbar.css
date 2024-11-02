@@ -1,21 +1,25 @@
 /* src/css/Navbar.css */
 .top-nav {
-    border-bottom: 1px solid #e0e0e0;
-  }
+  position: fixed; /* Fija la posición de los botones en la parte inferior */
+  left: 0;
+  top: 0;
+  width: 100%; /* Asegúrate de que ocupe todo el ancho */
+  z-index: 1000; /* Asegúrate de que estén encima del contenido */
+}
 
-  .logo-img {
-    height: 40px;
-  }
-  
-  .icon-img {
-    height: 30px;
-  }
-  
-  .nav-buttons img {
-    height: 24px;
-  }
-  
-  .nav-btn img {
-    height: 24px;
-  }
+.logo-img {
+  height: 40px;
+}
+
+.icon-img {
+  height: 30px;
+}
+
+.nav-buttons img {
+  height: 24px;
+}
+
+.nav-btn img {
+  height: 24px;
+}
   

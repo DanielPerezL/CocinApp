@@ -7,9 +7,11 @@ import Footer from "../components/Footer";
 const Layout = () => {
   return (
     <>
-      <div className="d-flex flex-column min-vh-100 bg-light">
+      <nav className="top-nav">
         <NavBar />
-        <div className="flex-grow-1 mx-1 pb-5">
+      </nav>
+      <div className="mt-5 d-flex flex-column min-vh-100 bg-light">
+        <div className="mt-4 flex-grow-1 mx-1 pb-5">
           <Outlet />
         </div>
         <Footer />
