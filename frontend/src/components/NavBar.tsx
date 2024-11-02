@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
-import icono from "../assets/icono.png";
+import icon from "../assets/icon.png";
 import NavButtons from "./NavButtons"; // Importa el componente NavButtons
 import "../css/Navbar.css"; // Archivo CSS para estilos personalizados
 import { Link } from "react-router-dom";
@@ -12,9 +12,9 @@ const Navbar: React.FC = () => {
         <div className="d-flex align-items-center w-100">
           <Link to="/" className="btn" title="CocinApp">
             <img
-              src={icono}
-              alt="CocinApp icono"
-              className="icono-img d-block d-sm-none"
+              src={icon}
+              alt="CocinApp icon"
+              className="icon-img d-block d-sm-none"
             />
             <img
               src={logo}

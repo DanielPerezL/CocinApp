@@ -1,10 +1,10 @@
-// src/pages/Home.tsx
 import React from "react";
-import RecipeGrid from "../components/RecipeGrid";
-import { RecipeGridDTO } from "../interfaces";
+import RecetaGrid from "../components/RecipeGrid";
+import { RecipeGridDTO, UserDTO } from "../interfaces";
+import RecipeCarousel from "../components/RecipeCarousel";
 
 // Array de recetas de ejemplo
-let recetasDeEjemplo: RecipeGridDTO[] = [
+let favRecipes: RecipeGridDTO[] = [
   {
     id: 0,
     title: "Spaghetti Carbonara",
@@ -13,21 +13,6 @@ let recetasDeEjemplo: RecipeGridDTO[] = [
   {
     id: 1,
     title: "Ensalada César",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 2,
-    title: "Ensalada de Pasta",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 3,
-    title: "Pollo al Curry",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 4,
-    title: "Paella",
     image: "https://via.placeholder.com/300x200",
   },
   {
@@ -53,20 +38,32 @@ let recetasDeEjemplo: RecipeGridDTO[] = [
   },
 ];
 
-const Home = () => {
+let testUser: UserDTO = {
+  id: 0,
+  name: "Daniel",
+};
+
+const FavoritesPage = () => {
   return (
     <>
-      <div className="container my-5">
+      <div className="container my-5 main-container">
         <div className="text-center mb-4">
-          <h1 className="display-4 text-primary">Bienvenido a CocinApp</h1>
-          <p className="fs-5 fw-light">
-            Descubre y comparte tus recetas favoritas
+          <h1 className="display-5 text-primary">Tus Recetas Favoritas</h1>
+          <p className="fs-6 fw-light">
+            Aquí tienes tus recetas favoritas, {testUser.name}!
           </p>
         </div>
-        <RecipeGrid recipes={recetasDeEjemplo} />
+        <RecetaGrid recipes={favRecipes} />
+      </div>
+
+      <div className="container my-5 main-container">
+        <div className="text-center mb-4">
+          <h1 className="display-6 text-primary">Explora nuevas recetas</h1>
+        </div>
+        <RecipeCarousel recipes={favRecipes} />
       </div>
     </>
   );
 };
 
-export default Home;
+export default FavoritesPage;

@@ -3,21 +3,21 @@ import React, { useState } from "react";
 import "../css/ImageCarousel.css";
 
 interface ImageCarouselProps {
-  imagenes: string[];
+  images: string[];
 }
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ imagenes }) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handlePrev = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? imagenes.length - 1 : prevIndex - 1
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
 
   const handleNext = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex === imagenes.length - 1 ? 0 : prevIndex + 1
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
   };
 
@@ -25,7 +25,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ imagenes }) => {
     <div className="carousel-container mb-4">
       <div className="carousel slide">
         <div className="carousel-inner">
-          {imagenes.map((imagen, index) => (
+          {images.map((image, index) => (
             <div
               key={index}
               className={`carousel-item ${
@@ -33,7 +33,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ imagenes }) => {
               }`}
             >
               <img
-                src={imagen}
+                src={image}
                 className="d-block w-100 carousel-img"
                 alt={`Imagen ${index + 1}`}
               />
@@ -67,7 +67,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ imagenes }) => {
 
         {/* Indicadores */}
         <div className="carousel-indicators">
-          {imagenes.map((_, index) => (
+          {images.map((_, index) => (
             <button
               key={index}
               className={`indicator ${

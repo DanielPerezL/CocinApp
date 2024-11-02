@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Importa Link desde react-router-dom
-import corazon from "../assets/corazon.png";
-import cesta from "../assets/cesta.png";
-import publicar from "../assets/publicar.png";
-import usuario from "../assets/usuario.png";
+import heart from "../assets/heart.png";
+import publish from "../assets/publish.png";
+import user from "../assets/user.png";
 
 const NavButtons: React.FC = () => {
   return (
@@ -16,20 +15,17 @@ const NavButtons: React.FC = () => {
           window.scrollTo(0, 0);
         }}
       >
-        <img src={corazon} alt="Favoritos" />
+        <img src={heart} alt="Favoritos" />
       </Link>
-      {/*<Link to="/cesta" className="btn nav-btn mx-1" title="Cesta de la compra">
-        <img src={cesta} alt="Cesta" />
-      </Link>*/}
       <Link
-        to="/publicar"
+        to="/publish"
         className="btn nav-btn mx-1"
-        title="Publicar receta"
+        title="publish receta"
         onClick={() => {
           window.scrollTo(0, 0);
         }}
       >
-        <img src={publicar} alt="Publicar" />
+        <img src={publish} alt="publish" />
       </Link>
       <Link
         to="/perfil"
@@ -39,7 +35,7 @@ const NavButtons: React.FC = () => {
           window.scrollTo(0, 0);
         }}
       >
-        <img src={usuario} alt="Perfil" />
+        <img src={user} alt="Perfil" />
       </Link>
     </div>
   );

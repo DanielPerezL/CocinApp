@@ -1,5 +1,5 @@
 /* src/css/RecetaCard.css */
-.receta-img {
+.recipe-img {
     width: 100%;          /* Ocupa todo el ancho del contenedor */
     height: 200px;        /* Altura fija para uniformidad */
     object-fit: cover;    /* Ajusta la imagen para cubrir el espacio, cortando si es necesario */

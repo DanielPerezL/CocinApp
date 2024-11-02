@@ -1,9 +1,9 @@
-// src/pages/RecetaPage.tsx
+// src/pages/RecipePage.tsx
 import React from "react";
-import RecetaDetails from "../components/RecetaDetails";
-import { RecetaDetailsDTO } from "../App";
+import RecipeDetails from "../components/RecipeDetails";
+import { RecipeDetailsDTO } from "../interfaces";
 
-let ejemploReceta: RecetaDetailsDTO = {
+let ejemploRecipe: RecipeDetailsDTO = {
   id: 0,
   title: "Paella Valenciana",
   images: [
@@ -16,8 +16,8 @@ let ejemploReceta: RecetaDetailsDTO = {
   procedimiento: "1. Calentar el aceite en una paellera... etc.",
 };
 
-const RecetaPage = () => {
-  return <RecetaDetails receta={ejemploReceta} />;
+const RecipePage = () => {
+  return <RecipeDetails recipe={ejemploRecipe} />;
 };
 
-export default RecetaPage;
+export default RecipePage;
