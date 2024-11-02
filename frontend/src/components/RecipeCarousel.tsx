@@ -57,18 +57,18 @@ const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ recipes }) => {
             <RecipeCard key={index} recipe={receta} />
           ))}
       </div>
-      <div className="carousel-controls">
+      <div className="recipe-carousel-controls">
         <button
           onClick={prevPage}
           disabled={currentIndex === 0}
-          className="carousel-button"
+          className="recipe-carousel-button"
         >
           Anterior
         </button>
         <button
           onClick={nextPage}
           disabled={currentIndex + itemsPerPage >= totalItems}
-          className="carousel-button"
+          className="recipe-carousel-button"
         >
           Siguiente
         </button>

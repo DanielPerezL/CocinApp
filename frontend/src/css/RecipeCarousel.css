@@ -11,13 +11,13 @@
   width: 100%;
 }
 
-.carousel-controls {
+.recipe-carousel-controls {
   display: flex;
   justify-content: center; /* Centra los botones */
   margin-top: 20px; /* Espaciado entre las recipes y los botones */
 }
 
-.carousel-button {
+.recipe-carousel-button {
   background-color: #007bff; /* Color de fondo */
   color: white; /* Color del texto */
   border: none; /* Sin borde */
@@ -28,7 +28,7 @@
   transition: background-color 0.3s; /* Transición suave para el hover */
 }
 
-.carousel-button:disabled {
+.recipe-carousel-button:disabled {
   background-color: #6c757d; /* Color de fondo para botones deshabilitados */
   cursor: not-allowed; /* Cursor indicando que está deshabilitado */
 }
