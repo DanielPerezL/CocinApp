@@ -58,7 +58,9 @@ const Home = () => {
       <div className="container my-5">
         <div className="text-center mb-4">
           <h1 className="display-4 text-primary">Bienvenido a CocinApp</h1>
-          <p className="fs-5">Descubre y comparte tus recetas favoritas</p>
+          <p className="fs-5 fw-light">
+            Descubre y comparte tus recetas favoritas
+          </p>
         </div>
         <div className="row">
           {recetasDeEjemplo.map((receta, index) => (
