@@ -4,11 +4,6 @@ import NavBar from "../components/NavBar";
 import NavButtons from "../components/NavButtons";
 import Footer from "../components/Footer";
 
-
-TODO:
-*BOTONES NAV INFEIORES: SE PILLAN AL SCROLL
-*AL "sm" SE AÑADE UN MARGEN A LA DERECHA QUE NO SE USA
-
 const Layout = () => {
   return (
     <>
