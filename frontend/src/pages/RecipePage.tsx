@@ -25,7 +25,7 @@ const RecipePage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/recipe_details_dto?id=${id}`
+        `http://${window.location.hostname}:5000/api/recipe_details_dto?id=${id}`
       );
       if (!response.ok) {
         throw new Error("Error al obtener los detalles de la receta");

@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from utils import *
 from endpoints import *
 
-'''@app.route('/')
+@app.route('/')
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
@@ -17,7 +17,7 @@ def static_files(path):
 
 @app.errorhandler(404)
 def not_found(e):
-    return send_from_directory(app.static_folder, 'index.html')'''
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 with app.app_context():

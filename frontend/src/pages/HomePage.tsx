@@ -13,7 +13,7 @@ const Home = () => {
   const fetchRecipes = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/recipes_simple_dto"
+        `http://${window.location.hostname}:5000/api/recipes_simple_dto`
       );
       if (!response.ok) {
         throw new Error("Error al obtener las recetas");
