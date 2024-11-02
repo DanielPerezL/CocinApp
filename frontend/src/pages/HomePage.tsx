@@ -1,59 +1,40 @@
 // src/pages/Home.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import RecipeGrid from "../components/RecipeGrid";
 import { RecipeGridDTO } from "../interfaces";
 
-// Array de recetas de ejemplo
-let recetasDeEjemplo: RecipeGridDTO[] = [
-  {
-    id: 0,
-    title: "Spaghetti Carbonara",
-    image: "https://via.placeholder.com/100x100",
-  },
-  {
-    id: 1,
-    title: "Ensalada César",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 2,
-    title: "Ensalada de Pasta",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 3,
-    title: "Pollo al Curry",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 4,
-    title: "Paella",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 5,
-    title: "Sushi Variado",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 6,
-    title: "Hamburguesa Clásica",
-    image: "https://via.placeholder.com/300x200",
-  },
-  {
-    id: 7,
-    title: "Tacos Mexicanos",
-    image: "https://via.placeholder.com/300x200",
-  },
-  { id: 8, title: "Ratatouille", image: "https://via.placeholder.com/300x200" },
-  {
-    id: 9,
-    title: "Ratatouille 2 (ahora es personal)",
-    image: "https://via.placeholder.com/300x200",
-  },
-];
-
 const Home = () => {
+  // Estado para almacenar las recetas
+  const [recetas, setRecetas] = useState<RecipeGridDTO[]>([]);
+  const [loading, setLoading] = useState(true); // Estado para gestionar la carga
+  const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
+
+  // Función para obtener recetas de la API
+  const fetchRecipes = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/recipes_simple_dto"
+      );
+      if (!response.ok) {
+        throw new Error("Error al obtener las recetas");
+      }
+      const data: RecipeGridDTO[] = await response.json();
+      setRecetas(data); // Actualiza el estado con las recetas obtenidas
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message); // Now TypeScript knows that err is of type Error
+      } else {
+        setError("An unknown error occurred"); // Fallback for non-Error exceptions
+      }
+    } finally {
+      setLoading(false); // Cambia el estado de carga
+    }
+  };
+
+  useEffect(() => {
+    fetchRecipes(); // Llama a la función para obtener recetas cuando el componente se monte
+  }, []);
+
   return (
     <>
       <div className="container my-5">
@@ -63,7 +44,12 @@ const Home = () => {
             Descubre y comparte tus recetas favoritas
           </p>
         </div>
-        <RecipeGrid recipes={recetasDeEjemplo} />
+        {loading && <p>Cargando recetas...</p>}{" "}
+        {/* Muestra un mensaje de carga */}
+        {error && <p className="text-danger">{error}</p>}{" "}
+        {/* Muestra el error si ocurre */}
+        {!loading && !error && <RecipeGrid recipes={recetas} />}{" "}
+        {/* Renderiza RecipeGrid si no hay errores y no está cargando */}
       </div>
     </>
   );

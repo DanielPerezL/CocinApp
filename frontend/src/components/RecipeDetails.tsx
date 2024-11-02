@@ -19,13 +19,13 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
       {/* Sección de ingredientes */}
       <div className="mb-4">
         <h3>Ingredientes</h3>
-        <p className="receta-text">{recipe.ingredientes}</p>
+        <p className="receta-text">{recipe.ingredients}</p>
       </div>
 
       {/* Sección de procedimiento */}
       <div className="mb-4">
         <h3>Procedimiento</h3>
-        <p className="receta-text">{recipe.procedimiento}</p>
+        <p className="receta-text">{recipe.procedure}</p>
       </div>
     </div>
   );

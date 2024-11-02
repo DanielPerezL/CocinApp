@@ -8,8 +8,8 @@ export interface RecipeDetailsDTO {
   id: number;
   title: string;
   images: string[];
-  ingredientes: string;
-  procedimiento: string;
+  ingredients: string;
+  procedure: string;
 }
 
 //DTOs de USUARIO

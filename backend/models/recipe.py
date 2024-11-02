@@ -31,6 +31,10 @@ class Recipe(db.Model):
             "user" : self.user_id,
             "ingredients" : self.ingredients,
             "procedure" : self.procedure,
+            "images": [
+                "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fassets.afcdn.com%2Frecipe%2F20190319%2F89655_w3072h2304c1cx3680cy2456.jpg&f=1&nofb=1&ipt=0835971addd8c8acf48502c72127b86b91c8210d9cf40f4ede80c79fa863258c&ipo=images",
+                "https://www.schlotzskys.com/-/media/schlotzskys/menu/pizza/supreme_pizza_1200x800.jpg?v=1&d=20220823T063817Z",
+            ]
         }
     
     def to_simple_dto(self):
@@ -38,4 +42,5 @@ class Recipe(db.Model):
             "id" : self.id,
             "title" : self.title,
             "user" : self.user_id,
+            "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fassets.afcdn.com%2Frecipe%2F20190319%2F89655_w3072h2304c1cx3680cy2456.jpg&f=1&nofb=1&ipt=0835971addd8c8acf48502c72127b86b91c8210d9cf40f4ede80c79fa863258c&ipo=images"
         }

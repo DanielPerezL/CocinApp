@@ -24,7 +24,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           alt={recipe.title}
         />
         <div className="card-body">
-          <h6 className="card-title">{recipe.title}</h6>
+          <h6 className="card-title text-white">{recipe.title}</h6>
         </div>
       </div>
     </Link>

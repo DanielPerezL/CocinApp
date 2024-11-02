@@ -4,12 +4,24 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_identity
+from math import ceil
 
-@app.route('/api/recipes', methods=['GET'])
-def recipes():
+
+@app.route('/api/recipes_simple_dto', methods=['GET'])
+def get_recipes():
     recipes = Recipe.query.all()
-    recipes_data = [recipe.to_dict() for recipe in recipes]
+    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
     return jsonify(recipes_data), 200
+
+@app.route('/api/recipe_details_dto', methods=['GET'])
+def recipe_details():
+    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
+    if id == -1:
+        return jsonify({"msg": "No id provided"}), 404
+    recipe = Recipe.query.get(id)
+    if recipe is None:
+        return jsonify({"msg": "Recipe not found"}), 404
+    return jsonify(recipe.to_details_dto()), 200
 
 
 @app.route('/api/new_recipe', methods=['POST'])
