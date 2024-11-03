@@ -16,6 +16,7 @@ const LoginMenu: React.FC = () => {
       await login(email, password); // Llama a la función de login
       // Aquí puedes redirigir al usuario a otra página o hacer otra acción en caso de éxito
       console.log("Login exitoso");
+      window.location.reload();
     } catch (err: any) {
       setError(err.message); // Captura y muestra el error
     } finally {

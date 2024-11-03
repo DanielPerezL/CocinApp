@@ -13,18 +13,21 @@ export const fetchRecipes = async (): Promise<RecipeGridDTO[]> => {
   return await response.json(); // Devuelve las recetas en formato JSON
 };
 
-{
-  /*TESTEAR*/
-}
+// Función para obtener las recetas del usuario logeado
+export const fetchMyRecipes = async () => {
+  const accessToken = localStorage.getItem("access_token");
 
-// Función para obtener todos los usuarios
-export const fetchUsers = async (): Promise<UserDTO[]> => {
-  console.log("fetchUsers()");
-  const response = await fetch(`${API_BASE_URL}/users`);
+  const response = await fetch(`${API_BASE_URL}/my_recipes`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
+    },
+  });
+
   if (!response.ok) {
-    throw new Error("Failed to fetch users");
+    throw new Error("Failed to fetch protected data");
   }
-  console.log(response.json());
+
   return await response.json();
 };
 
@@ -65,6 +68,21 @@ export const logout = async (): Promise<void> => {
   localStorage.removeItem("isLoggedIn");
 };
 
+{
+  /*TESTEAR*/
+}
+
+// Función para obtener todos los usuarios
+export const fetchUsers = async (): Promise<UserDTO[]> => {
+  console.log("fetchUsers()");
+  const response = await fetch(`${API_BASE_URL}/users`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch users");
+  }
+  console.log(response.json());
+  return await response.json();
+};
+
 // Función para obtener el perfil del usuario logeado
 export const fetchLoggedUserProfile = async (): Promise<UserDTO> => {
   const accessToken = localStorage.getItem("access_token");
@@ -93,24 +111,6 @@ export const fetchRecipeDetails = async (
     const data = await response.json();
     throw new Error(data.msg || "Failed to fetch recipe details");
   }
-  return await response.json();
-};
-
-// Función para obtener las recetas del usuario logeado
-export const fetchMyRecipes = async () => {
-  const accessToken = localStorage.getItem("access_token");
-
-  const response = await fetch(`${API_BASE_URL}/my_recipes`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch protected data");
-  }
-
   return await response.json();
 };
 
