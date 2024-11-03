@@ -1,5 +1,5 @@
 from config import app, db
-from flask import jsonify, request
+from flask import jsonify, request, make_response
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
@@ -8,13 +8,13 @@ from utils import get_user_from_identity
 @app.route('/api/users', methods=['GET'])
 def users():
     users = User.query.all()
-    users_data = [user.to_dict() for user in users]
+    users_data = [user.to_dto() for user in users]
     return jsonify(users_data), 200
 
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
-
+    #TODO: AL NO EXISTE data['...'] -> peta 500 internal server error
     if not data['nickname'] or not data['email'] or not data['password']:
         return jsonify({"msg": "Get sure to provide all requested data"}), 400
 
@@ -35,6 +35,7 @@ def register():
 
 @app.route('/api/login', methods=['POST'])
 def login():
+    print(request)
     data = request.json
     email = data.get('email')
     password = data.get('password')
@@ -49,7 +50,24 @@ def login():
     refresh_token = create_refresh_token(identity = {"id": user.id,
                                                      "password_hash": user.password_hash,
                                                      })
-    return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+    response = make_response(jsonify({"msg": "Login successful"}))
+
+    # Retorna los tokens en el cuerpo de la respuesta
+    return jsonify({
+        "msg": "Login successful",
+        "access_token": access_token,
+        "refresh_token": refresh_token
+    }), 200
+
+@app.route('/api/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    print(request)
+    response = jsonify({"msg": "Logout successful"})
+    response.delete_cookie('access_token')  # Elimina la cookie del access_token
+    response.delete_cookie('refresh_token')  # Elimina la cookie del refresh_token
+    return response, 200
+
 
 @app.route('/api/change_password', methods=['POST'])
 @jwt_required()
@@ -96,10 +114,7 @@ def logged_user_profile():
     if user is None:
         return jsonify({"msg": "User not found"}), 404
 
-    return jsonify({
-        "nickname": user.nickname,
-        "email": user.email,
-    }), 200
+    return jsonify(user.to_dto()), 200
 
 @app.route('/api/delete_account', methods=['DELETE'])
 @jwt_required()

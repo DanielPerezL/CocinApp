@@ -20,7 +20,7 @@ class User(db.Model):
     def __repr__(self):
         return f'<p>{self.nickname}</p>'
     
-    def to_dict(self):
+    def to_dto(self):
         #Usuario DTO
         return {
             'id': self.id,

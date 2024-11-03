@@ -63,3 +63,14 @@ def delete_recipe():
     except SQLAlchemyError as e:
         db.session.rollback()
     return jsonify({"msg": "Unexpected error occurred"}), 500
+
+@app.route('/api/my_recipes', methods=['GET'])
+@jwt_required()
+def my_recipes():
+    user = get_user_from_identity(get_jwt_identity())
+    if user is None:
+        return jsonify({"msg": "User not found"}), 404
+    
+    recipes = Recipe.query.filter_by(user_id=user.id)
+    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
+    return jsonify(recipes_data), 200

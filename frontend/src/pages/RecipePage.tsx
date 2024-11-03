@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import RecipeDetails from "../components/RecipeDetails";
 import { RecipeDetailsDTO } from "../interfaces";
 import { useLocation } from "react-router-dom"; // Para obtener parámetros de la URL
+import { fetchRecipeDetails } from "../services/apiService";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -16,22 +17,15 @@ const RecipePage = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Función para obtener los detalles de la receta
-  const fetchRecipeDetails = async () => {
+  const loadRecipeDetails = async () => {
     if (!id) {
       setError("ID de receta no proporcionado");
       setLoading(false);
       return;
     }
-
     try {
-      const response = await fetch(
-        `http://${window.location.hostname}:5000/api/recipe_details_dto?id=${id}`
-      );
-      if (!response.ok) {
-        throw new Error("Error al obtener los detalles de la receta");
-      }
-      const data: RecipeDetailsDTO = await response.json();
-      setRecipe(data);
+      const fetchedRecipe = await fetchRecipeDetails(id); // Llama a la función para obtener las recetas
+      setRecipe(fetchedRecipe); // Actualiza el estado con las recetas obtenidas
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -44,7 +38,7 @@ const RecipePage = () => {
   };
 
   useEffect(() => {
-    fetchRecipeDetails(); // Llama a la función al montar el componente o si cambia el ID
+    loadRecipeDetails(); // Llama a la función al montar el componente o si cambia el ID
   }, [id]);
 
   return (

@@ -8,6 +8,7 @@ import RecetaPage from "./pages/RecipePage";
 import NoPage from "./pages/NoPage";
 import UnderConstructionPage from "./pages/UnderConstructionPage";
 import FavoritesPage from "./pages/FavoritesPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="recipe" element={<RecetaPage />} />
           <Route path="favorites" element={<FavoritesPage />} />
-          <Route path="profile" element={<UnderConstructionPage />} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="publish" element={<UnderConstructionPage />} />
 
           <Route path="about" element={<UnderConstructionPage />} />

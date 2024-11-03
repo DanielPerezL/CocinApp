@@ -1,39 +1,28 @@
-// src/pages/Home.tsx
 import React, { useEffect, useState } from "react";
 import RecipeGrid from "../components/RecipeGrid";
 import { RecipeGridDTO } from "../interfaces";
+import { fetchRecipes } from "../services/apiService";
 
 const Home = () => {
   // Estado para almacenar las recetas
-  const [recetas, setRecetas] = useState<RecipeGridDTO[]>([]);
-  const [loading, setLoading] = useState(true); // Estado para gestionar la carga
+  const [recipes, setRecipes] = useState<RecipeGridDTO[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
 
-  // Función para obtener recetas de la API
-  const fetchRecipes = async () => {
-    try {
-      const response = await fetch(
-        `http://${window.location.hostname}:5000/api/recipes_simple_dto`
-      );
-      if (!response.ok) {
-        throw new Error("Error al obtener las recetas");
-      }
-      const data: RecipeGridDTO[] = await response.json();
-      setRecetas(data); // Actualiza el estado con las recetas obtenidas
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message); // Now TypeScript knows that err is of type Error
-      } else {
-        setError("An unknown error occurred"); // Fallback for non-Error exceptions
-      }
-    } finally {
-      setLoading(false); // Cambia el estado de carga
-    }
-  };
-
   useEffect(() => {
-    fetchRecipes(); // Llama a la función para obtener recetas cuando el componente se monte
-  }, []);
+    const loadRecipes = async () => {
+      try {
+        const fetchedRecipes = await fetchRecipes(); // Llama a la función para obtener las recetas
+        setRecipes(fetchedRecipes); // Actualiza el estado con las recetas obtenidas
+      } catch (err: any) {
+        setError(err.message || "Error al cargar las recetas."); // Captura el error y actualiza el estado
+      } finally {
+        setLoading(false); // Cambia el estado de carga a false al final
+      }
+    };
+
+    loadRecipes(); // Llama a la función para cargar las recetas
+  }, []); // Se ejecuta solo al montar el componente
 
   return (
     <>
@@ -48,7 +37,7 @@ const Home = () => {
         {/* Muestra un mensaje de carga */}
         {error && <p className="text-danger">{error}</p>}{" "}
         {/* Muestra el error si ocurre */}
-        {!loading && !error && <RecipeGrid recipes={recetas} />}{" "}
+        {!loading && !error && <RecipeGrid recipes={recipes} />}{" "}
         {/* Renderiza RecipeGrid si no hay errores y no está cargando */}
       </div>
     </>

@@ -26,6 +26,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       <div className="carousel-indicators">
         {images.map((image, index) => (
           <button
+            key={index}
             type="button"
             data-bs-target="#carouselExampleIndicators"
             className={index === activeIndex ? "active" : ""}
