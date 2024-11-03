@@ -1,7 +1,7 @@
 // src/pages/RecipePage.tsx
 import React, { useEffect, useState } from "react";
 import RecipeDetails from "../components/RecipeDetails";
-import { RecipeDetailsDTO } from "../interfaces";
+import { RecipeDetailDTO } from "../interfaces";
 import { useLocation } from "react-router-dom"; // Para obtener parámetros de la URL
 import { fetchRecipeDetails } from "../services/apiService";
 
@@ -12,7 +12,7 @@ const useQuery = () => {
 const RecipePage = () => {
   const query = useQuery();
   const id = query.get("id"); // Obtiene el valor del parámetro 'id'
-  const [recipe, setRecipe] = useState<RecipeDetailsDTO | null>(null);
+  const [recipe, setRecipe] = useState<RecipeDetailDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

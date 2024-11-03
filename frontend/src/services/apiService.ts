@@ -1,11 +1,11 @@
 // src/services/apiService.ts
 
-import { RecipeGridDTO, RecipeDetailsDTO, UserDTO } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
+import { RecipeSimpleDTO, RecipeDetailDTO, UserDTO } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 
 const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
 
 // Función para obtener recetas
-export const fetchRecipes = async (): Promise<RecipeGridDTO[]> => {
+export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
   const response = await fetch(`${API_BASE_URL}/recipes_simple_dto`); // Ajusta la URL según tu API
   if (!response.ok) {
     throw new Error("Error al obtener recetas");
@@ -99,7 +99,7 @@ export const fetchLoggedUserProfile = async (): Promise<UserDTO> => {
 // Función para obtener detalles de una receta
 export const fetchRecipeDetails = async (
   id: string
-): Promise<RecipeDetailsDTO> => {
+): Promise<RecipeDetailDTO> => {
   const response = await fetch(`${API_BASE_URL}/recipe_details_dto?id=${id}`);
   if (!response.ok) {
     const data = await response.json();

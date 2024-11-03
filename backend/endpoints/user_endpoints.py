@@ -15,7 +15,7 @@ def users():
 def register():
     data = request.json
     #TODO: AL NO EXISTE data['...'] -> peta 500 internal server error
-    if not data['nickname'] or not data['email'] or not data['password']:
+    if not data or not all(key in data for key in ('nickname', 'email', 'password')):
         return jsonify({"msg": "Get sure to provide all requested data"}), 400
 
     if User.query.filter_by(email=data.get('email')).first() is not None:
@@ -62,7 +62,6 @@ def login():
 @app.route('/api/logout', methods=['POST'])
 @jwt_required()
 def logout():
-    print(request)
     response = jsonify({"msg": "Logout successful"})
     response.delete_cookie('access_token')  # Elimina la cookie del access_token
     response.delete_cookie('refresh_token')  # Elimina la cookie del refresh_token
@@ -74,11 +73,10 @@ def logout():
 def change_password():
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"msg": "Bad token"}), 401
-    print(user.to_dict())
-    
+        return jsonify({"msg": "Bad token"}), 401    
     data = request.json
-    if not data['current_password'] or not data['new_password']:
+
+    if not data or not all(key in data for key in ('current_password', 'new_password')):
         return jsonify({"msg": "Get sure to provide all requested data"}), 401
 
     current_password = data.get('current_password')
@@ -125,8 +123,9 @@ def delete_account():
 
     try:
         db.session.delete(user)
+        db.session.delete(Recipe.query.filter_by(user_id=user.id))
         db.session.commit()
-        return 204
+        return jsonify({"msg": "User deleted"}),204
     except SQLAlchemyError as e:
         db.session.rollback()
     return jsonify({"msg": "Unexpected error occurred"}), 500

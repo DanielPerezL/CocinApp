@@ -2,10 +2,10 @@
 import React from "react";
 import ImageCarousel from "./ImageCarousel";
 import "../css/RecipeDetails.css";
-import { RecipeDetailsDTO } from "../interfaces";
+import { RecipeDetailDTO } from "../interfaces";
 
 interface RecipeDetailsProps {
-  recipe: RecipeDetailsDTO;
+  recipe: RecipeDetailDTO;
 }
 
 const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {

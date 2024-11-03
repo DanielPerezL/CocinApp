@@ -1,10 +1,10 @@
 // DTOs de RECETA
-export interface RecipeGridDTO {
+export interface RecipeSimpleDTO {
   id: number;
   title: string;
   image: string;
 }
-export interface RecipeDetailsDTO {
+export interface RecipeDetailDTO {
   id: number;
   title: string;
   images: string[];

@@ -1,11 +1,11 @@
 // src/components/RecipeCard.tsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { RecipeGridDTO } from "../interfaces";
+import { RecipeSimpleDTO } from "../interfaces";
 import "../css/RecipeCard.css";
 
 interface RecipeCardProps {
-  recipe: RecipeGridDTO;
+  recipe: RecipeSimpleDTO;
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {

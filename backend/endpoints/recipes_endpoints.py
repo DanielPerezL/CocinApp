@@ -17,7 +17,7 @@ def get_recipes():
 def recipe_details():
     id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
     if id == -1:
-        return jsonify({"msg": "No id provided"}), 404
+        return jsonify({"msg": "No valid id provided"}), 404
     recipe = Recipe.query.get(id)
     if recipe is None:
         return jsonify({"msg": "Recipe not found"}), 404
@@ -32,6 +32,9 @@ def new_recipe():
     if user is None:
         return jsonify({"msg": "User not found"}), 404
     
+    if not data or not all(key in data for key in ('title', 'ingredients', 'procedure')):
+        return jsonify({"msg": "Get sure to provide all requested data"}), 401
+
     new_recipe = Recipe(title = data.get('title'),
                         user_id = user.id,
                         ingredients = data.get('ingredients'),
@@ -59,7 +62,7 @@ def delete_recipe():
     try:
         db.session.delete(recipe)
         db.session.commit()
-        return 204
+        return jsonify({"msg": "Deleted recipe"}), 204
     except SQLAlchemyError as e:
         db.session.rollback()
     return jsonify({"msg": "Unexpected error occurred"}), 500

@@ -1,10 +1,10 @@
 import React from "react";
 import RecetaGrid from "../components/RecipeGrid";
-import { RecipeGridDTO, UserDTO } from "../interfaces";
+import { RecipeSimpleDTO, UserDTO } from "../interfaces";
 import RecipeCarousel from "../components/RecipeCarousel";
 
 // Array de recetas de ejemplo
-let favRecipes: RecipeGridDTO[] = [
+let favRecipes: RecipeSimpleDTO[] = [
   {
     id: 0,
     title: "Spaghetti Carbonara",

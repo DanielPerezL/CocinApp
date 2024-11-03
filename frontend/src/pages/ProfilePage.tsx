@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LoginMenu from "../components/LoginMenu"; // Ajusta la ruta según tu estructura
 import { logout, fetchMyRecipes } from "../services/apiService"; // Asegúrate de importar la función de logout
-import { RecipeGridDTO } from "../interfaces";
 import RecipeGrid from "../components/RecipeGrid";
 import LogoutMenu from "../components/LogoutMenu";
 

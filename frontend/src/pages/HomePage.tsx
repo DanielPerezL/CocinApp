@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import RecipeGrid from "../components/RecipeGrid";
-import { RecipeGridDTO } from "../interfaces";
+import { RecipeSimpleDTO } from "../interfaces";
 import { fetchRecipes } from "../services/apiService";
 
 const Home = () => {
   // Estado para almacenar las recetas
-  const [recipes, setRecipes] = useState<RecipeGridDTO[]>([]);
+  const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
 

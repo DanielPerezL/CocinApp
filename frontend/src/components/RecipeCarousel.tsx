@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import RecipeCard from "./RecipeCard"; // Asegúrate de importar correctamente tu componente
-import { RecipeGridDTO } from "../interfaces";
+import { RecipeSimpleDTO } from "../interfaces";
 import "../css/RecipeCarousel.css"; // Para el estilo adicional
 
 interface RecipeCarouselProps {
-  recipes: RecipeGridDTO[];
+  recipes: RecipeSimpleDTO[];
 }
 
 const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ recipes }) => {

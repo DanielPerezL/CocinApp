@@ -1,11 +1,11 @@
 // src/components/RecipesGrid.tsx
 import React from "react";
 import RecipeCard from "./RecipeCard"; // Asegúrate de importar correctamente tu componente
-import { RecipeGridDTO } from "../interfaces";
+import { RecipeSimpleDTO } from "../interfaces";
 import { Link } from "react-router-dom";
 
 interface RecipesGridProps {
-  recipes: RecipeGridDTO[];
+  recipes: RecipeSimpleDTO[];
 }
 
 const RecipeGrid: React.FC<RecipesGridProps> = ({ recipes }) => {

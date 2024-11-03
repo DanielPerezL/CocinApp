@@ -6,12 +6,12 @@ import {
   fetchLoggedUserProfile,
 } from "../services/apiService"; // Ajusta la ruta según tu estructura
 import RecipeGrid from "./RecipeGrid"; // Asegúrate de que esta ruta sea correcta
-import { RecipeGridDTO, UserDTO } from "../interfaces"; // Asegúrate de que esta ruta sea correcta
+import { RecipeSimpleDTO, UserDTO } from "../interfaces"; // Asegúrate de que esta ruta sea correcta
 
 const LogoutMenu: React.FC = () => {
   const [loading, setLoading] = useState(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
-  const [recipes, setRecipes] = useState<RecipeGridDTO[]>([]); // Estado para almacenar recetas
+  const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]); // Estado para almacenar recetas
   const [user, setUser] = useState<UserDTO>(); // Estado para almacenar recetas
 
   const handleLogout = async () => {
