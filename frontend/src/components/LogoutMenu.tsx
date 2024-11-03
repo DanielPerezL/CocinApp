@@ -1,13 +1,18 @@
 // src/components/LogoutMenu.tsx
 import React, { useEffect, useState } from "react";
-import { logout, fetchMyRecipes } from "../services/apiService"; // Ajusta la ruta según tu estructura
+import {
+  logout,
+  fetchMyRecipes,
+  fetchLoggedUserProfile,
+} from "../services/apiService"; // Ajusta la ruta según tu estructura
 import RecipeGrid from "./RecipeGrid"; // Asegúrate de que esta ruta sea correcta
-import { RecipeGridDTO } from "../interfaces"; // Asegúrate de que esta ruta sea correcta
+import { RecipeGridDTO, UserDTO } from "../interfaces"; // Asegúrate de que esta ruta sea correcta
 
 const LogoutMenu: React.FC = () => {
   const [loading, setLoading] = useState(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
   const [recipes, setRecipes] = useState<RecipeGridDTO[]>([]); // Estado para almacenar recetas
+  const [user, setUser] = useState<UserDTO>(); // Estado para almacenar recetas
 
   const handleLogout = async () => {
     try {
@@ -31,7 +36,12 @@ const LogoutMenu: React.FC = () => {
         setLoading(false); // Finaliza la carga
       }
     };
+    const loadUser = async () => {
+      const fetchedUser = await fetchLoggedUserProfile(); // Llama a la función para obtener las recetas
+      setUser(fetchedUser); // Actualiza el estado con las recetas obtenidas
+    };
 
+    loadUser();
     loadRecipes(); // Carga las recetas al montar el componente
   }, []);
 
@@ -51,6 +61,7 @@ const LogoutMenu: React.FC = () => {
           {/* Muestra el error si ocurre */}
           {!loading && !error && <RecipeGrid recipes={recipes} />}{" "}
           {/* Renderiza RecipeGrid si no hay errores y no está cargando */}
+          {user && <p>{`Nickname:${user.nickname} Email:${user.email}`}</p>}
         </>
       ) : (
         <p>No estás logueado.</p> // Mensaje si el usuario no está logueado

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { login } from "../services/apiService"; // Importa la función de login
+import React, { useEffect, useState } from "react";
+import { fetchUsers, login } from "../services/apiService"; // Importa la función de login
+import { UserDTO } from "../interfaces";
 
 const LoginMenu: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null); // Estado para manejar errores
   const [loading, setLoading] = useState<boolean>(false); // Estado para manejar el loading
+  const [users, setUsers] = useState<UserDTO[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Previene el comportamiento por defecto del formulario
@@ -27,6 +29,21 @@ const LoginMenu: React.FC = () => {
     setEmail("");
     setPassword("");
   };
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const fetchedUsers = await fetchUsers(); // Llama a la función para obtener las recetas
+        setUsers(fetchedUsers); // Actualiza el estado con las recetas obtenidas
+      } catch (err: any) {
+        setError(err.message || "Error al cargar las recetas."); // Captura el error y actualiza el estado
+      } finally {
+        setLoading(false); // Cambia el estado de carga a false al final
+      }
+    };
+
+    loadUsers(); // Llama a la función para cargar las recetas
+  }, []);
 
   return (
     <div className="login-menu">
@@ -68,6 +85,11 @@ const LoginMenu: React.FC = () => {
       </form>
       {error && <p className="text-danger mt-3">{error}</p>}{" "}
       {/* Mensaje de error */}
+      <div className="row">
+        {users.map((user, index) => (
+          <p key={index}>{`Nickname:${user.nickname} Email:${user.email}`}</p>
+        ))}
+      </div>
     </div>
   );
 };

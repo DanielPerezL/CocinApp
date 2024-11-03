@@ -13,24 +13,7 @@ export const fetchRecipes = async (): Promise<RecipeGridDTO[]> => {
   return await response.json(); // Devuelve las recetas en formato JSON
 };
 
-// Función para obtener las recetas del usuario logeado
-export const fetchMyRecipes = async () => {
-  const accessToken = localStorage.getItem("access_token");
-
-  const response = await fetch(`${API_BASE_URL}/my_recipes`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch protected data");
-  }
-
-  return await response.json();
-};
-
+// Función para hacer login
 export const login = async (email: string, password: string): Promise<void> => {
   const response = await fetch(`${API_BASE_URL}/login`, {
     method: "POST",
@@ -53,6 +36,7 @@ export const login = async (email: string, password: string): Promise<void> => {
   localStorage.setItem("refresh_token", refresh_token);
   localStorage.setItem("isLoggedIn", "true");
 };
+
 // Función para hacer logout
 export const logout = async (): Promise<void> => {
   await fetch(`${API_BASE_URL}/logout`, {
@@ -68,29 +52,39 @@ export const logout = async (): Promise<void> => {
   localStorage.removeItem("isLoggedIn");
 };
 
-{
-  /*TESTEAR*/
-}
+// Función para obtener las recetas del usuario logeado
+export const fetchMyRecipes = async () => {
+  const accessToken = localStorage.getItem("access_token");
+
+  const response = await fetch(`${API_BASE_URL}/my_recipes`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch protected data");
+  }
+
+  return await response.json();
+};
 
 // Función para obtener todos los usuarios
 export const fetchUsers = async (): Promise<UserDTO[]> => {
-  console.log("fetchUsers()");
   const response = await fetch(`${API_BASE_URL}/users`);
   if (!response.ok) {
     throw new Error("Failed to fetch users");
   }
-  console.log(response.json());
   return await response.json();
 };
 
 // Función para obtener el perfil del usuario logeado
 export const fetchLoggedUserProfile = async (): Promise<UserDTO> => {
-  const accessToken = localStorage.getItem("access_token");
-
   const response = await fetch(`${API_BASE_URL}/logged_user_profile`, {
     method: "GET",
     headers: {
-      Authorization: accessToken ? `Bearer ${accessToken}` : "", // Asegúrate de que no sea undefined
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
       "Content-Type": "application/json",
     },
   });
