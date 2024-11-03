@@ -10,7 +10,14 @@ const Navbar: React.FC = () => {
     <nav className="navbar top-nav bg-primary">
       <div className="container" style={{ maxWidth: "1400px" }}>
         <div className="d-flex align-items-center w-100">
-          <Link to="/" className="btn" title="CocinApp">
+          <Link
+            to="/"
+            className="btn"
+            title="CocinApp"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
             <img
               src={icon}
               alt="CocinApp icon"

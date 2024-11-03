@@ -22,63 +22,54 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="carousel-container mb-4">
-      <div className="carousel slide">
-        <div className="carousel-inner">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className={`carousel-item ${
-                index === activeIndex ? "active" : ""
-              }`}
-            >
-              <img
-                src={image}
-                className="d-block w-100 carousel-img"
-                alt={`Imagen ${index + 1}`}
-              />
-            </div>
-          ))}
-        </div>
-
-        <button
-          className="carousel-control-prev"
-          type="button"
-          onClick={handlePrev}
-        >
-          <span
-            className="carousel-control-prev-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Previous</span>
-        </button>
-
-        <button
-          className="carousel-control-next"
-          type="button"
-          onClick={handleNext}
-        >
-          <span
-            className="carousel-control-next-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Next</span>
-        </button>
-
-        {/* Indicadores */}
-        <div className="carousel-indicators">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              className={`indicator ${
-                index === activeIndex ? "active-indicator" : ""
-              }`}
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Slide ${index + 1}`}
-            ></button>
-          ))}
-        </div>
+    <div className="carousel slide">
+      <div className="carousel-indicators">
+        {images.map((image, index) => (
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            className={index === activeIndex ? "active" : ""}
+            onClick={() => {
+              setActiveIndex(index);
+            }}
+          ></button>
+        ))}
       </div>
+      <div className="carousel-inner">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`carousel-item ${index === activeIndex ? "active" : ""}`}
+          >
+            <img
+              src={image}
+              className="d-block w-100 carousel-img"
+              alt={`Imagen ${index + 1}`}
+            />
+          </div>
+        ))}
+      </div>
+
+      <button
+        className="carousel-control-prev"
+        type="button"
+        onClick={handlePrev}
+      >
+        <span
+          className="carousel-control-prev-icon bg-dark"
+          aria-hidden="true"
+        ></span>
+        <span className="visually-hidden">Previous</span>
+      </button>
+
+      <button
+        className="carousel-control-next"
+        type="button"
+        onClick={handleNext}
+      >
+        <span className="carousel-control-next-icon bg-dark"></span>
+        <span className="visually-hidden">Next</span>
+      </button>
     </div>
   );
 };
