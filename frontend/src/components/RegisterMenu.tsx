@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 
-interface LoginMenuProps {
-  onSubmit: (email: string, password: string) => Promise<void>;
+interface RegisterMenuProps {
+  onSubmit: (
+    nickname: string,
+    email: string,
+    password: string
+  ) => Promise<void>;
 }
 
-const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
+const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
+  const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -16,11 +21,12 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
     setError(null);
 
     try {
-      await onSubmit(email, password);
+      await onSubmit(nickname, email, password);
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
+      setNickname("");
       setEmail("");
       setPassword("");
     }
@@ -28,6 +34,19 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <label htmlFor="nickname" className="form-label">
+          Nombre de usuario
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="nickname"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          required
+        />
+      </div>
       <div className="mb-3">
         <label htmlFor="email" className="form-label">
           Correo Electrónico
@@ -59,11 +78,11 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
         className="btn btn-primary w-100"
         disabled={loading}
       >
-        {loading ? "Cargando..." : "Iniciar Sesión"}
+        {loading ? "Cargando..." : "Registrar"}
       </button>
       {error && <p className="text-danger mt-3">{error}</p>}
     </form>
   );
 };
 
-export default LoginMenu;
+export default RegisterMenu;

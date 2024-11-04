@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import LoginMenu from "../components/LoginMenu"; // Ajusta la ruta según tu estructura
-import { logout, fetchMyRecipes } from "../services/apiService"; // Asegúrate de importar la función de logout
+import { logout, fetchMyRecipes } from "../services/apiService";
 import RecipeGrid from "../components/RecipeGrid";
 import LogoutMenu from "../components/LogoutMenu";
 import ImageUploader from "../components/ImageUploader";
+import AccessMenu from "../components/AccessMenu";
 
 const ProfilePage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -17,7 +17,7 @@ const ProfilePage: React.FC = () => {
   return (
     <div>
       {!isLoggedIn ? (
-        <LoginMenu />
+        <AccessMenu />
       ) : (
         <>
           <LogoutMenu /> <ImageUploader />
