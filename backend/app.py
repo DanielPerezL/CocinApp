@@ -11,7 +11,7 @@ def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
 # Ruta para servir cualquier recurso estático (CSS, JS, imágenes)
-@app.route('/<path:path>')
+@app.route('/static/<path:path>')
 def static_files(path):
     return send_from_directory(app.static_folder, path)
 

@@ -3,6 +3,7 @@ import LoginMenu from "../components/LoginMenu"; // Ajusta la ruta según tu est
 import { logout, fetchMyRecipes } from "../services/apiService"; // Asegúrate de importar la función de logout
 import RecipeGrid from "../components/RecipeGrid";
 import LogoutMenu from "../components/LogoutMenu";
+import ImageUploader from "../components/ImageUploader";
 
 const ProfilePage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -13,7 +14,17 @@ const ProfilePage: React.FC = () => {
     setIsLoggedIn(loggedInStatus === "true"); // Establece el estado basado en localStorage
   }, []);
 
-  return <div>{!isLoggedIn ? <LoginMenu /> : <LogoutMenu />}</div>;
+  return (
+    <div>
+      {!isLoggedIn ? (
+        <LoginMenu />
+      ) : (
+        <>
+          <LogoutMenu /> <ImageUploader />
+        </>
+      )}
+    </div>
+  );
 };
 
 export default ProfilePage;

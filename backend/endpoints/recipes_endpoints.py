@@ -17,10 +17,10 @@ def get_recipes():
 def recipe_details():
     id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
     if id == -1:
-        return jsonify({"msg": "No valid id provided"}), 404
+        return jsonify({"error": "No valid id provided"}), 404
     recipe = Recipe.query.get(id)
     if recipe is None:
-        return jsonify({"msg": "Recipe not found"}), 404
+        return jsonify({"error": "Recipe not found"}), 404
     return jsonify(recipe.to_details_dto()), 200
 
 
@@ -30,10 +30,10 @@ def new_recipe():
     data = request.json
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"msg": "User not found"}), 404
+        return jsonify({"error": "User not found"}), 404
     
     if not data or not all(key in data for key in ('title', 'ingredients', 'procedure')):
-        return jsonify({"msg": "Get sure to provide all requested data"}), 401
+        return jsonify({"error": "Get sure to provide all requested data"}), 401
 
     new_recipe = Recipe(title = data.get('title'),
                         user_id = user.id,
@@ -46,33 +46,33 @@ def new_recipe():
         return jsonify({"msg": "Recipe uploaded successfully"}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"msg": "Get sure to provide all requested data"}), 400
+    return jsonify({"error": "Get sure to provide all requested data"}), 400
 
 @app.route('/api/delete_recipe', methods=['DELETE'])
 @jwt_required()
 def delete_recipe():
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"msg": "User not found"}), 404
+        return jsonify({"error": "User not found"}), 404
     
     data = request.json
     recipe = Recipe.query.get(data.get('recipe_id'))
     if recipe is None:
-        return jsonify({"msg": "Recipe not found"}), 404
+        return jsonify({"error": "Recipe not found"}), 404
     try:
         db.session.delete(recipe)
         db.session.commit()
         return jsonify({"msg": "Deleted recipe"}), 204
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"msg": "Unexpected error occurred"}), 500
+    return jsonify({"error": "Unexpected error occurred"}), 500
 
 @app.route('/api/my_recipes', methods=['GET'])
 @jwt_required()
 def my_recipes():
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"msg": "User not found"}), 404
+        return jsonify({"error": "User not found"}), 404
     
     recipes = Recipe.query.filter_by(user_id=user.id)
     recipes_data = [recipe.to_simple_dto() for recipe in recipes]

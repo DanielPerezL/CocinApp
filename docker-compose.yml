@@ -21,6 +21,8 @@ services:
     container_name: flask_backend
     volumes:
       - ./backend:/app
+      - images_data:/cocinapp/uploads # Volumen para la persistencia de imágenes
+
     ports:
       - "5000:5000" # Expone el puerto 5000
     environment:
@@ -40,4 +42,6 @@ networks:
 
 volumes:
   mysql_data:
+    driver: local
+  images_data: # Volumen para almacenar imágenes de forma persistente
     driver: local

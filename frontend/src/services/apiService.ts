@@ -25,7 +25,7 @@ export const login = async (email: string, password: string): Promise<void> => {
 
   if (!response.ok) {
     const data = await response.json();
-    throw new Error(data.msg || "Login failed");
+    throw new Error(data.error || "Login failed");
   }
 
   const responseData = await response.json();
@@ -103,7 +103,7 @@ export const fetchRecipeDetails = async (
   const response = await fetch(`${API_BASE_URL}/recipe_details_dto?id=${id}`);
   if (!response.ok) {
     const data = await response.json();
-    throw new Error(data.msg || "Failed to fetch recipe details");
+    throw new Error(data.error || "Failed to fetch recipe details");
   }
   return await response.json();
 };
@@ -127,7 +127,46 @@ export const registerUser = async (
   if (!response.ok) {
     console.log(response.json());
     const data = await response.json();
-    throw new Error(data.msg || "Failed to register user");
+    throw new Error(data.error || "Failed to register user");
   }
   console.log(response.json());
+};
+
+// Función para subir una imagen al servidor y retornar la ruta de la imagen
+export const uploadImage = async (imageFile: File): Promise<string> => {
+  const accessToken = localStorage.getItem("access_token");
+
+  if (!accessToken) {
+    throw new Error("User is not authenticated");
+  }
+
+  // Crea un FormData para enviar la imagen
+  const formData = new FormData();
+  formData.append("image", imageFile);
+
+  const response = await fetch(`${API_BASE_URL}/upload`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`, // Usando el token almacenado
+    },
+    body: formData, // Enviar la imagen en el cuerpo de la solicitud
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to upload image");
+  }
+
+  const responseData = await response.json();
+  return responseData.path; // Se asume que el servidor responde con la ruta de la imagen
+};
+
+export const getImage = async (filename: string): Promise<string> => {
+  const response = await fetch(`${API_BASE_URL}/images/${filename}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch image");
+  }
+
+  // Aquí retornamos la URL completa de la imagen
+  return `${API_BASE_URL}/images/${filename}`;
 };

@@ -11,6 +11,11 @@ from sqlalchemy.exc import OperationalError
 app = Flask(__name__, static_folder='./static')
 CORS(app, supports_credentials=True) #eliminar para prod
 
+UPLOAD_FOLDER = '/cocinapp/uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.environ['DATABASE_USER']}:{os.environ['DATABASE_PASSWORD']}@{os.environ['DATABASE_HOST']}/{os.environ['DATABASE_NAME']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

@@ -16,10 +16,10 @@ def register():
     data = request.json
     #TODO: AL NO EXISTE data['...'] -> peta 500 internal server error
     if not data or not all(key in data for key in ('nickname', 'email', 'password')):
-        return jsonify({"msg": "Get sure to provide all requested data"}), 400
+        return jsonify({"error": "Get sure to provide all requested data"}), 400
 
     if User.query.filter_by(email=data.get('email')).first() is not None:
-        return jsonify({"msg": "Email already registered"}), 400
+        return jsonify({"error": "Email already registered"}), 400
 
     new_user = User(nickname = data.get('nickname'),
                     email = data.get('email'),
@@ -31,7 +31,7 @@ def register():
         return jsonify({"msg": "User created successfully"}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"msg": "Already taken user name or email"}), 500
+    return jsonify({"error": "Already taken user name or email"}), 500
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -42,7 +42,7 @@ def login():
 
     user = User.query.filter_by(email=email).first()
     if user is None or not user.check_password(password):
-        return jsonify({"msg": "Bad email or password"}), 401
+        return jsonify({"error": "Bad email or password"}), 401
 
     access_token = create_access_token(identity = {"id": user.id, 
                                                    "password_hash": user.password_hash,
@@ -73,16 +73,16 @@ def logout():
 def change_password():
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"msg": "Bad token"}), 401    
+        return jsonify({"error": "Bad token"}), 401    
     data = request.json
 
     if not data or not all(key in data for key in ('current_password', 'new_password')):
-        return jsonify({"msg": "Get sure to provide all requested data"}), 401
+        return jsonify({"error": "Get sure to provide all requested data"}), 401
 
     current_password = data.get('current_password')
     new_password = data.get('new_password')
     if not user.check_password(current_password):
-        return jsonify({"msg": "Incorrect current password"}), 401
+        return jsonify({"error": "Incorrect current password"}), 401
     
     user.set_password(new_password)
     try:
@@ -90,7 +90,7 @@ def change_password():
         return jsonify({"msg": "Password updated successfully"}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"msg": "Unexpected error occurred"}), 500
+    return jsonify({"error": "Unexpected error occurred"}), 500
 
 
 @app.route('/api/refresh_access_token', methods=['POST'])
@@ -98,7 +98,7 @@ def change_password():
 def refresh_access_token():
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"msg": "Bad token"}), 401
+        return jsonify({"error": "Bad token"}), 401
     new_access_token = create_access_token(identity = {"id": user.id, 
                                                        "password_hash": user.password_hash,
                                                        })
@@ -110,7 +110,7 @@ def refresh_access_token():
 def logged_user_profile():
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"msg": "User not found"}), 404
+        return jsonify({"error": "User not found"}), 404
 
     return jsonify(user.to_dto()), 200
 
@@ -119,7 +119,7 @@ def logged_user_profile():
 def delete_account():
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"msg": "User not found"}), 404
+        return jsonify({"error": "User not found"}), 404
 
     try:
         db.session.delete(user)
@@ -128,4 +128,4 @@ def delete_account():
         return jsonify({"msg": "User deleted"}),204
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"msg": "Unexpected error occurred"}), 500
+    return jsonify({"error": "Unexpected error occurred"}), 500
