@@ -9,6 +9,7 @@ import NoPage from "./pages/NoPage";
 import UnderConstructionPage from "./pages/UnderConstructionPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import ProfilePage from "./pages/ProfilePage";
+import PublishPage from "./pages/PublishPage";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route path="recipe" element={<RecetaPage />} />
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="profile" element={<ProfilePage />} />
-          <Route path="publish" element={<UnderConstructionPage />} />
+          <Route path="publish" element={<PublishPage />} />
 
           <Route path="about" element={<UnderConstructionPage />} />
           <Route path="contact" element={<UnderConstructionPage />} />

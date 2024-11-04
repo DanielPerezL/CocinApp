@@ -104,6 +104,17 @@ def refresh_access_token():
                                                        })
     return jsonify(access_token=new_access_token), 200
 
+@app.route('/api/get_user_info', methods=['GET'])
+def get_user_info():
+    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
+    if id == -1:
+        return jsonify({"error": "No valid id provided"}), 404
+    user = User.query.get(id)
+    if user is None:
+        return jsonify({"error": "User not found"}), 404
+    return jsonify(user.to_dto()), 200
+
+
 
 @app.route('/api/logged_user_profile', methods=['GET'])
 @jwt_required()

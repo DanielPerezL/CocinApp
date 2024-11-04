@@ -29,24 +29,29 @@ def recipe_details():
 def new_recipe():
     data = request.json
     user = get_user_from_identity(get_jwt_identity())
+    
     if user is None:
         return jsonify({"error": "User not found"}), 404
     
-    if not data or not all(key in data for key in ('title', 'ingredients', 'procedure')):
-        return jsonify({"error": "Get sure to provide all requested data"}), 401
+    # Verifica que se proporcione la información requerida
+    if not data or not all(key in data for key in ('title', 'ingredients', 'procedure', 'images')):
+        return jsonify({"error": "Make sure to provide all requested data (title, ingredients, procedure, images)"}), 400
 
-    new_recipe = Recipe(title = data.get('title'),
-                        user_id = user.id,
-                        ingredients = data.get('ingredients'),
-                        procedure = data.get('procedure'),
-                        )
+    # Crea una nueva receta
+    new_recipe = Recipe(
+        title=data.get('title'),
+        user_id=user.id,
+        ingredients=data.get('ingredients'),
+        procedure=data.get('procedure'),
+        images=','.join(data.get('images'))  # Convierte la lista de imágenes a una cadena separada por comas
+    )
     try:
         db.session.add(new_recipe)
         db.session.commit()
         return jsonify({"msg": "Recipe uploaded successfully"}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"error": "Get sure to provide all requested data"}), 400
+        return jsonify({"error": "Failed to upload recipe. Please try again."}), 500
 
 @app.route('/api/delete_recipe', methods=['DELETE'])
 @jwt_required()

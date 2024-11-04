@@ -42,4 +42,4 @@ def upload_image():
     image.seek(0)
     image.save(filepath)
 
-    return jsonify({"msg": "Image uploaded successfully", "path": filepath}), 200
+    return jsonify({"msg": "Image uploaded successfully", "filename": new_filename}), 200

@@ -6,8 +6,9 @@ export interface RecipeSimpleDTO {
 }
 export interface RecipeDetailDTO {
   id: number;
+  user_id: number;
   title: string;
-  images: string[];
+  images: string;
   ingredients: string;
   procedure: string;
 }

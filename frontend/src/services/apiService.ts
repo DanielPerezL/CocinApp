@@ -157,16 +157,49 @@ export const uploadImage = async (imageFile: File): Promise<string> => {
   }
 
   const responseData = await response.json();
-  return responseData.path; // Se asume que el servidor responde con la ruta de la imagen
+  return responseData.filename; // Se asume que el servidor responde con la ruta de la imagen
 };
 
-export const getImage = async (filename: string): Promise<string> => {
-  const response = await fetch(`${API_BASE_URL}/images/${filename}`);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch image");
-  }
-
+export const getImage = (filename: string): string => {
   // Aquí retornamos la URL completa de la imagen
   return `${API_BASE_URL}/images/${filename}`;
+};
+
+// Función para subir una nueva receta al servidor
+export const uploadRecipe = async (
+  title: string,
+  ingredients: string,
+  procedure: string,
+  imagePaths: string[]
+): Promise<string> => {
+  const accessToken = localStorage.getItem("access_token");
+
+  if (!accessToken) {
+    throw new Error("User is not authenticated");
+  }
+
+  // Crea el objeto con los datos de la receta
+  const recipeData = {
+    title,
+    ingredients,
+    procedure,
+    images: imagePaths, // Puedes renombrar la clave si es necesario en el servidor
+  };
+
+  const response = await fetch(`${API_BASE_URL}/new_recipe`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json", // Especifica el tipo de contenido
+      Authorization: `Bearer ${accessToken}`, // Usando el token almacenado
+    },
+    body: JSON.stringify(recipeData), // Enviar los datos de la receta en el cuerpo de la solicitud
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
+    throw new Error(errorData.error || "Failed to upload recipe");
+  }
+
+  const responseData = await response.json();
+  return responseData.msg; // Se asume que el servidor responde con un mensaje de éxito
 };

@@ -1,6 +1,7 @@
 // src/components/ImageCarousel.tsx
 import React, { useState } from "react";
 import "../css/ImageCarousel.css";
+import { getImage } from "../services/apiService";
 
 interface ImageCarouselProps {
   images: string[];
@@ -43,7 +44,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             className={`carousel-item ${index === activeIndex ? "active" : ""}`}
           >
             <img
-              src={image}
+              src={getImage(image)}
               className="d-block w-100 carousel-img"
               alt={`Imagen ${index + 1}`}
             />

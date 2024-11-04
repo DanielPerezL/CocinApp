@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { RecipeSimpleDTO } from "../interfaces";
 import "../css/RecipeCard.css";
+import { getImage } from "../services/apiService";
 
 interface RecipeCardProps {
   recipe: RecipeSimpleDTO;
@@ -19,7 +20,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
     >
       <div className="card h-100">
         <img
-          src={recipe.image}
+          src={getImage(recipe.image)}
           className="card-img-top recipe-img"
           alt={recipe.title}
         />

@@ -2,69 +2,86 @@ import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 import { uploadImage, getImage } from "../services/apiService"; // Importa las funciones necesarias
 
 const ImageUploader: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [uploadStatus, setUploadStatus] = useState<string>("");
-  const [imageName, setImageName] = useState<string>("");
-  const [fetchedImage, setFetchedImage] = useState<string | null>(null);
+  const [imageNames, setImageNames] = useState<string[]>([]);
+  const [fetchedImages, setFetchedImages] = useState<string[]>([]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(file);
+    const files = event.target.files;
+    if (files) {
+      // Convertir a un array y establecer las imágenes seleccionadas
+      setSelectedImages(Array.from(files));
     }
   };
 
   const handleUpload = async () => {
-    if (!selectedImage) {
-      setUploadStatus("Please select an image first.");
+    if (selectedImages.length === 0) {
+      setUploadStatus("Please select at least one image.");
       return;
     }
 
     try {
       setUploadStatus("Uploading...");
-      const imagePath = await uploadImage(selectedImage);
-      setUploadStatus(`Image uploaded successfully! Path: ${imagePath}`);
+      const imagePaths = await Promise.all(
+        selectedImages.map((image) => uploadImage(image))
+      );
+      setUploadStatus(
+        `Images uploaded successfully! Paths: ${imagePaths.join(", ")}`
+      );
     } catch (error: any) {
-      setUploadStatus(`Error uploading image: ${error.message}`);
+      setUploadStatus(`Error uploading images: ${error.message}`);
     }
   };
 
   const handleKeyDown = async (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       try {
-        const imagePath = await getImage(imageName);
-        setFetchedImage(imagePath);
+        const fetchedPaths = await Promise.all(
+          imageNames.map((name) => getImage(name))
+        );
+        setFetchedImages(fetchedPaths);
       } catch (error: any) {
-        setUploadStatus(`Error fetching image: ${error.message}`);
+        setUploadStatus(`Error fetching images: ${error.message}`);
       }
     }
   };
 
   return (
     <div>
-      <h2>Upload an Image</h2>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={!selectedImage}>
-        Upload Image
+      <h2>Upload Images</h2>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        multiple // Permitir seleccionar múltiples archivos
+      />
+      <button onClick={handleUpload} disabled={selectedImages.length === 0}>
+        Upload Images
       </button>
       {uploadStatus && <p>{uploadStatus}</p>}
 
-      <h2>Fetch Image by Name</h2>
+      <h2>Fetch Images by Names</h2>
       <input
         type="text"
-        placeholder="Enter image name"
-        value={imageName}
-        onChange={(e) => setImageName(e.target.value)}
+        placeholder="Enter image names (comma separated)"
+        value={imageNames.join(", ")}
+        onChange={(e) =>
+          setImageNames(e.target.value.split(",").map((name) => name.trim()))
+        } // Almacenar nombres en un array
         onKeyDown={handleKeyDown}
       />
-      {fetchedImage && (
+      {fetchedImages.length > 0 && (
         <div>
-          <h3>Fetched Image:</h3>
-          <img
-            src={fetchedImage}
-            alt="Fetched"
-            style={{ maxWidth: "300px", maxHeight: "300px" }}
-          />
+          <h3>Fetched Images:</h3>
+          {fetchedImages.map((src, index) => (
+            <img
+              key={index}
+              src={src}
+              alt={`Fetched ${index + 1}`}
+              style={{ maxWidth: "300px", maxHeight: "300px", margin: "10px" }}
+            />
+          ))}
         </div>
       )}
     </div>

@@ -15,10 +15,10 @@ def serve():
 def static_files(path):
     return send_from_directory(app.static_folder, path)
 
-@app.errorhandler(404)
+'''@app.errorhandler(404)
 def not_found(e):
     return send_from_directory(app.static_folder, 'index.html')
-
+'''
 
 with app.app_context():
     db.create_all()
