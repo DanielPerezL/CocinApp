@@ -39,6 +39,7 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoComplete="username"
         />
       </div>
       <div className="mb-3">
@@ -61,7 +62,7 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
       >
         {loading ? "Cargando..." : "Iniciar Sesión"}
       </button>
-      {error && <p className="text-danger mt-3">{error}</p>}
+      {error && <p className="alert alert-danger mt-3">{error}</p>}
     </form>
   );
 };

@@ -24,8 +24,10 @@ const PublishPage: React.FC = () => {
   };
 
   return (
-    <div className="container main-container">
-      <h1>Publish Your Recipe</h1>
+    <div className="main-container container mb-5">
+      <div className="text-center mb-4">
+        <h1 className="display-5 text-primary">Publica una receta</h1>
+      </div>
       <AuthWrapper>
         <RecipeUploader onUploadComplete={handleUploadComplete} />
       </AuthWrapper>

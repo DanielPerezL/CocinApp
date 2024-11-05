@@ -61,6 +61,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoComplete="email"
         />
       </div>
       <div className="mb-3">
@@ -83,8 +84,8 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
       >
         {loading ? "Cargando..." : "Registrar"}
       </button>
-      {registerMsg && <p className="text-success mt-3">{registerMsg}</p>}
-      {error && <p className="text-danger mt-3">{error}</p>}
+      {registerMsg && <p className="alert text-success mt-3">{registerMsg}</p>}
+      {error && <p className="alert alert-danger mt-3">{error}</p>}
     </form>
   );
 };

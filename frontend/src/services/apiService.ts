@@ -52,8 +52,10 @@ export const logout = () => {
   localStorage.removeItem("isLoggedIn");
 };
 
-// Función para obtener las recetas del usuario logeado
 export const fetchMyRecipes = async () => {
+  return await withTokenRefresh(fetchMyRecipesUnsafe);
+};
+const fetchMyRecipesUnsafe = async () => {
   const accessToken = localStorage.getItem("access_token");
 
   const response = await fetch(`${API_BASE_URL}/my_recipes`, {
@@ -80,7 +82,10 @@ export const fetchUsers = async (): Promise<UserDTO[]> => {
 };
 
 // Función para obtener el perfil del usuario logeado
-export const fetchLoggedUserProfile = async (): Promise<UserDTO> => {
+export const fetchLoggedUserProfile = async () => {
+  return await withTokenRefresh(fetchLoggedUserProfileUnsafe);
+};
+const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   const response = await fetch(`${API_BASE_URL}/logged_user_profile`, {
     method: "GET",
     headers: {
@@ -131,6 +136,9 @@ export const registerUser = async (
 
 // Función para subir una imagen al servidor y retornar la ruta de la imagen
 export const uploadImage = async (imageFile: File): Promise<string> => {
+  return await withTokenRefresh(() => uploadImageUnsafe(imageFile));
+};
+const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
   const accessToken = localStorage.getItem("access_token");
 
   if (!accessToken) {
@@ -169,6 +177,16 @@ export const uploadRecipe = async (
   procedure: string,
   imagePaths: string[]
 ): Promise<string> => {
+  return await withTokenRefresh(() =>
+    uploadRecipeUnsafe(title, ingredients, procedure, imagePaths)
+  );
+};
+const uploadRecipeUnsafe = async (
+  title: string,
+  ingredients: string,
+  procedure: string,
+  imagePaths: string[]
+): Promise<string> => {
   const accessToken = localStorage.getItem("access_token");
 
   if (!accessToken) {
@@ -199,4 +217,47 @@ export const uploadRecipe = async (
 
   const responseData = await response.json();
   return responseData.msg; // Se asume que el servidor responde con un mensaje de éxito
+};
+
+// Función para refrescar el token de acceso
+const refreshAccessToken = async (): Promise<void> => {
+  const response = await fetch(`${API_BASE_URL}/refresh_access_token`, {
+    method: "POST",
+    credentials: "include", // Incluye las cookies en la solicitud
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    logout();
+    console.log(data.error || "Error al refrescar el token de acceso");
+    return;
+  }
+
+  const responseData = await response.json();
+  const { access_token } = responseData;
+  localStorage.setItem("access_token", access_token);
+};
+
+// Función auxiliar para manejar la renovación del token de acceso
+const withTokenRefresh = async <T>(asyncFunc: () => Promise<T>): Promise<T> => {
+  try {
+    return await asyncFunc(); // Intentar ejecutar la función original
+  } catch (error) {
+    if (error instanceof Error) {
+      if (true) {
+        // Intenta refrescar el token
+        await refreshAccessToken(); // Asumimos que esta función fue definida previamente
+
+        // Vuelve a intentar ejecutar la función original después de refrescar el token
+        try {
+          return await asyncFunc();
+        } catch (err) {
+          if (err instanceof Error) throw err;
+        }
+      }
+    }
+
+    // Si no es un error de autorización, lanza el error original
+    throw error;
+  }
 };

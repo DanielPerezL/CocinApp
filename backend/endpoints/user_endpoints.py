@@ -56,13 +56,9 @@ def login():
                                                      "password_hash": user.password_hash,
                                                      })
     response = make_response(jsonify({"msg": "Inicio de sesión exitoso."}))
-
+    response.set_cookie('refresh_token', refresh_token, httponly=True, secure=False) #secure true para PROD
     # Retorna los tokens en el cuerpo de la respuesta
-    return jsonify({
-        "msg": "Login successful",
-        "access_token": access_token,
-        "refresh_token": refresh_token
-    }), 200
+    return response, 200
 
 '''@app.route('/api/logout', methods=['POST'])
 @jwt_required()

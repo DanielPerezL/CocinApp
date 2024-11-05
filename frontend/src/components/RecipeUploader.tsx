@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useRef } from "react";
 import { uploadImage } from "../services/apiService"; // Asegúrate de que esta función esté disponible
 
 interface RecipeUploaderProps {
@@ -21,6 +21,8 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
   const [uploadSuccessMsg, setUploadSuccessMsg] = useState<string>("");
   const [uploadErrorMsg, setUploadErrorMsg] = useState<string>("");
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
@@ -29,6 +31,7 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
   };
 
   const handleUpload = async () => {
+    setUploadSuccessMsg("");
     if (selectedImages.length === 0 || !title || !ingredients || !procedure) {
       setUploadStatus(
         "Por favor, rellena todos los campos y al menos una imágen."
@@ -52,12 +55,16 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
     } catch (error: any) {
       setUploadStatus("");
       setUploadErrorMsg(`Error al publicar la receta`);
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Reset the input
+      }
     }
   };
 
   return (
     <div className="container mt-4">
-      <form className="p-4">
+      <form className="p-2">
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
             Titulo
@@ -110,6 +117,7 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
           <input
             type="file"
             id="fileUpload"
+            ref={fileInputRef}
             className="form-control"
             accept="image/*"
             onChange={handleFileChange}

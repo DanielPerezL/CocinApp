@@ -20,7 +20,7 @@ const ProfilePage: React.FC = () => {
         const userProfile = await fetchLoggedUserProfile();
         setUser(userProfile);
       } catch (err: any) {
-        logout();
+        window.location.reload();
       }
     };
     const loadMyRecipes = async () => {

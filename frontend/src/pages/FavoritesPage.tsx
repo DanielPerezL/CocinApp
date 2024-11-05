@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import RecetaGrid from "../components/RecipeGrid";
 import { RecipeSimpleDTO, UserDTO } from "../interfaces";
-import RecipeCarousel from "../components/RecipeCarousel";
 import AuthWrapper from "../components/AuthWrapper";
 import { fetchLoggedUserProfile } from "../services/apiService";
 
@@ -46,30 +45,35 @@ const FavoritesPage = () => {
   useEffect(() => {
     const getUserProfile = async () => {
       if (!localStorage.getItem("isLoggedIn") === true) return;
-      const userProfile = await fetchLoggedUserProfile();
-      setUser(userProfile);
+      try {
+        const userProfile = await fetchLoggedUserProfile();
+        setUser(userProfile);
+      } catch (error) {
+        window.location.reload();
+      }
     };
 
     getUserProfile();
   }, []);
   return (
-    <>
+    <div className="container mb-5 main-container">
+      <div className="text-center mb-4">
+        <h1 className="display-5 text-primary">Tus Recetas Favoritas</h1>
+      </div>
+
       <AuthWrapper>
-        <div className="container mb-5 main-container">
+        {user && (
           <div className="text-center mb-4">
-            <h1 className="display-5 text-primary">Tus Recetas Favoritas</h1>
-            {user && (
-              <p className="fs-6 fw-light">
-                Aquí tienes tus recetas favoritas, {user.nickname}!
-              </p>
-            )}
+            <p className="fs-6 fw-light">
+              Aquí tienes tus recetas favoritas, {user.nickname}!
+            </p>
           </div>
-          <RecetaGrid recipes={favRecipes} />
-        </div>
+        )}
+        <RecetaGrid recipes={favRecipes} />
       </AuthWrapper>
 
       {/*TODO: USAR RECIPE CARROUSEL PARA MOSTRAR RECETAS RANDOM (como en Home)*/}
-    </>
+    </div>
   );
 };
 
