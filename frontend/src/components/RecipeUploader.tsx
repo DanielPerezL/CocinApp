@@ -55,17 +55,20 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
       <h2>Upload Recipe</h2>
       <input
         type="text"
+        name="title"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea
         placeholder="Ingredients"
+        name="ingredients"
         value={ingredients}
         onChange={(e) => setIngredients(e.target.value)}
       />
       <textarea
         placeholder="Procedure"
+        name="proceduce"
         value={procedure}
         onChange={(e) => setProcedure(e.target.value)}
       />
