@@ -14,7 +14,13 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe }) => {
       <h1 className="display-5 text-primary mb-4">{recipe.title}</h1>
 
       {/* Carrusel de imágenes */}
-      <ImageCarousel images={recipe.images} />
+      <ImageCarousel
+        images={
+          Array.isArray(recipe.images)
+            ? recipe.images
+            : recipe.images.split(",")
+        }
+      />
 
       {/* Sección de ingredientes */}
       <div className="mb-4">

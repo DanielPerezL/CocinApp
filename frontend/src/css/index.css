@@ -18,3 +18,8 @@
   width: 100%; /* Asegúrate de que ocupe todo el ancho */
   z-index: 1000; /* Asegúrate de que estén encima del contenido */
 }
+
+.modal-dialog {
+  max-width: 0%; 
+  max-height: 0%;
+}

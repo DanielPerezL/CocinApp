@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "../css/ImageCarousel.css";
 import { getImage } from "../services/apiService";
+import { Modal } from "react-bootstrap";
 
 interface ImageCarouselProps {
   images: string[];
@@ -9,6 +10,7 @@ interface ImageCarouselProps {
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const handlePrev = () => {
     setActiveIndex((prevIndex) =>
@@ -23,7 +25,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="carousel slide bg-light">
+    <div className="carousel slide">
       <div className="carousel-indicators">
         {images.map((image, index) => (
           <button
@@ -44,6 +46,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
           <div
             key={index}
             className={`carousel-item ${index === activeIndex ? "active" : ""}`}
+            onClick={() => {
+              setShowModal(true);
+            }}
           >
             <img
               src={getImage(image)}
@@ -74,6 +79,26 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
         <span className="carousel-control-next-icon bg-dark"></span>
         <span className="visually-hidden">Next</span>
       </button>
+      <Modal
+        show={showModal}
+        onHide={() => {
+          setShowModal(false);
+        }}
+        centered
+        dialogClassName="modal-dialog-custom"
+      >
+        <Modal.Body className="d-flex justify-content-center align-items-center">
+          <img
+            src={getImage(images[activeIndex])}
+            style={{
+              maxWidth: "80vw", // Ancho máximo de la imagen
+              maxHeight: "80vh", // Alto máximo de la imagen
+              objectFit: "contain", // Escala la imagen y recorta si es necesario
+            }} // Ajusta el tamaño
+            alt={`Imagen ${activeIndex + 1}`}
+          />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
