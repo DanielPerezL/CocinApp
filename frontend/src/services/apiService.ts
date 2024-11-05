@@ -38,13 +38,13 @@ export const login = async (email: string, password: string): Promise<void> => {
 };
 
 // Función para hacer logout
-export const logout = async (): Promise<void> => {
-  await fetch(`${API_BASE_URL}/logout`, {
+export const logout = () => {
+  /*await fetch(`${API_BASE_URL}/logout`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
     },
-  });
+  });*/
 
   // Eliminar los tokens del localStorage
   localStorage.removeItem("access_token");

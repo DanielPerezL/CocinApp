@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import RecetaGrid from "../components/RecipeGrid";
 import { RecipeSimpleDTO, UserDTO } from "../interfaces";
 import RecipeCarousel from "../components/RecipeCarousel";
+import AuthWrapper from "../components/AuthWrapper";
+import { fetchLoggedUserProfile } from "../services/apiService";
 
 // Array de recetas de ejemplo
 let favRecipes: RecipeSimpleDTO[] = [
@@ -38,31 +40,35 @@ let favRecipes: RecipeSimpleDTO[] = [
   },
 ];
 
-let testUser: UserDTO = {
-  id: 0,
-  nickname: "Daniel",
-  email: "daniel@mail.com",
-};
-
 const FavoritesPage = () => {
+  const [user, setUser] = useState<UserDTO | null>(null);
+
+  useEffect(() => {
+    const getUserProfile = async () => {
+      if (!localStorage.getItem("isLoggedIn") === true) return;
+      const userProfile = await fetchLoggedUserProfile();
+      setUser(userProfile);
+    };
+
+    getUserProfile();
+  }, []);
   return (
     <>
-      <div className="container mb-5 main-container">
-        <div className="text-center mb-4">
-          <h1 className="display-5 text-primary">Tus Recetas Favoritas</h1>
-          <p className="fs-6 fw-light">
-            Aquí tienes tus recetas favoritas, {testUser.nickname}!
-          </p>
+      <AuthWrapper>
+        <div className="container mb-5 main-container">
+          <div className="text-center mb-4">
+            <h1 className="display-5 text-primary">Tus Recetas Favoritas</h1>
+            {user && (
+              <p className="fs-6 fw-light">
+                Aquí tienes tus recetas favoritas, {user.nickname}!
+              </p>
+            )}
+          </div>
+          <RecetaGrid recipes={favRecipes} />
         </div>
-        <RecetaGrid recipes={favRecipes} />
-      </div>
+      </AuthWrapper>
 
-      <div className="container my-5 main-container">
-        <div className="text-center mb-4">
-          <h1 className="display-6 text-primary">Explora nuevas recetas</h1>
-        </div>
-        <RecipeCarousel recipes={favRecipes} />
-      </div>
+      {/*TODO: USAR RECIPE CARROUSEL PARA MOSTRAR RECETAS RANDOM (como en Home)*/}
     </>
   );
 };

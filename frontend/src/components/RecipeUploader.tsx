@@ -18,6 +18,8 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
   const [ingredients, setIngredients] = useState<string>("");
   const [procedure, setProcedure] = useState<string>("");
   const [uploadStatus, setUploadStatus] = useState<string>("");
+  const [uploadSuccessMsg, setUploadSuccessMsg] = useState<string>("");
+  const [uploadErrorMsg, setUploadErrorMsg] = useState<string>("");
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -29,59 +31,111 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
   const handleUpload = async () => {
     if (selectedImages.length === 0 || !title || !ingredients || !procedure) {
       setUploadStatus(
-        "Please fill in all fields and select at least one image."
+        "Por favor, rellena todos los campos y al menos una imágen."
       );
       return;
     }
 
     try {
-      setUploadStatus("Uploading images...");
+      setUploadStatus("Subiendo imágenes...");
       const imagePaths = await Promise.all(
         selectedImages.map((image) => uploadImage(image))
       );
-
-      // Aquí puedes manejar la lógica para guardar la receta en tu backend si es necesario.
-      // Por ejemplo, puedes hacer una llamada API para crear una nueva receta.
-
-      setUploadStatus(`Images uploaded successfully!`);
       onUploadComplete(title, ingredients, procedure, imagePaths);
+      setTitle("");
+      setIngredients("");
+      setProcedure("");
+      setSelectedImages([]);
+      setUploadStatus("");
+      setUploadErrorMsg("");
+      setUploadSuccessMsg("Receta publicada correctamente.");
     } catch (error: any) {
-      setUploadStatus(`Error uploading images: ${error.message}`);
+      setUploadStatus("");
+      setUploadErrorMsg(`Error al publicar la receta`);
     }
   };
 
   return (
-    <div>
-      <h2>Upload Recipe</h2>
-      <input
-        type="text"
-        name="title"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <textarea
-        placeholder="Ingredients"
-        name="ingredients"
-        value={ingredients}
-        onChange={(e) => setIngredients(e.target.value)}
-      />
-      <textarea
-        placeholder="Procedure"
-        name="proceduce"
-        value={procedure}
-        onChange={(e) => setProcedure(e.target.value)}
-      />
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        multiple
-      />
-      <button onClick={handleUpload} disabled={selectedImages.length === 0}>
-        Upload Recipe
-      </button>
-      {uploadStatus && <p>{uploadStatus}</p>}
+    <div className="container mt-4">
+      <form className="p-4">
+        <div className="mb-3">
+          <label htmlFor="title" className="form-label">
+            Titulo
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            className="form-control"
+            placeholder="Enter title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="ingredients" className="form-label">
+            Ingredientes
+          </label>
+          <textarea
+            id="ingredients"
+            name="ingredients"
+            className="form-control"
+            placeholder="Enter ingredients"
+            rows={3}
+            value={ingredients}
+            onChange={(e) => setIngredients(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="procedure" className="form-label">
+            Procedimiento
+          </label>
+          <textarea
+            id="procedure"
+            name="procedure"
+            className="form-control"
+            placeholder="Enter procedure"
+            rows={4}
+            value={procedure}
+            onChange={(e) => setProcedure(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="fileUpload" className="form-label">
+            Añade imágenes
+          </label>
+          <input
+            type="file"
+            id="fileUpload"
+            className="form-control"
+            accept="image/*"
+            onChange={handleFileChange}
+            multiple
+          />
+        </div>
+
+        <button
+          type="button"
+          className="btn btn-primary w-100"
+          onClick={handleUpload}
+          disabled={selectedImages.length === 0}
+        >
+          Publicar receta!
+        </button>
+
+        {uploadStatus && (
+          <p className="mt-3 alert alert-info">{uploadStatus}</p>
+        )}
+        {uploadErrorMsg && (
+          <p className="mt-3 alert alert-danger">{uploadErrorMsg}</p>
+        )}
+        {uploadSuccessMsg && (
+          <p className="mt-3 alert alert-success">{uploadSuccessMsg}</p>
+        )}
+      </form>
     </div>
   );
 };

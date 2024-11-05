@@ -25,22 +25,17 @@ const Home = () => {
   }, []); // Se ejecuta solo al montar el componente
 
   return (
-    <>
-      <div className="container my-5">
-        <div className="text-center mb-4">
-          <h1 className="display-4 text-primary">Bienvenido a CocinApp</h1>
-          <p className="fs-5 fw-light">
-            Descubre y comparte tus recetas favoritas
-          </p>
-        </div>
-        {loading && <p>Cargando recetas...</p>}{" "}
-        {/* Muestra un mensaje de carga */}
-        {error && <p className="text-danger">{error}</p>}{" "}
-        {/* Muestra el error si ocurre */}
-        {!loading && !error && <RecipeGrid recipes={recipes} />}{" "}
-        {/* Renderiza RecipeGrid si no hay errores y no está cargando */}
+    <div className="container my-5">
+      <div className="text-center mb-4">
+        <h1 className="display-4 text-primary">Bienvenido a CocinApp</h1>
+        <p className="fs-5 fw-light">
+          Descubre y comparte tus recetas favoritas
+        </p>
       </div>
-    </>
+      {loading && <p>Cargando recetas...</p>}{" "}
+      {error && <p className="text-danger">{error}</p>}{" "}
+      {!loading && !error && <RecipeGrid recipes={recipes} />}{" "}
+    </div>
   );
 };
 

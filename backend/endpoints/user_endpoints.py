@@ -64,14 +64,14 @@ def login():
         "refresh_token": refresh_token
     }), 200
 
-@app.route('/api/logout', methods=['POST'])
+'''@app.route('/api/logout', methods=['POST'])
 @jwt_required()
 def logout():
     response = jsonify({"msg": "Cierre de sesión exitoso."})
     response.delete_cookie('access_token')  # Elimina la cookie del access_token
     response.delete_cookie('refresh_token')  # Elimina la cookie del refresh_token
     return response, 200
-
+'''
 
 @app.route('/api/change_password', methods=['POST'])
 @jwt_required()

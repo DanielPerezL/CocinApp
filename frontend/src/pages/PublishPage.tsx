@@ -1,6 +1,7 @@
 import React from "react";
 import RecipeUploader from "../components/RecipeUploader";
 import { uploadRecipe } from "../services/apiService"; // Importa la función para subir la receta
+import AuthWrapper from "../components/AuthWrapper";
 
 const PublishPage: React.FC = () => {
   // Manejador para la subida de la receta
@@ -17,20 +18,17 @@ const PublishPage: React.FC = () => {
         procedure,
         imagePaths
       );
-      window.location.reload();
     } catch (error: any) {
-      console.error("Error uploading recipe:", error);
-      alert(`Error uploading recipe: ${error.message}`); // Muestra un mensaje de error al usuario
+      alert(error.message); // Muestra un mensaje de error al usuario
     }
   };
 
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-  if (!isLoggedIn) return <></>;
-
   return (
-    <div>
+    <div className="container main-container">
       <h1>Publish Your Recipe</h1>
-      <RecipeUploader onUploadComplete={handleUploadComplete} />
+      <AuthWrapper>
+        <RecipeUploader onUploadComplete={handleUploadComplete} />
+      </AuthWrapper>
     </div>
   );
 };
