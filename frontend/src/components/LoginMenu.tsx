@@ -30,10 +30,10 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
     <form onSubmit={handleSubmit}>
       <div className="mb-3">
         <label htmlFor="email" className="form-label">
-          Correo Electrónico
+          Correo Electrónico / Nombre de usuario
         </label>
         <input
-          type="email"
+          type="text"
           className="form-control"
           id="email"
           value={email}

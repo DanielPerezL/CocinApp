@@ -5,7 +5,7 @@ interface RegisterMenuProps {
     nickname: string,
     email: string,
     password: string
-  ) => Promise<void>;
+  ) => Promise<string>;
 }
 
 const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
@@ -14,14 +14,17 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [registerMsg, setRegisterMsg] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setRegisterMsg(null);
 
     try {
-      await onSubmit(nickname, email, password);
+      const msg = await onSubmit(nickname, email, password);
+      setRegisterMsg(msg);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -80,6 +83,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
       >
         {loading ? "Cargando..." : "Registrar"}
       </button>
+      {registerMsg && <p className="text-success mt-3">{registerMsg}</p>}
       {error && <p className="text-danger mt-3">{error}</p>}
     </form>
   );

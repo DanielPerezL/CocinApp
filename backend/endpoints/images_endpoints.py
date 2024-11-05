@@ -6,10 +6,8 @@ import os
 
 @app.route('/api/images/<path:filename>', methods=['GET'])
 def serve_uploaded_file(filename):
-    print("filename: ",filename)
     # Verifica si el archivo existe en el directorio de subida
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    print("file_path: ",file_path)
     if os.path.isfile(file_path):
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
     return jsonify({"error": "Image not found"}), 404

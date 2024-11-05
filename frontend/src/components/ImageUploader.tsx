@@ -64,6 +64,7 @@ const ImageUploader: React.FC = () => {
       <h2>Fetch Images by Names</h2>
       <input
         type="text"
+        name="imagesFetcher"
         placeholder="Enter image names (comma separated)"
         value={imageNames.join(", ")}
         onChange={(e) =>

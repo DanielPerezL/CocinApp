@@ -113,9 +113,7 @@ export const registerUser = async (
   nickname: string,
   email: string,
   password: string
-): Promise<void> => {
-  console.log("registerUser");
-
+): Promise<string> => {
   const response = await fetch(`${API_BASE_URL}/register`, {
     method: "POST",
     headers: {
@@ -124,12 +122,11 @@ export const registerUser = async (
     body: JSON.stringify({ nickname, email, password }),
   });
 
+  const responseData = await response.json();
   if (!response.ok) {
-    console.log(response.json());
-    const data = await response.json();
-    throw new Error(data.error || "Failed to register user");
+    throw new Error(responseData.error || "Failed to register user");
   }
-  console.log(response.json());
+  return responseData.msg;
 };
 
 // Función para subir una imagen al servidor y retornar la ruta de la imagen

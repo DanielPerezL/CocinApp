@@ -23,8 +23,7 @@ const AccessMenu: React.FC = () => {
     password: string
   ) => {
     try {
-      await registerUser(nickname, email, password);
-      window.location.reload();
+      return await registerUser(nickname, email, password);
     } catch (err: any) {
       throw new Error(err.message);
     }
@@ -39,7 +38,9 @@ const AccessMenu: React.FC = () => {
         {showLogin ? (
           <LoginMenu onSubmit={handleLoginSubmit} />
         ) : (
-          <RegisterMenu onSubmit={handleRegisterSubmit} />
+          <>
+            <RegisterMenu onSubmit={handleRegisterSubmit} />
+          </>
         )}
         <button
           className="btn btn-link"

@@ -23,14 +23,16 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="carousel slide">
+    <div className="carousel slide bg-light">
       <div className="carousel-indicators">
         {images.map((image, index) => (
           <button
             key={index}
             type="button"
             data-bs-target="#carouselExampleIndicators"
-            className={index === activeIndex ? "active" : ""}
+            className={`${
+              index === activeIndex ? "active" : ""
+            } border border-2 border-dark`}
             onClick={() => {
               setActiveIndex(index);
             }}
