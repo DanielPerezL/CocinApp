@@ -18,15 +18,16 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.environ['DATABASE_USER']}:{os.environ['DATABASE_PASSWORD']}@{os.environ['DATABASE_HOST']}/{os.environ['DATABASE_NAME']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY'] 
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(seconds=10)
-app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(seconds=30)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=60)
 
-app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
-app.config['JWT_COOKIE_CSRF_PROTECT'] = False #cambiar para PROD
 
+#cambiar para PROD
+app.config['JWT_COOKIE_SECURE'] = False
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False 
 
 jwt = JWTManager(app)
 db = SQLAlchemy(app)

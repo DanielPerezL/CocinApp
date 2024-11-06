@@ -11,6 +11,15 @@ import FavoritesPage from "./pages/FavoritesPage";
 import ProfilePage from "./pages/ProfilePage";
 import PublishPage from "./pages/PublishPage";
 
+{
+  /*
+  TODO:  
+  añadir proteccion CSRF con JWT
+  añadir posibilidad de compartir
+  añadir favoritas
+*/
+}
+
 function App() {
   return (
     <BrowserRouter>
