@@ -79,22 +79,22 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
         <span className="carousel-control-next-icon bg-dark"></span>
         <span className="visually-hidden">Next</span>
       </button>
-      <Modal
-        show={showModal}
-        onHide={() => {
-          setShowModal(false);
-        }}
-        centered
-        dialogClassName="modal-dialog-custom"
-      >
-        <Modal.Body className="d-flex justify-content-center align-items-center">
+      <Modal show={showModal} centered dialogClassName="modal-dialog-custom">
+        <Modal.Body
+          className="d-flex justify-content-center align-items-center p-0"
+          onClick={() => {
+            setShowModal(false);
+          }}
+        >
           <img
             src={getImage(images[activeIndex])}
             style={{
-              maxWidth: "80vw", // Ancho máximo de la imagen
-              maxHeight: "80vh", // Alto máximo de la imagen
-              objectFit: "contain", // Escala la imagen y recorta si es necesario
-            }} // Ajusta el tamaño
+              width: "100%", // Ocupa todo el ancho del contenedor
+              height: "100%", // Ocupa todo el alto del contenedor
+              maxWidth: "80vw", // Ancho máximo
+              maxHeight: "80vh", // Alto máximo
+              objectFit: "contain", // Escala la imagen manteniendo la relación de aspecto y recorta si es necesario
+            }}
             alt={`Imagen ${activeIndex + 1}`}
           />
         </Modal.Body>

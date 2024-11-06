@@ -62,7 +62,7 @@ def new_recipe():
     try:
         db.session.add(new_recipe)
         db.session.commit()
-        return jsonify({"msg": "Receta publica con éxito"}), 201
+        return jsonify({"msg": "Receta publica con éxito", "new_id": new_recipe.id}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al publicar la receta. Inténtelo de nuevo más tarde."}), 400

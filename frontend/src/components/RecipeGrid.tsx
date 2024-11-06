@@ -2,7 +2,6 @@
 import React from "react";
 import RecipeCard from "./RecipeCard"; // Asegúrate de importar correctamente tu componente
 import { RecipeSimpleDTO } from "../interfaces";
-import { Link } from "react-router-dom";
 
 interface RecipesGridProps {
   recipes: RecipeSimpleDTO[];

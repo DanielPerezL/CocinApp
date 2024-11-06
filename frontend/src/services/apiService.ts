@@ -1,5 +1,3 @@
-// src/services/apiService.ts
-
 import { RecipeSimpleDTO, RecipeDetailDTO, UserDTO } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 
 const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
@@ -41,11 +39,6 @@ export const logout = async (): Promise<void> => {
     credentials: "include", // Incluye las cookies en la solicitud para que el backend pueda eliminarlas
   });
 
-  if (!response.ok) {
-    //NOS DA IGUAL SI DA ERROR REALMENTE
-    console.error("Error during logout");
-  }
-  // Eliminar el indicador de inicio de sesión
   localStorage.removeItem("isLoggedIn");
 };
 
@@ -62,15 +55,6 @@ const fetchMyRecipesUnsafe = async () => {
     throw new Error("Failed to fetch protected data");
   }
 
-  return await response.json();
-};
-
-// Función para obtener todos los usuarios
-export const fetchUsers = async (): Promise<UserDTO[]> => {
-  const response = await fetch(`${API_BASE_URL}/users`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch users");
-  }
   return await response.json();
 };
 
@@ -192,7 +176,7 @@ const uploadRecipeUnsafe = async (
   }
 
   const responseData = await response.json();
-  return responseData.msg; // Se asume que el servidor responde con un mensaje de éxito
+  return responseData.new_id;
 };
 
 // Función para refrescar el token de acceso
@@ -215,11 +199,10 @@ const refreshAccessToken = async (): Promise<void> => {
     if (!response.ok) {
       const data = await response.json();
       await logout(); // Desloguear al usuario si falla el refresco
-      console.error(data.error || "Error al refrescar el token de acceso");
-      return;
+      const msg = "Sesión expirada.";
+      alert(msg);
+      throw new Error(msg);
     }
-
-    console.log("Access token refreshed successfully");
   } finally {
     isRefreshingToken = false;
   }
@@ -232,9 +215,6 @@ const withTokenRefresh = async <T>(asyncFunc: () => Promise<T>): Promise<T> => {
   } catch (error) {
     if (error instanceof Error) {
       await refreshAccessToken();
-      if (!localStorage.getItem("isLoggedIn"))
-        throw new Error("Sesión expirada.");
-
       try {
         return await asyncFunc();
       } catch (err) {

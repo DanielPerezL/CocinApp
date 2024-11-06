@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { fetchUsers } from "../services/apiService"; // Importa la función para obtener usuarios
-import { UserDTO } from "../interfaces";
 import LoginMenu from "./LoginMenu"; // Importar el componente LoginMenu
 import RegisterMenu from "./RegisterMenu"; // Importar el componente RegisterMenu
 import { login, registerUser } from "../services/apiService"; // Importar funciones de API

@@ -6,14 +6,7 @@ interface AuthWrapperProps {
 }
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  useEffect(() => {
-    const loggedInStatus = localStorage.getItem("isLoggedIn");
-    setIsLoggedIn(loggedInStatus === "true");
-  }, []);
-
-  if (!isLoggedIn) {
+  if (!localStorage.getItem("isLoggedIn")) {
     return <AccessMenu />;
   }
 

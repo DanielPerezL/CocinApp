@@ -15,12 +15,8 @@ const LogoutMenu: React.FC = () => {
   const [user, setUser] = useState<UserDTO>(); // Estado para almacenar recetas
 
   const handleLogout = async () => {
-    try {
-      await logout(); // Llama a la función de logout para cerrar sesión
-      window.location.reload();
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
+    await logout(); // Llama a la función de logout para cerrar sesión
+    window.location.reload();
   };
 
   useEffect(() => {

@@ -1,18 +1,7 @@
 import React, { useState, ChangeEvent, useRef } from "react";
-import { uploadImage } from "../services/apiService"; // Asegúrate de que esta función esté disponible
+import { uploadImage, uploadRecipe } from "../services/apiService"; // Asegúrate de que esta función esté disponible
 
-interface RecipeUploaderProps {
-  onUploadComplete: (
-    title: string,
-    ingredients: string,
-    procedure: string,
-    imagePaths: string[]
-  ) => void;
-}
-
-const RecipeUploader: React.FC<RecipeUploaderProps> = ({
-  onUploadComplete,
-}) => {
+const RecipeUploader: React.FC = () => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [title, setTitle] = useState<string>("");
   const [ingredients, setIngredients] = useState<string>("");
@@ -44,18 +33,20 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
       const imagePaths = await Promise.all(
         selectedImages.map((image) => uploadImage(image))
       );
-      onUploadComplete(title, ingredients, procedure, imagePaths);
+      const id = await uploadRecipe(title, ingredients, procedure, imagePaths);
+      setUploadStatus("");
+      setUploadErrorMsg("");
+      setUploadSuccessMsg("Receta publicada correctamente.");
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Espera 2 seg
+      window.location.href = `/recipe?id=${id}`;
       setTitle("");
       setIngredients("");
       setProcedure("");
       setSelectedImages([]);
-      setUploadStatus("");
-      setUploadErrorMsg("");
-      setUploadSuccessMsg("Receta publicada correctamente.");
     } catch (error: any) {
       setUploadStatus("");
       setUploadErrorMsg(`Error al publicar la receta`);
-      console.log(error);
+      window.location.reload();
     } finally {
       if (fileInputRef.current) {
         fileInputRef.current.value = ""; // Reset the input

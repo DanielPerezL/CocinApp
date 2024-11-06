@@ -19,7 +19,12 @@
   z-index: 1000; /* Asegúrate de que estén encima del contenido */
 }
 
-.modal-dialog {
-  max-width: 0%; 
-  max-height: 0%;
+.modal-dialog-custom {
+  max-width: 100%; /* Permite que el modal ocupe todo el ancho si es necesario */
+  margin: 0; /* Centra el modal */
+}
+
+.modal-content {
+  background: transparent; /* Elimina el fondo del modal para que solo se vea la imagen */
+  border: none; /* Elimina los bordes */
 }
