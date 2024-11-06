@@ -53,13 +53,8 @@ export const fetchMyRecipes = async () => {
   return await withTokenRefresh(fetchMyRecipesUnsafe);
 };
 const fetchMyRecipesUnsafe = async () => {
-  const accessToken = localStorage.getItem("access_token");
-
   const response = await fetch(`${API_BASE_URL}/my_recipes`, {
     method: "GET",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
-    },
     credentials: "include", // Incluye las cookies en la solicitud
   });
 
@@ -134,21 +129,13 @@ export const uploadImage = async (imageFile: File): Promise<string> => {
   return await withTokenRefresh(() => uploadImageUnsafe(imageFile));
 };
 const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
-  const accessToken = localStorage.getItem("access_token");
-
-  if (!accessToken) {
-    throw new Error("User is not authenticated");
-  }
-
   // Crea un FormData para enviar la imagen
   const formData = new FormData();
   formData.append("image", imageFile);
 
   const response = await fetch(`${API_BASE_URL}/upload`, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${accessToken}`, // Usando el token almacenado
-    },
+    credentials: "include", // Incluye las cookies en la solicitud
     body: formData, // Enviar la imagen en el cuerpo de la solicitud
   });
 
@@ -182,12 +169,6 @@ const uploadRecipeUnsafe = async (
   procedure: string,
   imagePaths: string[]
 ): Promise<string> => {
-  const accessToken = localStorage.getItem("access_token");
-
-  if (!accessToken) {
-    throw new Error("User is not authenticated");
-  }
-
   // Crea el objeto con los datos de la receta
   const recipeData = {
     title,
@@ -200,8 +181,8 @@ const uploadRecipeUnsafe = async (
     method: "POST",
     headers: {
       "Content-Type": "application/json", // Especifica el tipo de contenido
-      Authorization: `Bearer ${accessToken}`, // Usando el token almacenado
     },
+    credentials: "include", // Incluye las cookies en la solicitud
     body: JSON.stringify(recipeData), // Enviar los datos de la receta en el cuerpo de la solicitud
   });
 

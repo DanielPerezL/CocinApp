@@ -55,6 +55,7 @@ const RecipeUploader: React.FC<RecipeUploaderProps> = ({
     } catch (error: any) {
       setUploadStatus("");
       setUploadErrorMsg(`Error al publicar la receta`);
+      console.log(error);
     } finally {
       if (fileInputRef.current) {
         fileInputRef.current.value = ""; // Reset the input
