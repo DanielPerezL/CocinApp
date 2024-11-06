@@ -1,6 +1,6 @@
 from config import app, db
 from flask import jsonify, request, make_response
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, set_access_cookies, set_refresh_cookies, unset_jwt_cookies
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_identity
@@ -35,7 +35,6 @@ def register():
 
 @app.route('/api/login', methods=['POST'])
 def login():
-    print(request)
     data = request.json
     email = data.get('email')
     password = data.get('password')
@@ -55,19 +54,19 @@ def login():
     refresh_token = create_refresh_token(identity = {"id": user.id,
                                                      "password_hash": user.password_hash,
                                                      })
-    response = make_response(jsonify({"msg": "Inicio de sesión exitoso."}))
-    response.set_cookie('refresh_token', refresh_token, httponly=True, secure=False) #secure true para PROD
+    
     # Retorna los tokens en el cuerpo de la respuesta
+    response = make_response(jsonify({"msg": "Inicio de sesión exitoso."}))
+    set_access_cookies(response, access_token)
+    set_refresh_cookies(response, refresh_token)
     return response, 200
 
-'''@app.route('/api/logout', methods=['POST'])
+@app.route('/api/logout', methods=['POST'])
 @jwt_required()
 def logout():
     response = jsonify({"msg": "Cierre de sesión exitoso."})
-    response.delete_cookie('access_token')  # Elimina la cookie del access_token
-    response.delete_cookie('refresh_token')  # Elimina la cookie del refresh_token
+    unset_jwt_cookies(response)
     return response, 200
-'''
 
 @app.route('/api/change_password', methods=['POST'])
 @jwt_required()
@@ -92,30 +91,6 @@ def change_password():
     except SQLAlchemyError as e:
         db.session.rollback()
     return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
-
-
-@app.route('/api/refresh_access_token', methods=['POST'])
-@jwt_required(refresh=True)
-def refresh_access_token():
-    user = get_user_from_identity(get_jwt_identity())
-    if user is None:
-        return jsonify({"error": "Bad token"}), 401
-    new_access_token = create_access_token(identity = {"id": user.id, 
-                                                       "password_hash": user.password_hash,
-                                                       })
-    return jsonify(access_token=new_access_token), 200
-
-@app.route('/api/get_user_info', methods=['GET'])
-def get_user_info():
-    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
-    if id == -1:
-        return jsonify({"error": "El id proporcionado no es válido"}), 404
-    user = User.query.get(id)
-    if user is None:
-        return jsonify({"error": "Usuario no encontrado"}), 404
-    return jsonify(user.to_dto()), 200
-
-
 
 @app.route('/api/logged_user_profile', methods=['GET'])
 @jwt_required()

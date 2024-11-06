@@ -49,7 +49,8 @@ const FavoritesPage = () => {
         const userProfile = await fetchLoggedUserProfile();
         setUser(userProfile);
       } catch (error) {
-        window.location.reload();
+        console.log(error);
+        //window.location.reload();
       }
     };
 

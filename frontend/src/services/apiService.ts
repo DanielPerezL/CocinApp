@@ -3,6 +3,7 @@
 import { RecipeSimpleDTO, RecipeDetailDTO, UserDTO } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 
 const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
+const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
 
 // Función para obtener recetas
 export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
@@ -21,6 +22,7 @@ export const login = async (email: string, password: string): Promise<void> => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
+    credentials: "include", // Permite que las cookies sean enviadas y recibidas
   });
 
   if (!response.ok) {
@@ -28,27 +30,22 @@ export const login = async (email: string, password: string): Promise<void> => {
     throw new Error(data.error || "Login failed");
   }
 
-  const responseData = await response.json();
-  const { access_token, refresh_token } = responseData;
-
-  // Almacena los tokens en localStorage
-  localStorage.setItem("access_token", access_token);
-  localStorage.setItem("refresh_token", refresh_token);
+  // Indicar que el usuario ha iniciado sesión
   localStorage.setItem("isLoggedIn", "true");
 };
 
 // Función para hacer logout
-export const logout = () => {
-  /*await fetch(`${API_BASE_URL}/logout`, {
+export const logout = async (): Promise<void> => {
+  const response = await fetch(`${API_BASE_URL}/logout`, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
-    },
-  });*/
+    credentials: "include", // Incluye las cookies en la solicitud para que el backend pueda eliminarlas
+  });
 
-  // Eliminar los tokens del localStorage
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
+  if (!response.ok) {
+    //NOS DA IGUAL SI DA ERROR REALMENTE
+    console.error("Error during logout");
+  }
+  // Eliminar el indicador de inicio de sesión
   localStorage.removeItem("isLoggedIn");
 };
 
@@ -63,6 +60,7 @@ const fetchMyRecipesUnsafe = async () => {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
     },
+    credentials: "include", // Incluye las cookies en la solicitud
   });
 
   if (!response.ok) {
@@ -88,10 +86,7 @@ export const fetchLoggedUserProfile = async () => {
 const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   const response = await fetch(`${API_BASE_URL}/logged_user_profile`, {
     method: "GET",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Usando el token almacenado
-      "Content-Type": "application/json",
-    },
+    credentials: "include", // Incluye las cookies en la solicitud
   });
 
   if (!response.ok) {
@@ -220,22 +215,33 @@ const uploadRecipeUnsafe = async (
 };
 
 // Función para refrescar el token de acceso
+let isRefreshingToken = false;
 const refreshAccessToken = async (): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/refresh_access_token`, {
-    method: "POST",
-    credentials: "include", // Incluye las cookies en la solicitud
-  });
-
-  if (!response.ok) {
-    const data = await response.json();
-    logout();
-    console.log(data.error || "Error al refrescar el token de acceso");
+  if (isRefreshingToken) {
+    // Espera si otro proceso ya está refrescando el token
+    while (isRefreshingToken) {
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Espera 100 ms
+    }
     return;
   }
+  isRefreshingToken = true;
+  try {
+    const response = await fetch(`${TOKEN_BASE_URL}/refresh`, {
+      method: "POST",
+      credentials: "include", // Incluye las cookies en la solicitud
+    });
 
-  const responseData = await response.json();
-  const { access_token } = responseData;
-  localStorage.setItem("access_token", access_token);
+    if (!response.ok) {
+      const data = await response.json();
+      await logout(); // Desloguear al usuario si falla el refresco
+      console.error(data.error || "Error al refrescar el token de acceso");
+      return;
+    }
+
+    console.log("Access token refreshed successfully");
+  } finally {
+    isRefreshingToken = false;
+  }
 };
 
 // Función auxiliar para manejar la renovación del token de acceso
@@ -244,19 +250,16 @@ const withTokenRefresh = async <T>(asyncFunc: () => Promise<T>): Promise<T> => {
     return await asyncFunc(); // Intentar ejecutar la función original
   } catch (error) {
     if (error instanceof Error) {
-      if (true) {
-        // Intenta refrescar el token
-        await refreshAccessToken(); // Asumimos que esta función fue definida previamente
+      await refreshAccessToken();
+      if (!localStorage.getItem("isLoggedIn"))
+        throw new Error("Sesión expirada.");
 
-        // Vuelve a intentar ejecutar la función original después de refrescar el token
-        try {
-          return await asyncFunc();
-        } catch (err) {
-          if (err instanceof Error) throw err;
-        }
+      try {
+        return await asyncFunc();
+      } catch (err) {
+        if (err instanceof Error) throw err;
       }
     }
-
     // Si no es un error de autorización, lanza el error original
     throw error;
   }

@@ -19,8 +19,9 @@ const ProfilePage: React.FC = () => {
       try {
         const userProfile = await fetchLoggedUserProfile();
         setUser(userProfile);
-      } catch (err: any) {
-        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        //window.location.reload();
       }
     };
     const loadMyRecipes = async () => {
