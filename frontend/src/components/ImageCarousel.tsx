@@ -79,13 +79,18 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
         <span className="carousel-control-next-icon bg-dark"></span>
         <span className="visually-hidden">Next</span>
       </button>
-      <Modal show={showModal} centered dialogClassName="modal-dialog-custom">
-        <Modal.Body
-          className="d-flex justify-content-center align-items-center p-0"
-          onClick={() => {
-            setShowModal(false);
-          }}
-        >
+      <Modal
+        show={showModal}
+        centered
+        dialogClassName="modal-dialog-custom"
+        onClick={() => {
+          setShowModal(false);
+        }}
+        onHide={() => {
+          setShowModal(false);
+        }}
+      >
+        <Modal.Body className="d-flex justify-content-center align-items-center p-0">
           <img
             src={getImage(images[activeIndex])}
             style={{
