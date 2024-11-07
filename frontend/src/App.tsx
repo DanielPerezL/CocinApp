@@ -16,6 +16,7 @@ import PublishPage from "./pages/PublishPage";
   TODO:  
   añadir proteccion CSRF con JWT
   añadir favoritas
+  añadir fotos de usuarios
 */
 }
 
