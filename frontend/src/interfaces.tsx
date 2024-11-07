@@ -1,12 +1,12 @@
 // DTOs de RECETA
 export interface RecipeSimpleDTO {
-  id: number;
+  id: string;
   title: string;
   image: string;
 }
 export interface RecipeDetailDTO {
-  id: number;
-  user_id: number;
+  id: string;
+  user_id: string;
   title: string;
   images: string;
   ingredients: string;
@@ -15,7 +15,11 @@ export interface RecipeDetailDTO {
 
 //DTOs de USUARIO
 export interface UserDTO {
-  id: number;
+  id: string;
   nickname: string;
   email: string;
+}
+
+export interface UserPublicDTO {
+  nickname: string;
 }

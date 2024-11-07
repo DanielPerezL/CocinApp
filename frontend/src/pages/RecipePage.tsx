@@ -1,9 +1,9 @@
 // src/pages/RecipePage.tsx
 import React, { useEffect, useState } from "react";
 import RecipeDetails from "../components/RecipeDetails";
-import { RecipeDetailDTO } from "../interfaces";
+import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
 import { useLocation } from "react-router-dom"; // Para obtener parámetros de la URL
-import { fetchRecipeDetails } from "../services/apiService";
+import { fetchRecipeDetails, fetchUserPublic } from "../services/apiService";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -13,6 +13,7 @@ const RecipePage = () => {
   const query = useQuery();
   const id = query.get("id"); // Obtiene el valor del parámetro 'id'
   const [recipe, setRecipe] = useState<RecipeDetailDTO | null>(null);
+  const [user, setUser] = useState<UserPublicDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,6 +27,8 @@ const RecipePage = () => {
     try {
       const fetchedRecipe = await fetchRecipeDetails(id); // Llama a la función para obtener las recetas
       setRecipe(fetchedRecipe); // Actualiza el estado con las recetas obtenidas
+      const fetchedUser = await fetchUserPublic(fetchedRecipe.user_id); // Llama a la función para obtener las recetas
+      setUser(fetchedUser); // Actualiza el estado con las recetas obtenidas
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -45,7 +48,9 @@ const RecipePage = () => {
     <div className="container my-5">
       {loading && <p>Cargando detalles de la receta...</p>}
       {error && <p className="text-danger">{error}</p>}
-      {!loading && !error && recipe && <RecipeDetails recipe={recipe} />}
+      {!loading && !error && recipe && user && (
+        <RecipeDetails recipe={recipe} user={user} />
+      )}
     </div>
   );
 };

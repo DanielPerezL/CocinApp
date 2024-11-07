@@ -1,7 +1,14 @@
-import { RecipeSimpleDTO, RecipeDetailDTO, UserDTO } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
+import {
+  RecipeSimpleDTO,
+  RecipeDetailDTO,
+  UserDTO,
+  UserPublicDTO,
+} from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 
 const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
 const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
+
+//FUNCIONES SIN LOGIN REQUERIDO
 
 // Función para obtener recetas
 export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
@@ -12,69 +19,6 @@ export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
   return await response.json(); // Devuelve las recetas en formato JSON
 };
 
-// Función para hacer login
-export const login = async (email: string, password: string): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-    credentials: "include", // Permite que las cookies sean enviadas y recibidas
-  });
-
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.error || "Login failed");
-  }
-
-  // Indicar que el usuario ha iniciado sesión
-  localStorage.setItem("isLoggedIn", "true");
-};
-
-// Función para hacer logout
-export const logout = async (): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/logout`, {
-    method: "POST",
-    credentials: "include", // Incluye las cookies en la solicitud para que el backend pueda eliminarlas
-  });
-
-  localStorage.removeItem("isLoggedIn");
-};
-
-export const fetchMyRecipes = async () => {
-  return await withTokenRefresh(fetchMyRecipesUnsafe);
-};
-const fetchMyRecipesUnsafe = async () => {
-  const response = await fetch(`${API_BASE_URL}/my_recipes`, {
-    method: "GET",
-    credentials: "include", // Incluye las cookies en la solicitud
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch protected data");
-  }
-
-  return await response.json();
-};
-
-// Función para obtener el perfil del usuario logeado
-export const fetchLoggedUserProfile = async () => {
-  return await withTokenRefresh(fetchLoggedUserProfileUnsafe);
-};
-const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
-  const response = await fetch(`${API_BASE_URL}/logged_user_profile`, {
-    method: "GET",
-    credentials: "include", // Incluye las cookies en la solicitud
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch protected data");
-  }
-
-  return await response.json();
-};
-
 // Función para obtener detalles de una receta
 export const fetchRecipeDetails = async (
   id: string
@@ -83,6 +27,16 @@ export const fetchRecipeDetails = async (
   if (!response.ok) {
     const data = await response.json();
     throw new Error(data.error || "Failed to fetch recipe details");
+  }
+  return await response.json();
+};
+
+// Función para obtener detalles de una receta
+export const fetchUserPublic = async (id: string): Promise<UserPublicDTO> => {
+  const response = await fetch(`${API_BASE_URL}/user_info?id=${id}`);
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || "Failed to fetch user details");
   }
   return await response.json();
 };
@@ -108,6 +62,76 @@ export const registerUser = async (
   return responseData.msg;
 };
 
+// Función para hacer login
+export const login = async (email: string, password: string): Promise<void> => {
+  const response = await fetch(`${API_BASE_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+    credentials: "include", // Permite que las cookies sean enviadas y recibidas
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || "Login failed");
+  }
+
+  // Indicar que el usuario ha iniciado sesión
+  localStorage.setItem("isLoggedIn", "true");
+};
+
+// Aquí retornamos la URL completa de la imagen
+export const getImage = (filename: string): string => {
+  return `${API_BASE_URL}/images/${filename}`;
+};
+
+// Función para hacer logout (NECESITA LOGIN PERO SI DA ERROR NO SE NECESITA TRATAR)
+export const logout = async (): Promise<void> => {
+  const response = await fetch(`${API_BASE_URL}/logout`, {
+    method: "POST",
+    credentials: "include", // Incluye las cookies en la solicitud para que el backend pueda eliminarlas
+  });
+
+  localStorage.removeItem("isLoggedIn");
+};
+
+//FUNCIONES CON LOGIN REQUERIDO
+
+// Función para obtener el perfil del usuario logeado
+export const fetchLoggedUserProfile = async () => {
+  return await withTokenRefresh(() => fetchLoggedUserProfileUnsafe());
+};
+const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
+  const response = await fetch(`${API_BASE_URL}/logged_user_profile`, {
+    method: "GET",
+    credentials: "include", // Incluye las cookies en la solicitud
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch protected data");
+  }
+
+  return await response.json();
+};
+
+export const fetchMyRecipes = async () => {
+  return await withTokenRefresh(() => fetchMyRecipesUnsafe());
+};
+const fetchMyRecipesUnsafe = async () => {
+  const response = await fetch(`${API_BASE_URL}/my_recipes`, {
+    method: "GET",
+    credentials: "include", // Incluye las cookies en la solicitud
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch protected data");
+  }
+
+  return await response.json();
+};
+
 // Función para subir una imagen al servidor y retornar la ruta de la imagen
 export const uploadImage = async (imageFile: File): Promise<string> => {
   return await withTokenRefresh(() => uploadImageUnsafe(imageFile));
@@ -129,11 +153,6 @@ const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
 
   const responseData = await response.json();
   return responseData.filename; // Se asume que el servidor responde con la ruta de la imagen
-};
-
-export const getImage = (filename: string): string => {
-  // Aquí retornamos la URL completa de la imagen
-  return `${API_BASE_URL}/images/${filename}`;
 };
 
 // Función para subir una nueva receta al servidor
@@ -178,6 +197,8 @@ const uploadRecipeUnsafe = async (
   const responseData = await response.json();
   return responseData.new_id;
 };
+
+// FUNCIONES AUXILIARES MANEJO COOKIES Y SESION
 
 // Función para refrescar el token de acceso
 let isRefreshingToken = false;

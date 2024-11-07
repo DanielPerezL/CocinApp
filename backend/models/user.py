@@ -27,6 +27,12 @@ class User(db.Model):
             'nickname': self.nickname,
             'email': self.email,
         }
+    
+    #Usuario DTO publico     
+    def to_public_dto(self):
+        return {
+            'nickname': self.nickname,
+        }
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

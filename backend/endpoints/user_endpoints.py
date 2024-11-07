@@ -5,12 +5,6 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_identity
 
-@app.route('/api/users', methods=['GET'])
-def users():
-    users = User.query.all()
-    users_data = [user.to_dto() for user in users]
-    return jsonify(users_data), 200
-
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
@@ -100,6 +94,16 @@ def logged_user_profile():
         return jsonify({"error": "Usuario no encontrado"}), 404
 
     return jsonify(user.to_dto()), 200
+
+@app.route('/api/user_info', methods=['GET'])
+def public_user_info():
+    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
+    if id == -1:
+        return jsonify({"error": "El id proporcionado no es válido"}), 404
+    user = User.query.get(id)
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    return jsonify(user.to_public_dto()), 200
 
 @app.route('/api/delete_account', methods=['DELETE'])
 @jwt_required()
