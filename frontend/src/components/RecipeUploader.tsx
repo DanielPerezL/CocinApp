@@ -55,7 +55,7 @@ const RecipeUploader: React.FC = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <form className="p-2">
         <div className="mb-3">
           <label htmlFor="title" className="form-label">

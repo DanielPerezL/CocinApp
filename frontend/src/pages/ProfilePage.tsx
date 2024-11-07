@@ -41,7 +41,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <AuthWrapper>
-      <div className="container mt-4">
+      <div className="container">
         {user ? (
           <>
             <div className="container main-container">

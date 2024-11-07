@@ -38,7 +38,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   };
 
   return (
-    <div className="container my-5 main-container">
+    <div className="container">
       <div
         className="d-flex justify-content-between align-items-center mb-3"
         style={{ height: "4rem" }}

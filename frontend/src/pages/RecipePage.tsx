@@ -45,7 +45,7 @@ const RecipePage = () => {
   }, [id]);
 
   return (
-    <div className="container my-5">
+    <div className="main-container container">
       {loading && <p>Cargando detalles de la receta...</p>}
       {error && <p className="text-danger">{error}</p>}
       {!loading && !error && recipe && user && (
