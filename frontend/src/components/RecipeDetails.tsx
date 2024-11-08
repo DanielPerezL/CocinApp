@@ -19,6 +19,11 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
 
   // Función para copiar la URL al portapapeles
   const copyToClipboard = () => {
+    if (!navigator.clipboard) {
+      setCopySuccess(false); // Si hay un error, indica que no se ha copiado
+      setShowModal(true); // Muestra el modal con error
+      return;
+    }
     const currentUrl = window.location.href; // Obtiene la URL actual de la página
     navigator.clipboard
       .writeText(currentUrl) // Copia la URL al portapapeles
@@ -68,15 +73,15 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         </div>
         <div className="d-flex gap-2">
           <Link
-            to="/favorites"
+            to="/profile"
             className="btn btn-link p-0 d-flex align-items-center justify-content-center"
             style={{ width: "2rem", height: "2rem" }}
-            title="Favoritos"
+            title="Perfil"
             onClick={() => {
               window.scrollTo(0, 0);
             }}
           >
-            <img className="img-fluid" src={userPicture} alt="Favoritos" />
+            <img className="img-fluid" src={userPicture} alt="Perfil" />
           </Link>
 
           <button
@@ -85,8 +90,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
             title="Copiar URL"
             onClick={copyToClipboard}
           >
-            <img className="img-fluid" src={share} alt="Copiar URL" />{" "}
-            {/* Reemplaza con tu icono */}
+            <img className="img-fluid" src={share} alt="Copiar URL" />
           </button>
         </div>
       </div>
@@ -121,7 +125,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
           {copySuccess ? (
             <p>¡URL copiada con éxito!</p>
           ) : (
-            <p>Error al copiar la URL.</p>
+            <p>La copia al portapapeles no es compatible con este navegador.</p>
           )}
         </Modal.Body>
         <Modal.Footer className="bg-light">

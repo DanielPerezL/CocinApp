@@ -9,7 +9,7 @@ from sqlalchemy.exc import OperationalError
 
 # Inicializar Flask, SQLAlchemy y JWT
 app = Flask(__name__, static_folder='./static')
-CORS(app, supports_credentials=True) #eliminar para prod
+CORS(app, supports_credentials=True, origins=['*']) #añadir dominio origins=[] para prod
 
 UPLOAD_FOLDER = '/cocinapp/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -25,6 +25,8 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True 
+app.config['JWT_CSRF_METHODS'] = ["POST", "PUT", "DELETE"]
+
 
 #cambiar para PROD
 app.config['JWT_COOKIE_SECURE'] = False
