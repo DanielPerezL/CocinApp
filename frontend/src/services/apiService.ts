@@ -104,9 +104,13 @@ export const fetchLoggedUserProfile = async () => {
   return await withTokenRefresh(() => fetchLoggedUserProfileUnsafe());
 };
 const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
   const response = await fetch(`${API_BASE_URL}/logged_user_profile`, {
     method: "GET",
     credentials: "include", // Incluye las cookies en la solicitud
+    headers,
   });
 
   if (!response.ok) {
@@ -120,9 +124,13 @@ export const fetchMyRecipes = async () => {
   return await withTokenRefresh(() => fetchMyRecipesUnsafe());
 };
 const fetchMyRecipesUnsafe = async () => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
   const response = await fetch(`${API_BASE_URL}/my_recipes`, {
     method: "GET",
     credentials: "include", // Incluye las cookies en la solicitud
+    headers,
   });
 
   if (!response.ok) {
@@ -141,9 +149,13 @@ const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
   const formData = new FormData();
   formData.append("image", imageFile);
 
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
   const response = await fetch(`${API_BASE_URL}/upload`, {
     method: "POST",
     credentials: "include", // Incluye las cookies en la solicitud
+    headers,
     body: formData, // Enviar la imagen en el cuerpo de la solicitud
   });
 
@@ -180,10 +192,14 @@ const uploadRecipeUnsafe = async (
     images: imagePaths, // Puedes renombrar la clave si es necesario en el servidor
   };
 
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
   const response = await fetch(`${API_BASE_URL}/new_recipe`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json", // Especifica el tipo de contenido
+      ...headers,
     },
     credentials: "include", // Incluye las cookies en la solicitud
     body: JSON.stringify(recipeData), // Enviar los datos de la receta en el cuerpo de la solicitud
@@ -245,4 +261,17 @@ const withTokenRefresh = async <T>(asyncFunc: () => Promise<T>): Promise<T> => {
     // Si no es un error de autorización, lanza el error original
     throw error;
   }
+};
+
+const getCookie = (name: string): string | undefined => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+
+  // Verifica que `parts.pop()` no sea undefined antes de intentar dividirla
+  if (parts.length === 2) {
+    const lastPart = parts.pop();
+    return lastPart ? lastPart.split(";").shift() : undefined;
+  }
+
+  return undefined;
 };

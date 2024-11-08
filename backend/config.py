@@ -24,10 +24,10 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=60)
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
+app.config['JWT_COOKIE_CSRF_PROTECT'] = True 
 
 #cambiar para PROD
 app.config['JWT_COOKIE_SECURE'] = False
-app.config['JWT_COOKIE_CSRF_PROTECT'] = False 
 
 jwt = JWTManager(app)
 db = SQLAlchemy(app)
