@@ -7,6 +7,7 @@ import {
 } from "../services/apiService";
 import { RecipeSimpleDTO, UserDTO } from "../interfaces";
 import RecipeGrid from "../components/RecipeGrid";
+import UserDetails from "../components/UserDetails";
 
 const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<UserDTO | null>(null);
@@ -44,29 +45,7 @@ const ProfilePage: React.FC = () => {
       <div className="container">
         {user ? (
           <>
-            <div className="container main-container">
-              <h2 className="text-primary">Perfil de Usuario</h2>
-              <div className="p-3">
-                <p>
-                  <strong>ID:</strong> {user.id}
-                </p>
-                <p>
-                  <strong>Nickname:</strong> {user.nickname}
-                </p>
-                <p>
-                  <strong>Email:</strong> {user.email}
-                </p>
-              </div>
-              <button
-                className="btn btn-danger mt-3"
-                onClick={() => {
-                  logout();
-                  window.location.reload();
-                }}
-              >
-                Cerrar sesión
-              </button>
-            </div>
+            <UserDetails user={user} />
 
             {recipes && (
               <div className="container main-container mt-4">

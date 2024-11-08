@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, jwt_re
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_identity
+import os
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -184,3 +185,53 @@ def rm_favorite():
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al eliminar receta favorita."}), 400
+    
+@app.route('/api/new_user_picture', methods=['POST'])
+@jwt_required()
+def new_user_picture():
+    data = request.json
+    user = get_user_from_identity(get_jwt_identity())    
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    # Verifica que se proporcione la información requerida
+    if not data or not data.get("picture"):
+        return jsonify({"error": "No se ha proporcionado ninguna imagen."}), 400
+
+    new_picture = data.get("picture") 
+    new_path = os.path.join(app.config['UPLOAD_FOLDER'], new_picture)
+    if os.path.isfile(new_path):
+        old_picture = user.get_picture()
+        old_path = os.path.join(app.config['UPLOAD_FOLDER'], old_picture)
+        if os.path.isfile(old_path):
+            os.remove(old_path)
+        user.set_picture(new_picture)
+        try:
+            db.session.update(user)
+            db.session.commit()
+            return jsonify({"msg": "Imagen de perfil actualizada correctamente."}), 201
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return jsonify({"error": "Error al publicar modificar la imagen de su perfil. Inténtelo de nuevo más tarde."}), 400
+    else:
+        return jsonify({"error": "Error al publicar modificar la imagen de su perfil. Inténtelo de nuevo más tarde."}), 400
+    
+@app.route('/api/rm_user_picture', methods=['POST'])
+@jwt_required()
+def rm_user_picture():
+    user = get_user_from_identity(get_jwt_identity())    
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    
+    new_picture = ""
+    old_picture = user.get_picture()
+    old_path = os.path.join(app.config['UPLOAD_FOLDER'], old_picture)
+    if os.path.isfile(old_path):
+        os.remove(old_path)
+    user.set_picture(new_picture)
+    try:
+        db.session.update(user)
+        db.session.commit()
+        return jsonify({"msg": "Imagen de perfil actualizada correctamente."}), 201
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al publicar modificar la imagen de su perfil. Inténtelo de nuevo más tarde."}), 400

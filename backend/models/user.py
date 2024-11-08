@@ -10,6 +10,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    picture = db.Column(db.String(120))
     password_hash = db.Column(db.String(200), nullable=False)
     recipes = db.relationship('Recipe',
                               backref='user',
@@ -37,6 +38,12 @@ class User(db.Model):
 
     def is_favorite(self, recipe):
         return self.favorite_recipes.filter(favorite_recipes.c.recipe_id == recipe.id).count() > 0
+    
+    def get_picture(self):
+        return self.picture
+    
+    def set_picture(self, new_picture):
+        self.picture = new_picture
 
     def __repr__(self):
         return f'<p>{self.nickname}</p>'
@@ -46,6 +53,7 @@ class User(db.Model):
         return {
             'id': self.id,
             'nickname': self.nickname,
+            'picture': self.picture,
             'email': self.email,
         }
     
@@ -53,6 +61,7 @@ class User(db.Model):
     def to_public_dto(self):
         return {
             'nickname': self.nickname,
+            'picture': self.picture,
         }
 
     def set_password(self, password):

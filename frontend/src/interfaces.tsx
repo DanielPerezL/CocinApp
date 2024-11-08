@@ -18,9 +18,11 @@ export interface RecipeDetailDTO {
 export interface UserDTO {
   id: string;
   nickname: string;
+  picture: string;
   email: string;
 }
 
 export interface UserPublicDTO {
   nickname: string;
+  picture: string;
 }

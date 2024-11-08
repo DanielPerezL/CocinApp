@@ -14,7 +14,7 @@ import PublishPage from "./pages/PublishPage";
 {
   /*
   TODO:  
-  añadir fotos de usuarios
+  añadir fotos de usuarios (BACK COMPLETADO) -> usando imageUploader (como las recetas)
 */
 }
 
