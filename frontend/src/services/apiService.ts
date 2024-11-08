@@ -140,6 +140,53 @@ const fetchMyRecipesUnsafe = async () => {
   return await response.json();
 };
 
+export const isFavoriteRecipe = async (id: string) => {
+  try {
+    const favs: RecipeSimpleDTO[] = await fetchMyFavRecipes();
+    return favs.some((recipe) => recipe.id === id);
+  } catch (error) {
+    return false;
+  }
+};
+
+export const addRecipeFav = async (id: string) => {
+  return await withTokenRefresh(() => addRecipeFavUnsafe(id));
+};
+const addRecipeFavUnsafe = async (id: string) => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  const response = await fetch(`${API_BASE_URL}/add_fav_recipe?id=${id}`, {
+    method: "POST",
+    credentials: "include", // Incluye las cookies en la solicitud
+    headers,
+  });
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || "Failed to fetch recipe details");
+  }
+  return await response.json();
+};
+
+export const rmRecipeFav = async (id: string) => {
+  return await withTokenRefresh(() => rmRecipeFavUnsafe(id));
+};
+const rmRecipeFavUnsafe = async (id: string) => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  const response = await fetch(`${API_BASE_URL}/remove_fav_recipe?id=${id}`, {
+    method: "POST",
+    credentials: "include", // Incluye las cookies en la solicitud
+    headers,
+  });
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || "Failed to fetch recipe details");
+  }
+  return await response.json();
+};
+
 export const fetchMyFavRecipes = async () => {
   return await withTokenRefresh(() => fetchMyFavRecipesUnsafe());
 };

@@ -1,5 +1,5 @@
 // src/components/RecipeDetails.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ImageCarousel from "./ImageCarousel";
 import "../css/RecipeDetails.css";
 import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
@@ -9,6 +9,11 @@ import share from "../assets/share.png";
 import userPicture from "../assets/user.png";
 import redHeart from "../assets/red_heart.png";
 import pngHeart from "../assets/heart.png";
+import {
+  addRecipeFav,
+  isFavoriteRecipe,
+  rmRecipeFav,
+} from "../services/apiService";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -18,6 +23,22 @@ interface RecipeDetailsProps {
 const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isFavorite, setFavorite] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false); // Modal para iniciar sesión
+
+  const getFavorite = async () => {
+    try {
+      const is_fav = await isFavoriteRecipe(recipe.id);
+      setFavorite(is_fav);
+    } catch (error) {
+      setFavorite(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!localStorage.getItem("isLoggedIn") === true) return;
+    getFavorite();
+  }, []);
 
   // Función para copiar la URL al portapapeles
   const copyToClipboard = () => {
@@ -40,8 +61,25 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   };
 
   // Función para cerrar el modal
-  const closeModal = () => {
-    setShowModal(false); // Cierra el modal
+  const closeModal = () => {};
+
+  const handleFavButtonClick = () => {
+    if (!localStorage.getItem("isLoggedIn") === true) {
+      setShowLoginModal(true);
+      return;
+    }
+    try {
+      if (isFavorite) {
+        rmRecipeFav(recipe.id);
+      } else {
+        addRecipeFav(recipe.id);
+      }
+      setFavorite(!isFavorite);
+    } catch (error) {
+      //Si da error se habrá cerrado la sesion
+      //refrescamos la pantalla para resetear el estado
+      window.location.reload();
+    }
   };
 
   return (
@@ -74,17 +112,18 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
           </p>
         </div>
         <div className="d-flex gap-2">
-          <Link
-            to="/profile"
+          <button
+            onClick={handleFavButtonClick}
             className="btn btn-link p-0 d-flex align-items-center justify-content-center"
             style={{ width: "2rem", height: "2rem" }}
             title="Perfil"
-            onClick={() => {
-              window.scrollTo(0, 0);
-            }}
           >
-            <img className="img-fluid" src={userPicture} alt="Perfil" />
-          </Link>
+            {isFavorite ? (
+              <img className="img-fluid" src={redHeart} alt="Perfil" />
+            ) : (
+              <img className="img-fluid" src={pngHeart} alt="Perfil" />
+            )}
+          </button>
 
           <button
             className="btn btn-link p-0 d-flex align-items-center justify-content-center"
@@ -119,7 +158,13 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         <p className="receta-text">{recipe.procedure}</p>
       </div>
 
-      <Modal show={showModal} onHide={closeModal} size="lg">
+      <Modal
+        show={showModal}
+        onHide={() => {
+          setShowModal(false);
+        }}
+        size="lg"
+      >
         <Modal.Header closeButton className="bg-light">
           <Modal.Title>Compatir receta!</Modal.Title>
         </Modal.Header>
@@ -131,7 +176,35 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
           )}
         </Modal.Body>
         <Modal.Footer className="bg-light">
-          <Button variant="secondary" onClick={closeModal}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShowModal(false);
+            }}
+          >
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showLoginModal}
+        onHide={() => setShowLoginModal(false)}
+        size="lg"
+      >
+        <Modal.Header closeButton className="bg-light">
+          <Modal.Title>Guardar receta!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-light">
+          <p>Para guardar recetas necesitas iniciar sesión.</p>
+        </Modal.Body>
+        <Modal.Footer className="bg-light">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShowLoginModal(false);
+            }}
+          >
             Cerrar
           </Button>
         </Modal.Footer>

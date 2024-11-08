@@ -133,18 +133,6 @@ def my_recipes():
     recipes_data = [recipe.to_simple_dto() for recipe in recipes]
     return jsonify(recipes_data), 200
 
-@app.route('/api/is_fav_recipe', methods=['GET'])
-@jwt_required()
-def is_favorite_recipe():
-    user = get_user_from_identity(get_jwt_identity())
-    if user is None:
-        return jsonify({"error": "Usuario no encontrado."}), 404
-    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
-    if id < 0:
-        return jsonify({"error": "El id proporcionado no es válido."}), 404
-    
-    is_fav = user.is_favorite(id)
-    return jsonify({"is_favorite": is_fav}), 200
 
 @app.route('/api/my_fav_recipes', methods=['GET'])
 @jwt_required()
@@ -154,8 +142,7 @@ def favorites_recipes():
         return jsonify({"error": "Usuario no encontrado."}), 404
     
     recipes = [recipe.to_simple_dto() for recipe in user.favorite_recipes]
-    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
-    return jsonify(recipes_data), 200
+    return jsonify(recipes), 200
 
 @app.route('/api/add_fav_recipe', methods=['POST'])
 @jwt_required()
@@ -166,7 +153,6 @@ def add_favorite():
     
     user = get_user_from_identity(get_jwt_identity())
     recipe = Recipe.query.get(id)
-
     if not user or not recipe:
         return jsonify({"error": "Usuario o receta no encontrados."}), 404
 
