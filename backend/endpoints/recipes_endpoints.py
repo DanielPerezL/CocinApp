@@ -16,7 +16,7 @@ def get_recipes():
 @app.route('/api/recipe_details_dto', methods=['GET'])
 def recipe_details():
     id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
-    if id == -1:
+    if id < 0:
         return jsonify({"error": "El id proporcionado no es válido"}), 404
     recipe = Recipe.query.get(id)
     if recipe is None:
@@ -86,13 +86,3 @@ def delete_recipe():
         db.session.rollback()
     return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
 
-@app.route('/api/my_recipes', methods=['GET'])
-@jwt_required()
-def my_recipes():
-    user = get_user_from_identity(get_jwt_identity())
-    if user is None:
-        return jsonify({"error": "Usuario no encontrado"}), 404
-    
-    recipes = Recipe.query.filter_by(user_id=user.id)
-    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
-    return jsonify(recipes_data), 200

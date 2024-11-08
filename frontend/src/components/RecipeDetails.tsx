@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import ImageCarousel from "./ImageCarousel";
 import "../css/RecipeDetails.css";
 import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
-import userPicture from "../assets/user.png";
 import { Link } from "react-router-dom";
-import share from "../assets/share.png";
 import { Button, Modal } from "react-bootstrap";
+import share from "../assets/share.png";
+import userPicture from "../assets/user.png";
+import redHeart from "../assets/red_heart.png";
+import pngHeart from "../assets/heart.png";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;

@@ -1,5 +1,5 @@
 from config import db
-from .user import User
+from .user import User, favorite_recipes
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)

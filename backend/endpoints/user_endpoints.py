@@ -98,11 +98,11 @@ def logged_user_profile():
 @app.route('/api/user_info', methods=['GET'])
 def public_user_info():
     id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
-    if id == -1:
-        return jsonify({"error": "El id proporcionado no es válido"}), 404
+    if id < 0:
+        return jsonify({"error": "El id proporcionado no es válido."}), 404
     user = User.query.get(id)
     if user is None:
-        return jsonify({"error": "Usuario no encontrado"}), 404
+        return jsonify({"error": "Usuario no encontrado."}), 404
     return jsonify(user.to_public_dto()), 200
 
 @app.route('/api/delete_account', methods=['DELETE'])
@@ -110,13 +110,91 @@ def public_user_info():
 def delete_account():
     user = get_user_from_identity(get_jwt_identity())
     if user is None:
-        return jsonify({"error": "Usuario no encontrado"}), 404
+        return jsonify({"error": "Usuario no encontrado."}), 404
 
     try:
         db.session.delete(user)
-        db.session.delete(Recipe.query.filter_by(user_id=user.id))
+        #DELETE ORPHAN ELIMINA LAS RECETAS
+        #db.session.delete(Recipe.query.filter_by(user_id=user.id))
         db.session.commit()
-        return jsonify({"msg": "User deleted"}),204
+        return jsonify({"msg": "Usuario eliminado."}),204
     except SQLAlchemyError as e:
         db.session.rollback()
     return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
+
+@app.route('/api/my_recipes', methods=['GET'])
+@jwt_required()
+def my_recipes():
+    user = get_user_from_identity(get_jwt_identity())
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    
+    recipes = Recipe.query.filter_by(user_id=user.id)
+    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
+    return jsonify(recipes_data), 200
+
+@app.route('/api/is_fav_recipe', methods=['GET'])
+@jwt_required()
+def is_favorite_recipe():
+    user = get_user_from_identity(get_jwt_identity())
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
+    if id < 0:
+        return jsonify({"error": "El id proporcionado no es válido."}), 404
+    
+    is_fav = user.is_favorite(id)
+    return jsonify({"is_favorite": is_fav}), 200
+
+@app.route('/api/my_fav_recipes', methods=['GET'])
+@jwt_required()
+def favorites_recipes():
+    user = get_user_from_identity(get_jwt_identity())
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    
+    recipes = [recipe.to_simple_dto() for recipe in user.favorite_recipes]
+    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
+    return jsonify(recipes_data), 200
+
+@app.route('/api/add_fav_recipe', methods=['POST'])
+@jwt_required()
+def add_favorite():
+    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
+    if id < 0:
+        return jsonify({"error": "El id proporcionado no es válido."}), 404
+    
+    user = get_user_from_identity(get_jwt_identity())
+    recipe = Recipe.query.get(id)
+
+    if not user or not recipe:
+        return jsonify({"error": "Usuario o receta no encontrados."}), 404
+
+    try:
+        user.add_favorite_recipe(recipe)
+        db.session.commit()
+        return jsonify({"msg": "Receta añadida a favoritos."}), 201
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al añadir receta favorita."}), 400
+    
+@app.route('/api/remove_fav_recipe', methods=['POST'])
+@jwt_required()
+def rm_favorite():
+    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
+    if id < 0:
+        return jsonify({"error": "El id proporcionado no es válido."}), 404
+    
+    user = get_user_from_identity(get_jwt_identity())
+    recipe = Recipe.query.get(id)
+
+    if not user or not recipe:
+        return jsonify({"error": "Usuario o receta no encontrados."}), 404
+
+    try:
+        user.remove_favorite_recipe(recipe)
+        db.session.commit()
+        return jsonify({"msg": "Receta eliminada de favoritos."}), 201
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al eliminar receta favorita."}), 400

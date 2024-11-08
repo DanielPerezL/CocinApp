@@ -140,6 +140,26 @@ const fetchMyRecipesUnsafe = async () => {
   return await response.json();
 };
 
+export const fetchMyFavRecipes = async () => {
+  return await withTokenRefresh(() => fetchMyFavRecipesUnsafe());
+};
+const fetchMyFavRecipesUnsafe = async () => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  const response = await fetch(`${API_BASE_URL}/my_fav_recipes`, {
+    method: "GET",
+    credentials: "include", // Incluye las cookies en la solicitud
+    headers,
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch protected data");
+  }
+
+  return await response.json();
+};
+
 // Función para subir una imagen al servidor y retornar la ruta de la imagen
 export const uploadImage = async (imageFile: File): Promise<string> => {
   return await withTokenRefresh(() => uploadImageUnsafe(imageFile));

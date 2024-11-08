@@ -14,7 +14,7 @@ import PublishPage from "./pages/PublishPage";
 {
   /*
   TODO:  
-  añadir favoritas
+  añadir favoritas (falta añadir solo el boton en recipeDetails)
   añadir fotos de usuarios
 */
 }
