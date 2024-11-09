@@ -13,7 +13,11 @@ import PublishPage from "./pages/PublishPage";
 
 {
   /*
-  TODO:  
+  TODO:
+    https?
+    i18n?
+    wcag?
+    
     fotos usuarios:
       fotos solo cuadradas
 
