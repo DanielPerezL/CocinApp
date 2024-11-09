@@ -171,7 +171,7 @@ const addRecipeFavUnsafe = async (id: string) => {
 export const rmRecipeFav = async (id: string) => {
   return await withTokenRefresh(() => rmRecipeFavUnsafe(id));
 };
-const rmRecipeFavUnsafe = async (id: string) => {
+const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
@@ -184,13 +184,12 @@ const rmRecipeFavUnsafe = async (id: string) => {
     const data = await response.json();
     throw new Error(data.error || "Failed to fetch recipe details");
   }
-  return await response.json();
 };
 
 export const fetchMyFavRecipes = async () => {
   return await withTokenRefresh(() => fetchMyFavRecipesUnsafe());
 };
-const fetchMyFavRecipesUnsafe = async () => {
+const fetchMyFavRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
@@ -280,6 +279,54 @@ const uploadRecipeUnsafe = async (
   const responseData = await response.json();
   return responseData.new_id;
 };
+
+// Función para actualizar imagen de perfil
+export const updateProfilePic = async (imagePath: string): Promise<void> => {
+  return await withTokenRefresh(() => updateProfilePicUnsafe(imagePath));
+};
+const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const data = { picture: imagePath };
+  const response = await fetch(`${API_BASE_URL}/new_user_picture`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json", // Especifica el tipo de contenido
+      ...headers,
+    },
+    credentials: "include", // Incluye las cookies en la solicitud
+    body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
+    throw new Error(errorData.error || "Error al actualizar la foto de perfil");
+  }
+};
+
+// Función para eliminar imagen de perfil
+/*export const removeProfilePic = async (): Promise<void> => {
+  return await withTokenRefresh(() => removeProfilePicUnsafe());
+};
+const removeProfilePicUnsafe = async (): Promise<void> => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const data = { picture: imagePath };
+  const response = await fetch(`${API_BASE_URL}/new_user_picture`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json", // Especifica el tipo de contenido
+      ...headers,
+    },
+    credentials: "include", // Incluye las cookies en la solicitud
+    body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
+    throw new Error(errorData.error || "Error al actualizar la foto de perfil");
+  }
+};*/
 
 // FUNCIONES AUXILIARES MANEJO COOKIES Y SESION
 

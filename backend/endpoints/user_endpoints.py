@@ -197,16 +197,16 @@ def new_user_picture():
     if not data or not data.get("picture"):
         return jsonify({"error": "No se ha proporcionado ninguna imagen."}), 400
 
-    new_picture = data.get("picture") 
+    new_picture = data.get("picture") or ""
     new_path = os.path.join(app.config['UPLOAD_FOLDER'], new_picture)
     if os.path.isfile(new_path):
-        old_picture = user.get_picture()
+        old_picture = user.get_picture() or ""
         old_path = os.path.join(app.config['UPLOAD_FOLDER'], old_picture)
         if os.path.isfile(old_path):
             os.remove(old_path)
+            
         user.set_picture(new_picture)
         try:
-            db.session.update(user)
             db.session.commit()
             return jsonify({"msg": "Imagen de perfil actualizada correctamente."}), 201
         except SQLAlchemyError as e:
@@ -227,9 +227,9 @@ def rm_user_picture():
     old_path = os.path.join(app.config['UPLOAD_FOLDER'], old_picture)
     if os.path.isfile(old_path):
         os.remove(old_path)
+
     user.set_picture(new_picture)
     try:
-        db.session.update(user)
         db.session.commit()
         return jsonify({"msg": "Imagen de perfil actualizada correctamente."}), 201
     except SQLAlchemyError as e:

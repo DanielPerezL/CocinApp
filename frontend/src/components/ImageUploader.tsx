@@ -1,3 +1,5 @@
+//DEPRECATED
+
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 import { uploadImage, getImage } from "../services/apiService"; // Importa las funciones necesarias
 
@@ -88,5 +90,3 @@ const ImageUploader: React.FC = () => {
     </div>
   );
 };
-
-export default ImageUploader;

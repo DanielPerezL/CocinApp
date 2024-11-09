@@ -6,11 +6,12 @@ import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
 import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import share from "../assets/share.png";
-import userPicture from "../assets/user.png";
+import userDefaultPic from "../assets/user.png";
 import redHeart from "../assets/red_heart.png";
 import pngHeart from "../assets/heart.png";
 import {
   addRecipeFav,
+  getImage,
   isFavoriteRecipe,
   rmRecipeFav,
 } from "../services/apiService";
@@ -25,6 +26,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   const [showModal, setShowModal] = useState(false);
   const [isFavorite, setFavorite] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false); // Modal para iniciar sesión
+  const [imgError, setImgError] = useState(false);
 
   const getFavorite = async () => {
     try {
@@ -93,10 +95,13 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
           style={{ maxWidth: "calc(100% - 5rem)", overflow: "hidden" }}
         >
           <img
-            src={userPicture}
+            src={!imgError ? getImage(user.picture) : userDefaultPic}
             alt="Perfil de usuario"
             className="rounded-circle me-3"
             style={{ width: "3rem", height: "3rem" }}
+            onError={() => {
+              setImgError(true);
+            }}
           />
           <p
             className="m-0"
