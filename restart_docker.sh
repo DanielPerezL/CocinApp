@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#DA ERROR LA PRIMERA EJECUCION por eso vuelve a llamar a launch_docker
 # Detiene y elimina los contenedores, redes y volúmenes definidos en el archivo docker-compose
 docker-compose down --volumes 
 
@@ -13,4 +13,5 @@ docker-compose build --no-cache
 docker-compose up backend
 
 docker-compose stop 
+./launch_docker.sh
 
