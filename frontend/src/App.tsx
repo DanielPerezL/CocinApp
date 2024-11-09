@@ -16,6 +16,26 @@ import PublishPage from "./pages/PublishPage";
   TODO:  
     fotos usuarios:
       fotos solo cuadradas
+
+    categorías:
+      (tiempo, dificultad, por ingredientes principales…)
+
+    modificar INPUT ingredientes:
+      lista de la compra
+
+    modificar INPUT pasos:
+      visualización más llamativa
+      filtrar por pocos pasos
+
+    gestion de cuentas:
+      cambiar contraseña
+      eliminar cuenta
+
+    gestion de recetas:
+      eliminar receta
+      modificar receta
+      
+    lista publica de tus recetas (en la página del perfil)
   */
 }
 
