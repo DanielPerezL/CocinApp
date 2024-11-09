@@ -10,7 +10,7 @@ docker-compose rm -f backend
 docker-compose build backend 
 
 # Inicia el servicio mysql en segundo plano
-docker-compose up -d mysql 
+docker-compose up --remove-orphans -d mysql 
 
 # Inicia el servicio backend y se adjunta a la terminal
 docker-compose up backend

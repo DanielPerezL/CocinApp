@@ -142,7 +142,7 @@ def favorites_recipes():
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
     
-    recipes = [recipe.to_simple_dto() for recipe in user.favorite_recipes]
+    recipes = [recipe.to_simple_dto() for recipe in user.get_favorite_recipes()]
     return jsonify(recipes), 200
 
 @app.route('/api/add_fav_recipe', methods=['POST'])

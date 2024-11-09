@@ -38,6 +38,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   };
 
   useEffect(() => {
+    if (user.picture === "") setImgError(true);
     if (!localStorage.getItem("isLoggedIn") === true) return;
     getFavorite();
   }, []);
