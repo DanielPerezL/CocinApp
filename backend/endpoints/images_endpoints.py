@@ -1,8 +1,11 @@
 from config import app
 from flask import jsonify, request, send_from_directory
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import hashlib
 import os
+from utils import get_user_from_identity
+from datetime import datetime
+
 
 @app.route('/api/images/<path:filename>', methods=['GET'])
 def serve_uploaded_file(filename):
@@ -15,6 +18,10 @@ def serve_uploaded_file(filename):
 @app.route('/api/upload', methods=['POST'])
 @jwt_required()
 def upload_image():
+    user = get_user_from_identity(get_jwt_identity())    
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    
     if 'image' not in request.files:
         return jsonify({"error": "No image provided"}), 400
     
@@ -30,8 +37,10 @@ def upload_image():
     # Obtiene la extensión del archivo original
     _, extension = os.path.splitext(image.filename)
     
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
     # Crea un nuevo nombre de archivo basado en el hash
-    new_filename = f"{image_hash}{extension}"
+    new_filename = f"{user.id}_{timestamp}_{image_hash}{extension}"
     
     # Construye la ruta completa donde se almacenará el archivo
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)

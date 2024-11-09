@@ -15,8 +15,8 @@ import PublishPage from "./pages/PublishPage";
   /*
   TODO:  
     fotos usuarios:
-      eliminar foto
       fotos solo cuadradas
+      arreglar ./restart_docker
   */
 }
 

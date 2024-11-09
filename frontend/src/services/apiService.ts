@@ -305,28 +305,26 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
 };
 
 // Función para eliminar imagen de perfil
-/*export const removeProfilePic = async (): Promise<void> => {
+export const removeProfilePic = async (): Promise<void> => {
   return await withTokenRefresh(() => removeProfilePicUnsafe());
 };
 const removeProfilePicUnsafe = async (): Promise<void> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
-  const data = { picture: imagePath };
-  const response = await fetch(`${API_BASE_URL}/new_user_picture`, {
+  const response = await fetch(`${API_BASE_URL}/rm_user_picture`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json", // Especifica el tipo de contenido
       ...headers,
     },
     credentials: "include", // Incluye las cookies en la solicitud
-    body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
   });
 
   if (!response.ok) {
     const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
     throw new Error(errorData.error || "Error al actualizar la foto de perfil");
   }
-};*/
+};
 
 // FUNCIONES AUXILIARES MANEJO COOKIES Y SESION
 

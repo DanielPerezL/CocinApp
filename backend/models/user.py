@@ -1,11 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import db
 
-favorite_recipes = db.Table('favorite_recipes',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('recipe_id', db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
-)
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(80), unique=True, nullable=False)
@@ -17,10 +12,7 @@ class User(db.Model):
                               lazy=True,
                               cascade='all, delete-orphan',
                               )
-    favorite_recipes = db.relationship('Recipe',
-                                       secondary=favorite_recipes, 
-                                       lazy='dynamic', 
-                                       backref=db.backref('favorited_by', lazy='dynamic'))
+    favorite_recipes = db.relationship('FavoriteRecipe', back_populates='user')
 
     def __init__(self, nickname, email, password):
         self.nickname = nickname
@@ -30,14 +22,19 @@ class User(db.Model):
     # Métodos para añadir y quitar recetas de favoritos
     def add_favorite_recipe(self, recipe):
         if not self.is_favorite(recipe):
-            self.favorite_recipes.append(recipe)
+            # Crear una nueva instancia de FavoriteRecipe
+            favorite = FavoriteRecipe(user_id=self.id, recipe_id=recipe.id)
+            db.session.add(favorite)
+            db.session.commit()
 
     def remove_favorite_recipe(self, recipe):
-        if self.is_favorite(recipe):
-            self.favorite_recipes.remove(recipe)
-
+        favorite = FavoriteRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).first()
+        if favorite:
+            db.session.delete(favorite)
+            db.session.commit()
+            
     def is_favorite(self, recipe):
-        return self.favorite_recipes.filter(favorite_recipes.c.recipe_id == recipe.id).count() > 0
+        return FavoriteRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).count() > 0
     
     def get_picture(self):
         return self.picture
@@ -69,4 +66,11 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
+
+class FavoriteRecipe(db.Model):
+    __tablename__ = 'favorite_recipes'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
+
+    user = db.relationship('User', back_populates='favorite_recipes')
+    recipe = db.relationship('Recipe', back_populates='favorited_by')

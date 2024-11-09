@@ -159,7 +159,7 @@ def add_favorite():
 
     try:
         user.add_favorite_recipe(recipe)
-        db.session.commit()
+        #EL COMMIT SE HACE EN LA FUNCION db.session.commit()
         return jsonify({"msg": "Receta añadida a favoritos."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
@@ -180,7 +180,7 @@ def rm_favorite():
 
     try:
         user.remove_favorite_recipe(recipe)
-        db.session.commit()
+        #EL COMMIT SE HACE EN LA FUNCION db.session.commit()
         return jsonify({"msg": "Receta eliminada de favoritos."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
