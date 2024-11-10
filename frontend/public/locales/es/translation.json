@@ -1,0 +1,7 @@
+{
+    "welcome": "Bienvenido a CocinApp",
+    "subwelcome": "Descubre y comparte tus recetas favoritas",
+    "loadingRecipes": "Cargando recetas...",
+    "errorLoadingRecipes":"Error al cargar las recetas."
+  }
+  

@@ -14,9 +14,12 @@ import PublishPage from "./pages/PublishPage";
 {
   /*
   TODO:
+    i18n -> ACABAR TRADUCCIONES
+    lista publica de tus recetas (en la página del perfil)
+    
     https?
-    i18n?
     wcag?
+
     
     fotos usuarios:
       fotos solo cuadradas
@@ -39,7 +42,6 @@ import PublishPage from "./pages/PublishPage";
       eliminar receta
       modificar receta
       
-    lista publica de tus recetas (en la página del perfil)
   */
 }
 
