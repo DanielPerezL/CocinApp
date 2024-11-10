@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 
 interface LoginMenuProps {
@@ -6,6 +6,8 @@ interface LoginMenuProps {
 }
 
 const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
+  const { t } = useTranslation();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);

@@ -4,13 +4,15 @@ import RecipeDetails from "../components/RecipeDetails";
 import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
 import { useLocation } from "react-router-dom"; // Para obtener parámetros de la URL
 import { fetchRecipeDetails, fetchUserPublic } from "../services/apiService";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
 const RecipePage = () => {
+  const { t } = useTranslation();
+
   const query = useQuery();
   const id = query.get("id"); // Obtiene el valor del parámetro 'id'
   const [recipe, setRecipe] = useState<RecipeDetailDTO | null>(null);

@@ -31,6 +31,8 @@
     "ingredients": "Ingredientes",
     "procedure": "Procedimiento",
     "addImages": "Añade imágenes",
+    "noImagesSelected": "No has seleccionado ninguna imágen",
+    "nImagesSelected": "imágenes seleccionadas",
     "publishRecipe!": "Publicar receta!",
     "addFavRecipe!": "Guardar receta!",
     "addFavRecipeCondition": "Para guardar recetas necesitas iniciar sesión.",
@@ -49,6 +51,9 @@
     "followUs" : "Síguenos",
     "reserverRights" : "Ningún derecho reservado.",
     "registerSuccesfully": "Cuenta creada con éxito.",
+    "enterTitlePlaceHolder": "Añade un título",
+    "enterIngredientsPlaceHolder": "Añade ingredientes",
+    "enterProcedurePlaceHolder": "Añade los pasos",
 
     "errorRecipeUpload": "Error al publicar la receta",
     "errorFillRecipeData": "Por favor, rellena todos los campos y al menos una imágen.",

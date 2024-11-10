@@ -1,9 +1,11 @@
 import React from "react";
 import AuthWrapper from "../components/AuthWrapper";
 import RecipeUploader from "../components/RecipeUploader";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const PublishPage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="main-container container">
       <div className="text-center mb-4">

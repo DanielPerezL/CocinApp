@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import LoginMenu from "./LoginMenu"; // Importar el componente LoginMenu
 import RegisterMenu from "./RegisterMenu"; // Importar el componente RegisterMenu
 import { login, registerUser } from "../services/apiService"; // Importar funciones de API
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const AccessMenu: React.FC = () => {
+  const { t } = useTranslation();
+
   const [showLogin, setShowLogin] = useState<boolean>(true);
 
   const handleLoginSubmit = async (email: string, password: string) => {

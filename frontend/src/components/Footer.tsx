@@ -1,8 +1,10 @@
 import React from "react";
 import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   const currentYear = new Date().getFullYear();
 
   return (

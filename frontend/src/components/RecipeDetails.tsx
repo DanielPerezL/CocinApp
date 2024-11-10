@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import ImageCarousel from "./ImageCarousel";
 import "../css/RecipeDetails.css";
 import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
-import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import share from "../assets/share.png";
 import userDefaultPic from "../assets/user.png";
@@ -15,7 +14,7 @@ import {
   isFavoriteRecipe,
   rmRecipeFav,
 } from "../services/apiService";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -23,6 +22,8 @@ interface RecipeDetailsProps {
 }
 
 const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
+  const { t } = useTranslation();
+
   const [copySuccess, setCopySuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isFavorite, setFavorite] = useState(false);

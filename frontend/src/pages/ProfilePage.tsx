@@ -8,9 +8,11 @@ import {
 import { RecipeSimpleDTO, UserDTO } from "../interfaces";
 import RecipeGrid from "../components/RecipeGrid";
 import UserDetails from "../components/UserDetails";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const ProfilePage: React.FC = () => {
+  const { t } = useTranslation();
+
   const [user, setUser] = useState<UserDTO | null>(null);
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga

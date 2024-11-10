@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import RecipeCard from "./RecipeCard"; // Asegúrate de importar correctamente tu componente
 import { RecipeSimpleDTO } from "../interfaces";
 import "../css/RecipeCarousel.css"; // Para el estilo adicional
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface RecipeCarouselProps {
   recipes: RecipeSimpleDTO[];
 }
 
 const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ recipes }) => {
+  const { t } = useTranslation();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4); // Número de recetas que se muestran a la vez
   const totalItems = recipes.length;

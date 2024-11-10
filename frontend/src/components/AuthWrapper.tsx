@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import AccessMenu from "../components/AccessMenu";
 
 interface AuthWrapperProps {

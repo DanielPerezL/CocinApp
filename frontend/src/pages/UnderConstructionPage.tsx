@@ -1,8 +1,10 @@
-import { t } from "../services/i18n";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const UnderConstruction: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="d-flex align-items-center justify-content-center main-container mx-5">
       <div className="text-center">

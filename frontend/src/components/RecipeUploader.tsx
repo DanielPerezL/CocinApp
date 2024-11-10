@@ -1,8 +1,10 @@
 import React, { useState, ChangeEvent, useRef } from "react";
 import { uploadImage, uploadRecipe } from "../services/apiService"; // Asegúrate de que esta función esté disponible
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const RecipeUploader: React.FC = () => {
+  const { t } = useTranslation();
+
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [title, setTitle] = useState<string>("");
   const [ingredients, setIngredients] = useState<string>("");
@@ -12,11 +14,18 @@ const RecipeUploader: React.FC = () => {
   const [uploadErrorMsg, setUploadErrorMsg] = useState<string>("");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [fileNames, setFileNames] = useState(t("noImagesSelected"));
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files) {
-      setSelectedImages(Array.from(files));
+    if (files == null) return;
+    setSelectedImages(Array.from(files));
+    if (files.length === 0) {
+      setFileNames(t("noImagesSelected"));
+    } else if (files.length === 1) {
+      setFileNames(files[0].name);
+    } else {
+      setFileNames(`${files.length} ${t("nImagesSelected")}`);
     }
   };
 
@@ -65,7 +74,7 @@ const RecipeUploader: React.FC = () => {
             id="title"
             name="title"
             className="form-control"
-            placeholder="Enter title"
+            placeholder={t("enterTitlePlaceHolder")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -79,7 +88,7 @@ const RecipeUploader: React.FC = () => {
             id="ingredients"
             name="ingredients"
             className="form-control"
-            placeholder="Enter ingredients"
+            placeholder={t("enterIngredientsPlaceHolder")}
             rows={3}
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
@@ -94,7 +103,7 @@ const RecipeUploader: React.FC = () => {
             id="procedure"
             name="procedure"
             className="form-control"
-            placeholder="Enter procedure"
+            placeholder={t("enterProcedurePlaceHolder")}
             rows={4}
             value={procedure}
             onChange={(e) => setProcedure(e.target.value)}
@@ -105,6 +114,23 @@ const RecipeUploader: React.FC = () => {
           <label htmlFor="fileUpload" className="form-label">
             {t("addImages")}
           </label>
+
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <button
+              type="button"
+              onClick={() => {
+                if (fileInputRef && fileInputRef.current) {
+                  fileInputRef.current.click();
+                }
+              }}
+              className="btn btn-primary"
+            >
+              {t("addImages")}
+            </button>
+
+            <span className="ms-3">{fileNames}</span>
+          </div>
+
           <input
             type="file"
             id="fileUpload"
@@ -113,6 +139,7 @@ const RecipeUploader: React.FC = () => {
             accept="image/*"
             onChange={handleFileChange}
             multiple
+            style={{ display: "none" }} // Hide the default file input
           />
         </div>
 

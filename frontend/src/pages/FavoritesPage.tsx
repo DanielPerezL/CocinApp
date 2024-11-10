@@ -6,9 +6,11 @@ import {
   fetchLoggedUserProfile,
   fetchMyFavRecipes,
 } from "../services/apiService";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const FavoritesPage = () => {
+  const { t } = useTranslation();
+
   const [user, setUser] = useState<UserDTO | null>(null);
   const [favRecipes, setFavRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga

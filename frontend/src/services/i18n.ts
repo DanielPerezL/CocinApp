@@ -1,4 +1,4 @@
-// src/i18n.js
+// src/i18n.ts
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import HttpApi from "i18next-http-backend";
@@ -26,9 +26,3 @@ i18n
 
 // Exporta `i18n` para configuraciones adicionales si es necesario
 export default i18n;
-
-// Exporta una función `t` para obtener traducciones de forma programática
-export const t = (key: any) => i18n.t(key);
-
-// Exporta una función para cambiar el idioma de forma programática
-export const changeLanguage = (lng: any) => i18n.changeLanguage(lng);

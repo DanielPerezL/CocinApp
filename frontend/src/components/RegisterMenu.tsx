@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 
 interface RegisterMenuProps {
@@ -10,6 +10,8 @@ interface RegisterMenuProps {
 }
 
 const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
+  const { t } = useTranslation();
+
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");

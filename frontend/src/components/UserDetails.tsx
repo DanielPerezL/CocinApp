@@ -9,13 +9,15 @@ import {
   uploadImage,
 } from "../services/apiService";
 import userDefaultPic from "../assets/user.png";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface UserDetailsProps {
   user: UserDTO;
 }
 
 const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
+  const { t } = useTranslation();
+
   const [imgError, setImgError] = useState(false);
   const [editingPhoto, setEditingPhoto] = useState(false); // Estado para controlar si el usuario está editando la foto
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -69,7 +71,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
               className="btn btn-secondary mt-3"
               onClick={() => setEditingPhoto(true)}
             >
-              {t("")}
+              {t("modifyPic")}
             </button>
           ) : (
             <>
