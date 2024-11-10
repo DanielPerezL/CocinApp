@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React, { useState } from "react";
 
 interface RegisterMenuProps {
@@ -39,7 +40,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
     <form onSubmit={handleSubmit}>
       <div className="mb-3">
         <label htmlFor="nickname" className="form-label">
-          Nombre de usuario
+          {t("nickname")}
         </label>
         <input
           type="text"
@@ -52,7 +53,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
       </div>
       <div className="mb-3">
         <label htmlFor="email" className="form-label">
-          Correo Electrónico
+          {t("email")}
         </label>
         <input
           type="email"
@@ -66,7 +67,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
       </div>
       <div className="mb-3">
         <label htmlFor="password" className="form-label">
-          Contraseña
+          {t("password")}
         </label>
         <input
           type="password"
@@ -82,7 +83,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
         className="btn btn-primary w-100"
         disabled={loading}
       >
-        {loading ? "Cargando..." : "Registrar"}
+        {loading ? t("loading...") : t("register")}
       </button>
       {registerMsg && <p className="alert text-success mt-3">{registerMsg}</p>}
       {error && <p className="alert alert-danger mt-3">{error}</p>}

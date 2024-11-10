@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import {
   RecipeSimpleDTO,
   RecipeDetailDTO,
@@ -14,7 +15,7 @@ const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
 export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
   const response = await fetch(`${API_BASE_URL}/recipes_simple_dto`); // Ajusta la URL según tu API
   if (!response.ok) {
-    throw new Error("Error al obtener recetas");
+    throw new Error(t("errorLoadingRecipes"));
   }
   return await response.json(); // Devuelve las recetas en formato JSON
 };
@@ -26,7 +27,7 @@ export const fetchRecipeDetails = async (
   const response = await fetch(`${API_BASE_URL}/recipe_details_dto?id=${id}`);
   if (!response.ok) {
     const data = await response.json();
-    throw new Error(data.error || "Failed to fetch recipe details");
+    throw new Error(t("errorLoadingRecipeDetails"));
   }
   return await response.json();
 };
@@ -36,7 +37,7 @@ export const fetchUserPublic = async (id: string): Promise<UserPublicDTO> => {
   const response = await fetch(`${API_BASE_URL}/user_info?id=${id}`);
   if (!response.ok) {
     const data = await response.json();
-    throw new Error(data.error || "Failed to fetch user details");
+    throw new Error(t("errorLoadingUserDetails"));
   }
   return await response.json();
 };
@@ -57,9 +58,9 @@ export const registerUser = async (
 
   const responseData = await response.json();
   if (!response.ok) {
-    throw new Error(responseData.error || "Failed to register user");
+    throw new Error(t("errorRegister"));
   }
-  return responseData.msg;
+  return t("registerSuccesfully");
 };
 
 // Función para hacer login
@@ -75,7 +76,7 @@ export const login = async (email: string, password: string): Promise<void> => {
 
   if (!response.ok) {
     const data = await response.json();
-    throw new Error(data.error || "Login failed");
+    throw new Error(t("errorLogin"));
   }
 
   // Indicar que el usuario ha iniciado sesión
@@ -114,7 +115,7 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch protected data");
+    throw new Error(t("errorLoadingLoggedUser"));
   }
 
   return await response.json();
@@ -123,7 +124,7 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
 export const fetchMyRecipes = async () => {
   return await withTokenRefresh(() => fetchMyRecipesUnsafe());
 };
-const fetchMyRecipesUnsafe = async () => {
+const fetchMyRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
@@ -134,13 +135,13 @@ const fetchMyRecipesUnsafe = async () => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch protected data");
+    throw new Error(t("errorLoadingMyRecipes"));
   }
 
   return await response.json();
 };
 
-export const isFavoriteRecipe = async (id: string) => {
+export const isFavoriteRecipe = async (id: string): Promise<boolean> => {
   try {
     const favs: RecipeSimpleDTO[] = await fetchMyFavRecipes();
     return favs.some((recipe) => recipe.id === id);
@@ -152,7 +153,7 @@ export const isFavoriteRecipe = async (id: string) => {
 export const addRecipeFav = async (id: string) => {
   return await withTokenRefresh(() => addRecipeFavUnsafe(id));
 };
-const addRecipeFavUnsafe = async (id: string) => {
+const addRecipeFavUnsafe = async (id: string): Promise<void> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
@@ -163,7 +164,7 @@ const addRecipeFavUnsafe = async (id: string) => {
   });
   if (!response.ok) {
     const data = await response.json();
-    throw new Error(data.error || "Failed to fetch recipe details");
+    throw new Error(t("errorAddingFavRecipe"));
   }
   return await response.json();
 };
@@ -182,7 +183,7 @@ const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
   });
   if (!response.ok) {
     const data = await response.json();
-    throw new Error(data.error || "Failed to fetch recipe details");
+    throw new Error(t("errorRemovingFavRecipe"));
   }
 };
 
@@ -200,7 +201,7 @@ const fetchMyFavRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch protected data");
+    throw new Error(t("errorLoadingMyFavRecipes"));
   }
 
   return await response.json();
@@ -226,7 +227,7 @@ const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to upload image");
+    throw new Error(t("errorUploadingImage"));
   }
 
   const responseData = await response.json();
@@ -239,7 +240,7 @@ export const uploadRecipe = async (
   ingredients: string,
   procedure: string,
   imagePaths: string[]
-): Promise<string> => {
+) => {
   return await withTokenRefresh(() =>
     uploadRecipeUnsafe(title, ingredients, procedure, imagePaths)
   );
@@ -273,7 +274,7 @@ const uploadRecipeUnsafe = async (
 
   if (!response.ok) {
     const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
-    throw new Error(errorData.error || "Failed to upload recipe");
+    throw new Error(t("errorUploadingRecipe"));
   }
 
   const responseData = await response.json();
@@ -300,7 +301,7 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
 
   if (!response.ok) {
     const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
-    throw new Error(errorData.error || "Error al actualizar la foto de perfil");
+    throw new Error(t("errorUpdatingProfilePic"));
   }
 };
 
@@ -322,7 +323,7 @@ const removeProfilePicUnsafe = async (): Promise<void> => {
 
   if (!response.ok) {
     const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
-    throw new Error(errorData.error || "Error al actualizar la foto de perfil");
+    throw new Error(t("errorUpdatingProfilePic"));
   }
 };
 
@@ -348,7 +349,7 @@ const refreshAccessToken = async (): Promise<void> => {
     if (!response.ok) {
       const data = await response.json();
       await logout(); // Desloguear al usuario si falla el refresco
-      const msg = "Sesión expirada.";
+      const msg = t("errorExpiredSession");
       alert(msg);
       throw new Error(msg);
     }

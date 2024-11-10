@@ -4,6 +4,7 @@ import RecipeDetails from "../components/RecipeDetails";
 import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
 import { useLocation } from "react-router-dom"; // Para obtener parámetros de la URL
 import { fetchRecipeDetails, fetchUserPublic } from "../services/apiService";
+import { t } from "i18next";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -20,7 +21,7 @@ const RecipePage = () => {
   // Función para obtener los detalles de la receta
   const loadRecipeDetails = async () => {
     if (!id) {
-      setError("ID de receta no proporcionado");
+      setError(t("errorNoIDRecipe"));
       setLoading(false);
       return;
     }
@@ -29,12 +30,8 @@ const RecipePage = () => {
       setRecipe(fetchedRecipe); // Actualiza el estado con las recetas obtenidas
       const fetchedUser = await fetchUserPublic(fetchedRecipe.user_id); // Llama a la función para obtener las recetas
       setUser(fetchedUser); // Actualiza el estado con las recetas obtenidas
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Ha ocurrido un error desconocido");
-      }
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -46,7 +43,7 @@ const RecipePage = () => {
 
   return (
     <div className="main-container container">
-      {loading && <p>Cargando detalles de la receta...</p>}
+      {loading && <p>{t("loagingRecipeDetails")}</p>}
       {error && <p className="text-danger">{error}</p>}
       {!loading && !error && recipe && user && (
         <RecipeDetails recipe={recipe} user={user} />

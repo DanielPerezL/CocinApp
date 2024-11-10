@@ -10,32 +10,29 @@ const NavButtons: React.FC = () => {
       <Link
         to="/favorites"
         className="btn nav-btn mx-1"
-        title="Favoritos"
         onClick={() => {
           window.scrollTo(0, 0);
         }}
       >
-        <img src={heart} alt="Favoritos" />
+        <img src={heart} />
       </Link>
       <Link
         to="/publish"
         className="btn nav-btn mx-1"
-        title="publish receta"
         onClick={() => {
           window.scrollTo(0, 0);
         }}
       >
-        <img src={publish} alt="publish" />
+        <img src={publish} />
       </Link>
       <Link
         to="/profile"
         className="btn nav-btn mx-1"
-        title="Perfil"
         onClick={() => {
           window.scrollTo(0, 0);
         }}
       >
-        <img src={user} alt="Perfil" />
+        <img src={user} />
       </Link>
     </div>
   );

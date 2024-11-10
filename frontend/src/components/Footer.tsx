@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
+import { t } from "i18next";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -8,28 +9,27 @@ const Footer = () => {
     <footer className="bg-dark text-white py-4 mt-5 pb-5 pb-md-0">
       <div className="container pb-5 pb-md-0">
         <div className="row">
-          {/* Sección de enlaces de navegación */}
           <div className="col-md-4 mb-3 ps-3 ps-md-0">
-            <h5>Navegación</h5>
+            <h5>{t("navigation")}</h5>
             <ul className="list-unstyled">
               <li>
                 <a href="/about" className="text-white text-decoration-none">
-                  Sobre Nosotros
+                  {t("aboutUs")}
                 </a>
               </li>
               <li>
                 <a href="/contact" className="text-white text-decoration-none">
-                  Contacto
+                  {t("contact")}
                 </a>
               </li>
               <li>
                 <a href="/privacy" className="text-white text-decoration-none">
-                  Política de Privacidad
+                  {t("privacyPolicy")}
                 </a>
               </li>
               <li>
                 <a href="/terms" className="text-white text-decoration-none">
-                  Términos de Uso
+                  {t("useTerms")}
                 </a>
               </li>
             </ul>
@@ -37,7 +37,7 @@ const Footer = () => {
 
           {/* Sección de redes sociales */}
           <div className="col-md-4 mb-3 ps-3 ps-md-0">
-            <h5>Síguenos</h5>
+            <h5>{t("followUs")}</h5>
             <ul className="list-unstyled">
               <li>
                 <a
@@ -61,7 +61,7 @@ const Footer = () => {
               style={{ maxWidth: "200px", margin: "0 auto", display: "block" }}
             />
             <p className="mb-0">
-              © {currentYear} CocinApp. Ningún derecho reservado.
+              © {currentYear} CocinApp. {t("reserverRights")}
             </p>
           </div>
         </div>

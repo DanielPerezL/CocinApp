@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -7,11 +8,10 @@ const NoPage: React.FC = () => {
       <div className="text-center">
         <h1 className="display-1 fw-bold text-danger">404</h1>
         <p className="fs-3">
-          <span className="text-danger">Oops!</span> Página no encontrada.
+          <span className="text-danger">{t("errorOops")}</span>
+          {t("errorPageNotFound")}
         </p>
-        <p className="lead">
-          La página que estás buscando no existe o ha sido movida.
-        </p>
+        <p className="lead">{t("errorRemovedOrMoved")}</p>
         <Link
           to="/"
           className="btn btn-primary"
@@ -19,7 +19,7 @@ const NoPage: React.FC = () => {
             window.scrollTo(0, 0);
           }}
         >
-          Volver al Inicio
+          {t("backHome")}
         </Link>
       </div>
     </div>

@@ -15,6 +15,7 @@ import {
   isFavoriteRecipe,
   rmRecipeFav,
 } from "../services/apiService";
+import { t } from "i18next";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -63,9 +64,6 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
       });
   };
 
-  // Función para cerrar el modal
-  const closeModal = () => {};
-
   const handleFavButtonClick = () => {
     if (!localStorage.getItem("isLoggedIn") === true) {
       setShowLoginModal(true);
@@ -82,6 +80,8 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
       //Si da error se habrá cerrado la sesion
       //refrescamos la pantalla para resetear el estado
       window.location.reload();
+
+      //TODO: probara a repitar solo el componte!!
     }
   };
 
@@ -97,7 +97,6 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         >
           <img
             src={!imgError ? getImage(user.picture) : userDefaultPic}
-            alt="Perfil de usuario"
             className="rounded-circle me-3"
             style={{ width: "3rem", height: "3rem" }}
             onError={() => {
@@ -125,9 +124,9 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
             title="Perfil"
           >
             {isFavorite ? (
-              <img className="img-fluid" src={redHeart} alt="Perfil" />
+              <img className="img-fluid" src={redHeart} />
             ) : (
-              <img className="img-fluid" src={pngHeart} alt="Perfil" />
+              <img className="img-fluid" src={pngHeart} />
             )}
           </button>
 
@@ -137,7 +136,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
             title="Copiar URL"
             onClick={copyToClipboard}
           >
-            <img className="img-fluid" src={share} alt="Copiar URL" />
+            <img className="img-fluid" src={share} />
           </button>
         </div>
       </div>
@@ -154,13 +153,13 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
 
       {/* Sección de ingredientes */}
       <div className="mb-4">
-        <h3>Ingredientes</h3>
+        <h3>{t("ingredients")}</h3>
         <p className="receta-text">{recipe.ingredients}</p>
       </div>
 
       {/* Sección de procedimiento */}
       <div className="mb-4">
-        <h3>Procedimiento</h3>
+        <h3>{t("procedure")}</h3>
         <p className="receta-text">{recipe.procedure}</p>
       </div>
 
@@ -172,14 +171,10 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         size="lg"
       >
         <Modal.Header closeButton className="bg-light">
-          <Modal.Title>Compatir receta!</Modal.Title>
+          <Modal.Title>{t("shareRecipe!")}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="bg-light">
-          {copySuccess ? (
-            <p>¡URL copiada con éxito!</p>
-          ) : (
-            <p>La copia al portapapeles no es compatible con este navegador.</p>
-          )}
+          {copySuccess ? <p>{t("urlCopied")}</p> : <p>{t("urlNoCopied")}</p>}
         </Modal.Body>
         <Modal.Footer className="bg-light">
           <Button
@@ -188,7 +183,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
               setShowModal(false);
             }}
           >
-            Cerrar
+            {t("close")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -199,10 +194,10 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         size="lg"
       >
         <Modal.Header closeButton className="bg-light">
-          <Modal.Title>Guardar receta!</Modal.Title>
+          <Modal.Title>{t("addFavRecipe")}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="bg-light">
-          <p>Para guardar recetas necesitas iniciar sesión.</p>
+          <p>{t("addFavRecipeCondition")}</p>
         </Modal.Body>
         <Modal.Footer className="bg-light">
           <Button
@@ -211,7 +206,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
               setShowLoginModal(false);
             }}
           >
-            Cerrar
+            {t("close")}
           </Button>
         </Modal.Footer>
       </Modal>

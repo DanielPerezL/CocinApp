@@ -4,6 +4,7 @@ import icon from "../assets/icon.png";
 import NavButtons from "./NavButtons"; // Importa el componente NavButtons
 import "../css/Navbar.css"; // Archivo CSS para estilos personalizados
 import { Link } from "react-router-dom";
+import { t } from "i18next";
 
 const Navbar: React.FC = () => {
   return (
@@ -18,21 +19,13 @@ const Navbar: React.FC = () => {
               window.scrollTo(0, 0);
             }}
           >
-            <img
-              src={icon}
-              alt="CocinApp icon"
-              className="icon-img d-block d-sm-none"
-            />
-            <img
-              src={logo}
-              alt="CocinApp logo"
-              className="logo-img d-none d-sm-block"
-            />
+            <img src={icon} className="icon-img d-block d-sm-none" />
+            <img src={logo} className="logo-img d-none d-sm-block" />
           </Link>
           <div className="mx-2 flex-grow-1">
             <input
               type="text"
-              placeholder="Buscar recetas..."
+              placeholder={t("searchPlaceHolder")}
               name="search-input"
               className="form-control search-input"
             />

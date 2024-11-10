@@ -9,6 +9,7 @@ import {
   uploadImage,
 } from "../services/apiService";
 import userDefaultPic from "../assets/user.png";
+import { t } from "i18next";
 
 interface UserDetailsProps {
   user: UserDTO;
@@ -51,7 +52,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   };
   return (
     <div className="container main-container">
-      <h2 className="text-primary">Perfil de Usuario</h2>
+      <h2 className="text-primary">{t("userProfile")}</h2>
       <div className="profile-picture-section p-3">
         <img
           src={!imgError ? getImage(userPic) : userDefaultPic}
@@ -68,7 +69,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
               className="btn btn-secondary mt-3"
               onClick={() => setEditingPhoto(true)}
             >
-              Modificar Foto
+              {t("")}
             </button>
           ) : (
             <>
@@ -83,14 +84,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
                 onClick={handlePhotoUpload}
                 disabled={!selectedImage}
               >
-                Guardar Foto
+                {t("savePic")}
               </button>
 
               <button
                 className="btn btn-danger ms-2 mt-2"
                 onClick={handlePhotoDelete}
               >
-                Eliminar foto
+                {t("rmPic")}
               </button>
 
               <button
@@ -100,7 +101,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
                   setSelectedImage(null);
                 }}
               >
-                Cancelar
+                {t("cancel")}
               </button>
             </>
           )}
@@ -109,10 +110,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
 
       <div className="p-3">
         <p>
-          <strong>Nickname:</strong> {user.nickname}
+          <strong>{t("nickname")}:</strong> {user.nickname}
         </p>
         <p>
-          <strong>Email:</strong> {user.email}
+          <strong>{t("email")}:</strong> {user.email}
         </p>
       </div>
 
@@ -123,7 +124,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
           window.location.reload();
         }}
       >
-        Cerrar sesión
+        {t("logout")}
       </button>
     </div>
   );

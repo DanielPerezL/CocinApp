@@ -14,6 +14,8 @@ import PublishPage from "./pages/PublishPage";
 {
   /*
   TODO:
+    tipar todas las funciones de apiService
+    //TODO: ACTUALIZAR SOLO COMPONENTES (evitar window.location.reload())
     i18n -> ACABAR TRADUCCIONES
     lista publica de tus recetas (en la página del perfil)
     

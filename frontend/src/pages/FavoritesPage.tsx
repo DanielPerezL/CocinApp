@@ -6,6 +6,7 @@ import {
   fetchLoggedUserProfile,
   fetchMyFavRecipes,
 } from "../services/apiService";
+import { t } from "i18next";
 
 const FavoritesPage = () => {
   const [user, setUser] = useState<UserDTO | null>(null);
@@ -27,7 +28,7 @@ const FavoritesPage = () => {
         const fetchedRecipes = await fetchMyFavRecipes(); // Llama a la función para obtener las recetas
         setFavRecipes(fetchedRecipes); // Actualiza el estado con las recetas obtenidas
       } catch (err: any) {
-        setError(err.message || "Error al cargar tus recetas favortias."); // Captura el error y actualiza el estado
+        setError(err.message); // Captura el error y actualiza el estado
       } finally {
         setLoading(false); // Cambia el estado de carga a false al final
       }
@@ -40,22 +41,20 @@ const FavoritesPage = () => {
   return (
     <div className="container mb-5 main-container">
       <div className="text-center mb-4">
-        <h1 className="display-5 text-primary">Tus Recetas Favoritas</h1>
+        <h1 className="display-5 text-primary">{t("yourFavRecipes")}</h1>
       </div>
 
       <AuthWrapper>
-        {loading && <p>Cargando recetas...</p>}
+        {loading && <p>{t("loadingRecipes")}</p>}
         {error && <p className="text-danger">{error}</p>}
 
         {!loading && !error && user && (
           <>
             <div className="text-center mb-4">
               {favRecipes.length > 0 ? (
-                <p className="fs-6 fw-light">
-                  Aquí tienes tus recetas favoritas, {user.nickname}
-                </p>
+                <p className="fs-6 fw-light">{t("hereFavRecipes")}</p>
               ) : (
-                <p className="fs-6 fw-light">Aún no hay recetas favoritas</p>
+                <p className="fs-6 fw-light">{t("noFavRecipes")}</p>
               )}
             </div>
             <RecetaGrid recipes={favRecipes} />

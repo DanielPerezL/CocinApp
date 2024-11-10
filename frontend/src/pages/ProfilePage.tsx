@@ -8,6 +8,7 @@ import {
 import { RecipeSimpleDTO, UserDTO } from "../interfaces";
 import RecipeGrid from "../components/RecipeGrid";
 import UserDetails from "../components/UserDetails";
+import { t } from "i18next";
 
 const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<UserDTO | null>(null);
@@ -29,7 +30,7 @@ const ProfilePage: React.FC = () => {
         const fetchedRecipes = await fetchMyRecipes(); // Llama a la función para obtener las recetas
         setRecipes(fetchedRecipes); // Actualiza el estado con las recetas obtenidas
       } catch (err: any) {
-        setError(err.message || "Error al cargar las recetas."); // Captura el error y actualiza el estado
+        setError(err.message); // Captura el error y actualiza el estado
       } finally {
         setLoading(false); // Cambia el estado de carga a false al final
       }
@@ -51,15 +52,11 @@ const ProfilePage: React.FC = () => {
               <div className="container main-container mt-4">
                 <div className="text-center mb-4">
                   {recipes.length > 0 ? (
-                    <p className="fs-5 fw-light mb-5">
-                      Aquí tienes tus recetas, {user.nickname}
-                    </p>
+                    <p className="fs-5 fw-light mb-5">{t("hereYourRecipes")}</p>
                   ) : (
-                    <p className="fs-5 fw-light">
-                      Aún no has publicado ninguna receta, {user.nickname}
-                    </p>
+                    <p className="fs-5 fw-light">{t("noYourRecipes")}</p>
                   )}
-                  {loading && <p>Cargando recetas...</p>}
+                  {loading && <p>{t("loadingRecipes")}</p>}
                   {error && <p className="text-danger">{error}</p>}
                   {!loading && !error && <RecipeGrid recipes={recipes} />}
                 </div>
@@ -67,7 +64,7 @@ const ProfilePage: React.FC = () => {
             )}
           </>
         ) : (
-          <p>Cargando perfil del usuario...</p>
+          <p>{t("loadingUserProfile")}</p>
         )}
       </div>
     </AuthWrapper>

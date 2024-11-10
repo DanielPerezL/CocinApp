@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React, { useState } from "react";
 
 interface LoginMenuProps {
@@ -30,7 +31,7 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
     <form onSubmit={handleSubmit}>
       <div className="mb-3">
         <label htmlFor="email" className="form-label">
-          Correo Electrónico / Nombre de usuario
+          {t("nickname") + "/" + t("email")}
         </label>
         <input
           type="text"
@@ -44,7 +45,7 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
       </div>
       <div className="mb-3">
         <label htmlFor="password" className="form-label">
-          Contraseña
+          {t("password")}
         </label>
         <input
           type="password"
@@ -60,7 +61,7 @@ const LoginMenu: React.FC<LoginMenuProps> = ({ onSubmit }) => {
         className="btn btn-primary w-100"
         disabled={loading}
       >
-        {loading ? "Cargando..." : "Iniciar Sesión"}
+        {loading ? t("loading...") : t("login")}
       </button>
       {error && <p className="alert alert-danger mt-3">{error}</p>}
     </form>

@@ -16,7 +16,7 @@ const Home = () => {
         const fetchedRecipes = await fetchRecipes(); // Llama a la función para obtener las recetas
         setRecipes(fetchedRecipes); // Actualiza el estado con las recetas obtenidas
       } catch (err: any) {
-        setError(t("errorLoadingRecipes")); // Captura el error y actualiza el estado
+        setError(err.message); // Captura el error y actualiza el estado
       } finally {
         setLoading(false); // Cambia el estado de carga a false al final
       }

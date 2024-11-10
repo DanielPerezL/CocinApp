@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, useRef } from "react";
 import { uploadImage, uploadRecipe } from "../services/apiService"; // Asegúrate de que esta función esté disponible
+import { t } from "i18next";
 
 const RecipeUploader: React.FC = () => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -22,21 +23,19 @@ const RecipeUploader: React.FC = () => {
   const handleUpload = async () => {
     setUploadSuccessMsg("");
     if (selectedImages.length === 0 || !title || !ingredients || !procedure) {
-      setUploadStatus(
-        "Por favor, rellena todos los campos y al menos una imágen."
-      );
+      setUploadStatus(t("errorFillRecipeData"));
       return;
     }
 
     try {
-      setUploadStatus("Subiendo imágenes...");
+      setUploadStatus(t("uploadingImages"));
       const imagePaths = await Promise.all(
         selectedImages.map((image) => uploadImage(image))
       );
       const id = await uploadRecipe(title, ingredients, procedure, imagePaths);
       setUploadStatus("");
       setUploadErrorMsg("");
-      setUploadSuccessMsg("Receta publicada correctamente.");
+      setUploadSuccessMsg(t("recipeUploadedSuccesfully"));
       await new Promise((resolve) => setTimeout(resolve, 2000)); // Espera 2 seg
       window.location.href = `/recipe?id=${id}`;
       setTitle("");
@@ -45,7 +44,7 @@ const RecipeUploader: React.FC = () => {
       setSelectedImages([]);
     } catch (error: any) {
       setUploadStatus("");
-      setUploadErrorMsg(`Error al publicar la receta`);
+      setUploadErrorMsg(t("errorRecipeUpload"));
       window.location.reload();
     } finally {
       if (fileInputRef.current) {
@@ -59,7 +58,7 @@ const RecipeUploader: React.FC = () => {
       <form className="p-2">
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
-            Titulo
+            {t("title")}
           </label>
           <input
             type="text"
@@ -74,7 +73,7 @@ const RecipeUploader: React.FC = () => {
 
         <div className="mb-3">
           <label htmlFor="ingredients" className="form-label">
-            Ingredientes
+            {t("ingredients")}
           </label>
           <textarea
             id="ingredients"
@@ -89,7 +88,7 @@ const RecipeUploader: React.FC = () => {
 
         <div className="mb-3">
           <label htmlFor="procedure" className="form-label">
-            Procedimiento
+            {t("procedure")}
           </label>
           <textarea
             id="procedure"
@@ -104,7 +103,7 @@ const RecipeUploader: React.FC = () => {
 
         <div className="mb-3">
           <label htmlFor="fileUpload" className="form-label">
-            Añade imágenes
+            {t("addImages")}
           </label>
           <input
             type="file"
@@ -123,7 +122,7 @@ const RecipeUploader: React.FC = () => {
           onClick={handleUpload}
           disabled={selectedImages.length === 0}
         >
-          Publicar receta!
+          {t("publishRecipe!")}
         </button>
 
         {uploadStatus && (

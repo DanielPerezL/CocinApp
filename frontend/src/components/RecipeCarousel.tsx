@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import RecipeCard from "./RecipeCard"; // Asegúrate de importar correctamente tu componente
 import { RecipeSimpleDTO } from "../interfaces";
 import "../css/RecipeCarousel.css"; // Para el estilo adicional
+import { t } from "i18next";
 
 interface RecipeCarouselProps {
   recipes: RecipeSimpleDTO[];
@@ -63,14 +64,14 @@ const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ recipes }) => {
           disabled={currentIndex === 0}
           className="recipe-carousel-button"
         >
-          Anterior
+          {t("previous")}
         </button>
         <button
           onClick={nextPage}
           disabled={currentIndex + itemsPerPage >= totalItems}
           className="recipe-carousel-button"
         >
-          Siguiente
+          {t("next")}
         </button>
       </div>
     </div>
