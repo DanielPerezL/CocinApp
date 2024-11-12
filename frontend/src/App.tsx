@@ -15,6 +15,13 @@ import UserPage from "./pages/UserPage";
 {
   /*
   TODO:    
+    gestion de cuentas:
+      eliminar cuenta + recetas asociadas + imagenes asociadas
+
+    gestion de recetas:
+      eliminar receta
+      modificar receta
+    
     filtros:
       buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
       filtrar por numero de pasos
@@ -34,21 +41,15 @@ import UserPage from "./pages/UserPage";
 
     modificar INPUT pasos:
       tabla receta usa coleecion de pasos
-
-    gestion de cuentas:
-      cambiar contraseña
-      eliminar cuenta + recetas asociadas + imagenes asociadas
-
-    gestion de recetas:
-      eliminar receta
-      modificar receta
-
+      
     IMPLEMENTAR SCROLL INFINITO Y QUE NO SE CARGEN TODAS LAS RECETAS A LA VEZ
     IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD
     
     FUERA (prototipo):
       wcag? -> ES PROTOTIPO
       fotos de usuario solo cuadradas
+      cambiar contraseña
+      
 
   */
 }

@@ -87,7 +87,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
       >
         {loading ? t("loading...") : t("register")}
       </button>
-      {registerMsg && <p className="alert text-success mt-3">{registerMsg}</p>}
+      {registerMsg && <p className="alert alert-success mt-3">{registerMsg}</p>}
       {error && <p className="alert alert-danger mt-3">{error}</p>}
     </form>
   );

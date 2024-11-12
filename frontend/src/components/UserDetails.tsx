@@ -33,8 +33,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
 
     // Verifica si se ha seleccionado un archivo
     if (file) {
-      console.log("selectedImage:", file);
-
       try {
         const imageUrl = await uploadImage(file); // Usa `file` directamente aquí
         await updateProfilePic(imageUrl); // Actualizar la foto de perfil en el backend
