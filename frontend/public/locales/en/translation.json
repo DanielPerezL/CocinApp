@@ -57,6 +57,10 @@
     "enterTitlePlaceHolder": "Add a title",
     "enterIngredientsPlaceHolder": "Add ingredients",
     "enterProcedurePlaceHolder": "Add the steps",
+    "confirmDeleteAccountTitle": "Are you sure?",
+    "confirmDeleteAccountMessage": "This action cannot be undone. Are you sure you want to delete your account?",
+    "confirmLogoutTitle": "Log out?",
+    "confirmLogoutMessage": "Are you sure you want to log out?",
 
     "errorRecipeUpload": "Error publishing the recipe",
     "errorFillRecipeData": "Please fill out all fields and add at least one image.",

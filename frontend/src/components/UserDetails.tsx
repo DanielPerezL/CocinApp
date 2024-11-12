@@ -12,6 +12,7 @@ import {
 import userDefaultPic from "../assets/user.png";
 import { useTranslation } from "react-i18next";
 import ImageModal from "./ImagenModal";
+import NeedConfirmButton from "./NeedConfirmButton";
 
 interface UserDetailsProps {
   user: UserDTO;
@@ -103,21 +104,23 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
       </div>
 
       <div className="d-flex flex-column flex-sm-row align-items-center mt-3">
-        <button
+        <NeedConfirmButton
           className="btn btn-danger mt-3 ms-2"
-          onClick={() => {
+          buttonText={t("logout")}
+          title={t("confirmLogoutTitle")}
+          message={t("confirmLogoutMessage")}
+          onConfirm={() => {
             logout();
             window.location.reload();
           }}
-        >
-          {t("logout")}
-        </button>
-        <button
+        />
+        <NeedConfirmButton
           className="btn btn-danger mt-3 ms-2"
-          onClick={handleDeleteAccount}
-        >
-          {t("rmAccount")}
-        </button>
+          buttonText={t("rmAccount")}
+          title={t("confirmDeleteAccountTitle")}
+          message={t("confirmDeleteAccountMessage")}
+          onConfirm={handleDeleteAccount}
+        />
       </div>
       <ImageModal
         show={showModal}
