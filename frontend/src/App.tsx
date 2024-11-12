@@ -14,8 +14,6 @@ import PublishPage from "./pages/PublishPage";
 {
   /*
   TODO:
-
-    incluir updateFuntion() a AccessMenu 
     lista publica de tus recetas (PAGINA DE PERFIL PUBLICA)
     i18n -> REVISAR CAMBIAR FOTO DE PERFIL
     

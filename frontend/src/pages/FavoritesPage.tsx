@@ -15,6 +15,7 @@ const FavoritesPage = () => {
   const [favRecipes, setFavRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     const getUserProfile = async () => {
@@ -46,7 +47,11 @@ const FavoritesPage = () => {
         <h1 className="display-5 text-primary">{t("yourFavRecipes")}</h1>
       </div>
 
-      <AuthWrapper>
+      <AuthWrapper
+        onLoginSuccess={() => {
+          setRefresh(!refresh);
+        }}
+      >
         {loading && <p>{t("loadingRecipes")}</p>}
         {error && <p className="text-danger">{error}</p>}
 

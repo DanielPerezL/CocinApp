@@ -17,6 +17,7 @@ const ProfilePage: React.FC = () => {
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     const getUserProfile = async () => {
@@ -41,10 +42,14 @@ const ProfilePage: React.FC = () => {
     if (!localStorage.getItem("isLoggedIn") === true) return;
     getUserProfile();
     loadMyRecipes();
-  }, []);
+  }, [refresh]);
 
   return (
-    <AuthWrapper>
+    <AuthWrapper
+      onLoginSuccess={() => {
+        setRefresh(!refresh);
+      }}
+    >
       <div className="container">
         {user ? (
           <>

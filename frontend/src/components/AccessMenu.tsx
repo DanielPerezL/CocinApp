@@ -4,7 +4,11 @@ import RegisterMenu from "./RegisterMenu"; // Importar el componente RegisterMen
 import { login, registerUser } from "../services/apiService"; // Importar funciones de API
 import { useTranslation } from "react-i18next";
 
-const AccessMenu: React.FC = () => {
+interface AccessMenuProps {
+  onLoginSuccess: () => void; // Definir el callback como prop
+}
+
+const AccessMenu: React.FC<AccessMenuProps> = ({ onLoginSuccess }) => {
   const { t } = useTranslation();
 
   const [showLogin, setShowLogin] = useState<boolean>(true);
@@ -12,8 +16,7 @@ const AccessMenu: React.FC = () => {
   const handleLoginSubmit = async (email: string, password: string) => {
     try {
       await login(email, password);
-      //TODO: ACTUALIZAR SOLO COMPONENTE -> necesito que el componente padre se actualice
-      window.location.reload();
+      onLoginSuccess(); // Llama al callback en el componente padre para actualizar
     } catch (err: any) {
       throw new Error(err.message);
     }
