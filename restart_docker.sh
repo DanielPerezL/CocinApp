@@ -13,5 +13,3 @@ docker-compose build --no-cache
 docker-compose up backend
 
 docker-compose stop 
-./launch_docker.sh
-
