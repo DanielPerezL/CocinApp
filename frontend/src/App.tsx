@@ -14,9 +14,7 @@ import UserPage from "./pages/UserPage";
 
 {
   /*
-  TODO:
-    PULIR -> lista publica de tus recetas (PAGINA DE PERFIL PUBLICA)
-    
+  TODO:    
     filtros:
       buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
       filtrar por numero de pasos

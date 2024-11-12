@@ -44,12 +44,11 @@ const UserPage: React.FC = () => {
       {user ? (
         <>
           <UserPublicDetails user={user} />
-
           {recipes && (
             <div className="container mt-4">
-              <div className="text-center mb-4">
+              <div className="text-center mb-2">
                 {recipes.length > 0 ? (
-                  <p className="fs-5 fw-light mb-5">{t("theirRecipes")}</p>
+                  <p className="fs-5 fw-light">{t("theirRecipes")}</p>
                 ) : (
                   <p className="fs-5 fw-light">{t("noTheirRecipes")}</p>
                 )}

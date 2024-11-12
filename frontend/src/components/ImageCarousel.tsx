@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "../css/ImageCarousel.css";
 import { getImage } from "../services/apiService";
 import { Modal } from "react-bootstrap";
+import ImageModal from "./ImagenModal";
 
 interface ImageCarouselProps {
   images: string[];
@@ -79,31 +80,11 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
         <span className="carousel-control-next-icon bg-dark"></span>
         <span className="visually-hidden">Next</span>
       </button>
-      <Modal
+      <ImageModal
         show={showModal}
-        centered
-        dialogClassName="modal-dialog-custom"
-        onClick={() => {
-          setShowModal(false);
-        }}
-        onHide={() => {
-          setShowModal(false);
-        }}
-      >
-        <Modal.Body className="d-flex justify-content-center align-items-center p-0">
-          <img
-            src={getImage(images[activeIndex])}
-            style={{
-              width: "100%", // Ocupa todo el ancho del contenedor
-              height: "100%", // Ocupa todo el alto del contenedor
-              maxWidth: "80vw", // Ancho máximo
-              maxHeight: "80vh", // Alto máximo
-              objectFit: "contain", // Escala la imagen manteniendo la relación de aspecto y recorta si es necesario
-            }}
-            alt={`Imagen ${activeIndex + 1}`}
-          />
-        </Modal.Body>
-      </Modal>
+        image={getImage(images[activeIndex])}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 };
