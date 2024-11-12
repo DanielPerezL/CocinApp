@@ -98,26 +98,28 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
           className="d-flex align-items-center flex-grow-1 me-3 text-decoration-none"
           style={{ maxWidth: "calc(100% - 5rem)", overflow: "hidden" }}
         >
-          <img
-            src={!imgError ? getImage(user.picture) : userDefaultPic}
-            className="rounded-circle me-3"
-            style={{ width: "3rem", height: "3rem" }}
-            onError={() => {
-              setImgError(true);
-            }}
-          />
-          <p
-            className="m-0 text-black"
-            style={{
-              fontSize: "1.25rem",
-              fontWeight: "bold",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {user.nickname}
-          </p>
+          <div className="d-flex align-items-center border border-primary rounded p-2 shadow hover-effect">
+            <img
+              src={!imgError ? getImage(user.picture) : userDefaultPic}
+              className="rounded-circle me-3"
+              style={{ width: "3rem", height: "3rem" }}
+              onError={() => {
+                setImgError(true);
+              }}
+            />
+            <p
+              className="m-0 text-black"
+              style={{
+                fontSize: "1.25rem",
+                fontWeight: "bold",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {user.nickname}
+            </p>
+          </div>
         </Link>
         <div className="d-flex gap-2">
           <button
@@ -197,7 +199,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         size="lg"
       >
         <Modal.Header closeButton className="bg-light">
-          <Modal.Title>{t("addFavRecipe")}</Modal.Title>
+          <Modal.Title>{t("addFavRecipe!")}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="bg-light">
           <p>{t("addFavRecipeCondition")}</p>
