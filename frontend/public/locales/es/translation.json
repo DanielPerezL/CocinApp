@@ -28,6 +28,8 @@
     "uploadingImages": "Subiendo imágenes...",
     "recipeUploadedSuccesfully": "Receta publicada correctamente.",
     "title": "Título",
+    "theirRecipes": "Sus recetas",
+    "noTheirRecipes": "Este usuario no tiene ninguna receta",
     "ingredients": "Ingredientes",
     "procedure": "Procedimiento",
     "addImages": "Añade imágenes",
@@ -77,6 +79,7 @@
     "errorUploadingImage": "Error al subir la imágen al servidor.",
     "errorUploadingRecipe": "Error al publicar la receta.",
     "errorUpdatingProfilePic": "Error al actualizar la foto de perfil",
-    "errorExpiredSession": "Sesión expirada"
+    "errorExpiredSession": "Sesión expirada",
+    "errorLoadingUserRecipes": "Error al cargar las recetas del usuario"
   }
   

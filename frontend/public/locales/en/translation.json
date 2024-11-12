@@ -28,6 +28,8 @@
     "uploadingImages": "Uploading images...",
     "recipeUploadedSuccesfully": "Recipe published successfully.",
     "title": "Title",
+    "theirRecipes": "Their recipes",
+    "noTheirRecipes": "This user does not have any recipe",
     "ingredients": "Ingredients",
     "procedure": "Procedure",
     "addImages": "Add images",
@@ -77,5 +79,6 @@
     "errorUploadingImage": "Error uploading the image to the server.",
     "errorUploadingRecipe": "Error publishing the recipe.",
     "errorUpdatingProfilePic": "Error updating profile picture",
-    "errorExpiredSession": "Session expired"
+    "errorExpiredSession": "Session expired",
+    "errorLoadingUserRecipes": "Error loading user recipes"
 }

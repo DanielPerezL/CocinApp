@@ -7,7 +7,6 @@ from utils import get_user_from_identity
 import os
 from utils import delete_images_by_filenames
 
-
 @app.route('/api/recipes_simple_dto', methods=['GET'])
 def get_recipes():
     recipes = Recipe.query.all()
@@ -23,6 +22,19 @@ def recipe_details():
     if recipe is None:
         return jsonify({"error": "Receta no encontrada"}), 404
     return jsonify(recipe.to_details_dto()), 200
+
+@app.route('/api/recipes_from', methods=['GET'])
+def get_recipes_from_user():
+    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
+    if id < 0:
+        return jsonify({"error": "El id proporcionado no es válido."}), 404
+    user = User.query.get(id)
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    
+    recipes = Recipe.query.filter_by(user_id=user.id).all()
+    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
+    return jsonify(recipes_data), 200
 
 
 @app.route('/api/new_recipe', methods=['POST'])

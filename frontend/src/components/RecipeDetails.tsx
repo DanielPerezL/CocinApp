@@ -15,6 +15,7 @@ import {
   rmRecipeFav,
 } from "../services/apiService";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -92,8 +93,9 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         className="d-flex justify-content-between align-items-center mb-3"
         style={{ height: "4rem" }}
       >
-        <div
-          className="d-flex align-items-center flex-grow-1 me-3"
+        <Link
+          to={"/user/" + user.nickname}
+          className="d-flex align-items-center flex-grow-1 me-3 text-decoration-none"
           style={{ maxWidth: "calc(100% - 5rem)", overflow: "hidden" }}
         >
           <img
@@ -105,7 +107,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
             }}
           />
           <p
-            className="m-0"
+            className="m-0 text-black"
             style={{
               fontSize: "1.25rem",
               fontWeight: "bold",
@@ -116,7 +118,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
           >
             {user.nickname}
           </p>
-        </div>
+        </Link>
         <div className="d-flex gap-2">
           <button
             onClick={handleFavButtonClick}

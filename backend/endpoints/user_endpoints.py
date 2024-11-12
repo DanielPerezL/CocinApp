@@ -107,6 +107,21 @@ def public_user_info():
         return jsonify({"error": "Usuario no encontrado."}), 404
     return jsonify(user.to_public_dto()), 200
 
+@app.route('/api/user_info_from_nick', methods=['GET'])
+def public_user_info_from_nick():
+    nickname = request.args.get('nickname', default="", type=str)  # Obtener el nickname de los parámetros
+    if not nickname:
+        return jsonify({"error": "El nickname proporcionado no es válido."}), 404
+    
+    # Buscar al usuario por su nickname
+    user = User.query.filter_by(nickname=nickname).first()
+    if user is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+    
+    # Retornar la información pública del usuario
+    return jsonify(user.to_public_dto()), 200
+
+
 @app.route('/api/delete_account', methods=['DELETE'])
 @jwt_required()
 def delete_account():

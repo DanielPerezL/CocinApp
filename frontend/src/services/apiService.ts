@@ -42,6 +42,31 @@ export const fetchUserPublic = async (id: string): Promise<UserPublicDTO> => {
   return await response.json();
 };
 
+export const fetchUserPublicFromNick = async (
+  nick: string
+): Promise<UserPublicDTO> => {
+  const response = await fetch(
+    `${API_BASE_URL}/user_info_from_nick?nickname=${nick}`
+  );
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(t("errorLoadingUserDetails"));
+  }
+  return await response.json();
+};
+
+// Función para obtener las recetas de un usario
+export const fetchUserRecipes = async (
+  id: string
+): Promise<RecipeSimpleDTO[]> => {
+  const response = await fetch(`${API_BASE_URL}/recipes_from?id=${id}`);
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(t("errorLoadingUserRecipes"));
+  }
+  return await response.json();
+};
+
 //Función para registrar un nuevo usuario
 export const registerUser = async (
   nickname: string,

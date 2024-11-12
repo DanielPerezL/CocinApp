@@ -10,12 +10,12 @@ import UnderConstructionPage from "./pages/UnderConstructionPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import ProfilePage from "./pages/ProfilePage";
 import PublishPage from "./pages/PublishPage";
+import UserPage from "./pages/UserPage";
 
 {
   /*
   TODO:
-    lista publica de tus recetas (PAGINA DE PERFIL PUBLICA)
-    i18n -> REVISAR CAMBIAR FOTO DE PERFIL
+    PULIR -> lista publica de tus recetas (PAGINA DE PERFIL PUBLICA)
     
     filtros:
       buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
@@ -24,6 +24,8 @@ import PublishPage from "./pages/PublishPage";
 
     categorías:
       (tiempo, dificultad, ingredientes)
+      tabla ENUM_TIEMPO (-20min, 20-40, 40-90, +90min)
+      tabla ENUM_DIFICULTAD (facil/easy, medio/medium, dificil/hard, experto/expert)
 
     modificar INPUT ingredientes:
       lista de la compra
@@ -43,6 +45,9 @@ import PublishPage from "./pages/PublishPage";
       eliminar receta
       modificar receta
 
+    IMPLEMENTAR SCROLL INFINITO Y QUE NO SE CARGEN TODAS LAS RECETAS A LA VEZ
+    IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD
+    
     FUERA (prototipo):
       wcag? -> ES PROTOTIPO
       fotos de usuario solo cuadradas
@@ -60,6 +65,7 @@ function App() {
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="publish" element={<PublishPage />} />
+          <Route path="user/:nickname" element={<UserPage />} />
 
           <Route path="about" element={<UnderConstructionPage />} />
           <Route path="contact" element={<UnderConstructionPage />} />

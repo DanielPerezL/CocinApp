@@ -23,6 +23,7 @@ export interface UserDTO {
 }
 
 export interface UserPublicDTO {
+  id: string;
   nickname: string;
   picture: string;
 }

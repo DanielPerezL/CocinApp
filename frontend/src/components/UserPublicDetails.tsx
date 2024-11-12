@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import ImageCarousel from "./ImageCarousel";
-import { UserDTO } from "../interfaces";
+import { UserDTO, UserPublicDTO } from "../interfaces";
 import {
   getImage,
   logout,
@@ -11,11 +11,11 @@ import {
 import userDefaultPic from "../assets/user.png";
 import { useTranslation } from "react-i18next";
 
-interface UserDetailsProps {
-  user: UserDTO;
+interface UserPublicDetailsProps {
+  user: UserPublicDTO;
 }
 
-const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
+const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
   const { t } = useTranslation();
 
   const [imgError, setImgError] = useState(false);
@@ -58,8 +58,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
     }
   };
   return (
-    <div className="container main-container">
-      <h2 className="text-primary">{t("userProfile")}</h2>
+    <div className="container">
+      <h2 className="text-primary">{user.nickname}</h2>
       <div className="profile-picture-section p-3">
         <img
           src={!imgError ? getImage(userPic) : userDefaultPic}
@@ -70,50 +70,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
             setImgError(true);
           }}
         />
-        <div className="mt-3">
-          <button
-            className="btn btn-secondary mt-3"
-            onClick={() => document.getElementById("fileInput")?.click()}
-          >
-            {t("modifyPic")}
-          </button>
-          <button
-            className="btn btn-danger ms-2 mt-3"
-            onClick={handlePhotoDelete}
-          >
-            {t("rmPic")}
-          </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            id="fileInput"
-            accept="image/*"
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-          />
-        </div>
       </div>
-
-      <div className="p-3">
-        <p>
-          <strong>{t("nickname")}:</strong> {user.nickname}
-        </p>
-        <p>
-          <strong>{t("email")}:</strong> {user.email}
-        </p>
-      </div>
-
-      <button
-        className="btn btn-danger mt-3"
-        onClick={() => {
-          logout();
-          window.location.reload();
-        }}
-      >
-        {t("logout")}
-      </button>
     </div>
   );
 };
 
-export default UserDetails;
+export default UserPublicDetails;

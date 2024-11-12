@@ -60,7 +60,8 @@ class User(db.Model):
     
     #Usuario DTO publico     
     def to_public_dto(self):
-        return {
+        return {            
+            'id': self.id,
             'nickname': self.nickname,
             'picture': self.picture,
         }
