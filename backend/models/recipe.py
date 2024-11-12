@@ -10,7 +10,9 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text, nullable=False)
     procedure = db.Column(db.Text, nullable=False)
     images = db.Column(db.Text, nullable=True)  # Campo para almacenar URLs de imágenes, en formato JSON
-    favorited_by = db.relationship('FavoriteRecipe', back_populates='recipe')
+    favorited_by = db.relationship('FavoriteRecipe',
+                                   back_populates='recipe',
+                                   cascade='all, delete-orphan')
 
 
     def __init__(self, title, user_id, ingredients, procedure, images=None):

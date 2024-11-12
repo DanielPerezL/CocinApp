@@ -19,6 +19,7 @@
     "nickname": "Nombre de usuario",
     "email": "Correo electrónico",
     "logout": "Cerrar sesión",
+    "rmAccount": "Eliminar cuenta",
     "password": "Contraseña",
     "loading...": "Cargando...",
     "register": "Registrar",

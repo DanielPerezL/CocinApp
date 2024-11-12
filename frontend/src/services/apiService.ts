@@ -352,6 +352,30 @@ const removeProfilePicUnsafe = async (): Promise<void> => {
   }
 };
 
+// Función para eliminar imagen de perfil
+export const removeAccount = async (): Promise<void> => {
+  return await withTokenRefresh(() => removeAccountUnsafe());
+};
+const removeAccountUnsafe = async (): Promise<void> => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const response = await fetch(`${API_BASE_URL}/delete_account`, {
+    method: "DELETE",
+    headers: {
+      ...headers,
+    },
+    credentials: "include",
+  });
+
+  console.log(response);
+
+  if (!response.ok) {
+    const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
+    throw new Error("error en apiservice " + t("errorUpdatingProfilePic"));
+  }
+  logout();
+};
+
 // FUNCIONES AUXILIARES MANEJO COOKIES Y SESION
 
 // Función para refrescar el token de acceso

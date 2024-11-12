@@ -19,6 +19,7 @@
     "nickname": "Username",
     "email": "Email",
     "logout": "Log out",
+    "rmAccount": "Remove account",
     "password": "Password",
     "loading...": "Loading...",
     "register": "Register",

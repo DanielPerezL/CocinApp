@@ -12,7 +12,9 @@ class User(db.Model):
                               lazy=True,
                               cascade='all, delete-orphan',
                               )
-    favorite_recipes = db.relationship('FavoriteRecipe', back_populates='user')
+    favorite_recipes = db.relationship('FavoriteRecipe', 
+                                       back_populates='user',
+                                       cascade='all, delete-orphan')
 
     def __init__(self, nickname, email, password):
         self.nickname = nickname
