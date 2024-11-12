@@ -5,6 +5,7 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_identity
 import os
+from utils import delete_images_by_filenames
 
 
 @app.route('/api/recipes_simple_dto', methods=['GET'])
@@ -76,11 +77,15 @@ def delete_recipe():
     
     data = request.json
     recipe = Recipe.query.get(data.get('recipe_id'))
+    
     if recipe is None:
         return jsonify({"error": "Receta no encontrada"}), 404
+    
+    filenames = recipe.images
     try:
         db.session.delete(recipe)
         db.session.commit()
+        delete_images_by_filenames(filenames)
         return jsonify({"msg": "Receta eliminada correctamente"}), 204
     except SQLAlchemyError as e:
         db.session.rollback()

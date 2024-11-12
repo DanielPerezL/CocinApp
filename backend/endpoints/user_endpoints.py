@@ -5,6 +5,7 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_identity
 import os
+from utils import delete_images_by_pattern
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -113,11 +114,14 @@ def delete_account():
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
 
+    id = user.id
+
     try:
         db.session.delete(user)
         #DELETE ORPHAN ELIMINA LAS RECETAS
         #db.session.delete(Recipe.query.filter_by(user_id=user.id))
         db.session.commit()
+        delete_images_by_pattern(f"{user.id}_.*")
         return jsonify({"msg": "Usuario eliminado."}),204
     except SQLAlchemyError as e:
         db.session.rollback()

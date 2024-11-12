@@ -15,35 +15,40 @@ import PublishPage from "./pages/PublishPage";
   /*
   TODO:
 
-    ACTUALIZAR SOLO COMPONENTES (evitar window.location.reload())
-    i18n -> REVISAR CAMBIAR FOTO DE PERFIL
+    incluir updateFuntion() a AccessMenu 
     lista publica de tus recetas (PAGINA DE PERFIL PUBLICA)
+    i18n -> REVISAR CAMBIAR FOTO DE PERFIL
     
-    https?
-    wcag?
-
-    
-    fotos usuarios:
-      fotos solo cuadradas
+    filtros:
+      buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
+      filtrar por numero de pasos
+      por categorias
 
     categorías:
-      (tiempo, dificultad, por ingredientes principales…)
+      (tiempo, dificultad, ingredientes)
 
     modificar INPUT ingredientes:
       lista de la compra
+      IDEA:
+        tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
+        tabla de INGREDIENTE_CONCRETO (fk_INGREDIENTE, cantidad)
+        tabla receta usa coleecion de ingrediente concreto
 
     modificar INPUT pasos:
-      visualización más llamativa
-      filtrar por pocos pasos
+      tabla receta usa coleecion de pasos
 
     gestion de cuentas:
       cambiar contraseña
-      eliminar cuenta
+      eliminar cuenta + recetas asociadas + imagenes asociadas
 
     gestion de recetas:
       eliminar receta
       modificar receta
-      
+
+    FUERA (prototipo):
+      wcag? -> ES PROTOTIPO
+      fotos de usuario solo cuadradas
+
   */
 }
 

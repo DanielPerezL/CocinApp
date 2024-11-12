@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import LoginMenu from "./LoginMenu"; // Importar el componente LoginMenu
 import RegisterMenu from "./RegisterMenu"; // Importar el componente RegisterMenu
 import { login, registerUser } from "../services/apiService"; // Importar funciones de API
@@ -12,7 +12,7 @@ const AccessMenu: React.FC = () => {
   const handleLoginSubmit = async (email: string, password: string) => {
     try {
       await login(email, password);
-      //TODO: ACTUALIZAR SOLO COMPONENTE
+      //TODO: ACTUALIZAR SOLO COMPONENTE -> necesito que el componente padre se actualice
       window.location.reload();
     } catch (err: any) {
       throw new Error(err.message);
