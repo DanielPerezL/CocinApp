@@ -93,12 +93,14 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         className="d-flex justify-content-between align-items-center mb-3"
         style={{ height: "4rem" }}
       >
-        <Link
-          to={"/user/" + user.nickname}
-          className="d-flex align-items-center flex-grow-1 me-3 text-decoration-none"
+        <div
+          className="d-flex align-items-center flex-grow-1 me-3"
           style={{ maxWidth: "calc(100% - 5rem)", overflow: "hidden" }}
         >
-          <div className="d-flex align-items-center border border-primary rounded p-2 shadow hover-effect">
+          <Link
+            to={"/user/" + user.nickname}
+            className="d-flex align-items-center border border-primary rounded p-2 shadow hover-effect text-decoration-none"
+          >
             <img
               src={!imgError ? getImage(user.picture) : userDefaultPic}
               className="rounded-circle me-3"
@@ -119,8 +121,8 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
             >
               {user.nickname}
             </p>
-          </div>
-        </Link>
+          </Link>
+        </div>
         <div className="d-flex gap-2">
           <button
             onClick={handleFavButtonClick}

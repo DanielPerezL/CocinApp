@@ -9,6 +9,7 @@ import { RecipeSimpleDTO, UserDTO } from "../interfaces";
 import RecipeGrid from "../components/RecipeGrid";
 import UserDetails from "../components/UserDetails";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation();
@@ -61,7 +62,19 @@ const ProfilePage: React.FC = () => {
                   {recipes.length > 0 ? (
                     <p className="fs-5 fw-light mb-5">{t("hereYourRecipes")}</p>
                   ) : (
-                    <p className="fs-5 fw-light">{t("noYourRecipes")}</p>
+                    <>
+                      <p className="fs-5 fw-light">{t("noYourRecipes")}</p>
+                      <Link
+                        to="/publish"
+                        onClick={() => {
+                          window.scroll(0, 0);
+                        }}
+                      >
+                        <button className="btn btn-secondary">
+                          {t("startPublishing")}
+                        </button>
+                      </Link>
+                    </>
                   )}
                   {loading && <p>{t("loadingRecipes")}</p>}
                   {error && <p className="text-danger">{error}</p>}

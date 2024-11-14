@@ -15,9 +15,6 @@ import UserPage from "./pages/UserPage";
 {
   /*
   TODO:    
-    gestion de cuentas:
-      eliminar cuenta + recetas asociadas + imagenes asociadas
-
     gestion de recetas:
       eliminar receta
       modificar receta
