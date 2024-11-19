@@ -13,7 +13,7 @@ import PublishPage from "./pages/PublishPage";
 import UserPage from "./pages/UserPage";
 
 {
-  /*ç
+  /*
   TODO:    
     gestion de recetas:
       eliminar receta
