@@ -1,9 +1,9 @@
 from config import app, db
 from flask import jsonify, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
-from utils import get_user_from_identity
+from utils import get_user_from_token
 import os
 from utils import delete_images_by_filenames
 
@@ -41,7 +41,7 @@ def get_recipes_from_user():
 @jwt_required()
 def new_recipe():
     data = request.json
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     
     if user is None:
         return jsonify({"error": "Usuario no encontrado"}), 404
@@ -83,7 +83,7 @@ def new_recipe():
 @app.route('/api/delete_recipe', methods=['DELETE'])
 @jwt_required()
 def delete_recipe():
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     if user is None:
         return jsonify({"error": "Usuario no encontrado"}), 404
     

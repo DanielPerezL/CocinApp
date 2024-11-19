@@ -1,16 +1,22 @@
 from config import app, db
 from flask import jsonify, request, make_response
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, set_access_cookies, set_refresh_cookies, unset_jwt_cookies
+from flask_jwt_extended import (create_access_token, 
+                                create_refresh_token, 
+                                jwt_required, 
+                                get_jwt, 
+                                set_access_cookies, 
+                                set_refresh_cookies, 
+                                unset_jwt_cookies,
+                                )
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
-from utils import get_user_from_identity
+from utils import get_user_from_token
 import os
 from utils import delete_images_by_pattern
 
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
-    #TODO: AL NO EXISTE data['...'] -> peta 500 internal server error
     if not data or not all(key in data for key in ('nickname', 'email', 'password')):
         return jsonify({"error": "Asegurate de introducir toda la información necesaria"}), 400
 
@@ -32,27 +38,31 @@ def register():
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.json
+    if not data or not all(key in data for key in ('email', 'password')):
+        return jsonify({"error": "Asegurate de introducir toda la información necesaria"}), 400
+
     email = data.get('email')
     password = data.get('password')
 
     user = User.query.filter_by(email=email).first()
     if user is None or not user.check_password(password):
-        #COMPROBAMOS SI SE HA INTRODUCIDO EL NICKNAME QUE TMB ES UNICO
+        #COMPROBAMOS SI SE HA INTRODUCIDO EL NICKNAME QUE TAMBIEN ES UNICO
         nickname = email
         user = User.query.filter_by(nickname=nickname).first()
         if user is None or not user.check_password(password):
             return jsonify({"error": "Email o contraseña incorecto."}), 401
         
+    access_token = create_access_token(identity=str(user.id),  # identity debe ser un string o entero
+                                       additional_claims={"password_hash": user.password_hash}
+    )
+    refresh_token = create_refresh_token(identity=str(user.id),  # identity debe ser un string o entero
+                                         additional_claims={"password_hash": user.password_hash}
+    )
 
-    access_token = create_access_token(identity = {"id": user.id, 
-                                                   "password_hash": user.password_hash,
-                                                   })
-    refresh_token = create_refresh_token(identity = {"id": user.id,
-                                                     "password_hash": user.password_hash,
-                                                     })
-    
     # Retorna los tokens en el cuerpo de la respuesta
     response = make_response(jsonify({"msg": "Inicio de sesión exitoso."}))
+    
+    #En el login no necesitamos el token csrf protect
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
     return response, 200
@@ -67,7 +77,7 @@ def logout():
 @app.route('/api/change_password', methods=['POST'])
 @jwt_required()
 def change_password():
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     if user is None:
         return jsonify({"error": "Bad token"}), 401    
     data = request.json
@@ -91,7 +101,7 @@ def change_password():
 @app.route('/api/logged_user_profile', methods=['GET'])
 @jwt_required()
 def logged_user_profile():
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     if user is None:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
@@ -125,7 +135,7 @@ def public_user_info_from_nick():
 @app.route('/api/delete_account', methods=['DELETE'])
 @jwt_required()
 def delete_account():
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
 
@@ -134,7 +144,6 @@ def delete_account():
     try:
         db.session.delete(user)
         #DELETE ORPHAN ELIMINA LAS RECETAS
-        #db.session.delete(Recipe.query.filter_by(user_id=user.id))
         db.session.commit()
         delete_images_by_pattern(f"{user.id}_.*")
         return jsonify({"msg": "Usuario eliminado."}),204
@@ -145,7 +154,7 @@ def delete_account():
 @app.route('/api/my_recipes', methods=['GET'])
 @jwt_required()
 def my_recipes():
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
     
@@ -157,7 +166,7 @@ def my_recipes():
 @app.route('/api/my_fav_recipes', methods=['GET'])
 @jwt_required()
 def favorites_recipes():
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
     
@@ -171,7 +180,7 @@ def add_favorite():
     if id < 0:
         return jsonify({"error": "El id proporcionado no es válido."}), 404
     
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     recipe = Recipe.query.get(id)
     if not user or not recipe:
         return jsonify({"error": "Usuario o receta no encontrados."}), 404
@@ -191,7 +200,7 @@ def rm_favorite():
     if id < 0:
         return jsonify({"error": "El id proporcionado no es válido."}), 404
     
-    user = get_user_from_identity(get_jwt_identity())
+    user = get_user_from_token(get_jwt())
     recipe = Recipe.query.get(id)
 
     if not user or not recipe:
@@ -209,7 +218,7 @@ def rm_favorite():
 @jwt_required()
 def new_user_picture():
     data = request.json
-    user = get_user_from_identity(get_jwt_identity())    
+    user = get_user_from_token(get_jwt())    
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
     # Verifica que se proporcione la información requerida
@@ -237,7 +246,7 @@ def new_user_picture():
 @app.route('/api/rm_user_picture', methods=['POST'])
 @jwt_required()
 def rm_user_picture():
-    user = get_user_from_identity(get_jwt_identity())    
+    user = get_user_from_token(get_jwt())    
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
     

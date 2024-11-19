@@ -1,9 +1,9 @@
 from config import app
 from flask import jsonify, request, send_from_directory
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt
 import hashlib
 import os
-from utils import get_user_from_identity
+from utils import get_user_from_token
 from datetime import datetime
 
 
@@ -18,7 +18,7 @@ def serve_uploaded_file(filename):
 @app.route('/api/upload', methods=['POST'])
 @jwt_required()
 def upload_image():
-    user = get_user_from_identity(get_jwt_identity())    
+    user = get_user_from_token(get_jwt())    
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
     

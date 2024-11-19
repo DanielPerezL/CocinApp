@@ -5,12 +5,16 @@ import re
 from config import app
 
 
-#Devuele un objeto de clase User o None
-def get_user_from_identity(identity):
-    if identity is None:
+def get_user_from_token(decoded_token):
+    identity = decoded_token.get("sub")  # La identidad del usuario (el id)
+    password_hash = decoded_token.get("password_hash")  # Datos adicionales
+
+    if not identity or not password_hash:
         return None
-    user = User.query.get(identity.get("id"))
-    if user is None or user.password_hash!=identity.get("password_hash"):
+
+    # Busca al usuario en la base de datos
+    user = User.query.get(identity)
+    if user is None or user.password_hash != password_hash:
         return None
     return user
     
