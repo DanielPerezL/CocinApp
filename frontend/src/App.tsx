@@ -14,40 +14,43 @@ import UserPage from "./pages/UserPage";
 
 {
   /*
-  TODO:    
+  TODO:
+    CAMBIAR NOMBRE ENDPOINTS!!
+  
     gestion de recetas:
+      (PAGINA DE RECETA PROPIA != RECETA AJENA)
       eliminar receta
+      
       modificar receta
-    
-    filtros:
-      buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
-      filtrar por numero de pasos
-      por categorias
 
+    modificar INPUT pasos:
+      tabla receta usa coleecion de pasos
+  
     categorías:
       (tiempo, dificultad, ingredientes)
       tabla ENUM_TIEMPO (-20min, 20-40, 40-90, +90min)
       tabla ENUM_DIFICULTAD (facil/easy, medio/medium, dificil/hard, experto/expert)
 
     modificar INPUT ingredientes:
-      lista de la compra
-      IDEA:
-        tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
-        tabla de INGREDIENTE_CONCRETO (fk_INGREDIENTE, cantidad)
-        tabla receta usa coleecion de ingrediente concreto
+      tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
+      tabla de INGREDIENTE_CONCRETO (fk_INGREDIENTE, cantidad)
+      tabla receta usa coleecion de ingrediente concreto
 
-    modificar INPUT pasos:
-      tabla receta usa coleecion de pasos
-      
-    IMPLEMENTAR SCROLL INFINITO Y QUE NO SE CARGEN TODAS LAS RECETAS A LA VEZ
-    IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD
+    filtros:
+      buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
+      filtrar por numero de pasos
+      por categorias
+    
+    funcionalidad:
+      rol de administrador / moderador
+      lista de la compra
+      IMPLEMENTAR SCROLL INFINITO Y QUE NO SE CARGEN TODAS LAS RECETAS A LA VEZ
     
     FUERA (prototipo):
-      wcag? -> ES PROTOTIPO
+      wcag
       fotos de usuario solo cuadradas
+      ¿IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD?
       cambiar contraseña
-      
-
   */
 }
 

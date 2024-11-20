@@ -3,6 +3,7 @@ from config import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    admin = db.Column(db.Boolean, nullable=False)
     nickname = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     picture = db.Column(db.String(120))
@@ -20,6 +21,7 @@ class User(db.Model):
         self.nickname = nickname
         self.email = email
         self.password_hash = generate_password_hash(password)
+        self.admin = False
 
     # Métodos para añadir y quitar recetas de favoritos
     def add_favorite_recipe(self, recipe):

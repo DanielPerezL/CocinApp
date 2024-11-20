@@ -7,17 +7,26 @@ from config import app
 
 def get_user_from_token(decoded_token):
     identity = decoded_token.get("sub")  # La identidad del usuario (el id)
-    password_hash = decoded_token.get("password_hash")  # Datos adicionales
+    #password_hash = decoded_token.get("password_hash")  # Datos adicionales
 
-    if not identity or not password_hash:
+    if not identity:
         return None
 
     # Busca al usuario en la base de datos
     user = User.query.get(identity)
-    if user is None or user.password_hash != password_hash:
+    if user is None:
         return None
     return user
     
+def create_tokens(user):
+    access_token = create_access_token(identity=str(user.id),  # identity debe ser un string o entero
+                                       #additional_claims={"password_hash": user.password_hash}
+    )
+    refresh_token = create_refresh_token(identity=str(user.id),  # identity debe ser un string o entero
+                                         #additional_claims={"password_hash": user.password_hash}
+    )
+    return access_token, refresh_token                                   
+
 def delete_images_by_pattern(pattern):
     upload_folder = app.config['UPLOAD_FOLDER']
 

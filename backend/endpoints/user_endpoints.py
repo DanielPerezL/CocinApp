@@ -1,7 +1,6 @@
 from config import app, db
 from flask import jsonify, request, make_response
-from flask_jwt_extended import (create_access_token, 
-                                create_refresh_token, 
+from flask_jwt_extended import (
                                 jwt_required, 
                                 get_jwt, 
                                 set_access_cookies, 
@@ -12,7 +11,7 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
-from utils import delete_images_by_pattern
+from utils import delete_images_by_pattern, create_tokens
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -39,25 +38,23 @@ def register():
 def login():
     data = request.json
     if not data or not all(key in data for key in ('email', 'password')):
-        return jsonify({"error": "Asegurate de introducir toda la información necesaria"}), 400
+        return jsonify({"error": "Asegurate de introducir toda la información necesaria."}), 400
 
     email = data.get('email')
     password = data.get('password')
 
     user = User.query.filter_by(email=email).first()
-    if user is None or not user.check_password(password):
+    if user is None:
         #COMPROBAMOS SI SE HA INTRODUCIDO EL NICKNAME QUE TAMBIEN ES UNICO
         nickname = email
         user = User.query.filter_by(nickname=nickname).first()
-        if user is None or not user.check_password(password):
-            return jsonify({"error": "Email o contraseña incorecto."}), 401
+        if user is None:
+            return jsonify({"error": "No existe ningún usuario con ese nombre o email."}), 400
+
+    if not user.check_password(password):
+        return jsonify({"error": "La contraseña introducida no es correcta."}), 401
         
-    access_token = create_access_token(identity=str(user.id),  # identity debe ser un string o entero
-                                       additional_claims={"password_hash": user.password_hash}
-    )
-    refresh_token = create_refresh_token(identity=str(user.id),  # identity debe ser un string o entero
-                                         additional_claims={"password_hash": user.password_hash}
-    )
+    access_token, refresh_token = create_tokens(user)
 
     # Retorna los tokens en el cuerpo de la respuesta
     response = make_response(jsonify({"msg": "Inicio de sesión exitoso."}))
