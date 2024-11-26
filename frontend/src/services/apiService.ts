@@ -102,6 +102,7 @@ export const login = async (email: string, password: string): Promise<void> => {
 
 // Aquí retornamos la URL completa de la imagen
 export const getImage = (filename: string): string => {
+  if (!filename) return "";
   return `${API_BASE_URL}/images/${filename}`;
 };
 
