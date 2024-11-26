@@ -8,7 +8,6 @@ import {
 
 const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
 const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
-
 //FUNCIONES SIN LOGIN REQUERIDO
 
 // Función para obtener recetas
@@ -34,7 +33,7 @@ export const fetchRecipeDetails = async (
 
 // Función para obtener detalles de una receta
 export const fetchUserPublic = async (id: string): Promise<UserPublicDTO> => {
-  const response = await fetch(`${API_BASE_URL}/user_info?id=${id}`);
+  const response = await fetch(`${API_BASE_URL}/users/${id}`);
   if (!response.ok) {
     const data = await response.json();
     throw new Error(t("errorLoadingUserDetails"));
@@ -45,14 +44,7 @@ export const fetchUserPublic = async (id: string): Promise<UserPublicDTO> => {
 export const fetchUserPublicFromNick = async (
   nick: string
 ): Promise<UserPublicDTO> => {
-  const response = await fetch(
-    `${API_BASE_URL}/user_info_from_nick?nickname=${nick}`
-  );
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(t("errorLoadingUserDetails"));
-  }
-  return await response.json();
+  return fetchUserPublic(nick);
 };
 
 // Función para obtener las recetas de un usario
@@ -73,7 +65,7 @@ export const registerUser = async (
   email: string,
   password: string
 ): Promise<string> => {
-  const response = await fetch(`${API_BASE_URL}/register`, {
+  const response = await fetch(`${API_BASE_URL}/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,12 +92,13 @@ export const login = async (email: string, password: string): Promise<void> => {
   });
 
   if (!response.ok) {
-    const data = await response.json();
     throw new Error(t("errorLogin"));
   }
+  const data = await response.json();
 
   // Indicar que el usuario ha iniciado sesión
   localStorage.setItem("isLoggedIn", "true");
+  localStorage.setItem("loggedUserId", data.id);
 };
 
 // Aquí retornamos la URL completa de la imagen
@@ -121,6 +114,7 @@ export const logout = async (): Promise<void> => {
   });
 
   localStorage.removeItem("isLoggedIn");
+  localStorage.removeItemItem("loggedUserId");
 };
 
 //FUNCIONES CON LOGIN REQUERIDO
@@ -133,11 +127,14 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
-  const response = await fetch(`${API_BASE_URL}/logged_user_profile`, {
-    method: "GET",
-    credentials: "include", // Incluye las cookies en la solicitud
-    headers,
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}`,
+    {
+      method: "GET",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers,
+    }
+  );
 
   if (!response.ok) {
     throw new Error(t("errorLoadingLoggedUser"));

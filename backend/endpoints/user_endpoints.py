@@ -13,7 +13,7 @@ from utils import get_user_from_token
 import os
 from utils import delete_images_by_pattern, create_tokens
 
-@app.route('/api/register', methods=['POST'])
+@app.route('/api/users', methods=['POST'])
 def register():
     data = request.json
     if not data or not all(key in data for key in ('nickname', 'email', 'password')):
@@ -57,7 +57,7 @@ def login():
     access_token, refresh_token = create_tokens(user)
 
     # Retorna los tokens en el cuerpo de la respuesta
-    response = make_response(jsonify({"msg": "Inicio de sesión exitoso."}))
+    response = make_response(jsonify({"msg": "Inicio de sesión exitoso.", "id": user.id}))
     
     #En el login no necesitamos el token csrf protect
     set_access_cookies(response, access_token)
@@ -71,7 +71,7 @@ def logout():
     unset_jwt_cookies(response)
     return response, 200
 
-@app.route('/api/change_password', methods=['POST'])
+'''@app.route('/api/change_password', methods=['POST'])
 @jwt_required()
 def change_password():
     user = get_user_from_token(get_jwt())
@@ -94,26 +94,24 @@ def change_password():
     except SQLAlchemyError as e:
         db.session.rollback()
     return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
+'''
 
-@app.route('/api/logged_user_profile', methods=['GET'])
-@jwt_required()
-def logged_user_profile():
-    user = get_user_from_token(get_jwt())
-    if user is None:
-        return jsonify({"error": "Usuario no encontrado"}), 404
-
-    return jsonify(user.to_dto()), 200
-
-@app.route('/api/user_info', methods=['GET'])
-def public_user_info():
-    id = request.args.get('id', default=-1, type=int)  # Default to 1 if not provided
-    if id < 0:
-        return jsonify({"error": "El id proporcionado no es válido."}), 404
+@app.route('/api/users/<string:id>', methods=['GET'])
+@jwt_required(optional=True)
+def user_info(id):
+    # Buscar al usuario por ID
     user = User.query.get(id)
     if user is None:
-        return jsonify({"error": "Usuario no encontrado."}), 404
-    return jsonify(user.to_public_dto()), 200
+        #COMPROBAR SI SE RECIBE EL NICKNAME
+        user = User.query.filter_by(nickname=id).first()
+        if user is None:
+            return jsonify({"error": "Usuario no encontrado."}), 404
 
+    client = get_user_from_token(get_jwt())
+    if client is None or client.id != id:
+        return jsonify(user.to_public_dto()), 200
+    return jsonify(user.to_dto()), 200
+    
 @app.route('/api/user_info_from_nick', methods=['GET'])
 def public_user_info_from_nick():
     nickname = request.args.get('nickname', default="", type=str)  # Obtener el nickname de los parámetros
