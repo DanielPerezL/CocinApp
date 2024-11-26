@@ -14,9 +14,10 @@ import UserPage from "./pages/UserPage";
 
 {
   /*
-  TODO:
-    CAMBIAR NOMBRE ENDPOINTS!!
-  
+  TODO:  
+    probar eliminar receta
+    probar cambiar contraseña
+
     gestion de recetas:
       (PAGINA DE RECETA PROPIA != RECETA AJENA)
       eliminar receta

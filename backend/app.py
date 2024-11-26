@@ -22,12 +22,11 @@ def not_found(e):
 @app.route('/token/refresh', methods=['POST'])
 @jwt_required(refresh=True)
 def refresh_access_token():
-    user = get_user_from_identity(get_jwt_identity())
+    user = User.query.get(get_jwt_identity())
+    print("user:", user)
     if user is None:
         return jsonify({"error": "Token inválido"}), 401
-    new_access_token = create_access_token(identity = {"id": user.id, 
-                                                       "password_hash": user.password_hash,
-                                                       })
+    new_access_token, _ = create_tokens(user)
     resp = jsonify({'refresh': True})
     set_access_cookies(resp, new_access_token)
     return resp, 200

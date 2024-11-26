@@ -12,7 +12,7 @@ const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
 
 // Función para obtener recetas
 export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
-  const response = await fetch(`${API_BASE_URL}/recipes_simple_dto`); // Ajusta la URL según tu API
+  const response = await fetch(`${API_BASE_URL}/recipes`);
   if (!response.ok) {
     throw new Error(t("errorLoadingRecipes"));
   }
@@ -23,7 +23,7 @@ export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
 export const fetchRecipeDetails = async (
   id: string
 ): Promise<RecipeDetailDTO> => {
-  const response = await fetch(`${API_BASE_URL}/recipe_details_dto?id=${id}`);
+  const response = await fetch(`${API_BASE_URL}/recipes/${id}`);
   if (!response.ok) {
     const data = await response.json();
     throw new Error(t("errorLoadingRecipeDetails"));
@@ -51,7 +51,7 @@ export const fetchUserPublicFromNick = async (
 export const fetchUserRecipes = async (
   id: string
 ): Promise<RecipeSimpleDTO[]> => {
-  const response = await fetch(`${API_BASE_URL}/recipes_from?id=${id}`);
+  const response = await fetch(`${API_BASE_URL}/recipes?user_id=${id}`);
   if (!response.ok) {
     const data = await response.json();
     throw new Error(t("errorLoadingUserRecipes"));
@@ -82,7 +82,7 @@ export const registerUser = async (
 
 // Función para hacer login
 export const login = async (email: string, password: string): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/login`, {
+  const response = await fetch(`${API_BASE_URL}/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -108,13 +108,13 @@ export const getImage = (filename: string): string => {
 
 // Función para hacer logout (NECESITA LOGIN PERO SI DA ERROR NO SE NECESITA TRATAR)
 export const logout = async (): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/logout`, {
+  const response = await fetch(`${API_BASE_URL}/users/logout`, {
     method: "POST",
     credentials: "include", // Incluye las cookies en la solicitud para que el backend pueda eliminarlas
   });
 
   localStorage.removeItem("isLoggedIn");
-  localStorage.removeItemItem("loggedUserId");
+  localStorage.removeItem("loggedUserId");
 };
 
 //FUNCIONES CON LOGIN REQUERIDO
@@ -150,11 +150,14 @@ const fetchMyRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
-  const response = await fetch(`${API_BASE_URL}/my_recipes`, {
-    method: "GET",
-    credentials: "include", // Incluye las cookies en la solicitud
-    headers,
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/recipes?user_id${localStorage.getItem("loggedUserId")}`,
+    {
+      method: "GET",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers,
+    }
+  );
 
   if (!response.ok) {
     throw new Error(t("errorLoadingMyRecipes"));
@@ -164,6 +167,8 @@ const fetchMyRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
 };
 
 export const isFavoriteRecipe = async (id: string): Promise<boolean> => {
+  if (!localStorage.getItem("isLoggedIn")) return false;
+
   try {
     const favs: RecipeSimpleDTO[] = await fetchMyFavRecipes();
     return favs.some((recipe) => recipe.id === id);
@@ -179,11 +184,16 @@ const addRecipeFavUnsafe = async (id: string): Promise<void> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
-  const response = await fetch(`${API_BASE_URL}/add_fav_recipe?id=${id}`, {
-    method: "POST",
-    credentials: "include", // Incluye las cookies en la solicitud
-    headers,
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/users/${localStorage.getItem(
+      "loggedUserId"
+    )}/fav_recipes/${id}`,
+    {
+      method: "POST",
+      credentials: "include",
+      headers,
+    }
+  );
   if (!response.ok) {
     const data = await response.json();
     throw new Error(t("errorAddingFavRecipe"));
@@ -198,11 +208,16 @@ const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
-  const response = await fetch(`${API_BASE_URL}/remove_fav_recipe?id=${id}`, {
-    method: "POST",
-    credentials: "include", // Incluye las cookies en la solicitud
-    headers,
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/users/${localStorage.getItem(
+      "loggedUserId"
+    )}/fav_recipes/${id}`,
+    {
+      method: "DELETE",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers,
+    }
+  );
   if (!response.ok) {
     const data = await response.json();
     throw new Error(t("errorRemovingFavRecipe"));
@@ -216,11 +231,14 @@ const fetchMyFavRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
-  const response = await fetch(`${API_BASE_URL}/my_fav_recipes`, {
-    method: "GET",
-    credentials: "include", // Incluye las cookies en la solicitud
-    headers,
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}/fav_recipes`,
+    {
+      method: "GET",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers,
+    }
+  );
 
   if (!response.ok) {
     throw new Error(t("errorLoadingMyFavRecipes"));
@@ -284,7 +302,7 @@ const uploadRecipeUnsafe = async (
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
-  const response = await fetch(`${API_BASE_URL}/new_recipe`, {
+  const response = await fetch(`${API_BASE_URL}/recipes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json", // Especifica el tipo de contenido
@@ -311,15 +329,18 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
   const data = { picture: imagePath };
-  const response = await fetch(`${API_BASE_URL}/new_user_picture`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json", // Especifica el tipo de contenido
-      ...headers,
-    },
-    credentials: "include", // Incluye las cookies en la solicitud
-    body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Especifica el tipo de contenido
+        ...headers,
+      },
+      credentials: "include", // Incluye las cookies en la solicitud
+      body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
+    }
+  );
 
   if (!response.ok) {
     const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
@@ -329,24 +350,7 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
 
 // Función para eliminar imagen de perfil
 export const removeProfilePic = async (): Promise<void> => {
-  return await withTokenRefresh(() => removeProfilePicUnsafe());
-};
-const removeProfilePicUnsafe = async (): Promise<void> => {
-  const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
-  const response = await fetch(`${API_BASE_URL}/rm_user_picture`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json", // Especifica el tipo de contenido
-      ...headers,
-    },
-    credentials: "include", // Incluye las cookies en la solicitud
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
-    throw new Error(t("errorUpdatingProfilePic"));
-  }
+  return await withTokenRefresh(() => updateProfilePicUnsafe(""));
 };
 
 // Función para eliminar imagen de perfil
@@ -356,15 +360,16 @@ export const removeAccount = async (): Promise<void> => {
 const removeAccountUnsafe = async (): Promise<void> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
-  const response = await fetch(`${API_BASE_URL}/delete_account`, {
-    method: "DELETE",
-    headers: {
-      ...headers,
-    },
-    credentials: "include",
-  });
-
-  console.log(response);
+  const response = await fetch(
+    `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}`,
+    {
+      method: "DELETE",
+      headers: {
+        ...headers,
+      },
+      credentials: "include",
+    }
+  );
 
   if (!response.ok) {
     const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
@@ -387,9 +392,12 @@ const refreshAccessToken = async (): Promise<void> => {
   }
   isRefreshingToken = true;
   try {
+    const csrfToken = getCookie("csrf_refresh_token");
+    const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
     const response = await fetch(`${TOKEN_BASE_URL}/refresh`, {
       method: "POST",
       credentials: "include", // Incluye las cookies en la solicitud
+      headers,
     });
 
     if (!response.ok) {
@@ -425,12 +433,8 @@ const withTokenRefresh = async <T>(asyncFunc: () => Promise<T>): Promise<T> => {
 const getCookie = (name: string): string | undefined => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-
-  // Verifica que `parts.pop()` no sea undefined antes de intentar dividirla
   if (parts.length === 2) {
-    const lastPart = parts.pop();
-    return lastPart ? lastPart.split(";").shift() : undefined;
+    return parts.pop()?.split(";").shift();
   }
-
   return undefined;
 };

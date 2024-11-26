@@ -40,7 +40,8 @@ const FavoritesPage = () => {
     if (!localStorage.getItem("isLoggedIn") === true) return;
     getUserProfile();
     loadMyFavRecipes();
-  }, []);
+  }, [refresh]);
+
   return (
     <div className="container mb-5 main-container">
       <div className="text-center mb-4">
