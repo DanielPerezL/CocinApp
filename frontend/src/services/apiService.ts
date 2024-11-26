@@ -244,7 +244,7 @@ const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
-  const response = await fetch(`${API_BASE_URL}/upload`, {
+  const response = await fetch(`${API_BASE_URL}/images`, {
     method: "POST",
     credentials: "include", // Incluye las cookies en la solicitud
     headers,

@@ -15,7 +15,7 @@ def serve_uploaded_file(filename):
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
     return jsonify({"error": "Image not found"}), 404
 
-@app.route('/api/upload', methods=['POST'])
+@app.route('/api/images', methods=['POST'])
 @jwt_required()
 def upload_image():
     user = get_user_from_token(get_jwt())    
