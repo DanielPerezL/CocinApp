@@ -86,6 +86,7 @@
     "errorUploadingRecipe": "Error al publicar la receta.",
     "errorUpdatingProfilePic": "Error al actualizar la foto de perfil",
     "errorExpiredSession": "Sesión expirada",
-    "errorLoadingUserRecipes": "Error al cargar las recetas del usuario"
+    "errorLoadingUserRecipes": "Error al cargar las recetas del usuario",
+    "errorDeletingRecipe": "Error al eliminar la receta"
   }
   

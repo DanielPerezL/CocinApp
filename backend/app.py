@@ -23,7 +23,6 @@ def not_found(e):
 @jwt_required(refresh=True)
 def refresh_access_token():
     user = User.query.get(get_jwt_identity())
-    print("user:", user)
     if user is None:
         return jsonify({"error": "Token inválido"}), 401
     new_access_token, _ = create_tokens(user)

@@ -25,7 +25,6 @@ export const fetchRecipeDetails = async (
 ): Promise<RecipeDetailDTO> => {
   const response = await fetch(`${API_BASE_URL}/recipes/${id}`);
   if (!response.ok) {
-    const data = await response.json();
     throw new Error(t("errorLoadingRecipeDetails"));
   }
   return await response.json();
@@ -151,7 +150,7 @@ const fetchMyRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
   const response = await fetch(
-    `${API_BASE_URL}/recipes?user_id${localStorage.getItem("loggedUserId")}`,
+    `${API_BASE_URL}/recipes?user_id=${localStorage.getItem("loggedUserId")}`,
     {
       method: "GET",
       credentials: "include", // Incluye las cookies en la solicitud
@@ -348,6 +347,43 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
   }
 };
 
+export const updatePassword = async (
+  current_password: string,
+  new_password: string
+): Promise<void> => {
+  return await withTokenRefresh(() =>
+    updatePasswordUnsafe(current_password, new_password)
+  );
+};
+const updatePasswordUnsafe = async (
+  current_password: string,
+  new_password: string
+): Promise<void> => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const data = {
+    current_password: current_password,
+    new_password: new_password,
+  };
+  const response = await fetch(
+    `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Especifica el tipo de contenido
+        ...headers,
+      },
+      credentials: "include", // Incluye las cookies en la solicitud
+      body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
+    throw new Error(t("errorUpdatingProfilePic"));
+  }
+};
+
 // Función para eliminar imagen de perfil
 export const removeProfilePic = async (): Promise<void> => {
   return await withTokenRefresh(() => updateProfilePicUnsafe(""));
@@ -373,9 +409,29 @@ const removeAccountUnsafe = async (): Promise<void> => {
 
   if (!response.ok) {
     const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
-    throw new Error("error en apiservice " + t("errorUpdatingProfilePic"));
+    throw new Error(t("errorUpdatingProfilePic"));
   }
   logout();
+};
+
+export const removeRecipe = async (idR: string): Promise<void> => {
+  if (!localStorage.getItem("isLoggedIn")) return;
+  return await withTokenRefresh(() => removeRecipeUnsafe(idR));
+};
+const removeRecipeUnsafe = async (idR: string): Promise<void> => {
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
+  const response = await fetch(`${API_BASE_URL}/recipes/${idR}`, {
+    method: "DELETE",
+    headers: {
+      ...headers,
+    },
+    credentials: "include", // Incluye las cookies en la solicitud
+  });
+
+  if (!response.ok) {
+    throw new Error(t("errorDeletingRecipe"));
+  }
 };
 
 // FUNCIONES AUXILIARES MANEJO COOKIES Y SESION

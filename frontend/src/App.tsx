@@ -14,10 +14,7 @@ import UserPage from "./pages/UserPage";
 
 {
   /*
-  TODO:  
-    probar eliminar receta
-    probar cambiar contraseña
-
+  TODO: 
     gestion de recetas:
       (PAGINA DE RECETA PROPIA != RECETA AJENA)
       eliminar receta

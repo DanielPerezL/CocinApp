@@ -75,16 +75,15 @@ def new_recipe(user, data):
 def recipes_id(id):
     if id < 0:
         return jsonify({"error": "El id proporcionado no es válido"}), 404
-    
     method = request.method
+
     if method == 'GET':
         return recipe_details(id)
     if method == 'DELETE':
         user = get_user_from_token(get_jwt())
         if user is None:
             return jsonify({"error": "Usuario no encontrado"}), 404
-        data = request.json
-        recipe = Recipe.query.get(data.get('recipe_id'))
+        recipe = Recipe.query.get(id)
         if recipe is None:
             return jsonify({"error": "Receta no encontrada"}), 404
         if recipe.user_id != user.id:

@@ -86,5 +86,6 @@
     "errorUploadingRecipe": "Error publishing the recipe.",
     "errorUpdatingProfilePic": "Error updating profile picture",
     "errorExpiredSession": "Session expired",
-    "errorLoadingUserRecipes": "Error loading user recipes"
+    "errorLoadingUserRecipes": "Error loading user recipes",
+    "errorDeletingRecipe": "Error deleting recipe"
 }
