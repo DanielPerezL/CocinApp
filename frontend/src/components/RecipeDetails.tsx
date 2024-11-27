@@ -20,6 +20,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import NeedConfirmButton from "./NeedConfirmButton";
+import { setGlobalRefresh } from "../pages/ProfilePage";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -160,9 +161,11 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
             buttonText={t("deleteRecipe")}
             title={t("confirmDelteRecipeTitle")}
             message={t("confirmDelteRecipeMessage")}
-            onConfirm={() => {
+            onConfirm={async () => {
               removeRecipe(recipe.id);
-              navigate("/profile", { state: { refresh: true } });
+              await new Promise((resolve) => setTimeout(resolve, 500));
+              setGlobalRefresh();
+              navigate("/profile");
             }}
           />
         )}

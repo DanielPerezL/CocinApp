@@ -62,6 +62,9 @@
     "confirmDeleteAccountMessage": "Esta acción no se puede deshacer. ¿Estás seguro de que deseas eliminar tu cuenta?",
     "confirmLogoutTitle": "¿Cerrar sesión?",
     "confirmLogoutMessage": "¿Estás seguro de que deseas cerrar sesión?",
+    "deleteRecipe": "Eliminar receta",
+    "confirmDelteRecipeTitle" : "¿Eliminar receta?",
+    "confirmDelteRecipeMessage": "Esta acción no se puede deshacer. ¿Estás seguro de que deseas eliminar esta receta?",
 
     "errorRecipeUpload": "Error al publicar la receta",
     "errorFillRecipeData": "Por favor, rellena todos los campos y al menos una imágen.",
