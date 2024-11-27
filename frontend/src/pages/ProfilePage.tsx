@@ -3,6 +3,7 @@ import AuthWrapper from "../components/AuthWrapper";
 import {
   fetchLoggedUserProfile,
   fetchMyRecipes,
+  isLoggedIn,
   logout,
 } from "../services/apiService";
 import { RecipeSimpleDTO, UserDTO } from "../interfaces";
@@ -40,7 +41,7 @@ const ProfilePage: React.FC = () => {
       }
     };
 
-    if (!localStorage.getItem("isLoggedIn") === true) return;
+    if (!isLoggedIn()) return;
     getUserProfile();
     loadMyRecipes();
   }, [refresh]);

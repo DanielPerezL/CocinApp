@@ -11,11 +11,15 @@ import pngHeart from "../assets/heart.png";
 import {
   addRecipeFav,
   getImage,
+  getLoggedUserId,
   isFavoriteRecipe,
+  isLoggedIn,
+  removeRecipe,
   rmRecipeFav,
 } from "../services/apiService";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import NeedConfirmButton from "./NeedConfirmButton";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -25,6 +29,7 @@ interface RecipeDetailsProps {
 const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   const { t } = useTranslation();
 
+  const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isFavorite, setFavorite] = useState(false);
@@ -42,7 +47,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
 
   useEffect(() => {
     if (user.picture === "") setImgError(true);
-    if (!localStorage.getItem("isLoggedIn") === true) return;
+    if (!isLoggedIn()) return;
     getFavorite();
   }, []);
 
@@ -67,7 +72,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   };
 
   const handleFavButtonClick = () => {
-    if (!localStorage.getItem("isLoggedIn") === true) {
+    if (!isLoggedIn()) {
       setShowLoginModal(true);
       return;
     }
@@ -82,8 +87,6 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
       //Si da error se habrá cerrado la sesion
       //refrescamos la pantalla para resetear el estado
       window.location.reload();
-
-      //TODO: probara a repitar solo el componte!!
     }
   };
 
@@ -148,7 +151,22 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         </div>
       </div>
 
-      <h1 className="display-5 text-primary mb-4">{recipe.title}</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <h1 className="display-5 text-primary">{recipe.title}</h1>
+
+        {getLoggedUserId() == recipe.user_id && (
+          <NeedConfirmButton
+            className="btn btn-danger"
+            buttonText={t("deleteRecipe")}
+            title={t("confirmDelteRecipeTitle")}
+            message={t("confirmDelteRecipeMessage")}
+            onConfirm={() => {
+              removeRecipe(recipe.id);
+              navigate("/profile", { state: { refresh: true } });
+            }}
+          />
+        )}
+      </div>
       {/* Carrusel de imágenes */}
       <ImageCarousel
         images={

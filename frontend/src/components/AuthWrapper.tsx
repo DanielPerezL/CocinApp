@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import AccessMenu from "../components/AccessMenu";
+import { isLoggedIn } from "../services/apiService";
 
 interface AuthWrapperProps {
   children: ReactNode;
@@ -10,7 +11,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({
   children,
   onLoginSuccess,
 }) => {
-  if (!localStorage.getItem("isLoggedIn")) {
+  if (!isLoggedIn()) {
     return <AccessMenu onLoginSuccess={onLoginSuccess} />;
   }
 

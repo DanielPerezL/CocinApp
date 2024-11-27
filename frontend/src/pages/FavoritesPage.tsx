@@ -5,6 +5,7 @@ import AuthWrapper from "../components/AuthWrapper";
 import {
   fetchLoggedUserProfile,
   fetchMyFavRecipes,
+  isLoggedIn,
 } from "../services/apiService";
 import { useTranslation } from "react-i18next";
 
@@ -37,7 +38,7 @@ const FavoritesPage = () => {
       }
     };
 
-    if (!localStorage.getItem("isLoggedIn") === true) return;
+    if (!isLoggedIn()) return;
     getUserProfile();
     loadMyFavRecipes();
   }, [refresh]);

@@ -10,6 +10,14 @@ const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
 const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
 //FUNCIONES SIN LOGIN REQUERIDO
 
+export const isLoggedIn = () => {
+  return localStorage.getItem("isLoggedIn") == "true";
+};
+
+export const getLoggedUserId = () => {
+  return localStorage.getItem("loggedUserId");
+};
+
 // Función para obtener recetas
 export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
   const response = await fetch(`${API_BASE_URL}/recipes`);
