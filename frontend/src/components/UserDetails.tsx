@@ -143,7 +143,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
         </p>
       </div>
 
-      <h3 className="text-danger mt-3">Danger zone</h3>
+      <h3 className="text-danger mt-3">{t("dangerZone")}</h3>
       <div className="d-flex flex-column flex-sm-row align-items-center">
         <button
           className="btn btn-danger mt-3 ms-2"

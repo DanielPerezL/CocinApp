@@ -72,6 +72,7 @@
     "enterNewPassword": "Enter your new password",
     "confirm": "Confirm",
     "passwordUpdatedSuccessfully": "Password updated successfully",
+    "dangerZone": "Danger Zone",
 
     "errorRecipeUpload": "Error publishing the recipe",
     "errorFillRecipeData": "Please fill out all fields and add at least one image.",

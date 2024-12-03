@@ -72,6 +72,7 @@
     "enterNewPassword": "Introduce tu nueva contraseña",
     "confirm": "Confirmar",
     "passwordUpdatedSuccessfully": "Constraseña actualizada con éxtio",
+    "dangerZone": "Zona de peligro",
 
     "errorRecipeUpload": "Error al publicar la receta",
     "errorFillRecipeData": "Por favor, rellena todos los campos y al menos una imágen.",
