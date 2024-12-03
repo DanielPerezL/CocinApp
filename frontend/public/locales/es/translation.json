@@ -65,6 +65,13 @@
     "deleteRecipe": "Eliminar receta",
     "confirmDelteRecipeTitle" : "¿Eliminar receta?",
     "confirmDelteRecipeMessage": "Esta acción no se puede deshacer. ¿Estás seguro de que deseas eliminar esta receta?",
+    "changePassword": "Cambiar contraseña",
+    "currentPassword": "Contraseña actual",
+    "enterCurrentPassword": "Introduce tu contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "enterNewPassword": "Introduce tu nueva contraseña",
+    "confirm": "Confirmar",
+    "passwordUpdatedSuccessfully": "Constraseña actualizada con éxtio",
 
     "errorRecipeUpload": "Error al publicar la receta",
     "errorFillRecipeData": "Por favor, rellena todos los campos y al menos una imágen.",
@@ -88,8 +95,10 @@
     "errorUploadingImage": "Error al subir la imágen al servidor.",
     "errorUploadingRecipe": "Error al publicar la receta.",
     "errorUpdatingProfilePic": "Error al actualizar la foto de perfil",
+    "errorUpdatingPassword": "Error al actualizar la contraseña",
     "errorExpiredSession": "Sesión expirada",
     "errorLoadingUserRecipes": "Error al cargar las recetas del usuario",
     "errorDeletingRecipe": "Error al eliminar la receta"
+
   }
   

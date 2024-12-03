@@ -16,9 +16,6 @@ import UserPage from "./pages/UserPage";
   /*
   TODO: 
     gestion de recetas:
-      (PAGINA DE RECETA PROPIA != RECETA AJENA)
-      eliminar receta
-      
       modificar receta
 
     modificar INPUT pasos:
@@ -40,15 +37,15 @@ import UserPage from "./pages/UserPage";
       por categorias
     
     funcionalidad:
-      rol de administrador / moderador
       lista de la compra
+      rol de administrador / moderador
       IMPLEMENTAR SCROLL INFINITO Y QUE NO SE CARGEN TODAS LAS RECETAS A LA VEZ
-    
+
     FUERA (prototipo):
       wcag
       fotos de usuario solo cuadradas
       ¿IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD?
-      cambiar contraseña
+      
   */
 }
 

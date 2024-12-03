@@ -389,7 +389,7 @@ const updatePasswordUnsafe = async (
 
   if (!response.ok) {
     const errorData = await response.json(); // Captura cualquier mensaje de error del servidor
-    throw new Error(t("errorUpdatingProfilePic"));
+    throw new Error(t("errorUpdatingPassword"));
   }
 };
 

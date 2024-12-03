@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 interface NeedConfirmButtonProps {
   title: string;
@@ -16,6 +17,7 @@ const NeedConfirmButton: React.FC<NeedConfirmButtonProps> = ({
   onConfirm,
   buttonText,
 }) => {
+  const { t } = useTranslation();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleConfirm = () => {
@@ -45,10 +47,10 @@ const NeedConfirmButton: React.FC<NeedConfirmButtonProps> = ({
         </Modal.Body>
         <Modal.Footer className="bg-light">
           <Button variant="secondary" onClick={handleCancel}>
-            Cancelar
+            {t("cancel")}
           </Button>
           <Button variant="danger" onClick={handleConfirm}>
-            Confirmar
+            {t("confirm")}
           </Button>
         </Modal.Footer>
       </Modal>
