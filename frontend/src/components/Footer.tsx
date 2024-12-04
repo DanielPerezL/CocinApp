@@ -43,7 +43,7 @@ const Footer = () => {
             <ul className="list-unstyled">
               <li>
                 <a
-                  href="https://github.com/Zice37/"
+                  href="https://github.com/DanielPerezL/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white text-decoration-none"

@@ -162,8 +162,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
             title={t("confirmDelteRecipeTitle")}
             message={t("confirmDelteRecipeMessage")}
             onConfirm={async () => {
-              removeRecipe(recipe.id);
-              await new Promise((resolve) => setTimeout(resolve, 500));
+              await removeRecipe(recipe.id);
               setGlobalRefresh();
               navigate("/profile");
             }}

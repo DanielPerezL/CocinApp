@@ -8,6 +8,12 @@ import {
 
 const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
 const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
+
+/* Cadenas de conexion usando NGROK
+const API_BASE_URL = `${window.location.protocol}/api`;
+const TOKEN_BASE_URL = `${window.location.protocol}/token`;
+*/
+
 //FUNCIONES SIN LOGIN REQUERIDO
 
 export const isLoggedIn = () => {
