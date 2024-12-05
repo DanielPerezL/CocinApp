@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import ImageModal from "./ImagenModal";
 import NeedConfirmButton from "./NeedConfirmButton";
 import { Button, Modal, Form } from "react-bootstrap";
+import ImageCropModal from "./ProfileCropModal";
 
 interface UserDetailsProps {
   user: UserDTO;
@@ -23,6 +24,7 @@ interface UserDetailsProps {
 const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   const { t } = useTranslation();
 
+  const [imageToCrop, setImageToCrop] = useState<string | null>(null);
   const [imgError, setImgError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userPic, setUserPic] = useState<string>(user.picture);
@@ -34,12 +36,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
     null
   );
-
-  const clearFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Vacía el contenido del input
-    }
-  };
 
   const handleCancelChangePassword = () => {
     setShowChangePasswordModal(false); // Cerrar el modal sin hacer nada
@@ -74,15 +70,21 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
-
-    // Verifica si se ha seleccionado un archivo
     if (file) {
-      const imageUrl = await uploadImage(file); // Usa `file` directamente aquí
-      await updateProfilePic(imageUrl); // Actualizar la foto de perfil en el backend
-      setUserPic(imageUrl);
-      setImgError(false);
-      clearFileInput();
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageToCrop(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
+  };
+
+  const handleCropSave = async (croppedImage: File) => {
+    const imageUrl = await uploadImage(croppedImage); // Sube la imagen recortada
+    await updateProfilePic(imageUrl); // Actualiza la imagen de perfil
+    setUserPic(imageUrl);
+    setImgError(false); //Para volver a buscar la img al servidor
+    setImageToCrop(null);
   };
 
   const handlePhotoDelete = async () => {
@@ -131,6 +133,13 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
+          {imageToCrop && (
+            <ImageCropModal
+              image={imageToCrop}
+              onClose={() => setImageToCrop(null)}
+              onSave={handleCropSave}
+            />
+          )}
         </div>
       </div>
 

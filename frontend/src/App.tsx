@@ -43,7 +43,6 @@ import UserPage from "./pages/UserPage";
 
     FUERA (prototipo):
       wcag
-      fotos de usuario solo cuadradas
       ¿IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD?
       
   */
