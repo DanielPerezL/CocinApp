@@ -120,7 +120,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
             {t("modifyPic")}
           </button>
           <button
-            className="btn btn-danger ms-2 mt-3"
+            className="btn btn-primary ms-2 mt-3"
             onClick={handlePhotoDelete}
           >
             {t("rmPic")}
