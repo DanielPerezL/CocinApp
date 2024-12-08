@@ -74,6 +74,10 @@
     "passwordUpdatedSuccessfully": "Password updated successfully",
     "dangerZone": "Danger Zone",
 
+    "errorLoginUserNotFound": "User not found. Please check your credentials.",
+    "errorLoginBadPassword": "The password is incorrect. Please try again.",  
+    "errorRegisterEmailExists": "An account with this email address already exists.",
+    "errorRegisterNameExists": "This username is already taken. Please choose another one.",
     "errorRecipeUpload": "Error publishing the recipe",
     "errorFillRecipeData": "Please fill out all fields and add at least one image.",
     "errorNoIDRecipe": "Recipe ID not provided",

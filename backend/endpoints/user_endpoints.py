@@ -11,7 +11,7 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
-from utils import delete_images_by_pattern, create_tokens
+from utils import delete_images_by_uploader, create_tokens
 
 @app.route('/api/users', methods=['POST'])
 def register():
@@ -20,7 +20,7 @@ def register():
         return jsonify({"error": "Asegurate de introducir toda la información necesaria"}), 400
 
     if User.query.filter_by(email=data.get('email')).first() is not None:
-        return jsonify({"error": "Ya exista una cuenta asociada a ese email."}), 400
+        return jsonify({"error": "Ya existe una cuenta asociada a ese email."}), 400
 
     new_user = User(nickname = data.get('nickname'),
                     email = data.get('email'),
@@ -32,7 +32,7 @@ def register():
         return jsonify({"msg": "Cuenta creada con éxito."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({"error": "Ya exista una cuenta asociada con ese nombre de usuario."}), 400
+        return jsonify({"error": "Ya existe una cuenta asociada con ese nombre de usuario."}), 400
 
 @app.route('/api/users/login', methods=['POST'])
 def users_login():
@@ -140,13 +140,11 @@ def delete_account(jwt_token):
     user = get_user_from_token(jwt_token)
     if user is None:
         return jsonify({"error": "Usuario no encontrado."}), 404
-    
-    id = user.id
     try:
         db.session.delete(user)
         #DELETE ORPHAN ELIMINA LAS RECETAS
         db.session.commit()
-        delete_images_by_pattern(f"{user.id}_.*")
+        delete_images_by_uploader(user)
         return jsonify({"msg": "Usuario eliminado."}),204
     except SQLAlchemyError as e:
         db.session.rollback()

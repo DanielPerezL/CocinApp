@@ -45,7 +45,7 @@ import UserPage from "./pages/UserPage";
 
     FUERA (prototipo):
       wcag
-      ¿IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD?
+      ¿IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD? -> p.e. FAVORITAS (cuidado concurrencia de usuarios multidispositivo)
       
   */
 }

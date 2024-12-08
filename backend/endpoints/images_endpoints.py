@@ -1,10 +1,8 @@
 from config import app
 from flask import jsonify, request, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt
-import hashlib
 import os
-from utils import get_user_from_token
-from datetime import datetime
+from utils import get_user_from_token, get_new_image_name
 
 
 @app.route('/api/images/<path:filename>', methods=['GET'])
@@ -30,23 +28,12 @@ def upload_image():
     if image.filename == '':
         return jsonify({"error": "No image selected"}), 400
 
-    # Lee el contenido de la imagen para generar un hash
-    image_content = image.read()
-    image_hash = hashlib.sha256(image_content).hexdigest()
-    
-    # Obtiene la extensión del archivo original
-    _, extension = os.path.splitext(image.filename)
-    
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-
-    # Crea un nuevo nombre de archivo basado en el hash
-    new_filename = f"{user.id}_{timestamp}_{image_hash}{extension}"
+    new_filename = get_new_image_name(user, image)
     
     # Construye la ruta completa donde se almacenará el archivo
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
 
-    # Guarda la imagen (vuelve a colocar el puntero al inicio antes de guardar)
-    image.seek(0)
+    # Guarda la imagen 
     image.save(filepath)
 
     return jsonify({"msg": "Image uploaded successfully", "filename": new_filename}), 200
