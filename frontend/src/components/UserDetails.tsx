@@ -85,6 +85,11 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
     setUserPic(imageUrl);
     setImgError(false); //Para volver a buscar la img al servidor
     setImageToCrop(null);
+
+    //Eliminar la imagen del input por si se selecciona despues la misma
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handlePhotoDelete = async () => {

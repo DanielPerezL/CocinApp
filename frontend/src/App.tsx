@@ -15,8 +15,6 @@ import UserPage from "./pages/UserPage";
 {
   /*
   TODO: 
-    mejorar mensajes de error (login/registro) + revisar el resto de mensajes de error
-
     gestion de recetas:
       modificar receta
 
