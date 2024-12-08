@@ -15,30 +15,38 @@ import UserPage from "./pages/UserPage";
 {
   /*
   TODO: 
-    gestion de recetas:
-      modificar receta
-
     modificar INPUT pasos:
       tabla receta usa coleecion de pasos
-  
-    categorías:
-      (tiempo, dificultad, ingredientes)
-      tabla ENUM_TIEMPO (-20min, 20-40, 40-90, +90min)
-      tabla ENUM_DIFICULTAD (facil/easy, medio/medium, dificil/hard, experto/expert)
 
     modificar INPUT ingredientes:
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
-      tabla de INGREDIENTE_CONCRETO (fk_INGREDIENTE, cantidad)
-      tabla receta usa coleecion de ingrediente concreto
+            tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)
+
+    categorías:
+      (tiempo, dificultad)
+      tabla ENUM_TIEMPO (<20min, 20-40, 40-90, >90min)
+      tabla ENUM_DIFICULTAD (facil/easy, medio/medium, dificil/hard, experto/expert)
+
+    gestion de recetas:
+      modificar receta (PASOS, INGREDIENTES, CATEGORTIAS)
 
     filtros:
       buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
       filtrar por numero de pasos
-      por categorias
+      por categorias (TIEMPO, DIFICULTAD)
+      por contiene x ingrediente
+      por NO contiene x ingrediente
     
     funcionalidad:
       lista de la compra
-      rol de administrador / moderador
+      rol de administrador / moderador:
+        en docker-compose -> DEFINIR CREDENCIALES USUARIO ADMIN Y AÑADIRLO EN LA BD CON UN ID FIJO (id VAR ENTORNO)
+        en backend consultar ID_ADMIN y en las operaciones si eres ID_ADMIN NO TE PONE PEGAS
+        en el front -> al login te dice tu id y si eres admin(otra var localStorage)
+                    -> si eres admin te aparecen todos los botones de eliminar cuenta y receta
+                    -> sino boton de reportar (NUEVA TABLA BD PK(usuarioInformante, href reportada, pendienteDeRevision(si/no) )
+                    -> si eres admin ver listado de reportes (CUENTAS Y RECETAS) y marcar como pendientes / posibilidad de ver tmb las ya revisadas
+
       IMPLEMENTAR SCROLL INFINITO Y QUE NO SE CARGEN TODAS LAS RECETAS A LA VEZ
 
     FUERA (prototipo):
