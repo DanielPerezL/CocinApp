@@ -180,6 +180,19 @@ export const logout = async (): Promise<void> => {
   localStorage.removeItem("loggedUserId");
 };
 
+export const reportResource = async (resource: string): Promise<void> => {
+  let response: Response;
+  const data = { reported_resource: resource };
+  response = await fetch(`${API_BASE_URL}/reports`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    credentials: "include", // Permite que las cookies sean enviadas y recibidas
+  });
+};
+
 //FUNCIONES CON LOGIN REQUERIDO
 
 // Función para obtener el perfil del usuario logeado

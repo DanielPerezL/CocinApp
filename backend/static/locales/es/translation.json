@@ -74,6 +74,8 @@
     "confirm": "Confirmar",
     "passwordUpdatedSuccessfully": "Constraseña actualizada con éxtio",
     "dangerZone": "Zona de peligro",
+    "reportRecipe": "Reportar Receta",
+    "reportUser":"Reportar Usuario",
 
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",
     "errorLoginBadPassword": "La contraseña es incorrecta. Inténtalo de nuevo.",

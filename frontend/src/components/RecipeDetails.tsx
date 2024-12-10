@@ -8,6 +8,7 @@ import share from "../assets/share.png";
 import userDefaultPic from "../assets/user.png";
 import redHeart from "../assets/red_heart.png";
 import pngHeart from "../assets/heart.png";
+import report from "../assets/report.png";
 import {
   addRecipeFav,
   getImage,
@@ -16,8 +17,10 @@ import {
   isFavoriteRecipe,
   isLoggedIn,
   removeRecipe,
+  reportResource,
   rmRecipeFav,
 } from "../services/apiService";
+import NotifyReportModal from "./NotifyReportModal";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import NeedConfirmButton from "./NeedConfirmButton";
@@ -30,6 +33,7 @@ interface RecipeDetailsProps {
 const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   const { t } = useTranslation();
 
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -195,6 +199,29 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         <p className="receta-text">{recipe.procedure}</p>
       </div>
 
+      {!isAdmin() && getLoggedUserId() != user.id && (
+        <button
+          className="btn btn-danger"
+          onClick={() => {
+            reportResource(window.location.pathname + window.location.search);
+            setShowReportModal(true);
+          }}
+        >
+          <img
+            className="me-2 img-fluid"
+            style={{ width: "2rem", height: "auto" }}
+            src={report}
+          ></img>
+          {t("reportRecipe")}
+        </button>
+      )}
+
+      <NotifyReportModal
+        show={showReportModal}
+        onHide={() => {
+          setShowReportModal(false);
+        }}
+      />
       <Modal
         show={showModal}
         onHide={() => {

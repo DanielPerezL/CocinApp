@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { UserPublicDTO } from "../interfaces";
-import { getImage, isAdmin, removeAccount } from "../services/apiService";
+import {
+  getImage,
+  getLoggedUserId,
+  isAdmin,
+  removeAccount,
+  reportResource,
+} from "../services/apiService";
 import userDefaultPic from "../assets/user.png";
 import { useTranslation } from "react-i18next";
 import ImageModal from "./ImagenModal";
 import NeedConfirmButton from "./NeedConfirmButton";
+import report from "../assets/report.png";
+import NotifyReportModal from "./NotifyReportModal";
 
 interface UserPublicDetailsProps {
   user: UserPublicDTO;
@@ -14,6 +22,7 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
   const { t } = useTranslation();
   const [imgError, setImgError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
 
   const handleDeleteAccount = async () => {
     await removeAccount(user.id);
@@ -42,11 +51,33 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
             onConfirm={handleDeleteAccount}
           />
         )}
+        {!isAdmin() && getLoggedUserId() != user.id && (
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              reportResource(window.location.pathname);
+              setShowReportModal(true);
+            }}
+          >
+            <img
+              className="me-2 img-fluid"
+              style={{ width: "2rem", height: "auto" }}
+              src={report}
+            ></img>
+            {t("reportUser")}
+          </button>
+        )}
       </div>
       <ImageModal
         show={showModal}
         image={!imgError ? getImage(user.picture) : userDefaultPic}
         onClose={() => setShowModal(false)}
+      />
+      <NotifyReportModal
+        show={showReportModal}
+        onHide={() => {
+          setShowReportModal(false);
+        }}
       />
     </div>
   );

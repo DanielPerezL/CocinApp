@@ -44,7 +44,7 @@ import UserPage from "./pages/UserPage";
         DONE: en backend consultar ID_ADMIN y en las operaciones si eres ID_ADMIN NO TE PONE PEGAS
         en el front -> DONE: al login te dice tu id y si eres admin(otra var localStorage)
                     -> DONE: si eres admin te aparecen todos los botones de eliminar cuenta y receta
-                    -> sino boton de reportar (NUEVA TABLA BD PK(usuarioInformante, href reportada, pendienteDeRevision(si/no) )
+                    -> DONE: sino boton de reportar (NUEVA TABLA BD PK(usuarioInformante, href reportada, pendienteDeRevision(si/no) )
                     -> si eres admin ver listado de reportes (CUENTAS Y RECETAS) y marcar como pendientes / posibilidad de ver tmb las ya revisadas
 
       IMPLEMENTAR SCROLL INFINITO Y QUE NO SE CARGEN TODAS LAS RECETAS A LA VEZ

@@ -74,6 +74,10 @@
     "confirm": "Confirm",
     "passwordUpdatedSuccessfully": "Password updated successfully",
     "dangerZone": "Danger Zone",
+    "reportRecipe": "Report Recipe",
+    "reportUser":"Report User",
+    "reportModalTitle": "Report Submitted",
+    "reportModalBody": "The report has been successfully submitted. Thank you for your cooperation.",
 
     "errorLoginUserNotFound": "User not found. Please check your credentials.",
     "errorLoginBadPassword": "The password is incorrect. Please try again.",  
