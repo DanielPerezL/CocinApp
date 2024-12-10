@@ -3,6 +3,7 @@ import ImageCarousel from "./ImageCarousel";
 import { UserDTO } from "../interfaces";
 import {
   getImage,
+  getLoggedUserId,
   logout,
   removeAccount,
   removeProfilePic,
@@ -98,7 +99,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   };
 
   const handleDeleteAccount = async () => {
-    await removeAccount();
+    await removeAccount(user.id);
     window.location.reload();
   };
 

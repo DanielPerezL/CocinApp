@@ -11,14 +11,14 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
-from utils import delete_images_by_uploader, create_tokens
+from utils import delete_images_by_uploader, create_tokens, hasPermission
+from errors import noPermissionError, noRequestedInfoError, userNotFoundError
 
 @app.route('/api/users', methods=['POST'])
 def register():
     data = request.json
     if not data or not all(key in data for key in ('nickname', 'email', 'password')):
-        return jsonify({"error": "Asegurate de introducir toda la información necesaria"}), 400
-
+        return noRequestedInfoError()
     if User.query.filter_by(email=data.get('email')).first() is not None:
         return jsonify({"error": "Ya existe una cuenta asociada a ese email."}), 400
 
@@ -38,7 +38,7 @@ def register():
 def users_login():
     data = request.json
     if not data or not all(key in data for key in ('email', 'password')):
-        return jsonify({"error": "Asegurate de introducir toda la información necesaria."}), 400
+        return noRequestedInfoError()
 
     email = data.get('email')
     password = data.get('password')
@@ -57,7 +57,10 @@ def users_login():
     access_token, refresh_token = create_tokens(user)
 
     # Retorna los tokens en el cuerpo de la respuesta
-    response = make_response(jsonify({"msg": "Inicio de sesión exitoso.", "id": user.id}))
+    response = make_response(jsonify({"msg": "Inicio de sesión exitoso.", 
+                                      "id": user.id,
+                                      "isAdmin": user.nickname == os.environ['ADMIN_USER'],
+                                      }))
     
     #En el login no necesitamos el token csrf protect
     set_access_cookies(response, access_token)
@@ -74,43 +77,37 @@ def users_logout():
 @app.route('/api/users/<string:id>', methods=['GET', 'PUT', 'DELETE'])
 @jwt_required(optional=True)
 def users_id(id):
-    method = request.method
-    if method == 'GET':
-        return user_info(get_jwt(), id)
-    if method == 'PUT':
-        id = (int)(id)
-        user = get_user_from_token(get_jwt())    
-        if user is None:
-            return jsonify({"error": "Usuario no encontrado."}), 404
-        if user.id != id:
-            return jsonify({"error": "No tienes los permisos necesarios."}), 403
-        
-        data = request.json
-        if data and all(key in data for key in ('current_password', 'new_password')):
-            #Cambiar contraseña
-            return change_password(user, data.get('current_password'), data.get('new_password'))
-        #Cambiar/Borrar foto
-        return new_user_picture(user, data.get("picture") or "")
-                
-    if method == 'DELETE':
-        return delete_account(get_jwt())
-
-def user_info(jwt_token, id):
+    client = get_user_from_token(get_jwt())    
     # Buscar al usuario por ID
     user = User.query.get(id)
     if user is None:
         #COMPROBAR SI SE RECIBE EL NICKNAME
         user = User.query.filter_by(nickname=id).first()
         if user is None:
-            return jsonify({"error": "Usuario no encontrado."}), 404
+            return userNotFoundError()
 
-    client = get_user_from_token(jwt_token)
-    if client is None or client.id != user.id:
+    method = request.method
+    if method == 'GET':
+        if hasPermission(client, user):
+            return jsonify(user.to_dto()), 200
         return jsonify(user.to_public_dto()), 200
-    return jsonify(user.to_dto()), 200
+        
+    if not hasPermission(client, user):
+        return noPermissionError()    
+    if method == 'PUT':
+        data = request.get_json()
+        if data and all(key in data for key in ('current_password', 'new_password')):
+            #Cambiar contraseña
+            return change_password(user, data.get('current_password'), data.get('new_password'))
+        #Cambiar/Borrar foto
+        return new_user_picture(user, data.get("picture"))        
+    if method == 'DELETE':
+        return delete_account(user)
 
 def new_user_picture(user, new_picture):
-    new_path = os.path.join(app.config['UPLOAD_FOLDER'], new_picture)
+    if new_picture is None:
+        return noRequestedInfoError()
+    
     old_picture = user.get_picture() or ""
     old_path = os.path.join(app.config['UPLOAD_FOLDER'], old_picture)
     if os.path.isfile(old_path):
@@ -136,15 +133,12 @@ def change_password(user, current_password, new_password):
         db.session.rollback()
     return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
 
-def delete_account(jwt_token):
-    user = get_user_from_token(jwt_token)
-    if user is None:
-        return jsonify({"error": "Usuario no encontrado."}), 404
+def delete_account(deleting_user):
     try:
-        db.session.delete(user)
+        db.session.delete(deleting_user)
         #DELETE ORPHAN ELIMINA LAS RECETAS
         db.session.commit()
-        delete_images_by_uploader(user)
+        delete_images_by_uploader(deleting_user)
         return jsonify({"msg": "Usuario eliminado."}),204
     except SQLAlchemyError as e:
         db.session.rollback()
@@ -153,11 +147,9 @@ def delete_account(jwt_token):
 @app.route('/api/users/<int:id>/fav_recipes', methods=['GET'])
 @jwt_required()
 def favorites_recipes(id):
-    user = get_user_from_token(get_jwt())
-    if user is None:
-        return jsonify({"error": "Usuario no encontrado."}), 404
-    
-    if user.id != id:
+    client = get_user_from_token(get_jwt())
+    user = User.query.get(id)
+    if not hasPermission(client, user):
         return jsonify({"error": "No tienes los permisos necesarios."}), 403
 
     recipes = [recipe.to_simple_dto() for recipe in user.get_favorite_recipes()]
@@ -169,11 +161,12 @@ def favorites_recipes_mod(idU, idR):
     if idU < 0 or idR < 0:
         return jsonify({"error": "Al menos un id proporcionado no es válido."}), 404
     
-    user = get_user_from_token(get_jwt())
+    client = get_user_from_token(get_jwt())
     recipe = Recipe.query.get(idR)
+    user = User.query.get(idU)
     if not user or not recipe:
         return jsonify({"error": "Usuario o receta no encontrados."}), 404
-    if user.id != idU:
+    if not hasPermission(client, user):
         return jsonify({"error": "No tienes permisos suficientes."}), 403
     
     method = request.method

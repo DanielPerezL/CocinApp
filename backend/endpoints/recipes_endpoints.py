@@ -5,7 +5,8 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
-from utils import delete_images_by_filenames
+from utils import delete_images_by_filenames, hasPermission
+from errors import noPermissionError, noRequestedInfoError, userNotFoundError, recipeNotFoundError
 
 @app.route('/api/recipes', methods=['GET', 'POST'])
 @jwt_required(optional=True)
@@ -17,12 +18,12 @@ def recipes():
             return get_recipes_simple_dto() 
         user = User.query.get(user_id)
         if user is None:
-            return jsonify({"error": "Usuario no encontrado."}), 404
+            return userNotFoundError()
         return get_recipes_from_user(user)
     if method == 'POST':
         user = get_user_from_token(get_jwt())
         if user is None:
-            return jsonify({"error": "Usuario no encontrado"}), 404
+            return userNotFoundError()
         return new_recipe(user, request.json)
 
 def get_recipes_simple_dto():
@@ -38,8 +39,7 @@ def get_recipes_from_user(user):
 def new_recipe(user, data):
     # Verifica que se proporcione la información requerida
     if not data or not all(key in data for key in ('title', 'ingredients', 'procedure', 'images')):
-        return jsonify({"error": "Asegurate de rellenar toda la información necesaria (titulo, ingredientes, procedimiento, imagen(es))"}), 400
-
+        return noRequestedInfoError()
     all_images_exist = True
     existing_images = []  
     for filename in data.get('images', []):
@@ -80,20 +80,16 @@ def recipes_id(id):
     if method == 'GET':
         return recipe_details(id)
     if method == 'DELETE':
-        user = get_user_from_token(get_jwt())
-        if user is None:
-            return jsonify({"error": "Usuario no encontrado"}), 404
+        client = get_user_from_token(get_jwt())
         recipe = Recipe.query.get(id)
-        if recipe is None:
-            return jsonify({"error": "Receta no encontrada"}), 404
-        if recipe.user_id != user.id:
-            return jsonify({"error": "No tienes los permisos necesarios."}), 403
+        if not hasPermission(client, recipe):
+            return noPermissionError()
         return delete_recipe(recipe)
 
 def recipe_details(id):
     recipe = Recipe.query.get(id)
     if recipe is None:
-        return jsonify({"error": "Receta no encontrada"}), 404
+        return recipeNotFoundError()
     return jsonify(recipe.to_details_dto()), 200
 
 def delete_recipe(recipe):

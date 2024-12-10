@@ -20,6 +20,10 @@ export const isLoggedIn = () => {
   return localStorage.getItem("isLoggedIn") == "true";
 };
 
+export const isAdmin = () => {
+  return localStorage.getItem("isAdmin") == "true";
+};
+
 export const getLoggedUserId = () => {
   return localStorage.getItem("loggedUserId");
 };
@@ -156,6 +160,7 @@ export const login = async (email: string, password: string): Promise<void> => {
   // Indicar que el usuario ha iniciado sesión
   localStorage.setItem("isLoggedIn", "true");
   localStorage.setItem("loggedUserId", responseData.id);
+  localStorage.setItem("isAdmin", responseData.isAdmin);
 };
 
 // Aquí retornamos la URL completa de la imagen
@@ -487,26 +492,23 @@ export const removeProfilePic = async (): Promise<void> => {
   return await withTokenRefresh(() => updateProfilePicUnsafe(""));
 };
 
-// Función para eliminar imagen de perfil
-export const removeAccount = async (): Promise<void> => {
-  return await withTokenRefresh(() => removeAccountUnsafe());
+// Función para eliminar un perfil
+export const removeAccount = async (id: string): Promise<void> => {
+  return await withTokenRefresh(() => removeAccountUnsafe(id));
 };
-const removeAccountUnsafe = async (): Promise<void> => {
+const removeAccountUnsafe = async (id: string): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
-
   try {
-    response = await fetch(
-      `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}`,
-      {
-        method: "DELETE",
-        headers: {
-          ...headers,
-        },
-        credentials: "include",
-      }
-    );
+    response = await fetch(`${API_BASE_URL}/users/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      credentials: "include",
+    });
   } catch (error) {
     throw new Error(t("errorUpdatingProfilePic??"));
   }
@@ -514,7 +516,7 @@ const removeAccountUnsafe = async (): Promise<void> => {
   if (!response.ok) {
     throw new Error(t("errorUpdatingProfilePic??"));
   }
-  logout();
+  if (id == getLoggedUserId()) logout();
 };
 
 export const removeRecipe = async (idR: string): Promise<void> => {

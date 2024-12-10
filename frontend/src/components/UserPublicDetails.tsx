@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { UserPublicDTO } from "../interfaces";
-import { getImage } from "../services/apiService";
+import { getImage, isAdmin, removeAccount } from "../services/apiService";
 import userDefaultPic from "../assets/user.png";
 import { useTranslation } from "react-i18next";
 import ImageModal from "./ImagenModal";
+import NeedConfirmButton from "./NeedConfirmButton";
 
 interface UserPublicDetailsProps {
   user: UserPublicDTO;
@@ -13,6 +14,11 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
   const { t } = useTranslation();
   const [imgError, setImgError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    await removeAccount(user.id);
+    window.location.reload();
+  };
 
   return (
     <div className="container text-center p-2 mb-4">
@@ -27,9 +33,15 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
             setShowModal(true);
           }}
         />
-        {/*<div className="mt-5">
-           Agrega aquí otros detalles si es necesario
-        </div> */}
+        {isAdmin() && (
+          <NeedConfirmButton
+            className="btn btn-danger mt-3 ms-2"
+            buttonText={t("rmAccount")}
+            title={t("confirmDeleteAccountTitle")}
+            message={t("confirmDeleteAccountMessageADMIN")}
+            onConfirm={handleDeleteAccount}
+          />
+        )}
       </div>
       <ImageModal
         show={showModal}

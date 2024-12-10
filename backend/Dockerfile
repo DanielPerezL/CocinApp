@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Comando para ejecutar la aplicación con Gunicorn
-CMD ["gunicorn", "-w 8","--bind", "0.0.0.0:5000", "app:app", "--access-logfile", "-", "--error-logfile", "-"]
+CMD ["sh", "-c", "sleep 2 && gunicorn -w 8 --bind 0.0.0.0:5000 app:app --access-logfile - --error-logfile -"]

@@ -12,8 +12,6 @@ import UserDetails from "../components/UserDetails";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-export let setGlobalRefresh: () => void;
-
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation();
 
@@ -22,10 +20,6 @@ const ProfilePage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
   const [refresh, setRefresh] = useState<boolean>(false);
-
-  setGlobalRefresh = () => {
-    setRefresh(!refresh);
-  };
 
   useEffect(() => {
     const getUserProfile = async () => {

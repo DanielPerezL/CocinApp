@@ -60,6 +60,7 @@
     "enterProcedurePlaceHolder": "Add the steps",
     "confirmDeleteAccountTitle": "Are you sure?",
     "confirmDeleteAccountMessage": "This action cannot be undone. Are you sure you want to delete your account?",
+    "confirmDeleteAccountMessageADMIN" : "This action cannot be undone. Are you sure you want to delete this account?",
     "confirmLogoutTitle": "Log out?",
     "confirmLogoutMessage": "Are you sure you want to log out?",
     "deleteRecipe": "Delete Recipe",

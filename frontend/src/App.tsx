@@ -40,10 +40,10 @@ import UserPage from "./pages/UserPage";
     funcionalidad:
       lista de la compra
       rol de administrador / moderador:
-        en docker-compose -> DEFINIR CREDENCIALES USUARIO ADMIN Y AÑADIRLO EN LA BD CON UN ID FIJO (id VAR ENTORNO)
-        en backend consultar ID_ADMIN y en las operaciones si eres ID_ADMIN NO TE PONE PEGAS
-        en el front -> al login te dice tu id y si eres admin(otra var localStorage)
-                    -> si eres admin te aparecen todos los botones de eliminar cuenta y receta
+        DONE: en docker-compose -> DEFINIR CREDENCIALES USUARIO ADMIN
+        DONE: en backend consultar ID_ADMIN y en las operaciones si eres ID_ADMIN NO TE PONE PEGAS
+        en el front -> DONE: al login te dice tu id y si eres admin(otra var localStorage)
+                    -> DONE: si eres admin te aparecen todos los botones de eliminar cuenta y receta
                     -> sino boton de reportar (NUEVA TABLA BD PK(usuarioInformante, href reportada, pendienteDeRevision(si/no) )
                     -> si eres admin ver listado de reportes (CUENTAS Y RECETAS) y marcar como pendientes / posibilidad de ver tmb las ya revisadas
 

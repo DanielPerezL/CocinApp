@@ -7,6 +7,25 @@ from flask import current_app
 import hashlib
 from datetime import datetime
 
+#Comprobar permisos
+def hasPermission(user, resource):
+    if user is None:
+        return False
+    elif isAdmin(user):
+        return True
+    elif isinstance(resource, User):
+        # Lógica para verificar permisos sobre un User
+        return resource.id == user.id
+    elif isinstance(resource, Recipe):
+        # Lógica para verificar permisos sobre un Recipe
+        return resource.user_id == user.id
+    else:
+        # Manejo de error o lógica para tipos desconocidos
+        return False
+
+def isAdmin(user):
+    return user.nickname == os.environ['ADMIN_USER']
+
 #MANEJO DE TOKENS
 #CREACION    
 def create_tokens(user):

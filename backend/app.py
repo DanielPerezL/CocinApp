@@ -32,7 +32,27 @@ def refresh_access_token():
 
 with app.app_context():
     db.create_all()
+    admin = User.query.filter_by(nickname=os.environ['ADMIN_USER']).first()
+    if not admin.check_password(os.environ['ADMIN_PASSWORD']):
+        try:
+            db.session.delete(admin)
+            db.session.commit()
+            delete_images_by_uploader(admin)
+        except SQLAlchemyError as e:
+            db.session.rollback()
 
+    admin = User.query.filter_by(nickname=os.environ['ADMIN_USER']).first()
+    if admin is None:
+        new_admin = User(nickname = os.environ['ADMIN_USER'],
+                    email = os.environ['ADMIN_USER'],
+                    password = os.environ['ADMIN_PASSWORD']
+                    )
+        try:
+            db.session.add(new_admin)
+            db.session.commit()
+        except SQLAlchemyError as e:
+            db.session.rollback()
+    
 # Ejecutar la aplicación
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

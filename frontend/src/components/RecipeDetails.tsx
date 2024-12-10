@@ -12,6 +12,7 @@ import {
   addRecipeFav,
   getImage,
   getLoggedUserId,
+  isAdmin,
   isFavoriteRecipe,
   isLoggedIn,
   removeRecipe,
@@ -20,7 +21,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import NeedConfirmButton from "./NeedConfirmButton";
-import { setGlobalRefresh } from "../pages/ProfilePage";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -36,6 +36,15 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   const [isFavorite, setFavorite] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false); // Modal para iniciar sesión
   const [imgError, setImgError] = useState(false);
+
+  const handleRecipeDelete = async () => {
+    await removeRecipe(recipe.id);
+    if (!isAdmin()) {
+      navigate("/profile");
+    } else {
+      navigate(`/user/${user.nickname}`);
+    }
+  };
 
   const getFavorite = async () => {
     try {
@@ -155,17 +164,13 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
       <div className="d-flex justify-content-between align-items-center mb-4 mt-3">
         <h1 className="display-5 text-primary">{recipe.title}</h1>
 
-        {getLoggedUserId() == recipe.user_id && (
+        {(isAdmin() || getLoggedUserId() == recipe.user_id) && (
           <NeedConfirmButton
             className="btn btn-danger"
             buttonText={t("deleteRecipe")}
             title={t("confirmDelteRecipeTitle")}
             message={t("confirmDelteRecipeMessage")}
-            onConfirm={async () => {
-              await removeRecipe(recipe.id);
-              setGlobalRefresh();
-              navigate("/profile");
-            }}
+            onConfirm={handleRecipeDelete}
           />
         )}
       </div>

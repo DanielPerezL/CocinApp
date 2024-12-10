@@ -12,6 +12,7 @@ app = Flask(__name__, static_folder='./static')
 CORS(app, supports_credentials=True, origins=['*']) #añadir dominio origins=[] para prod
 
 UPLOAD_FOLDER = '/cocinapp/uploads'
+os.environ['ADMIN_USER'] = "admin"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 

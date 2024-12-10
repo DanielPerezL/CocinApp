@@ -60,6 +60,7 @@
     "enterProcedurePlaceHolder": "Añade los pasos",
     "confirmDeleteAccountTitle": "¿Estás seguro?",
     "confirmDeleteAccountMessage": "Esta acción no se puede deshacer. ¿Estás seguro de que deseas eliminar tu cuenta?",
+    "confirmDeleteAccountMessageADMIN": "Esta acción no se puede deshacer. ¿Estás seguro de que deseas eliminar esta cuenta?",
     "confirmLogoutTitle": "¿Cerrar sesión?",
     "confirmLogoutMessage": "¿Estás seguro de que deseas cerrar sesión?",
     "deleteRecipe": "Eliminar receta",
