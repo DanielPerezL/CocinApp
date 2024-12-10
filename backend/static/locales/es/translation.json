@@ -74,6 +74,10 @@
     "passwordUpdatedSuccessfully": "Constraseña actualizada con éxtio",
     "dangerZone": "Zona de peligro",
 
+    "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",
+    "errorLoginBadPassword": "La contraseña es incorrecta. Inténtalo de nuevo.",
+    "errorRegisterEmailExists": "Ya existe una cuenta registrada con este correo electrónico.",
+    "errorRegisterNameExists": "El nombre de usuario ya está en uso. Por favor, elige otro.",
     "errorRecipeUpload": "Error al publicar la receta",
     "errorFillRecipeData": "Por favor, rellena todos los campos y al menos una imágen.",
     "errorNoIDRecipe": "ID de receta no proporcionado",
