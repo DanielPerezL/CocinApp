@@ -76,6 +76,8 @@
     "dangerZone": "Zona de peligro",
     "reportRecipe": "Reportar Receta",
     "reportUser":"Reportar Usuario",
+    "reportModalTitle":"Reporte Enviado",
+    "reportModalBody":"El reporte ha sido realizado con éxito. Gracias por tu colaboración.",
 
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",
     "errorLoginBadPassword": "La contraseña es incorrecta. Inténtalo de nuevo.",

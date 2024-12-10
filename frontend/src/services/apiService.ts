@@ -5,6 +5,7 @@ import {
   UserDTO,
   UserPublicDTO,
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
+import { authEvents } from "../events/authEvents";
 
 const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
 const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
@@ -158,6 +159,7 @@ export const login = async (email: string, password: string): Promise<void> => {
   }
 
   // Indicar que el usuario ha iniciado sesión
+  authEvents.emit("login");
   localStorage.setItem("isLoggedIn", "true");
   localStorage.setItem("loggedUserId", responseData.id);
   localStorage.setItem("isAdmin", responseData.isAdmin);
@@ -176,8 +178,10 @@ export const logout = async (): Promise<void> => {
     credentials: "include", // Incluye las cookies en la solicitud para que el backend pueda eliminarlas
   });
 
+  authEvents.emit("logout");
   localStorage.removeItem("isLoggedIn");
   localStorage.removeItem("loggedUserId");
+  localStorage.removeItem("isAdmin");
 };
 
 export const reportResource = async (resource: string): Promise<void> => {
