@@ -48,7 +48,7 @@ const NavButtons: React.FC = () => {
       </Link>
       {isAdmin() && (
         <Link
-          to="/report"
+          to="/reports"
           className="btn nav-btn mx-1"
           onClick={() => {
             window.scrollTo(0, 0);

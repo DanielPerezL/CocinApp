@@ -14,6 +14,9 @@ class Report(db.Model):
         #POR SI YA SE REVISÓ, QUE VUELVA A REVISARSE (por posibles cambios en los recursos)
         self.reviewed = False
 
+    def set_reviewed(self):
+        self.reviewed = True
+
     def to_dto(self):
         #Report DTO
         return {

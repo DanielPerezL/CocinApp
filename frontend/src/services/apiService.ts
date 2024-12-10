@@ -4,6 +4,7 @@ import {
   RecipeDetailDTO,
   UserDTO,
   UserPublicDTO,
+  ReportDTO,
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
@@ -198,6 +199,44 @@ export const reportResource = async (resource: string): Promise<void> => {
 };
 
 //FUNCIONES CON LOGIN REQUERIDO
+
+export const fetchReports = async () => {
+  return await withTokenRefresh(() => fetchReportsUnsafe());
+};
+const fetchReportsUnsafe = async (): Promise<ReportDTO[]> => {
+  let response: Response;
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  try {
+    response = await fetch(`${API_BASE_URL}/reports`, {
+      method: "GET",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers,
+    });
+  } catch (error) {
+    return [];
+  }
+  if (!response.ok) {
+    return [];
+  }
+  return await response.json();
+};
+
+export const setReportReviewed = async (report: ReportDTO) => {
+  return await withTokenRefresh(() => setReportReviewedUnsafe(report));
+};
+const setReportReviewedUnsafe = async (report: ReportDTO): Promise<void> => {
+  let response: Response;
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  response = await fetch(`${API_BASE_URL}/reports/${report.id}`, {
+    method: "PUT",
+    credentials: "include", // Incluye las cookies en la solicitud
+    headers,
+  });
+};
 
 // Función para obtener el perfil del usuario logeado
 export const fetchLoggedUserProfile = async () => {

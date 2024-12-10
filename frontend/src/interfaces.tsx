@@ -27,3 +27,10 @@ export interface UserPublicDTO {
   nickname: string;
   picture: string;
 }
+
+export interface ReportDTO {
+  id: string;
+  reported_resource: string;
+  count: number;
+  reviewed: boolean;
+}

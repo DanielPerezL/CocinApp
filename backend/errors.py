@@ -12,3 +12,6 @@ def userNotFoundError():
 
 def recipeNotFoundError():
     return jsonify({"error": "Receta no encontrada."}), 404
+
+def reportNotFoundError():
+    return jsonify({"error": "Reporte no encontrado."}), 404
