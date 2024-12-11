@@ -19,8 +19,6 @@ def register():
     data = request.json
     if not data or not all(key in data for key in ('nickname', 'email', 'password')):
         return noRequestedInfoError()
-    if User.query.filter_by(nickname=data.get('nickname')).first() is not None:
-        return jsonify({"error": "Ya existe una cuenta asociada con ese nombre de usuario."}), 400
     if User.query.filter_by(email=data.get('email')).first() is not None:
         return jsonify({"error": "Ya existe una cuenta asociada a ese email."}), 400
 
@@ -34,7 +32,8 @@ def register():
         return jsonify({"msg": "Cuenta creada con éxito."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({"error": str(e.orig)}), 400
+        return jsonify({"error": "Ya existe una cuenta asociada con ese nombre de usuario."}), 400
+        #return jsonify({"error": str(e.orig)}), 400
 
 
 @app.route('/api/users/login', methods=['POST'])
