@@ -16,6 +16,7 @@ class Report(db.Model):
 
     def set_reviewed(self):
         self.reviewed = True
+        self.count = 0
 
     def to_dto(self):
         #Report DTO

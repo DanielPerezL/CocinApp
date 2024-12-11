@@ -8,10 +8,10 @@ import {
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
-const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
-const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
+//const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
+//const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
 
-/* Cadenas de conexion usando NGROK
+// Cadenas de conexion usando NGROK
 const API_BASE_URL = `${window.location.protocol}/api`;
 const TOKEN_BASE_URL = `${window.location.protocol}/token`;
 //*/
@@ -32,6 +32,11 @@ export const getLoggedUserId = () => {
 
 // Función para obtener recetas
 export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
+  //TOKEN OPCIONAL
+  if (isLoggedIn()) return await withTokenRefresh(() => fetchRecipesUnsafe());
+  return await fetchRecipesUnsafe();
+};
+const fetchRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
   let response: Response;
   try {
     response = await fetch(`${API_BASE_URL}/recipes`);
@@ -188,14 +193,22 @@ export const logout = async (): Promise<void> => {
 export const reportResource = async (resource: string): Promise<void> => {
   let response: Response;
   const data = { reported_resource: resource };
-  response = await fetch(`${API_BASE_URL}/reports`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    credentials: "include", // Permite que las cookies sean enviadas y recibidas
-  });
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  try {
+    response = await fetch(`${API_BASE_URL}/reports`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      credentials: "include", // Permite que las cookies sean enviadas y recibidas
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 //FUNCIONES CON LOGIN REQUERIDO
@@ -207,16 +220,11 @@ const fetchReportsUnsafe = async (): Promise<ReportDTO[]> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
-
-  try {
-    response = await fetch(`${API_BASE_URL}/reports`, {
-      method: "GET",
-      credentials: "include", // Incluye las cookies en la solicitud
-      headers,
-    });
-  } catch (error) {
-    return [];
-  }
+  response = await fetch(`${API_BASE_URL}/reports`, {
+    method: "GET",
+    credentials: "include", // Incluye las cookies en la solicitud
+    headers,
+  });
   if (!response.ok) {
     return [];
   }
