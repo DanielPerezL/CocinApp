@@ -5,14 +5,11 @@ import {
   getLoggedUserId,
   isAdmin,
   removeAccount,
-  reportResource,
 } from "../services/apiService";
 import userDefaultPic from "../assets/user.png";
 import { useTranslation } from "react-i18next";
 import ImageModal from "./ImagenModal";
 import NeedConfirmButton from "./NeedConfirmButton";
-import report from "../assets/report.png";
-import NotifyReportModal from "./NotifyReportModal";
 import ReportButton from "./ReportButton";
 
 interface UserPublicDetailsProps {

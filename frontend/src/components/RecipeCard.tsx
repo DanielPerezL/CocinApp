@@ -16,7 +16,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   return (
     <Link
       to={"/recipe?id=" + recipe.id}
-      className="col-6 col-md-4 col-lg-3 mb-4"
+      className="text-start col-6 col-md-4 col-lg-3 mb-4"
       onClick={() => {
         window.scrollTo(0, 0);
       }}

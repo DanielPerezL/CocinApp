@@ -1,9 +1,7 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import ImageCarousel from "./ImageCarousel";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { UserDTO } from "../interfaces";
 import {
   getImage,
-  getLoggedUserId,
   logout,
   removeAccount,
   removeProfilePic,
