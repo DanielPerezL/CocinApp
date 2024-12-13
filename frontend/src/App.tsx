@@ -20,11 +20,6 @@ import ReportsPage from "./pages/ReportsPage";
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
             tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)
 
-    categorías:
-      (tiempo, dificultad)
-      tabla ENUM_TIEMPO (<20min, 20-40, 40-90, >90min)
-      tabla ENUM_DIFICULTAD (facil/easy, medio/medium, dificil/hard, experto/expert)
-
     gestion de recetas:
       modificar receta (PASOS, INGREDIENTES, CATEGORTIAS)
 

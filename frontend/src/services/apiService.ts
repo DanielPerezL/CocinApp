@@ -5,13 +5,14 @@ import {
   UserDTO,
   UserPublicDTO,
   ReportDTO,
+  CategoryOptions,
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
-const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
-const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
+//const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
+//const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
 
-/* Cadenas de conexion usando NGROK
+// Cadenas de conexion usando NGROK
 const API_BASE_URL = `${window.location.protocol}/api`;
 const TOKEN_BASE_URL = `${window.location.protocol}/token`;
 //*/
@@ -28,6 +29,21 @@ export const isAdmin = () => {
 
 export const getLoggedUserId = () => {
   return localStorage.getItem("loggedUserId");
+};
+
+// Función para obtener las categorias de las recetas
+export const fetchRecipesCategories = async (): Promise<CategoryOptions[]> => {
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}/recipe/categories`);
+  } catch (error) {
+    throw new Error(t("errorLoadingRecipesCategories"));
+  }
+
+  if (!response.ok) {
+    throw new Error(t("errorLoadingRecipesCategories"));
+  }
+  return await response.json();
 };
 
 // Función para obtener recetas
@@ -207,7 +223,8 @@ export const reportResource = async (resource: string): Promise<void> => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    console.log(error);
+    //No debe darse
+    console.error(error);
   }
 };
 
@@ -432,25 +449,37 @@ export const uploadRecipe = async (
   title: string,
   ingredients: string,
   procedure: string[],
+  time: string,
+  difficulty: string,
   imagePaths: string[]
 ) => {
   return await withTokenRefresh(() =>
-    uploadRecipeUnsafe(title, ingredients, procedure, imagePaths)
+    uploadRecipeUnsafe(
+      title,
+      ingredients,
+      procedure,
+      time,
+      difficulty,
+      imagePaths
+    )
   );
 };
 const uploadRecipeUnsafe = async (
   title: string,
   ingredients: string,
   procedure: string[],
+  time: string,
+  difficulty: string,
   imagePaths: string[]
 ): Promise<string> => {
   let response: Response;
-
   // Crea el objeto con los datos de la receta
   const recipeData = {
     title,
     ingredients,
     procedure,
+    time,
+    difficulty,
     images: imagePaths, // Puedes renombrar la clave si es necesario en el servidor
   };
 

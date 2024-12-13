@@ -3,12 +3,16 @@ export interface RecipeSimpleDTO {
   id: string;
   title: string;
   image: string;
+  time: string;
+  difficulty: string;
 }
 
 export interface RecipeDetailDTO {
   id: string;
   user_id: string;
   title: string;
+  time: string;
+  difficulty: string;
   images: string[];
   ingredients: string;
   procedure: string[];
@@ -33,4 +37,9 @@ export interface ReportDTO {
   reported_resource: string;
   count: number;
   reviewed: boolean;
+}
+
+export interface CategoryOptions {
+  name: "time" | "difficulty";
+  options: string[];
 }

@@ -26,6 +26,13 @@ def recipes():
             return userNotFoundError()
         return new_recipe(user, request.json)
 
+@app.route('/api/recipe/categories', methods=['GET'])
+def get_recipe_categories():
+    time_options = Recipe.get_time_options()  # Obtener los valores posibles de 'tiempo'
+    difficulty_options = Recipe.get_difficulty_options()  # Obtener los valores posibles de 'dificultad'
+    return jsonify({"name":"time", "options": time_options}, 
+                    {"name":"difficulty", "options": difficulty_options}), 200
+
 def get_recipes_simple_dto():
     recipes = Recipe.query.all()
     recipes_data = [recipe.to_simple_dto() for recipe in recipes]
@@ -38,8 +45,9 @@ def get_recipes_from_user(user):
 
 def new_recipe(user, data):
     # Verifica que se proporcione la información requerida
-    if not data or not all(key in data for key in ('title', 'ingredients', 'procedure', 'images')):
+    if not data or not all(key in data for key in ('title', 'ingredients', 'procedure', 'images', 'time', 'difficulty')) or len(data.get('procedure')) == 0 or len(data.get('images')) == 0:
         return noRequestedInfoError()
+
     all_images_exist = True
     existing_images = []  
     for filename in data.get('images', []):
@@ -60,7 +68,9 @@ def new_recipe(user, data):
         user_id=user.id,
         ingredients=data.get('ingredients'),
         procedure=data.get('procedure'),
-        images=data.get('images')  # Convierte la lista de imágenes a una cadena separada por comas
+        images=data.get('images'),
+        time=data.get('time'),
+        difficulty=data.get('difficulty')
     )
     try:
         db.session.add(new_recipe)

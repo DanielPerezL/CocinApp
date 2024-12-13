@@ -10,16 +10,27 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text, nullable=False)
     procedure = db.Column(db.JSON, nullable=False)
     images = db.Column(db.JSON, nullable=True)  # Campo para almacenar URLs de imágenes, en formato JSON
+    time = db.Column(db.Enum("<20min", "20-40min", "40-90min", ">90min", name='tiempo_enum'), nullable=False)  # Tiempo
+    difficulty = db.Column(db.Enum("easy", "medium", "hard", "expert", name='dificultad_enum'), nullable=False)  # Dificultad
     favorited_by = db.relationship('FavoriteRecipe',
                                    back_populates='recipe',
                                    cascade='all, delete-orphan')
 
+    @staticmethod
+    def get_time_options():
+        return ["<20min", "20-40min", "40-90min", ">90min"]
 
-    def __init__(self, title, user_id, ingredients, procedure, images=None):
+    @staticmethod
+    def get_difficulty_options():
+        return ["easy", "medium", "hard", "expert"]
+
+    def __init__(self, title, user_id, ingredients, procedure, time, difficulty, images=None):
         self.title = title
         self.user_id = user_id
         self.ingredients = ingredients
         self.procedure = procedure
+        self.time = time
+        self.difficulty = difficulty
         self.images = images if images is not None else []  # Inicializa como lista vacía si no se proporcionan imágenes
 
     def __repr__(self):
@@ -33,6 +44,8 @@ class Recipe(db.Model):
             "user_id": self.user_id,
             "ingredients": self.ingredients,
             "procedure": self.procedure,
+            "time": self.time,
+            "difficulty": self.difficulty,
             "images": self.images  # Convertir la cadena de imágenes en una lista
         }
 
@@ -41,5 +54,7 @@ class Recipe(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "image": self.images[0] if self.images else None  # Usar la primera imagen o None
+            "image": self.images[0] if self.images else None,
+            "time": self.time,
+            "difficulty": self.difficulty,
         }
