@@ -13,6 +13,7 @@ import ImageModal from "./ImagenModal";
 import NeedConfirmButton from "./NeedConfirmButton";
 import report from "../assets/report.png";
 import NotifyReportModal from "./NotifyReportModal";
+import ReportButton from "./ReportButton";
 
 interface UserPublicDetailsProps {
   user: UserPublicDTO;
@@ -22,7 +23,6 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
   const { t } = useTranslation();
   const [imgError, setImgError] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [showReportModal, setShowReportModal] = useState<boolean>(false);
 
   const handleDeleteAccount = async () => {
     await removeAccount(user.id);
@@ -52,32 +52,13 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
           />
         )}
         {!isAdmin() && getLoggedUserId() != user.id && (
-          <button
-            className="btn btn-danger"
-            onClick={() => {
-              reportResource(window.location.pathname);
-              setShowReportModal(true);
-            }}
-          >
-            <img
-              className="me-2 img-fluid"
-              style={{ width: "2rem", height: "auto" }}
-              src={report}
-            ></img>
-            {t("reportUser")}
-          </button>
+          <ReportButton text={t("reportUser")} />
         )}
       </div>
       <ImageModal
         show={showModal}
         image={!imgError ? getImage(user.picture) : userDefaultPic}
         onClose={() => setShowModal(false)}
-      />
-      <NotifyReportModal
-        show={showReportModal}
-        onHide={() => {
-          setShowReportModal(false);
-        }}
       />
     </div>
   );

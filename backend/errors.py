@@ -15,3 +15,12 @@ def recipeNotFoundError():
 
 def reportNotFoundError():
     return jsonify({"error": "Reporte no encontrado."}), 404
+
+def noRecipeUploadedError():
+    return jsonify({"error": "Error al publicar la receta. Inténtelo de nuevo más tarde."}), 400
+
+def noValidIdProvided():
+    return jsonify({"error": "El id proporcionado no es válido"}), 404
+
+def unexpectedError():
+    return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400

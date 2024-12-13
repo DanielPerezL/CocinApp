@@ -24,6 +24,7 @@ import NotifyReportModal from "./NotifyReportModal";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import NeedConfirmButton from "./NeedConfirmButton";
+import ReportButton from "./ReportButton";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -33,7 +34,6 @@ interface RecipeDetailsProps {
 const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   const { t } = useTranslation();
 
-  const [showReportModal, setShowReportModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -196,32 +196,19 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
       {/* Sección de procedimiento */}
       <div className="mb-4">
         <h3>{t("procedure")}</h3>
-        <p className="receta-text">{recipe.procedure}</p>
+        {recipe.procedure.map((step, index) => (
+          <div key={index} className="procedure-step">
+            <h5 className="text-primary mt-3 mb-2">
+              {t("step")} {index + 1}
+            </h5>
+            <p className="text-muted">{step}</p>
+          </div>
+        ))}
       </div>
 
       {!isAdmin() && getLoggedUserId() != user.id && (
-        <button
-          className="btn btn-danger"
-          onClick={() => {
-            reportResource(window.location.pathname + window.location.search);
-            setShowReportModal(true);
-          }}
-        >
-          <img
-            className="me-2 img-fluid"
-            style={{ width: "2rem", height: "auto" }}
-            src={report}
-          ></img>
-          {t("reportRecipe")}
-        </button>
+        <ReportButton text={t("reportRecipe")} />
       )}
-
-      <NotifyReportModal
-        show={showReportModal}
-        onHide={() => {
-          setShowReportModal(false);
-        }}
-      />
       <Modal
         show={showModal}
         onHide={() => {

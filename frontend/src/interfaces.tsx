@@ -11,7 +11,7 @@ export interface RecipeDetailDTO {
   title: string;
   images: string;
   ingredients: string;
-  procedure: string;
+  procedure: string[];
 }
 
 //DTOs de USUARIO

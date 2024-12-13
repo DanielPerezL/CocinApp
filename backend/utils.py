@@ -79,10 +79,8 @@ def delete_images_by_pattern(pattern):
             os.remove(filepath)  # Elimina el archivo
 
 #BORRADO    
-def delete_images_by_filenames(filenames_str):
+def delete_images_by_filenames(filenames):
     upload_folder = current_app.config['UPLOAD_FOLDER']
-    filenames = [filename.strip() for filename in filenames_str.split(",")]
-
     for filename in filenames:
         filepath = os.path.join(upload_folder, filename)
         if os.path.exists(filepath):

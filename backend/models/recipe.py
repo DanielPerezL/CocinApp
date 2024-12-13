@@ -8,8 +8,8 @@ class Recipe(db.Model):
                         nullable=False)
     title = db.Column(db.String(80), nullable=False)
     ingredients = db.Column(db.Text, nullable=False)
-    procedure = db.Column(db.Text, nullable=False)
-    images = db.Column(db.Text, nullable=True)  # Campo para almacenar URLs de imágenes, en formato JSON
+    procedure = db.Column(db.JSON, nullable=False)
+    images = db.Column(db.JSON, nullable=True)  # Campo para almacenar URLs de imágenes, en formato JSON
     favorited_by = db.relationship('FavoriteRecipe',
                                    back_populates='recipe',
                                    cascade='all, delete-orphan')
@@ -33,7 +33,7 @@ class Recipe(db.Model):
             "user_id": self.user_id,
             "ingredients": self.ingredients,
             "procedure": self.procedure,
-            "images": self.images.split(',') if self.images else []  # Convertir la cadena de imágenes en una lista
+            "images": self.images  # Convertir la cadena de imágenes en una lista
         }
 
     # DTO para la vista simple de la receta
@@ -41,5 +41,5 @@ class Recipe(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "image": self.images.split(',')[0] if self.images else None  # Usar la primera imagen o None
+            "image": self.images[0] if self.images else None  # Usar la primera imagen o None
         }

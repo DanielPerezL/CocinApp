@@ -33,6 +33,8 @@
     "noTheirRecipes": "Este usuario no tiene ninguna receta",
     "ingredients": "Ingredientes",
     "procedure": "Procedimiento",
+    "step": "Paso",
+    "steps": "Pasos",
     "addImages": "Añade imágenes",
     "noImagesSelected": "No has seleccionado ninguna imágen",
     "nImagesSelected": "imágenes seleccionadas",

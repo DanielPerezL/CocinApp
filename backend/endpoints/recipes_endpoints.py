@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
 from utils import delete_images_by_filenames, hasPermission
-from errors import noPermissionError, noRequestedInfoError, userNotFoundError, recipeNotFoundError
+from errors import *
 
 @app.route('/api/recipes', methods=['GET', 'POST'])
 @jwt_required(optional=True)
@@ -52,15 +52,15 @@ def new_recipe(user, data):
     if not all_images_exist:
         for file_path in existing_images:
             os.remove(file_path)
-        return jsonify({"error": "Error al publicar la receta. Inténtelo de nuevo más tarde."}), 400
-
+        return noRecipeUploadedError()
+    
     # Crea una nueva receta
     new_recipe = Recipe(
         title=data.get('title'),
         user_id=user.id,
         ingredients=data.get('ingredients'),
         procedure=data.get('procedure'),
-        images=','.join(data.get('images'))  # Convierte la lista de imágenes a una cadena separada por comas
+        images=data.get('images')  # Convierte la lista de imágenes a una cadena separada por comas
     )
     try:
         db.session.add(new_recipe)
@@ -68,13 +68,13 @@ def new_recipe(user, data):
         return jsonify({"msg": "Receta publica con éxito", "new_id": new_recipe.id}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({"error": "Error al publicar la receta. Inténtelo de nuevo más tarde."}), 400
+        return noRecipeUploadedError()
 
 @app.route('/api/recipes/<int:id>', methods=['GET', 'DELETE'])
 @jwt_required(optional=True)
 def recipes_id(id):
     if id < 0:
-        return jsonify({"error": "El id proporcionado no es válido"}), 404
+        return noValidIdProvided()
     method = request.method
 
     if method == 'GET':
@@ -101,4 +101,4 @@ def delete_recipe(recipe):
         return jsonify({"msg": "Receta eliminada correctamente"}), 204
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
+    return unexpectedError()

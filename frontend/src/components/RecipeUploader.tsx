@@ -41,7 +41,17 @@ const RecipeUploader: React.FC = () => {
       const imagePaths = await Promise.all(
         selectedImages.map((image) => uploadImage(image))
       );
-      const id = await uploadRecipe(title, ingredients, procedure, imagePaths);
+      const processedProcedure = procedure
+        .split("\n")
+        .map((step) => step.trim())
+        .filter(Boolean);
+
+      const id = await uploadRecipe(
+        title,
+        ingredients,
+        processedProcedure,
+        imagePaths
+      );
       setUploadStatus("");
       setUploadErrorMsg("");
       setUploadSuccessMsg(t("recipeUploadedSuccesfully"));
