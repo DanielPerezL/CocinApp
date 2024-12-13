@@ -48,9 +48,7 @@ export const fetchRecipesCategories = async (): Promise<CategoryOptions[]> => {
 
 // Función para obtener recetas
 export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
-  //TOKEN OPCIONAL
-  if (isLoggedIn()) return await withTokenRefresh(() => fetchRecipesUnsafe());
-  return await fetchRecipesUnsafe();
+  return await withTokenRefresh(() => fetchRecipesUnsafe());
 };
 const fetchRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
   let response: Response;
@@ -67,7 +65,10 @@ const fetchRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
 };
 
 // Función para obtener detalles de una receta
-export const fetchRecipeDetails = async (
+export const fetchRecipeDetails = async (id: string) => {
+  return await withTokenRefresh(() => fetchRecipeDetailsUnsafe(id));
+};
+const fetchRecipeDetailsUnsafe = async (
   id: string
 ): Promise<RecipeDetailDTO> => {
   let response: Response;
