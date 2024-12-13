@@ -179,13 +179,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         )}
       </div>
       {/* Carrusel de imágenes */}
-      <ImageCarousel
-        images={
-          Array.isArray(recipe.images)
-            ? recipe.images
-            : recipe.images.split(",")
-        }
-      />
+      <ImageCarousel images={recipe.images} />
 
       {/* Sección de ingredientes */}
       <div className="mb-4">

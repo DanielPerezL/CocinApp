@@ -35,6 +35,8 @@
     "procedure": "Procedimiento",
     "step": "Paso",
     "steps": "Pasos",
+    "rmStep":"Eliminar paso",
+    "addStep":" Añadir paso",
     "addImages": "Añade imágenes",
     "noImagesSelected": "No has seleccionado ninguna imágen",
     "nImagesSelected": "imágenes seleccionadas",

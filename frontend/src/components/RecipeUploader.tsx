@@ -8,7 +8,7 @@ const RecipeUploader: React.FC = () => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [title, setTitle] = useState<string>("");
   const [ingredients, setIngredients] = useState<string>("");
-  const [procedure, setProcedure] = useState<string>("");
+  const [procedure, setProcedure] = useState<string[]>([""]);
   const [uploadStatus, setUploadStatus] = useState<string>("");
   const [uploadSuccessMsg, setUploadSuccessMsg] = useState<string>("");
   const [uploadErrorMsg, setUploadErrorMsg] = useState<string>("");
@@ -41,17 +41,7 @@ const RecipeUploader: React.FC = () => {
       const imagePaths = await Promise.all(
         selectedImages.map((image) => uploadImage(image))
       );
-      const processedProcedure = procedure
-        .split("\n")
-        .map((step) => step.trim())
-        .filter(Boolean);
-
-      const id = await uploadRecipe(
-        title,
-        ingredients,
-        processedProcedure,
-        imagePaths
-      );
+      const id = await uploadRecipe(title, ingredients, procedure, imagePaths);
       setUploadStatus("");
       setUploadErrorMsg("");
       setUploadSuccessMsg(t("recipeUploadedSuccesfully"));
@@ -59,7 +49,7 @@ const RecipeUploader: React.FC = () => {
       window.location.href = `/recipe?id=${id}`;
       setTitle("");
       setIngredients("");
-      setProcedure("");
+      setProcedure([""]);
       setSelectedImages([]);
     } catch (error: any) {
       setUploadStatus("");
@@ -109,15 +99,51 @@ const RecipeUploader: React.FC = () => {
           <label htmlFor="procedure" className="form-label">
             {t("procedure")}
           </label>
-          <textarea
-            id="procedure"
-            name="procedure"
-            className="form-control"
-            placeholder={t("enterProcedurePlaceHolder")}
-            rows={4}
-            value={procedure}
-            onChange={(e) => setProcedure(e.target.value)}
-          />
+
+          {procedure.map((step, index) => (
+            <div key={index} className="d-flex flex-column mb-4">
+              <label htmlFor={`procedure-step-${index}`} className="form-label">
+                {`${t("step")} ${index + 1}`}{" "}
+              </label>
+              <textarea
+                id={`procedure-step-${index}`}
+                name={`procedure-step-${index}`}
+                className="form-control"
+                placeholder={`${t("step")} ${index + 1}`}
+                rows={4}
+                value={step}
+                onChange={(e) => {
+                  const newProcedure = [...procedure];
+                  newProcedure[index] = e.target.value; // Actualiza el paso actual
+                  setProcedure(newProcedure);
+                }}
+              />
+              {/* Botón para eliminar paso */}
+              {index > 0 && (
+                <button
+                  type="button"
+                  className="btn btn-danger mt-2 col-12 col-md-3 col-lg-2"
+                  onClick={() => {
+                    const newProcedure = procedure.filter(
+                      (_, i) => i !== index
+                    ); // Elimina el paso actual
+                    setProcedure(newProcedure);
+                  }}
+                >
+                  {t("rmStep")} {index + 1}
+                </button>
+              )}{" "}
+            </div>
+          ))}
+
+          <button
+            type="button"
+            className="btn btn-secondary"
+            disabled={!procedure[procedure.length - 1]} // Deshabilita si el último paso está vacío
+            onClick={() => setProcedure([...procedure, ""])} // Añadir un nuevo paso vacío
+          >
+            {t("addStep")}
+          </button>
         </div>
 
         <div className="mb-3">

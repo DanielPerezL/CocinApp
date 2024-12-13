@@ -9,7 +9,7 @@ export interface RecipeDetailDTO {
   id: string;
   user_id: string;
   title: string;
-  images: string;
+  images: string[];
   ingredients: string;
   procedure: string[];
 }
