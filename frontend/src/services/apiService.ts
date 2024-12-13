@@ -219,7 +219,6 @@ export const reportResource = async (resource: string): Promise<void> => {
         "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include", // Permite que las cookies sean enviadas y recibidas
       body: JSON.stringify(data),
     });
   } catch (error) {

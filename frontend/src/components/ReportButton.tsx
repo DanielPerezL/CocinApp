@@ -15,7 +15,7 @@ const ReportButton: React.FC<ReportButtonProps> = ({ text }) => {
       <button
         className="btn btn-danger"
         onClick={() => {
-          reportResource(window.location.pathname);
+          reportResource(window.location.pathname + window.location.search);
           setShowReportModal(true);
         }}
       >
