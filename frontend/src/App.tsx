@@ -33,6 +33,15 @@ import ReportsPage from "./pages/ReportsPage";
     funcionalidad:
       lista de la compra
   */
+  /*
+  test:
+      probar comportamiento correcto incluse con access_token de 5/10 seg
+
+  prod:
+    eliminar export de puerto bd
+    aumentar tiempo access_token
+    jwt_cookie_secure true (funciona bien con ngrok al menos)
+  */
 }
 
 function App() {

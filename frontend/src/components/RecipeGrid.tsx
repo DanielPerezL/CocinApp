@@ -19,13 +19,6 @@ const RecipeGrid: React.FC<RecipesGridProps> = ({
   const { t } = useTranslation();
   const loadMoreButtonRef = useRef<HTMLButtonElement | null>(null); // Referencia al botón
 
-  const handleClick = () => {
-    if (loadMoreButtonRef.current) {
-      loadMoreButtonRef.current.blur(); // Eliminar focus (por estética)
-    }
-    onLoadMore();
-  };
-
   return (
     <>
       <div className="row">
@@ -37,7 +30,7 @@ const RecipeGrid: React.FC<RecipesGridProps> = ({
         <div className="d-flex justify-content-center mt-5">
           <button
             ref={loadMoreButtonRef}
-            onClick={handleClick}
+            onClick={onLoadMore}
             className="btn btn-primary col-12 col-md-3"
           >
             {t("loadMore")}

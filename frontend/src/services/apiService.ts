@@ -9,7 +9,7 @@ import {
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
-const NGROK = false;
+const NGROK = !false;
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (NGROK) {
@@ -101,9 +101,15 @@ const fetchRecipeDetailsUnsafe = async (
 
 // Función para obtener datos de un usuario
 export const fetchUserPublic = async (id: string): Promise<UserPublicDTO> => {
+  if (isLoggedIn()) return withTokenRefresh(() => fetchUserPublicUnsafe(id));
+  return fetchUserPublicUnsafe(id);
+};
+const fetchUserPublicUnsafe = async (id: string): Promise<UserPublicDTO> => {
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/users/${id}`);
+    response = await fetch(`${API_BASE_URL}/users/${id}`, {
+      method: "GET",
+    });
   } catch (error) {
     throw new Error(t("errorLoadingUserDetails"));
   }
@@ -236,13 +242,17 @@ const fetchReportsUnsafe = async (): Promise<ReportDTO[]> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
-  response = await fetch(`${API_BASE_URL}/reports`, {
-    method: "GET",
-    credentials: "include", // Incluye las cookies en la solicitud
-    headers,
-  });
+  try {
+    response = await fetch(`${API_BASE_URL}/reports`, {
+      method: "GET",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers,
+    });
+  } catch (error) {
+    throw new Error(t("errorLoadingReports"));
+  }
   if (!response.ok) {
-    return [];
+    throw new Error(t("errorLoadingReports"));
   }
   return await response.json();
 };
@@ -284,8 +294,13 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   if (!response.ok) {
     throw new Error(t("errorLoadingLoggedUser"));
   }
+  const data = await response.json();
+  if (!data.email) {
+    //el back devuelve el dto publico si el token ha expirado, pero quiero el dto privado
+    throw new Error(t("errorLoadingLoggedUser"));
+  }
 
-  return await response.json();
+  return data;
 };
 
 // Función para obtener las recetas de un usario
@@ -362,7 +377,7 @@ const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
 };
 
 export const fetchMyFavRecipes = async (offset: number) => {
-  throw new Error(t("errorLoadingMyFavRecipes"));
+  if (!isLoggedIn()) throw new Error(t("errorLoadingMyFavRecipes"));
   return await withTokenRefresh(() => fetchMyFavRecipesUnsafe(offset));
 };
 const fetchMyFavRecipesUnsafe = async (
