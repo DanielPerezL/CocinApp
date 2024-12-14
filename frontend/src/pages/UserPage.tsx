@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
+  RECIPE_LIMIT,
   fetchUserPublicFromNick,
   fetchUserRecipes,
 } from "../services/apiService"; // Ajusta la ruta según tu proyecto
@@ -16,6 +17,25 @@ const UserPage: React.FC = () => {
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const loadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loadRecipes = async (user_id: string) => {
+    if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
+    loadingRef.current = true;
+    try {
+      const newRecipes = await fetchUserRecipes(user_id, offset); // Llama a la función para obtener las recetas
+      setRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
+      setOffset((prev) => prev + newRecipes.length); // Incrementar el offset
+      if (newRecipes.length < RECIPE_LIMIT) setHasMore(false); // Si no hay más recetas, desactivar carga
+    } catch (err: any) {
+      setError(err.message); // Captura el error y actualiza el estado
+    } finally {
+      loadingRef.current = false; // Cambia el estado de carga a false al final
+    }
+  };
+
   useEffect(() => {
     const loadUserData = async () => {
       if (!nickname) {
@@ -27,8 +47,7 @@ const UserPage: React.FC = () => {
         // Obtener los detalles del usuario por su nickname
         const userData = await fetchUserPublicFromNick(nickname);
         setUser(userData);
-        const userRecipes = await fetchUserRecipes(userData.id);
-        setRecipes(userRecipes);
+        loadRecipes(userData.id);
       } catch (err) {
         setError(t("errorUserNotFound"));
       }
@@ -53,7 +72,16 @@ const UserPage: React.FC = () => {
                   <p className="fs-5 fw-light">{t("noTheirRecipes")}</p>
                 )}
                 {error && <p className="text-danger">{error}</p>}
-                {!error && <RecipeGrid recipes={recipes} />}
+                {!error && (
+                  <RecipeGrid
+                    hasMore={hasMore}
+                    loading={loadingRef.current}
+                    onLoadMore={() => {
+                      loadRecipes(user.id);
+                    }}
+                    recipes={recipes}
+                  />
+                )}
               </div>
             </div>
           )}

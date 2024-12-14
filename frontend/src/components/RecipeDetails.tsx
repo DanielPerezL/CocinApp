@@ -14,7 +14,6 @@ import {
   getImage,
   getLoggedUserId,
   isAdmin,
-  isFavoriteRecipe,
   isLoggedIn,
   removeRecipe,
   reportResource,
@@ -50,19 +49,13 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
     }
   };
 
-  const getFavorite = async () => {
-    try {
-      const is_fav = await isFavoriteRecipe(recipe.id);
-      setFavorite(is_fav);
-    } catch (error) {
-      setFavorite(false);
-    }
-  };
-
   useEffect(() => {
     if (user.picture === "") setImgError(true);
     if (!isLoggedIn()) return;
-    getFavorite();
+
+    console.log("arreglas is fav -> implementar en el backend");
+    //const is_fav = false;
+    //setFavorite(is_fav);
   }, []);
 
   // Función para copiar la URL al portapapeles

@@ -9,16 +9,20 @@ import {
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
-//const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
-//const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
-
-// Cadenas de conexion usando NGROK
-const API_BASE_URL = `${window.location.protocol}/api`;
-const TOKEN_BASE_URL = `${window.location.protocol}/token`;
-//*/
+const NGROK = false;
+let API_BASE_URL: string;
+let TOKEN_BASE_URL: string;
+if (NGROK) {
+  // Cadenas de conexion usando NGROK
+  API_BASE_URL = `${window.location.protocol}/api`;
+  TOKEN_BASE_URL = `${window.location.protocol}/token`;
+} else {
+  API_BASE_URL = `http://${window.location.hostname}:5000/api`;
+  TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
+}
+export const RECIPE_LIMIT = 20;
 
 //FUNCIONES SIN LOGIN REQUERIDO
-
 export const isLoggedIn = () => {
   return localStorage.getItem("isLoggedIn") == "true";
 };
@@ -47,13 +51,19 @@ export const fetchRecipesCategories = async (): Promise<CategoryOptions[]> => {
 };
 
 // Función para obtener recetas
-export const fetchRecipes = async (): Promise<RecipeSimpleDTO[]> => {
-  return await withTokenRefresh(() => fetchRecipesUnsafe());
+export const fetchRecipes = async (
+  offset: number
+): Promise<RecipeSimpleDTO[]> => {
+  return await withTokenRefresh(() => fetchRecipesUnsafe(offset));
 };
-const fetchRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
+const fetchRecipesUnsafe = async (
+  offset: number
+): Promise<RecipeSimpleDTO[]> => {
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/recipes`);
+    response = await fetch(
+      `${API_BASE_URL}/recipes?offset=${offset}&limit=${RECIPE_LIMIT}`
+    );
   } catch (error) {
     throw new Error(t("errorLoadingRecipes"));
   }
@@ -83,13 +93,13 @@ const fetchRecipeDetailsUnsafe = async (
   return await response.json();
 };
 
-// Función para obtener detalles de una receta
+// Función para obtener datos de un usuario
 export const fetchUserPublic = async (id: string): Promise<UserPublicDTO> => {
   let response: Response;
   try {
     response = await fetch(`${API_BASE_URL}/users/${id}`);
   } catch (error) {
-    throw new Error(t("errorLoadingRecipeDetails"));
+    throw new Error(t("errorLoadingUserDetails"));
   }
   if (!response.ok) {
     const data = await response.json();
@@ -102,23 +112,6 @@ export const fetchUserPublicFromNick = async (
   nick: string
 ): Promise<UserPublicDTO> => {
   return fetchUserPublic(nick);
-};
-
-// Función para obtener las recetas de un usario
-export const fetchUserRecipes = async (
-  id: string
-): Promise<RecipeSimpleDTO[]> => {
-  let response: Response;
-  try {
-    response = await fetch(`${API_BASE_URL}/recipes?user_id=${id}`);
-  } catch (error) {
-    throw new Error(t("errorLoadingUserRecipes"));
-  }
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(t("errorLoadingUserRecipes"));
-  }
-  return await response.json();
 };
 
 //Función para registrar un nuevo usuario
@@ -265,6 +258,7 @@ const setReportReviewedUnsafe = async (report: ReportDTO): Promise<void> => {
 
 // Función para obtener el perfil del usuario logeado
 export const fetchLoggedUserProfile = async () => {
+  if (!isLoggedIn()) throw new Error(t("errorLoadingLoggedUser"));
   return await withTokenRefresh(() => fetchLoggedUserProfileUnsafe());
 };
 const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
@@ -273,14 +267,11 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
   try {
-    response = await fetch(
-      `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}`,
-      {
-        method: "GET",
-        credentials: "include", // Incluye las cookies en la solicitud
-        headers,
-      }
-    );
+    response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
+      method: "GET",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers,
+    });
   } catch (error) {
     throw new Error(t("errorLoadingLoggedUser"));
   }
@@ -291,41 +282,23 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   return await response.json();
 };
 
-export const fetchMyRecipes = async () => {
-  return await withTokenRefresh(() => fetchMyRecipesUnsafe());
-};
-const fetchMyRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
+// Función para obtener las recetas de un usario
+export const fetchUserRecipes = async (
+  id: string,
+  offset: number
+): Promise<RecipeSimpleDTO[]> => {
   let response: Response;
-  const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?user_id=${localStorage.getItem("loggedUserId")}`,
-      {
-        method: "GET",
-        credentials: "include", // Incluye las cookies en la solicitud
-        headers,
-      }
+      `${API_BASE_URL}/recipes?user_id=${id}&offset=${offset}&limit=${RECIPE_LIMIT}`
     );
   } catch (error) {
-    throw new Error(t("errorLoadingMyRecipes"));
+    throw new Error(t("errorLoadingUserRecipes"));
   }
   if (!response.ok) {
-    throw new Error(t("errorLoadingMyRecipes"));
+    throw new Error(t("errorLoadingUserRecipes"));
   }
-
   return await response.json();
-};
-
-export const isFavoriteRecipe = async (id: string): Promise<boolean> => {
-  if (!isLoggedIn()) return false;
-
-  try {
-    const favs: RecipeSimpleDTO[] = await fetchMyFavRecipes();
-    return favs.some((recipe) => recipe.id === id);
-  } catch (error) {
-    return false;
-  }
 };
 
 export const addRecipeFav = async (id: string) => {
@@ -382,19 +355,20 @@ const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
   }
 };
 
-export const fetchMyFavRecipes = async () => {
-  return await withTokenRefresh(() => fetchMyFavRecipesUnsafe());
+export const fetchMyFavRecipes = async (offset: number) => {
+  throw new Error(t("errorLoadingMyFavRecipes"));
+  return await withTokenRefresh(() => fetchMyFavRecipesUnsafe(offset));
 };
-const fetchMyFavRecipesUnsafe = async (): Promise<RecipeSimpleDTO[]> => {
+const fetchMyFavRecipesUnsafe = async (
+  offset: number
+): Promise<RecipeSimpleDTO[]> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${localStorage.getItem(
-        "loggedUserId"
-      )}/fav_recipes`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/fav_recipes?offset=${offset}&limit=${RECIPE_LIMIT}`,
       {
         method: "GET",
         credentials: "include", // Incluye las cookies en la solicitud

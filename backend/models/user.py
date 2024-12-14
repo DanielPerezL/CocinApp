@@ -39,8 +39,8 @@ class User(db.Model):
     def is_favorite(self, recipe):
         return FavoriteRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).count() > 0
     
-    def get_favorite_recipes(self):
-        favorite_recipes = FavoriteRecipe.query.filter_by(user_id=self.id).all()
+    def get_favorite_recipes(self, offset, limit):
+        favorite_recipes = FavoriteRecipe.query.filter_by(user_id=self.id).offset(offset).limit(limit).all()
         return [favorite.recipe for favorite in favorite_recipes]    
 
     def get_picture(self):

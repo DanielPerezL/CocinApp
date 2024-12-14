@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AuthWrapper from "../components/AuthWrapper";
 import {
+  RECIPE_LIMIT,
   fetchLoggedUserProfile,
-  fetchMyRecipes,
+  fetchUserRecipes,
   isLoggedIn,
-  logout,
 } from "../services/apiService";
 import { RecipeSimpleDTO, UserDTO } from "../interfaces";
 import RecipeGrid from "../components/RecipeGrid";
@@ -17,33 +17,41 @@ const ProfilePage: React.FC = () => {
 
   const [user, setUser] = useState<UserDTO | null>(null);
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
   const [refresh, setRefresh] = useState<boolean>(false);
+
+  const loadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loadMyRecipes = async (user_id: string) => {
+    if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
+    loadingRef.current = true;
+    try {
+      const newRecipes = await fetchUserRecipes(user_id, offset); // Llama a la función para obtener las recetas
+      setRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
+      setOffset((prev) => prev + newRecipes.length); // Incrementar el offset
+      if (newRecipes.length < RECIPE_LIMIT) setHasMore(false); // Si no hay más recetas, desactivar carga
+    } catch (err: any) {
+      setError(err.message); // Captura el error y actualiza el estado
+    } finally {
+      loadingRef.current = false; // Cambia el estado de carga a false al final
+    }
+  };
 
   useEffect(() => {
     const getUserProfile = async () => {
       try {
         const userProfile = await fetchLoggedUserProfile();
         setUser(userProfile);
+        loadMyRecipes(userProfile.id);
       } catch (error) {
         window.location.reload();
-      }
-    };
-    const loadMyRecipes = async () => {
-      try {
-        const fetchedRecipes = await fetchMyRecipes(); // Llama a la función para obtener las recetas
-        setRecipes(fetchedRecipes); // Actualiza el estado con las recetas obtenidas
-      } catch (err: any) {
-        setError(err.message); // Captura el error y actualiza el estado
-      } finally {
-        setLoading(false); // Cambia el estado de carga a false al final
       }
     };
 
     if (!isLoggedIn()) return;
     getUserProfile();
-    loadMyRecipes();
   }, [refresh]);
 
   return (
@@ -77,9 +85,18 @@ const ProfilePage: React.FC = () => {
                       </Link>
                     </>
                   )}
-                  {loading && <p>{t("loadingRecipes")}</p>}
+                  {loadingRef.current && <p>{t("loadingRecipes")}</p>}
                   {error && <p className="text-danger">{error}</p>}
-                  {!loading && !error && <RecipeGrid recipes={recipes} />}
+                  {!loadingRef.current && !error && (
+                    <RecipeGrid
+                      hasMore={hasMore}
+                      loading={loadingRef.current}
+                      onLoadMore={() => {
+                        loadMyRecipes(user.id);
+                      }}
+                      recipes={recipes}
+                    />
+                  )}
                 </div>
               </div>
             )}

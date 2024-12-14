@@ -15,7 +15,11 @@ import ReportsPage from "./pages/ReportsPage";
 
 {
   /*
-  TODO:       
+  TODO:    
+    arreglar receta isFav-> al hacer get details credenciales opcionales
+    al enviarse el sv comprueba si la tienes fav sino se envian te dice que no es fav directamente. 
+    modificar recipeDetailsDTO
+  
     modificar INPUT ingredientes:
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
             tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)
@@ -32,12 +36,6 @@ import ReportsPage from "./pages/ReportsPage";
     
     funcionalidad:
       lista de la compra
-      IMPLEMENTAR SCROLL INFINITO Y QUE NO SE CARGEN TODAS LAS RECETAS A LA VEZ
-
-    FUERA (prototipo):
-      wcag
-      ¿IMPLEMENTAR CACHE PARA REDUCIR CONSULTAS A BBDD? -> p.e. FAVORITAS (cuidado concurrencia de usuarios multidispositivo)
-      
   */
 }
 

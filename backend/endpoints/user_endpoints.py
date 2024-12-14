@@ -150,11 +150,13 @@ def delete_account(deleting_user):
 @jwt_required()
 def favorites_recipes(id):
     client = get_user_from_token(get_jwt())
+    offset = request.args.get('offset', default=0, type=int)
+    limit = request.args.get('limit', default=10, type=int)    
     user = User.query.get(id)
     if not hasPermission(client, user):
         return jsonify({"error": "No tienes los permisos necesarios."}), 403
 
-    recipes = [recipe.to_simple_dto() for recipe in user.get_favorite_recipes()]
+    recipes = [recipe.to_simple_dto() for recipe in user.get_favorite_recipes(offset, limit)]
     return jsonify(recipes), 200
 
 @app.route('/api/users/<int:idU>/fav_recipes/<int:idR>', methods=['POST', 'DELETE'])

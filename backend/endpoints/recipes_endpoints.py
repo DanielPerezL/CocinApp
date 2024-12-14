@@ -14,12 +14,14 @@ def recipes():
     method = request.method
     if method == 'GET':
         user_id = request.args.get('user_id', default=-1, type=int)
+        offset = request.args.get('offset', default=0, type=int)
+        limit = request.args.get('limit', default=10, type=int)
         if user_id < 0:
-            return get_recipes_simple_dto() 
+            return get_recipes_simple_dto(offset, limit) 
         user = User.query.get(user_id)
         if user is None:
             return userNotFoundError()
-        return get_recipes_from_user(user)
+        return get_recipes_from_user(user, offset, limit)
     if method == 'POST':
         user = get_user_from_token(get_jwt())
         if user is None:
@@ -33,13 +35,13 @@ def get_recipe_categories():
     return jsonify({"name":"time", "options": time_options}, 
                     {"name":"difficulty", "options": difficulty_options}), 200
 
-def get_recipes_simple_dto():
-    recipes = Recipe.query.all()
+def get_recipes_simple_dto(offset, limit):
+    recipes = Recipe.query.offset(offset).limit(limit).all()
     recipes_data = [recipe.to_simple_dto() for recipe in recipes]
     return jsonify(recipes_data), 200
 
-def get_recipes_from_user(user):
-    recipes = Recipe.query.filter_by(user_id=user.id).all()
+def get_recipes_from_user(user, offset, limit):
+    recipes = Recipe.query.filter_by(user_id=user.id).offset(offset).limit(limit).all()
     recipes_data = [recipe.to_simple_dto() for recipe in recipes]
     return jsonify(recipes_data), 200
 

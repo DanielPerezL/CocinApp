@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import RecipeGrid from "../components/RecipeGrid";
 import { RecipeSimpleDTO } from "../interfaces";
-import { fetchRecipes } from "../services/apiService";
+import { RECIPE_LIMIT, fetchRecipes } from "../services/apiService";
 import { useTranslation } from "react-i18next";
 
 const Home = () => {
@@ -9,21 +9,26 @@ const Home = () => {
 
   // Estado para almacenar las recetas
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Estado para gestionar la carga
   const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
 
+  const loadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const loadRecipes = async () => {
+    if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
+    loadingRef.current = true;
+    try {
+      const newRecipes = await fetchRecipes(offset); // Llama a la función para obtener las recetas
+      setRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
+      setOffset((prev) => prev + newRecipes.length); // Incrementar el offset
+      if (newRecipes.length < RECIPE_LIMIT) setHasMore(false); // Si no hay más recetas, desactivar carga
+    } catch (err: any) {
+      setError(err.message); // Captura el error y actualiza el estado
+    } finally {
+      loadingRef.current = false; // Cambia el estado de carga a false al final
+    }
+  };
   useEffect(() => {
-    const loadRecipes = async () => {
-      try {
-        const fetchedRecipes = await fetchRecipes(); // Llama a la función para obtener las recetas
-        setRecipes(fetchedRecipes); // Actualiza el estado con las recetas obtenidas
-      } catch (err: any) {
-        setError(err.message); // Captura el error y actualiza el estado
-      } finally {
-        setLoading(false); // Cambia el estado de carga a false al final
-      }
-    };
-
     loadRecipes(); // Llama a la función para cargar las recetas
   }, []); // Se ejecuta solo al montar el componente
 
@@ -33,9 +38,16 @@ const Home = () => {
         <h1 className="display-4 text-primary">{t("welcome")}</h1>
         <p className="fs-5 fw-light">{t("subwelcome")}</p>
       </div>
-      {loading && <p>{t("loadingRecipes")}</p>}{" "}
+      {loadingRef.current && <p>{t("loadingRecipes")}</p>}{" "}
       {error && <p className="text-danger">{error}</p>}{" "}
-      {!loading && !error && <RecipeGrid recipes={recipes} />}{" "}
+      {!loadingRef.current && !error && (
+        <RecipeGrid
+          hasMore={hasMore}
+          loading={loadingRef.current}
+          onLoadMore={loadRecipes}
+          recipes={recipes}
+        />
+      )}{" "}
     </div>
   );
 };
