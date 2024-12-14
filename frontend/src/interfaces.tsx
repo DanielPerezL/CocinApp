@@ -11,6 +11,7 @@ export interface RecipeDetailDTO {
   id: string;
   user_id: string;
   title: string;
+  isFav: boolean;
   time: string;
   difficulty: string;
   images: string[];

@@ -36,7 +36,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [isFavorite, setFavorite] = useState(false);
+  const [isFavorite, setFavorite] = useState(recipe.isFav);
   const [showLoginModal, setShowLoginModal] = useState(false); // Modal para iniciar sesión
   const [imgError, setImgError] = useState(false);
 
@@ -52,10 +52,6 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   useEffect(() => {
     if (user.picture === "") setImgError(true);
     if (!isLoggedIn()) return;
-
-    console.log("arreglas is fav -> implementar en el backend");
-    //const is_fav = false;
-    //setFavorite(is_fav);
   }, []);
 
   // Función para copiar la URL al portapapeles

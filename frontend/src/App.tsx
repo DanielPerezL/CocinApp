@@ -15,11 +15,7 @@ import ReportsPage from "./pages/ReportsPage";
 
 {
   /*
-  TODO:    
-    arreglar receta isFav-> al hacer get details credenciales opcionales
-    al enviarse el sv comprueba si la tienes fav sino se envian te dice que no es fav directamente. 
-    modificar recipeDetailsDTO
-  
+  TODO:      
     modificar INPUT ingredientes:
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
             tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)

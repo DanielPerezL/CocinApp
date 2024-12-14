@@ -83,7 +83,13 @@ const fetchRecipeDetailsUnsafe = async (
 ): Promise<RecipeDetailDTO> => {
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/recipes/${id}`);
+    response = await fetch(`${API_BASE_URL}/recipes/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
   } catch (error) {
     throw new Error(t("errorLoadingRecipeDetails"));
   }

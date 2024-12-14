@@ -87,22 +87,24 @@ def new_recipe(user, data):
 def recipes_id(id):
     if id < 0:
         return noValidIdProvided()
+    
+    client = get_user_from_token(get_jwt())
     method = request.method
-
     if method == 'GET':
-        return recipe_details(id)
+        return recipe_details(id, client)
     if method == 'DELETE':
-        client = get_user_from_token(get_jwt())
         recipe = Recipe.query.get(id)
         if not hasPermission(client, recipe):
             return noPermissionError()
         return delete_recipe(recipe)
 
-def recipe_details(id):
+def recipe_details(id, client):
     recipe = Recipe.query.get(id)
     if recipe is None:
         return recipeNotFoundError()
-    return jsonify(recipe.to_details_dto()), 200
+    recipe_dto = recipe.to_details_dto()
+    recipe_dto["isFav"] = client.is_favorite(recipe) if client else False
+    return jsonify(recipe_dto), 200
 
 def delete_recipe(recipe):
     filenames = recipe.images
