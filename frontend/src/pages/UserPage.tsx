@@ -67,9 +67,11 @@ const UserPage: React.FC = () => {
             <div className="container mt-4">
               <div className="text-center mb-2">
                 {recipes.length > 0 ? (
-                  <p className="fs-5 fw-light">{t("theirRecipes")}</p>
+                  <p className="fs-6 fw-light mt-4 mb-3">{t("theirRecipes")}</p>
                 ) : (
-                  <p className="fs-5 fw-light">{t("noTheirRecipes")}</p>
+                  <p className="fs-6 fw-light mt-4 mb-3">
+                    {t("noTheirRecipes")}
+                  </p>
                 )}
                 {error && <p className="text-danger">{error}</p>}
                 {!error && (

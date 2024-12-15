@@ -128,7 +128,7 @@ const FavoritesPage = () => {
                 !similarError &&
                 similarRecipes.length > 0 && (
                   <>
-                    <p className="mt-5 mb-2 fs-5 fw-light">
+                    <p className="fs-6 fw-light mt-4 mb-3">
                       {t("similarUsersLikes")}
                     </p>
                     <RecipeGrid

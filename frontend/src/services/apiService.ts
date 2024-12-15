@@ -22,7 +22,6 @@ if (NGROK) {
 }
 export const RECIPE_LIMIT = 20;
 
-//FUNCIONES SIN LOGIN REQUERIDO
 export const isLoggedIn = () => {
   return localStorage.getItem("isLoggedIn") == "true";
 };
@@ -35,6 +34,7 @@ export const getLoggedUserId = () => {
   return localStorage.getItem("loggedUserId");
 };
 
+//FUNCIONES SIN LOGIN REQUERIDO
 // Función para obtener las categorias de las recetas
 export const fetchRecipesCategories = async (): Promise<CategoryOptions[]> => {
   let response: Response;
@@ -409,9 +409,7 @@ const addRecipeFavUnsafe = async (id: string): Promise<void> => {
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${localStorage.getItem(
-        "loggedUserId"
-      )}/fav_recipes/${id}`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/fav_recipes/${id}`,
       {
         method: "POST",
         credentials: "include",

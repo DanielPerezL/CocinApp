@@ -104,7 +104,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   };
 
   return (
-    <div className="container main-container">
+    <div className="container">
       <h2 className="text-primary">{t("userProfile")}</h2>
       <div className="d-flex flex-column align-items-center p-3">
         <img

@@ -60,19 +60,23 @@ const ProfilePage: React.FC = () => {
         setRefresh(!refresh);
       }}
     >
-      <div className="container">
+      <div className="main-container container">
         {user ? (
           <>
             <UserDetails user={user} />
 
             {recipes && (
-              <div className="container main-container mt-4">
-                <div className="text-center mb-4">
+              <div className="container mt-5">
+                <div className="text-center mt4 mb-2">
                   {recipes.length > 0 ? (
-                    <p className="fs-5 fw-light mb-5">{t("hereYourRecipes")}</p>
+                    <p className="fs-6 fw-light mt-4 mb-3">
+                      {t("hereYourRecipes")}
+                    </p>
                   ) : (
                     <>
-                      <p className="fs-5 fw-light">{t("noYourRecipes")}</p>
+                      <p className="fs-6 fw-light mt-4 mb-3">
+                        {t("noYourRecipes")}
+                      </p>
                       <Link
                         to="/publish"
                         onClick={() => {
