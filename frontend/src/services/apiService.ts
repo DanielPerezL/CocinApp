@@ -302,9 +302,12 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
 
   return data;
 };
-
+export const fetchUserRecipes = async (id: string, offset: number) => {
+  if (!isLoggedIn()) throw new Error(t("errorLoadingUserRecipes"));
+  return await withTokenRefresh(() => fetchUserRecipesUnsafe(id, offset));
+};
 // Función para obtener las recetas de un usario
-export const fetchUserRecipes = async (
+const fetchUserRecipesUnsafe = async (
   id: string,
   offset: number
 ): Promise<RecipeSimpleDTO[]> => {
@@ -536,11 +539,11 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
 
 export const updatePassword = async (
   current_password: string,
-  current_password2: string,
-  new_password: string
+  new_password: string,
+  new_password2: string
 ): Promise<void> => {
-  if (current_password != current_password2)
-    throw new Error(t("errorUpdatingPasswordNoValidCurrents"));
+  if (new_password != new_password2)
+    throw new Error(t("errorUpdatingPasswordNoValidNewPasswords"));
   return await withTokenRefresh(() =>
     updatePasswordUnsafe(current_password, new_password)
   );

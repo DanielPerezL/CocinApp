@@ -30,8 +30,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   const [showModal, setShowModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
-  const [currentPassword2, setCurrentPassword2] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [newPassword2, setNewPassword2] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
     null
@@ -46,15 +46,15 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   const handleConfirmChangePassword = async (event: React.FormEvent) => {
     event.preventDefault(); // Evitar que el formulario recargue la página
     try {
-      await updatePassword(currentPassword, currentPassword2, newPassword);
+      await updatePassword(currentPassword, newPassword, newPassword2);
       // Mostrar mensaje de éxito
       setMessage(t("passwordUpdatedSuccessfully"));
       setMessageType("success");
 
       // Limpiar los campos de contraseña
       setCurrentPassword("");
-      setCurrentPassword2("");
       setNewPassword("");
+      setNewPassword2("");
 
       // Mostrar el mensaje durante 2 segundos antes de cerrar el modal
       setTimeout(() => {
@@ -218,20 +218,20 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
               onChange={(e) => setCurrentPassword(e.target.value)}
               required
             />
-            <Form.Label className="mt-3">{t("currentPassword2")}</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder={t("enterCurrentPassword2")}
-              value={currentPassword2}
-              onChange={(e) => setCurrentPassword2(e.target.value)}
-              required
-            />
             <Form.Label className="mt-3">{t("newPassword")}</Form.Label>
             <Form.Control
               type="password"
               placeholder={t("enterNewPassword")}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+            <Form.Label className="mt-3">{t("newPassword2")}</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder={t("enterNewPassword2")}
+              value={newPassword2}
+              onChange={(e) => setNewPassword2(e.target.value)}
               required
             />
           </Modal.Body>
