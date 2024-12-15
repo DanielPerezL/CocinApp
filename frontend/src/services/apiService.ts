@@ -99,10 +99,14 @@ const fetchRecipeDetailsUnsafe = async (
   return await response.json();
 };
 
-// Función para obtener datos de un usuario
+// Funciones para obtener datos de un usuario
+export const fetchUserPublicFromNick = async (
+  nick: string
+): Promise<UserPublicDTO> => {
+  return fetchUserPublic(nick);
+};
 export const fetchUserPublic = async (id: string): Promise<UserPublicDTO> => {
-  if (isLoggedIn()) return withTokenRefresh(() => fetchUserPublicUnsafe(id));
-  return fetchUserPublicUnsafe(id);
+  return withTokenRefresh(() => fetchUserPublicUnsafe(id));
 };
 const fetchUserPublicUnsafe = async (id: string): Promise<UserPublicDTO> => {
   let response: Response;
@@ -114,16 +118,9 @@ const fetchUserPublicUnsafe = async (id: string): Promise<UserPublicDTO> => {
     throw new Error(t("errorLoadingUserDetails"));
   }
   if (!response.ok) {
-    const data = await response.json();
     throw new Error(t("errorLoadingUserDetails"));
   }
   return await response.json();
-};
-
-export const fetchUserPublicFromNick = async (
-  nick: string
-): Promise<UserPublicDTO> => {
-  return fetchUserPublic(nick);
 };
 
 //Función para registrar un nuevo usuario
@@ -212,7 +209,11 @@ export const logout = async (): Promise<void> => {
   localStorage.removeItem("isAdmin");
 };
 
-export const reportResource = async (resource: string): Promise<void> => {
+//Funcion para reportar un recurso
+export const reportResource = async (resource: string) => {
+  return await withTokenRefresh(() => reportResourceUnsafe(resource));
+};
+const reportResourceUnsafe = async (resource: string): Promise<void> => {
   let response: Response;
   const data = { reported_resource: resource };
   const csrfToken = getCookie("csrf_access_token");
@@ -228,8 +229,10 @@ export const reportResource = async (resource: string): Promise<void> => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    //No debe darse
-    console.error(error);
+    throw new Error(t("errorReportingResource"));
+  }
+  if (!response.ok) {
+    throw new Error(t("errorReportingResource"));
   }
 };
 
@@ -265,11 +268,18 @@ const setReportReviewedUnsafe = async (report: ReportDTO): Promise<void> => {
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
 
-  response = await fetch(`${API_BASE_URL}/reports/${report.id}`, {
-    method: "PUT",
-    credentials: "include", // Incluye las cookies en la solicitud
-    headers,
-  });
+  try {
+    response = await fetch(`${API_BASE_URL}/reports/${report.id}`, {
+      method: "PUT",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers,
+    });
+  } catch (error) {
+    throw new Error(t("errorSettingReportReviewed"));
+  }
+  if (!response.ok) {
+    throw new Error(t("errorSettingReportReviewed"));
+  }
 };
 
 // Función para obtener el perfil del usuario logeado
@@ -302,8 +312,8 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
 
   return data;
 };
+
 export const fetchUserRecipes = async (id: string, offset: number) => {
-  if (!isLoggedIn()) throw new Error(t("errorLoadingUserRecipes"));
   return await withTokenRefresh(() => fetchUserRecipesUnsafe(id, offset));
 };
 // Función para obtener las recetas de un usario
@@ -362,9 +372,7 @@ const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${localStorage.getItem(
-        "loggedUserId"
-      )}/fav_recipes/${id}`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/fav_recipes/${id}`,
       {
         method: "DELETE",
         credentials: "include", // Incluye las cookies en la solicitud
@@ -516,18 +524,15 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
   const data = { picture: imagePath };
 
   try {
-    response = await fetch(
-      `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json", // Especifica el tipo de contenido
-          ...headers,
-        },
-        credentials: "include", // Incluye las cookies en la solicitud
-        body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
-      }
-    );
+    response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Especifica el tipo de contenido
+        ...headers,
+      },
+      credentials: "include", // Incluye las cookies en la solicitud
+      body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
+    });
   } catch (error) {
     throw new Error(t("errorUpdatingProfilePic"));
   }
@@ -560,18 +565,15 @@ const updatePasswordUnsafe = async (
     new_password: new_password,
   };
   try {
-    response = await fetch(
-      `${API_BASE_URL}/users/${localStorage.getItem("loggedUserId")}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json", // Especifica el tipo de contenido
-          ...headers,
-        },
-        credentials: "include", // Incluye las cookies en la solicitud
-        body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
-      }
-    );
+    response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Especifica el tipo de contenido
+        ...headers,
+      },
+      credentials: "include", // Incluye las cookies en la solicitud
+      body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
+    });
   } catch (error) {
     throw new Error(t("errorUpdatingPassword"));
   }
@@ -614,7 +616,7 @@ const removeAccountUnsafe = async (id: string): Promise<void> => {
 };
 
 export const removeRecipe = async (idR: string): Promise<void> => {
-  if (!localStorage.getItem("isLoggedIn")) return;
+  if (!isLoggedIn()) return;
   return await withTokenRefresh(() => removeRecipeUnsafe(idR));
 };
 const removeRecipeUnsafe = async (idR: string): Promise<void> => {

@@ -22,20 +22,6 @@ class User(db.Model):
         self.password_hash = generate_password_hash(password)
         self.admin = False
 
-    # Métodos para añadir y quitar recetas de favoritos
-    def add_favorite_recipe(self, recipe):
-        if not self.is_favorite(recipe):
-            # Crear una nueva instancia de FavoriteRecipe
-            favorite = FavoriteRecipe(user_id=self.id, recipe_id=recipe.id)
-            db.session.add(favorite)
-            db.session.commit()
-
-    def remove_favorite_recipe(self, recipe):
-        favorite = FavoriteRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).first()
-        if favorite:
-            db.session.delete(favorite)
-            db.session.commit()
-            
     def is_favorite(self, recipe):
         return FavoriteRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).count() > 0
     

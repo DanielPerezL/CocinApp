@@ -180,18 +180,24 @@ def favorites_recipes_mod(idU, idR):
         return rm_favorite(user, recipe)
 
 def add_favorite(user, recipe):
+    if(user.is_favorite(recipe)):
+        return jsonify({"msg": "Receta añadida a favoritos."}), 201
     try:
-        user.add_favorite_recipe(recipe)
-        #EL COMMIT SE HACE EN LA FUNCION db.session.commit()
+        favorite = FavoriteRecipe(user_id=user.id, recipe_id=recipe.id)
+        db.session.add(favorite)
+        db.session.commit()
         return jsonify({"msg": "Receta añadida a favoritos."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al añadir receta favorita."}), 400
     
 def rm_favorite(user, recipe): 
+    favorite = FavoriteRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
+    if not favorite:
+        return jsonify({"msg": "Receta eliminada de favoritos."}), 201
     try:
-        user.remove_favorite_recipe(recipe)
-        #EL COMMIT SE HACE EN LA FUNCION db.session.commit()
+        db.session.delete(favorite)
+        db.session.commit()
         return jsonify({"msg": "Receta eliminada de favoritos."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
