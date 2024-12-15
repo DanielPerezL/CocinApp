@@ -4,7 +4,7 @@ import heart from "../assets/heart.png";
 import publish from "../assets/publish.png";
 import user from "../assets/user.png";
 import report from "../assets/report.png";
-import { isAdmin } from "../services/apiService";
+import { isAdmin, isLoggedIn } from "../services/apiService";
 import { authEvents } from "../events/authEvents";
 
 const NavButtons: React.FC = () => {
@@ -28,24 +28,29 @@ const NavButtons: React.FC = () => {
 
   return (
     <div className="d-flex justify-content-around">
-      <Link
-        to="/favorites"
-        className="btn nav-btn mx-1"
-        onClick={() => {
-          window.scrollTo(0, 0);
-        }}
-      >
-        <img src={heart} />
-      </Link>
-      <Link
-        to="/publish"
-        className="btn nav-btn mx-1"
-        onClick={() => {
-          window.scrollTo(0, 0);
-        }}
-      >
-        <img src={publish} />
-      </Link>
+      {isLoggedIn() && (
+        <>
+          <Link
+            to="/favorites"
+            className="btn nav-btn mx-1"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
+            <img src={heart} />
+          </Link>
+          <Link
+            to="/publish"
+            className="btn nav-btn mx-1"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
+            <img src={publish} />
+          </Link>
+        </>
+      )}
+
       {isAdmin() && (
         <Link
           to="/reports"
