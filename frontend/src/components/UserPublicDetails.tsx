@@ -39,7 +39,8 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
             setShowModal(true);
           }}
         />
-        {isAdmin() && (
+        {isAdmin() ? (
+          //Soy admin, puedo eliminar
           <NeedConfirmButton
             className="btn btn-danger mt-3 ms-2"
             buttonText={t("rmAccount")}
@@ -47,9 +48,14 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
             message={t("confirmDeleteAccountMessageADMIN")}
             onConfirm={handleDeleteAccount}
           />
-        )}
-        {!isAdmin() && getLoggedUserId() != user.id && (
-          <ReportButton text={t("reportUser")} />
+        ) : (
+          getLoggedUserId() != user.id && (
+            //No soy admin y tampo es mi cuenta, puedo reportar
+            <ReportButton
+              className="btn btn-danger mt-3 ms-2"
+              text={t("reportUser")}
+            />
+          )
         )}
       </div>
       <ImageModal

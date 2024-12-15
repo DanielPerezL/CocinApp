@@ -156,16 +156,6 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
 
       <div className="d-flex justify-content-between align-items-center mb-4 mt-3">
         <h1 className="display-5 text-primary">{recipe.title}</h1>
-
-        {(isAdmin() || getLoggedUserId() == recipe.user_id) && (
-          <NeedConfirmButton
-            className="btn btn-danger"
-            buttonText={t("deleteRecipe")}
-            title={t("confirmDelteRecipeTitle")}
-            message={t("confirmDelteRecipeMessage")}
-            onConfirm={handleRecipeDelete}
-          />
-        )}
       </div>
       {/* Carrusel de imágenes */}
       <ImageCarousel images={recipe.images} />
@@ -200,8 +190,18 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         ))}
       </div>
 
-      {!isAdmin() && getLoggedUserId() != user.id && (
-        <ReportButton text={t("reportRecipe")} />
+      {isAdmin() || getLoggedUserId() == user.id ? (
+        //Soy admin o dueño de receta, puedo eliminar
+        <NeedConfirmButton
+          className="btn btn-danger"
+          buttonText={t("deleteRecipe")}
+          title={t("confirmDelteRecipeTitle")}
+          message={t("confirmDelteRecipeMessage")}
+          onConfirm={handleRecipeDelete}
+        />
+      ) : (
+        //El cualquier otro caso puedo reportar
+        <ReportButton className="btn btn-danger" text={t("reportRecipe")} />
       )}
       <Modal
         show={showModal}

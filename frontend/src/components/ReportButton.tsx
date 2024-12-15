@@ -5,15 +5,16 @@ import NotifyReportModal from "./NotifyReportModal";
 
 interface ReportButtonProps {
   text: string;
+  className: string;
 }
 
-const ReportButton: React.FC<ReportButtonProps> = ({ text }) => {
+const ReportButton: React.FC<ReportButtonProps> = ({ text, className }) => {
   const [showReportModal, setShowReportModal] = useState<boolean>(false);
 
   return (
     <>
       <button
-        className="btn btn-danger"
+        className={className}
         onClick={() => {
           reportResource(window.location.pathname + window.location.search);
           setShowReportModal(true);
