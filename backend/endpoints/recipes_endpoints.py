@@ -14,30 +14,43 @@ def recipes():
     method = request.method
     if method == 'GET':
         user_id = request.args.get('user_id', default=-1, type=int)
+        recipe_id = request.args.get('recipe_id', default=-1, type=int)
         offset = request.args.get('offset', default=0, type=int)
         limit = request.args.get('limit', default=10, type=int)
-        if user_id < 0:
+        
+        if user_id < 0 and recipe_id < 0:
             return get_recipes_simple_dto(offset, limit) 
-        user = User.query.get(user_id)
-        if user is None:
-            return userNotFoundError()
-        return get_recipes_from_user(user, offset, limit)
+        if user_id > 0:
+            user = User.query.get(user_id)
+            if user is None:
+                return userNotFoundError()
+            return get_recipes_from_user(user, offset, limit)
+        if recipe_id > 0:
+            recipe = Recipe.query.get(recipe_id)
+            if recipe is None:
+                return recipeNotFoundError()
+            return get_recipes_similar_to(recipe, offset, limit)
     if method == 'POST':
         user = get_user_from_token(get_jwt())
         if user is None:
             return userNotFoundError()
         return new_recipe(user, request.json)
 
-@app.route('/api/recipe/categories', methods=['GET'])
-def get_recipe_categories():
-    time_options = Recipe.get_time_options()  # Obtener los valores posibles de 'tiempo'
-    difficulty_options = Recipe.get_difficulty_options()  # Obtener los valores posibles de 'dificultad'
-    return jsonify({"name":"time", "options": time_options}, 
-                    {"name":"difficulty", "options": difficulty_options}), 200
 
 def get_recipes_simple_dto(offset, limit):
-    recipes = Recipe.query.offset(offset).limit(limit).all()
+    recipes = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()
+                                    ).offset(offset).limit(limit).all()
     recipes_data = [recipe.to_simple_dto() for recipe in recipes]
+    return jsonify(recipes_data), 200
+
+def get_recipes_similar_to(recipe, offset, limit):
+    similar_recipes = Recipe.query \
+        .filter((Recipe.time == recipe.time) | 
+                (Recipe.difficulty == recipe.difficulty)) \
+        .filter(Recipe.id != recipe.id) \
+        .offset(offset) \
+        .limit(limit).all()
+    recipes_data = [recipe.to_simple_dto() for recipe in similar_recipes]
     return jsonify(recipes_data), 200
 
 def get_recipes_from_user(user, offset, limit):
@@ -81,6 +94,13 @@ def new_recipe(user, data):
     except SQLAlchemyError as e:
         db.session.rollback()
         return noRecipeUploadedError()
+
+@app.route('/api/recipe/categories', methods=['GET'])
+def get_recipe_categories():
+    time_options = Recipe.get_time_options()  # Obtener los valores posibles de 'tiempo'
+    difficulty_options = Recipe.get_difficulty_options()  # Obtener los valores posibles de 'dificultad'
+    return jsonify({"name":"time", "options": time_options}, 
+                    {"name":"difficulty", "options": difficulty_options}), 200
 
 @app.route('/api/recipes/<int:id>', methods=['GET', 'DELETE'])
 @jwt_required(optional=True)

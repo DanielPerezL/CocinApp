@@ -1,5 +1,7 @@
 from config import db
 from .user import User, FavoriteRecipe
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import select, func
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,7 +17,17 @@ class Recipe(db.Model):
     favorited_by = db.relationship('FavoriteRecipe',
                                    back_populates='recipe',
                                    cascade='all, delete-orphan')
+    @hybrid_property
+    def favorites_count(self):
+        return len(self.favorited_by)
 
+    @favorites_count.expression
+    def favorites_count(cls):
+        return (
+            select(func.count(FavoriteRecipe.user_id))
+            .where(FavoriteRecipe.recipe_id == cls.id)
+            .scalar_subquery()  # Importante para convertirlo en una subconsulta válida
+        )
     @staticmethod
     def get_time_options():
         return ["<20min", "20-40min", "40-90min", ">90min"]

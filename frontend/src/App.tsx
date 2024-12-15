@@ -32,10 +32,16 @@ import ReportsPage from "./pages/ReportsPage";
     
     funcionalidad:
       lista de la compra
+      
+      ¿algoritmo para mostrar recetas en particular? y no en el orden de id en bd
+        DONE: HomePage: primero las mas favoritas (populares)
+        FavPage: filtrado basado en interacciones usuarios
+        DONE: RecipePage: filtrado basado en recetas similares
+
   */
   /*
   test:
-      probar comportamiento correcto incluse con access_token de 5/10 seg
+    probar comportamiento correcto incluse con access_token de 5/10 seg
 
   prod:
     docker_compose

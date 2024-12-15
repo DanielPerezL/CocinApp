@@ -18,9 +18,22 @@ const Home = () => {
     if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
     loadingRef.current = true;
     try {
-      const newRecipes = await fetchRecipes(offset); // Llama a la función para obtener las recetas
-      setRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
-      setOffset((prev) => prev + newRecipes.length); // Incrementar el offset
+      const newRecipes = await fetchRecipes(offset);
+      setRecipes((prev) => {
+        // Evitar duplicados combinando las nuevas recetas con las existentes
+        // porque se envian en orden segun su popularidad (popularidad variable)
+        const existingIds = new Set(prev.map((recipe) => recipe.id));
+        const uniqueRecipes = newRecipes.filter(
+          (recipe) => !existingIds.has(recipe.id)
+        );
+        const duplicates = newRecipes.length - uniqueRecipes.length;
+
+        // Si existen duplicados, ajustamos el offset
+        const newOffset = offset + (newRecipes.length - duplicates);
+        setOffset(newOffset); // Actualizar el offset con el valor correcto
+
+        return [...prev, ...uniqueRecipes];
+      });
       if (newRecipes.length < RECIPE_LIMIT) setHasMore(false); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
       setError(err.message); // Captura el error y actualiza el estado
@@ -47,7 +60,7 @@ const Home = () => {
           onLoadMore={loadRecipes}
           recipes={recipes}
         />
-      )}{" "}
+      )}
     </div>
   );
 };
