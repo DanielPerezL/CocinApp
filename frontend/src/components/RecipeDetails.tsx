@@ -286,14 +286,16 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         </Modal>
       </div>
       <div className="mt-4">
-        <p className="mt-5 mb-2 fs-5 fw-light">{t("similarRecipes")}</p>
-        {!loadingRef.current && !error && (
-          <RecipeGrid
-            hasMore={hasMore}
-            loading={loadingRef.current}
-            onLoadMore={loadRecipes}
-            recipes={recipes}
-          />
+        {!loadingRef.current && !error && recipes.length > 0 && (
+          <>
+            <p className="mt-5 mb-2 fs-5 fw-light">{t("similarRecipes")}</p>
+            <RecipeGrid
+              hasMore={hasMore}
+              loading={loadingRef.current}
+              onLoadMore={loadRecipes}
+              recipes={recipes}
+            />
+          </>
         )}
       </div>
     </>
