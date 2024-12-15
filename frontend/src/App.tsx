@@ -38,9 +38,12 @@ import ReportsPage from "./pages/ReportsPage";
       probar comportamiento correcto incluse con access_token de 5/10 seg
 
   prod:
-    eliminar export de puerto bd
-    aumentar tiempo access_token
-    jwt_cookie_secure true (funciona bien con ngrok al menos)
+    docker_compose
+      eliminar export de puerto bd
+    config.py
+      añadir dominio de origin Ó eliminar cors (INVESTIGAR MEJOR SOLUCION)
+      aumentar tiempo access_token 
+      jwt_cookie_secure true (funciona bien con ngrok al menos)
   */
 }
 
