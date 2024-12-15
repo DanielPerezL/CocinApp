@@ -32,6 +32,7 @@ import ReportsPage from "./pages/ReportsPage";
     
     funcionalidad:
       lista de la compra
+      añadir recetas similares POR INGREDIENTES
       
       arreglar logout cada vez que se entra a la app ¿?
       arreglar SIGTERM al vaciar el docker ¿?
