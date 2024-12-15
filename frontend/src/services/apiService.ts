@@ -509,7 +509,7 @@ const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
   }
 
   const responseData = await response.json();
-  return responseData.filename; // Se asume que el servidor responde con la ruta de la imagen
+  return responseData.filename;
 };
 
 // Función para subir una nueva receta al servidor
@@ -741,16 +741,8 @@ const withTokenRefresh = async <T>(asyncFunc: () => Promise<T>): Promise<T> => {
   try {
     return await asyncFunc(); // Intentar ejecutar la función original
   } catch (error) {
-    if (error instanceof Error) {
-      await refreshAccessToken();
-      try {
-        return await asyncFunc();
-      } catch (err) {
-        if (err instanceof Error) throw err;
-      }
-    }
-    // Si no es un error de autorización, lanza el error original
-    throw error;
+    await refreshAccessToken();
+    return await asyncFunc();
   }
 };
 

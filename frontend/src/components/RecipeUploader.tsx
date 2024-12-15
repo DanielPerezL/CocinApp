@@ -139,7 +139,7 @@ const RecipeUploader: React.FC = () => {
           {aviableCategories.length > 0 &&
             aviableCategories.map((category, index) => (
               <div key={index} className="mb-3">
-                <label htmlFor={t(category.name)} className="form-label">
+                <label htmlFor={category.name} className="form-label">
                   {t(category.name)}
                 </label>
                 <select
@@ -177,10 +177,7 @@ const RecipeUploader: React.FC = () => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="procedure" className="form-label">
-            {t("procedure")}
-          </label>
-
+          <p className="form-label">{t("procedure")}</p>
           {procedure.map((step, index) => (
             <div key={index} className="d-flex flex-column mb-4">
               <label htmlFor={`procedure-step-${index}`} className="form-label">
@@ -216,7 +213,6 @@ const RecipeUploader: React.FC = () => {
               )}{" "}
             </div>
           ))}
-
           <button
             type="button"
             className="btn btn-secondary"
@@ -228,9 +224,7 @@ const RecipeUploader: React.FC = () => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="fileUpload" className="form-label">
-            {t("addImages")}
-          </label>
+          <p className="form-label">{t("addImages")}</p>
 
           <div style={{ display: "flex", alignItems: "center" }}>
             <button

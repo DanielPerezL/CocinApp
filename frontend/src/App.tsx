@@ -16,7 +16,6 @@ import ReportsPage from "./pages/ReportsPage";
 {
   /*
   TODO:   
-  arreglar logout cada vez que se entra a la app¿?
     modificar INPUT ingredientes:
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
             tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)
@@ -33,6 +32,9 @@ import ReportsPage from "./pages/ReportsPage";
     
     funcionalidad:
       lista de la compra
+      
+      arreglar logout cada vez que se entra a la app ¿?
+      arreglar SIGTERM al vaciar el docker ¿?
   */
   /*
   test:

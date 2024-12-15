@@ -6,6 +6,7 @@ from flask_jwt_extended import (
                                 set_access_cookies, 
                                 set_refresh_cookies, 
                                 unset_jwt_cookies,
+                                verify_jwt_in_request
                                 )
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
@@ -70,7 +71,6 @@ def users_login():
     return response, 200
 
 @app.route('/api/users/logout', methods=['POST'])
-@jwt_required()
 def users_logout():
     response = jsonify({"msg": "Cierre de sesión exitoso."})
     unset_jwt_cookies(response)
@@ -79,7 +79,12 @@ def users_logout():
 @app.route('/api/users/<string:id>', methods=['GET', 'PUT', 'DELETE'])
 @jwt_required(optional=True)
 def users_id(id):
-    client = get_user_from_token(get_jwt())    
+    try:
+        verify_jwt_in_request() 
+        client = get_user_from_token(get_jwt())    
+    except Exception as e:
+        client = None
+        
     # Buscar al usuario por ID
     user = User.query.get(id)
     if user is None:

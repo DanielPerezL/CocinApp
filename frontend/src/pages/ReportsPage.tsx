@@ -9,9 +9,6 @@ import NoPage from "./NoPage";
 const ReportsPage: React.FC = () => {
   const { t } = useTranslation();
   const [reports, setReports] = useState<ReportDTO[]>([]);
-  const showingReports = reports
-    .filter((report) => !report.reviewed)
-    .sort((a, b) => b.count - a.count);
 
   const [refresh, setRefresh] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +32,7 @@ const ReportsPage: React.FC = () => {
     <div className="container mb-5 main-container text-center">
       <h1 className="display-5 text-primary mb-4">{t("reports")}</h1>
       {loading && <p className="fs-6 fw-light">{t("loadingReports")}</p>}
-      {!loading && showingReports.length == 0 && (
+      {!loading && reports.length == 0 && (
         <>
           <p className="fs-6 fw-light">{t("noReports")}</p>
           <button className="btn btn-primary" onClick={refreshList}>
@@ -43,8 +40,8 @@ const ReportsPage: React.FC = () => {
           </button>
         </>
       )}
-      {!loading && showingReports.length > 0 && (
-        <ReportsList reports={showingReports} onChange={refreshList} />
+      {!loading && reports.length > 0 && (
+        <ReportsList reports={reports} onChange={refreshList} />
       )}
     </div>
   );

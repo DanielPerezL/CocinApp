@@ -1,6 +1,6 @@
 from config import app, db
 from flask import jsonify, request
-from flask_jwt_extended import jwt_required, get_jwt
+from flask_jwt_extended import jwt_required, get_jwt, verify_jwt_in_request
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
@@ -9,7 +9,7 @@ from utils import delete_images_by_filenames, hasPermission
 from errors import *
 
 @app.route('/api/recipes', methods=['GET', 'POST'])
-@jwt_required(optional=True)
+#@jwt_required(optional=True)
 def recipes():
     method = request.method
     if method == 'GET':
@@ -25,24 +25,28 @@ def recipes():
             if user is None:
                 return userNotFoundError()
             return get_recipes_from_user(user, offset, limit)
-        if recipe_id > 0:
+        elif recipe_id > 0:
             recipe = Recipe.query.get(recipe_id)
             if recipe is None:
                 return recipeNotFoundError()
             return get_recipes_similar_to(recipe, offset, limit)
-        if recommendations_for_user_id > 0:
+        elif recommendations_for_user_id > 0:
             user = User.query.get(recommendations_for_user_id)
             if user is None:
                 return userNotFoundError()
             return get_recommendations_for_user(user, offset, limit)
-        
-        return get_recipes_simple_dto(offset, limit) 
+        else:
+            return get_recipes_simple_dto(offset, limit) 
     if method == 'POST':
+        try:
+            verify_jwt_in_request() 
+        except Exception as e:
+            return jsonify({"error": "Authentication required or invalid token"}), 401
+
         user = get_user_from_token(get_jwt())
         if user is None:
             return userNotFoundError()
         return new_recipe(user, request.json)
-
 
 def get_recipes_simple_dto(offset, limit):
     recipes = Recipe.query \
@@ -148,7 +152,10 @@ def recipes_id(id):
     if id < 0:
         return noValidIdProvided()
     
-    client = get_user_from_token(get_jwt())
+    #AQUI MANTENGO EL OPTIONAL PORQUE SI NO HAY TOKEN
+    # CLIENT=None
+    #SI HAY TOKEN DEBE SER VALIDO
+    client = get_user_from_token(get_jwt())    
     method = request.method
     if method == 'GET':
         return recipe_details(id, client)
