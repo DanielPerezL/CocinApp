@@ -172,7 +172,7 @@ def delete_recipe(recipe):
         db.session.delete(recipe)
         db.session.commit()
         delete_images_by_filenames(filenames)
-        return jsonify({"msg": "Receta eliminada correctamente"}), 204
+        return jsonify({"msg": "Receta eliminada correctamente"}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
     return unexpectedError()

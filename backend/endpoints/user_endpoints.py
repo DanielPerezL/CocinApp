@@ -141,7 +141,7 @@ def delete_account(deleting_user):
         #DELETE ORPHAN ELIMINA LAS RECETAS
         db.session.commit()
         delete_images_by_uploader(deleting_user)
-        return jsonify({"msg": "Usuario eliminado."}),204
+        return jsonify({"msg": "Usuario eliminado."}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
     return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
@@ -194,11 +194,11 @@ def add_favorite(user, recipe):
 def rm_favorite(user, recipe): 
     favorite = FavoriteRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
     if not favorite:
-        return jsonify({"msg": "Receta eliminada de favoritos."}), 201
+        return jsonify({"msg": "Receta eliminada de favoritos."}), 200
     try:
         db.session.delete(favorite)
         db.session.commit()
-        return jsonify({"msg": "Receta eliminada de favoritos."}), 201
+        return jsonify({"msg": "Receta eliminada de favoritos."}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al eliminar receta favorita."}), 400
