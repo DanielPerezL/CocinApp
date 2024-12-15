@@ -536,8 +536,11 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
 
 export const updatePassword = async (
   current_password: string,
+  current_password2: string,
   new_password: string
 ): Promise<void> => {
+  if (current_password != current_password2)
+    throw new Error(t("errorUpdatingPasswordNoValidCurrents"));
   return await withTokenRefresh(() =>
     updatePasswordUnsafe(current_password, new_password)
   );
