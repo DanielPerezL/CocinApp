@@ -6,9 +6,11 @@ import {
   RECIPE_LIMIT,
   fetchLoggedUserProfile,
   fetchMyFavRecipes,
+  fetchRecipesFavBySimilarUsers,
   isLoggedIn,
 } from "../services/apiService";
 import { useTranslation } from "react-i18next";
+import RecipeGrid from "../components/RecipeGrid";
 
 const FavoritesPage = () => {
   const { t } = useTranslation();
@@ -37,6 +39,43 @@ const FavoritesPage = () => {
     }
   };
 
+  const [similarRecipes, setSimilarRecipes] = useState<RecipeSimpleDTO[]>([]);
+  const [similarError, setSimilarError] = useState<string | null>(null); // Estado para gestionar errores
+  const [similarOffset, setSimilarOffset] = useState(0);
+  const [similarHasMore, setSimilarHasMore] = useState(true);
+  const similarLoadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+
+  const loadSimilarRecipes = async () => {
+    if (similarLoadingRef.current || !similarHasMore) return; // Evitar solicitudes repetidas
+    similarLoadingRef.current = true;
+    try {
+      const limit = RECIPE_LIMIT / 4 <= 1 ? 5 : RECIPE_LIMIT / 4;
+      const newRecipes = await fetchRecipesFavBySimilarUsers(
+        similarOffset,
+        limit
+      );
+      setSimilarRecipes((prev) => {
+        // Evitar duplicados combinando las nuevas recetas con las existentes
+        const existingIds = new Set(prev.map((recipe) => recipe.id));
+        const uniqueRecipes = newRecipes.filter(
+          (recipe) => !existingIds.has(recipe.id)
+        );
+        const duplicates = newRecipes.length - uniqueRecipes.length;
+
+        // Si existen duplicados, ajustamos el offset
+        const newOffset = similarOffset + (newRecipes.length - duplicates);
+        setSimilarOffset(newOffset); // Actualizar el offset con el valor correcto
+
+        return [...prev, ...uniqueRecipes];
+      });
+      if (newRecipes.length < limit) setHasMore(false); // Si no hay más recetas, desactivar carga
+    } catch (err: any) {
+      setSimilarError(err.message); // Captura el error y actualiza el estado
+    } finally {
+      similarLoadingRef.current = false; // Cambia el estado de carga a false al final
+    }
+  };
+
   useEffect(() => {
     const getUserProfile = async () => {
       try {
@@ -49,6 +88,7 @@ const FavoritesPage = () => {
     if (!isLoggedIn()) return;
     getUserProfile();
     loadMyFavRecipes();
+    loadSimilarRecipes();
   }, [refresh]);
 
   return (
@@ -74,7 +114,7 @@ const FavoritesPage = () => {
                 <p className="fs-6 fw-light">{t("noFavRecipes")}</p>
               )}
             </div>
-            <RecetaGrid
+            <RecipeGrid
               hasMore={hasMore}
               loading={loadingRef.current}
               onLoadMore={() => {
@@ -82,11 +122,25 @@ const FavoritesPage = () => {
               }}
               recipes={favRecipes}
             />
+            <div className="mt-4">
+              {/*USAR CARROUSEL EN VEZ DE GRID?*/}
+              {!loadingRef.current && !error && similarRecipes.length > 0 && (
+                <>
+                  <p className="mt-5 mb-2 fs-5 fw-light">
+                    {t("similarUsersLikes")}
+                  </p>
+                  <RecipeGrid
+                    hasMore={similarHasMore}
+                    loading={similarLoadingRef.current}
+                    onLoadMore={loadSimilarRecipes}
+                    recipes={similarRecipes}
+                  />
+                </>
+              )}
+            </div>
           </>
         )}
       </AuthWrapper>
-
-      {/*TODO: USAR RECIPE CARROUSEL PARA MOSTRAR RECETAS RANDOM (como en Home)*/}
     </div>
   );
 };

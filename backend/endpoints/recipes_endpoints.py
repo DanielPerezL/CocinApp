@@ -15,11 +15,11 @@ def recipes():
     if method == 'GET':
         user_id = request.args.get('user_id', default=-1, type=int)
         recipe_id = request.args.get('recipe_id', default=-1, type=int)
+        recommendations_for_user_id = request.args.get('recommendations_for_user_id', default=-1, type=int)
+
         offset = request.args.get('offset', default=0, type=int)
         limit = request.args.get('limit', default=10, type=int)
         
-        if user_id < 0 and recipe_id < 0:
-            return get_recipes_simple_dto(offset, limit) 
         if user_id > 0:
             user = User.query.get(user_id)
             if user is None:
@@ -30,6 +30,13 @@ def recipes():
             if recipe is None:
                 return recipeNotFoundError()
             return get_recipes_similar_to(recipe, offset, limit)
+        if recommendations_for_user_id > 0:
+            user = User.query.get(recommendations_for_user_id)
+            if user is None:
+                return userNotFoundError()
+            return get_recommendations_for_user(user, offset, limit)
+        
+        return get_recipes_simple_dto(offset, limit) 
     if method == 'POST':
         user = get_user_from_token(get_jwt())
         if user is None:
@@ -38,13 +45,46 @@ def recipes():
 
 
 def get_recipes_simple_dto(offset, limit):
-    recipes = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()
-                                    ).offset(offset).limit(limit).all()
+    recipes = Recipe.query \
+        .order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
+        .offset(offset).limit(limit).all()
     recipes_data = [recipe.to_simple_dto() for recipe in recipes]
     return jsonify(recipes_data), 200
 
+def get_recommendations_for_user(user, offset, limit):
+    # Obtenemos los IDs de las recetas favoritas del usuario
+    user_favorite_recipe_ids = db.session.query(FavoriteRecipe.recipe_id).filter_by(user_id=user.id).all()
+    user_favorite_recipe_ids = [id[0] for id in user_favorite_recipe_ids]  # Extraer los IDs de la tupla
+
+    # Obtener usuarios que han marcado como favorita al menos una receta en común con el usuario
+    similar_users = User.query \
+        .join(FavoriteRecipe, User.id == FavoriteRecipe.user_id) \
+        .filter(FavoriteRecipe.recipe_id.in_(user_favorite_recipe_ids)) \
+        .filter(User.id != user.id) \
+        .distinct().all()
+
+    # Si no hay usuarios similares, no podemos obtener recomendaciones
+    if not similar_users:
+        return jsonify([]), 200
+
+    # Obtener las recetas favoritas de los usuarios similares
+    similar_recipe_ids = db.session.query(FavoriteRecipe.recipe_id) \
+        .filter(FavoriteRecipe.user_id.in_([similar_user.id for similar_user in similar_users])) \
+        .all()
+    # Extraer los IDs de las recetas
+    similar_recipe_ids = [id[0] for id in similar_recipe_ids]
+    
+    #Excluir las ya favoritas
+    recommended_recipes = Recipe.query \
+        .filter(Recipe.id.in_(similar_recipe_ids)) \
+        .filter(Recipe.id.notin_(user_favorite_recipe_ids)) \
+        .order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
+        .offset(offset).limit(limit).all()
+    # Devolver las recetas recomendadas como DTO
+    return jsonify([recipe.to_simple_dto() for recipe in recommended_recipes]), 200
+
 def get_recipes_similar_to(recipe, offset, limit):
-    similar_recipes = Recipe.query \
+    similar_recipes = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
         .filter((Recipe.time == recipe.time) | 
                 (Recipe.difficulty == recipe.difficulty)) \
         .filter(Recipe.id != recipe.id) \

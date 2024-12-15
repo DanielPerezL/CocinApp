@@ -105,6 +105,7 @@
     "reportUser":"Report User",
     "reportModalTitle": "Report Submitted",
     "reportModalBody": "The report has been successfully submitted. Thank you for your cooperation.",
+    "similarUsersLikes": "Similar users liked:",
 
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",

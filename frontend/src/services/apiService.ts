@@ -79,23 +79,52 @@ const fetchRecipesUnsafe = async (
 };
 
 export const fetchSimilarRecipes = async (
-  id: string,
+  idRecipe: string,
   offset: number,
   limit?: number
 ): Promise<RecipeSimpleDTO[]> => {
   return await withTokenRefresh(() =>
-    fetchSimilarRecipesUnsafe(id, offset, limit)
+    fetchSimilarRecipesUnsafe(idRecipe, offset, limit)
   );
 };
 const fetchSimilarRecipesUnsafe = async (
-  id: string,
+  idRecipe: string,
   offset: number,
   limit?: number
 ): Promise<RecipeSimpleDTO[]> => {
   let response: Response;
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?recipe_id=${id}&offset=${offset}&limit=${
+      `${API_BASE_URL}/recipes?recipe_id=${idRecipe}&offset=${offset}&limit=${
+        limit ? limit : RECIPE_LIMIT
+      }`
+    );
+  } catch (error) {
+    throw new Error(t("errorLoadingRecipes"));
+  }
+
+  if (!response.ok) {
+    throw new Error(t("errorLoadingRecipes"));
+  }
+  return await response.json();
+};
+
+export const fetchRecipesFavBySimilarUsers = async (
+  offset: number,
+  limit?: number
+): Promise<RecipeSimpleDTO[]> => {
+  return await withTokenRefresh(() =>
+    fetchRecipesFavBySimilarUsersUnsafe(offset, limit)
+  );
+};
+const fetchRecipesFavBySimilarUsersUnsafe = async (
+  offset: number,
+  limit?: number
+): Promise<RecipeSimpleDTO[]> => {
+  let response: Response;
+  try {
+    response = await fetch(
+      `${API_BASE_URL}/recipes?recommendations_for_user_id=${getLoggedUserId()}&offset=${offset}&limit=${
         limit ? limit : RECIPE_LIMIT
       }`
     );

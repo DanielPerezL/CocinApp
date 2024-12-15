@@ -16,6 +16,8 @@ import ReportsPage from "./pages/ReportsPage";
 {
   /*
   TODO:      
+    erroR pasar de receta a otra RECIPE_DETAILS
+    
     modificar INPUT ingredientes:
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
             tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)
@@ -34,8 +36,8 @@ import ReportsPage from "./pages/ReportsPage";
       lista de la compra
       
       ¿algoritmo para mostrar recetas en particular? y no en el orden de id en bd
-        DONE: HomePage: primero las mas favoritas (populares)
-        FavPage: filtrado basado en interacciones usuarios
+        DONE: SIEMPRE: primero las mas favoritas (populares)
+        DONE: FavPage: filtrado basado en interacciones usuarios
         DONE: RecipePage: filtrado basado en recetas similares
 
   */

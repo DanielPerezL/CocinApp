@@ -13,6 +13,7 @@ const useQuery = () => {
 const RecipePage = () => {
   const { t } = useTranslation();
 
+  const location = useLocation(); // Aquí obtienes la ubicación completa
   const query = useQuery();
   const id = query.get("id"); // Obtiene el valor del parámetro 'id'
   const [recipe, setRecipe] = useState<RecipeDetailDTO | null>(null);
@@ -41,7 +42,7 @@ const RecipePage = () => {
 
   useEffect(() => {
     loadRecipeDetails(); // Llama a la función al montar el componente o si cambia el ID
-  }, [id]);
+  }, [location]);
 
   return (
     <div className="main-container container">
