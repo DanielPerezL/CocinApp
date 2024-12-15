@@ -18,11 +18,12 @@ const RecipePage = () => {
   const id = query.get("id"); // Obtiene el valor del parámetro 'id'
   const [recipe, setRecipe] = useState<RecipeDetailDTO | null>(null);
   const [user, setUser] = useState<UserPublicDTO | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Función para obtener los detalles de la receta
   const loadRecipeDetails = async () => {
+    setLoading(true);
     if (!id) {
       setError(t("errorNoIDRecipe"));
       setLoading(false);
