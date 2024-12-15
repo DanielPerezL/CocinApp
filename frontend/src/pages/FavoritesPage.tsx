@@ -68,7 +68,7 @@ const FavoritesPage = () => {
 
         return [...prev, ...uniqueRecipes];
       });
-      if (newRecipes.length < limit) setHasMore(false); // Si no hay más recetas, desactivar carga
+      if (newRecipes.length < limit) setSimilarHasMore(false); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
       setSimilarError(err.message); // Captura el error y actualiza el estado
     } finally {
@@ -124,19 +124,21 @@ const FavoritesPage = () => {
             />
             <div className="mt-4">
               {/*USAR CARROUSEL EN VEZ DE GRID?*/}
-              {!loadingRef.current && !error && similarRecipes.length > 0 && (
-                <>
-                  <p className="mt-5 mb-2 fs-5 fw-light">
-                    {t("similarUsersLikes")}
-                  </p>
-                  <RecipeGrid
-                    hasMore={similarHasMore}
-                    loading={similarLoadingRef.current}
-                    onLoadMore={loadSimilarRecipes}
-                    recipes={similarRecipes}
-                  />
-                </>
-              )}
+              {!loadingRef.current &&
+                !similarError &&
+                similarRecipes.length > 0 && (
+                  <>
+                    <p className="mt-5 mb-2 fs-5 fw-light">
+                      {t("similarUsersLikes")}
+                    </p>
+                    <RecipeGrid
+                      hasMore={similarHasMore}
+                      loading={similarLoadingRef.current}
+                      onLoadMore={loadSimilarRecipes}
+                      recipes={similarRecipes}
+                    />
+                  </>
+                )}
             </div>
           </>
         )}
