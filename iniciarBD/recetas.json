@@ -9,7 +9,8 @@
             "Mezclar los espaguetis con la panceta y añadir la mezcla de huevos y queso.",
             "Sazonar con sal y pimienta al gusto."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/sc1.jpg","/home/dani/Documentos/CocinApp/iniciarBD/img/sc2.jpg"],        
+        "time": "20-40min",
         "difficulty": "medium"
     },
 
@@ -22,7 +23,8 @@
             "Rellenar las tortillas con el pollo y los ingredientes frescos.",
             "Añadir salsa de yogurt y un toque de limón."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/tp1.jpg","/home/dani/Documentos/CocinApp/iniciarBD/img/tp2.jpg"],        
+        "time": "20-40min",
         "difficulty": "easy"
     },
 
@@ -35,7 +37,8 @@
             "Añadir el arroz, el caldo de pescado y el azafrán.",
             "Cocinar a fuego lento hasta que el arroz esté tierno y el líquido se haya absorbido."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/paella.jpg"],        
+        "time": "40-90min",
         "difficulty": "medium"
     },
 
@@ -49,7 +52,8 @@
             "Enrollar el sushi con ayuda de una esterilla de bambú.",
             "Cortar en porciones y servir con salsa de soja y wasabi."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/sushi1.jpg"],        
+        "time": "40-90min",
         "difficulty": "hard"
     },
 
@@ -62,7 +66,8 @@
             "Montar la hamburguesa colocando las hamburguesas en el pan y añadiendo los ingredientes frescos.",
             "Servir con ketchup y mostaza al gusto."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/hv.jpg"],        
+        "time": "20-40min",
         "difficulty": "easy"
     },
 
@@ -75,7 +80,8 @@
             "Montar la lasaña alternando capas de láminas, salsa bechamel, salsa de tomate y carne.",
             "Hornear la lasaña hasta que el queso se derrita y se dore."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/l1.jpg"],        
+        "time": "40-90min",
         "difficulty": "medium"
     },
 
@@ -88,7 +94,8 @@
             "Añadir aceitunas y aderezar con aceite de oliva, limón, orégano y sal.",
             "Servir fría como acompañamiento o plato principal."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "<20min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/eg.jpg"],        
+        "time": "<20min",
         "difficulty": "easy"
     },
 
@@ -101,7 +108,8 @@
             "Agregar la leche de coco y cocinar hasta que la salsa espese.",
             "Servir con arroz blanco cocido."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/pc1.jpg"],        
+        "time": "20-40min",
         "difficulty": "medium"
     },
 
@@ -114,12 +122,13 @@
             "Colocar las manzanas sobre la masa quebrada y añadir trozos de mantequilla por encima.",
             "Hornear hasta que la masa esté dorada y las manzanas tiernas."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/tm1.jpg"],        
+        "time": "40-90min",
         "difficulty": "medium"
     },
 
     {
-        "title": "Sopa de Lentejas",
+        "title": "Lentejas",
         "ingredients": "Lentejas, Zanahoria, Cebolla, Ajo, Caldo de verduras, Aceite de oliva, Sal, Pimienta",
         "procedure": [
             "Cocer las lentejas en el caldo de verduras hasta que estén tiernas.",
@@ -127,7 +136,8 @@
             "Cocinar a fuego lento hasta que los ingredientes estén bien cocidos.",
             "Sazonar con sal y pimienta al gusto."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/lentejas.jpg"],        
+        "time": "20-40min",
         "difficulty": "easy"
     },
 
@@ -141,7 +151,8 @@
             "Cocer los raviolis en agua hirviendo hasta que floten.",
             "Servir con salsa de tomate y queso parmesano rallado."
         ],
-        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/ra.jpg"],        
+        "time": "40-90min",
         "difficulty": "expert"
     }
 ]
