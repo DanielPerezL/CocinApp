@@ -1,0 +1,147 @@
+[
+    {
+        "title": "Spaghetti Carbonara",
+        "ingredients": "Espaguetis, Huevos, Panceta, Queso parmesano, Ajo, Sal, Pimienta",
+        "procedure": [
+            "Cocer los espaguetis en agua con sal.",
+            "Freír la panceta en una sartén hasta que esté crujiente.",
+            "Batir los huevos con el queso parmesano rallado.",
+            "Mezclar los espaguetis con la panceta y añadir la mezcla de huevos y queso.",
+            "Sazonar con sal y pimienta al gusto."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "difficulty": "medium"
+    },
+
+    {
+        "title": "Tacos de Pollo",
+        "ingredients": "Pechuga de pollo, Tortillas, Lechuga, Tomate, Cebolla, Salsa de yogurt, Limón",
+        "procedure": [
+            "Cocinar la pechuga de pollo en una sartén con aceite hasta que esté dorada.",
+            "Picar la lechuga, el tomate y la cebolla.",
+            "Rellenar las tortillas con el pollo y los ingredientes frescos.",
+            "Añadir salsa de yogurt y un toque de limón."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "difficulty": "easy"
+    },
+
+    {
+        "title": "Paella Valenciana",
+        "ingredients": "Arroz, Mariscos, Pollo, Conejo, Judía verde, Pimiento, Tomate, Caldo de pescado, Aceite de oliva, Azafrán",
+        "procedure": [
+            "Freír el pollo y conejo en una paellera con aceite de oliva.",
+            "Agregar los mariscos y cocinar a fuego medio.",
+            "Añadir el arroz, el caldo de pescado y el azafrán.",
+            "Cocinar a fuego lento hasta que el arroz esté tierno y el líquido se haya absorbido."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "difficulty": "medium"
+    },
+
+    {
+        "title": "Sushi Roll",
+        "ingredients": "Arroz para sushi, Alga nori, Pescado crudo, Aguacate, Pepino, Salsa de soja, Wasabi",
+        "procedure": [
+            "Cocer el arroz para sushi siguiendo las instrucciones del paquete.",
+            "Extender una capa delgada de arroz sobre el alga nori.",
+            "Colocar los ingredientes como el pescado crudo, aguacate y pepino en el centro.",
+            "Enrollar el sushi con ayuda de una esterilla de bambú.",
+            "Cortar en porciones y servir con salsa de soja y wasabi."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "difficulty": "hard"
+    },
+
+    {
+        "title": "Hamburguesa Vegana",
+        "ingredients": "Hamburguesas veganas, Pan de hamburguesa, Lechuga, Tomate, Cebolla, Ketchup, Mostaza",
+        "procedure": [
+            "Cocinar las hamburguesas veganas en una sartén hasta que estén doradas.",
+            "Preparar los ingredientes frescos: cortar la lechuga, el tomate y la cebolla.",
+            "Montar la hamburguesa colocando las hamburguesas en el pan y añadiendo los ingredientes frescos.",
+            "Servir con ketchup y mostaza al gusto."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "difficulty": "easy"
+    },
+
+    {
+        "title": "Lasagna de Carne",
+        "ingredients": "Carne molida, Láminas de lasaña, Salsa bechamel, Salsa de tomate, Queso rallado, Cebolla, Ajo, Aceite de oliva, Sal",
+        "procedure": [
+            "Cocer las láminas de lasaña en agua con sal.",
+            "Freír la carne molida con cebolla y ajo en una sartén.",
+            "Montar la lasaña alternando capas de láminas, salsa bechamel, salsa de tomate y carne.",
+            "Hornear la lasaña hasta que el queso se derrita y se dore."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "difficulty": "medium"
+    },
+
+    {
+        "title": "Ensalada Griega",
+        "ingredients": "Pepino, Tomate, Aceitunas, Queso feta, Aceite de oliva, Limón, Orégano, Sal",
+        "procedure": [
+            "Picar los pepinos, tomates y queso feta en trozos pequeños.",
+            "Mezclar los ingredientes en un bol.",
+            "Añadir aceitunas y aderezar con aceite de oliva, limón, orégano y sal.",
+            "Servir fría como acompañamiento o plato principal."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "<20min",
+        "difficulty": "easy"
+    },
+
+    {
+        "title": "Pollo al Curry",
+        "ingredients": "Pechuga de pollo, Leche de coco, Curry en polvo, Cebolla, Ajo, Aceite de oliva, Sal, Pimienta, Arroz",
+        "procedure": [
+            "Cocinar el pollo con cebolla y ajo en una sartén con aceite de oliva.",
+            "Añadir el curry en polvo y mezclar bien.",
+            "Agregar la leche de coco y cocinar hasta que la salsa espese.",
+            "Servir con arroz blanco cocido."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "difficulty": "medium"
+    },
+
+    {
+        "title": "Tarta de Manzana",
+        "ingredients": "Manzanas, Masa quebrada, Azúcar, Canela, Mantequilla, Limón",
+        "procedure": [
+            "Pelar y cortar las manzanas en láminas finas.",
+            "Mezclar las manzanas con azúcar, canela y un toque de limón.",
+            "Colocar las manzanas sobre la masa quebrada y añadir trozos de mantequilla por encima.",
+            "Hornear hasta que la masa esté dorada y las manzanas tiernas."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "difficulty": "medium"
+    },
+
+    {
+        "title": "Sopa de Lentejas",
+        "ingredients": "Lentejas, Zanahoria, Cebolla, Ajo, Caldo de verduras, Aceite de oliva, Sal, Pimienta",
+        "procedure": [
+            "Cocer las lentejas en el caldo de verduras hasta que estén tiernas.",
+            "Añadir las zanahorias, cebolla y ajo picados.",
+            "Cocinar a fuego lento hasta que los ingredientes estén bien cocidos.",
+            "Sazonar con sal y pimienta al gusto."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "20-40min",
+        "difficulty": "easy"
+    },
+
+    {
+        "title": "Raviolis Caseros",
+        "ingredients": "Harina, Huevos, Ricotta, Espinacas, Salsa de tomate, Queso parmesano",
+        "procedure": [
+            "Preparar la masa de ravioli con harina y huevos, amasar hasta obtener una textura suave.",
+            "Mezclar ricotta con espinacas cocidas y sazonar.",
+            "Formar los raviolis con la masa y rellenarlos con la mezcla de ricotta.",
+            "Cocer los raviolis en agua hirviendo hasta que floten.",
+            "Servir con salsa de tomate y queso parmesano rallado."
+        ],
+        "images": ["/home/dani/Imágenes/rodolfo.jpeg","/home/dani/Imágenes/dorky-nerd-wig.jpg"],        "time": "40-90min",
+        "difficulty": "expert"
+    }
+]
