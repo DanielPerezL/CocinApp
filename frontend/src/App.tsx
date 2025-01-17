@@ -39,7 +39,6 @@ import ReportsPage from "./pages/ReportsPage";
   
 
     detalles:
-      MOVER DANGER_ZONE PERFIL USUARIOS  
       hasMore como valor obtenido del backend
 
   */

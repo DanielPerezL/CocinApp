@@ -156,18 +156,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
         <p>
           <strong>{t("email")}:</strong> {user.email}
         </p>
-      </div>
-
-      <h3 className="text-danger mt-3">{t("dangerZone")}</h3>
-      <div className="d-flex flex-column flex-sm-row align-items-center">
-        <button
-          className="btn btn-danger mt-3 ms-2"
-          onClick={() => setShowChangePasswordModal(true)}
-        >
-          {t("changePassword")}
-        </button>
         <NeedConfirmButton
-          className="btn btn-danger mt-3 ms-2"
+          className="btn btn-danger"
           buttonText={t("logout")}
           title={t("confirmLogoutTitle")}
           message={t("confirmLogoutMessage")}
@@ -176,14 +166,49 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
             window.location.reload();
           }}
         />
-        <NeedConfirmButton
-          className="btn btn-danger mt-3 ms-2"
-          buttonText={t("rmAccount")}
-          title={t("confirmDeleteAccountTitle")}
-          message={t("confirmDeleteAccountMessage")}
-          onConfirm={handleDeleteAccount}
-        />
       </div>
+
+      <div className="accordion mt-3" id="dangerZoneAccordion">
+        <div className="accordion-item">
+          <h2 className="accordion-header" id="dangerZoneHeading">
+            <button
+              className="accordion-button collapsed text-danger"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#dangerZoneCollapse"
+              aria-expanded="false"
+              aria-controls="dangerZoneCollapse"
+            >
+              {t("dangerZone")}
+            </button>
+          </h2>
+          <div
+            id="dangerZoneCollapse"
+            className="accordion-collapse collapse"
+            aria-labelledby="dangerZoneHeading"
+            data-bs-parent="#dangerZoneAccordion"
+          >
+            <div className="accordion-body">
+              <div className="d-flex flex-column flex-sm-row align-items-center">
+                <button
+                  className="btn btn-danger mt-3 ms-2"
+                  onClick={() => setShowChangePasswordModal(true)}
+                >
+                  {t("changePassword")}
+                </button>
+                <NeedConfirmButton
+                  className="btn btn-danger mt-3 ms-2"
+                  buttonText={t("rmAccount")}
+                  title={t("confirmDeleteAccountTitle")}
+                  message={t("confirmDeleteAccountMessage")}
+                  onConfirm={handleDeleteAccount}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <ImageModal
         show={showModal}
         image={!imgError ? getImage(userPic) : userDefaultPic}
