@@ -16,7 +16,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   return (
     <Link
       to={"/recipe?id=" + recipe.id}
-      className="text-start col-6 col-md-4 col-lg-3 mb-4"
+      className="text-start recipe-grid col-sm-6 col-md-4 col-lg-3 mb-4"
       onClick={() => {
         window.scrollTo(0, 0);
       }}
@@ -32,7 +32,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           <span className="badge bg-primary mb-1">{t(recipe.difficulty)}</span>
           <br />
           <h6
-            className="card-title d-none d-sm-inline-block text-white bg-dark bg-opacity-75 px-2 mb-0 rounded-2"
+            className="card-title d-inline-block text-white bg-dark bg-opacity-75 px-2 mb-0 rounded-2"
             style={{
               maxWidth: "100%", // Asegura que el texto no se desborde
             }}

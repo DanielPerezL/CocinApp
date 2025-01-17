@@ -27,3 +27,11 @@
     text-overflow: ellipsis; /* Muestra puntos suspensivos al final */
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }
+
+@media (min-width: 375px) and (max-width: 576px) {
+    .recipe-grid {
+      flex: 0 0 50%; /* Ocupa la mitad del ancho (2 columnas) */
+      max-width: 50%;
+    }
+  }
+  

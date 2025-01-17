@@ -15,7 +15,7 @@ import ReportsPage from "./pages/ReportsPage";
 
 {
   /*
-  TODO:     
+  TODO:   
     modificar INPUT ingredientes:
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
             tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)
@@ -26,7 +26,7 @@ import ReportsPage from "./pages/ReportsPage";
     filtros:
       buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
       filtrar por numero de pasos
-      por categorias (TIEMPO, DIFICULTAD)
+      por categorias (TIEMPO, DIFICULTAD, TIPO)
       por contiene x ingrediente
       por NO contiene x ingrediente
     
@@ -40,6 +40,8 @@ import ReportsPage from "./pages/ReportsPage";
 
     detalles:
       MOVER DANGER_ZONE PERFIL USUARIOS  
+      hasMore como valor obtenido del backend
+
   */
   /*
   test:
