@@ -9,7 +9,7 @@ import {
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
-const NGROK = !false;
+const NGROK = false;
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (NGROK) {
@@ -519,6 +519,7 @@ export const uploadRecipe = async (
   procedure: string[],
   time: string,
   difficulty: string,
+  type: string,
   imagePaths: string[]
 ) => {
   return await withTokenRefresh(() =>
@@ -528,6 +529,7 @@ export const uploadRecipe = async (
       procedure,
       time,
       difficulty,
+      type,
       imagePaths
     )
   );
@@ -538,6 +540,7 @@ const uploadRecipeUnsafe = async (
   procedure: string[],
   time: string,
   difficulty: string,
+  type: string,
   imagePaths: string[]
 ): Promise<string> => {
   let response: Response;
@@ -548,6 +551,7 @@ const uploadRecipeUnsafe = async (
     procedure,
     time,
     difficulty,
+    type,
     images: imagePaths, // Puedes renombrar la clave si es necesario en el servidor
   };
 

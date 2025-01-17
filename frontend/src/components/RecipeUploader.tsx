@@ -52,7 +52,8 @@ const RecipeUploader: React.FC = () => {
       !ingredients ||
       filteredProcedure.length === 0 ||
       !selectedCategories["time"] ||
-      !selectedCategories["difficulty"]
+      !selectedCategories["difficulty"] ||
+      !selectedCategories["type"]
     ) {
       setUploadStatus(t("errorFillRecipeData"));
       return;
@@ -69,6 +70,7 @@ const RecipeUploader: React.FC = () => {
         filteredProcedure,
         selectedCategories["time"],
         selectedCategories["difficulty"],
+        selectedCategories["type"],
         imagePaths
       );
       setUploadStatus("");
@@ -264,7 +266,8 @@ const RecipeUploader: React.FC = () => {
             !ingredients ||
             filteredProcedure.length === 0 ||
             !selectedCategories["time"] ||
-            !selectedCategories["difficulty"]
+            !selectedCategories["difficulty"] ||
+            !selectedCategories["type"]
           }
         >
           {t("publishRecipe!")}

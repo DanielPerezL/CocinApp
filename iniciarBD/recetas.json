@@ -11,7 +11,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/sc1.jpg","/home/dani/Documentos/CocinApp/iniciarBD/img/sc2.jpg"],        
         "time": "20-40min",
-        "difficulty": "medium"
+        "difficulty": "medium",
+        "type": "main dishes"
     },
 
     {
@@ -25,7 +26,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/tp1.jpg","/home/dani/Documentos/CocinApp/iniciarBD/img/tp2.jpg"],        
         "time": "20-40min",
-        "difficulty": "easy"
+        "difficulty": "easy",
+        "type": "main dishes"
     },
 
     {
@@ -39,7 +41,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/paella.jpg"],        
         "time": "40-90min",
-        "difficulty": "medium"
+        "difficulty": "medium",
+        "type": "main dishes"
     },
 
     {
@@ -54,7 +57,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/sushi1.jpg"],        
         "time": "40-90min",
-        "difficulty": "hard"
+        "difficulty": "hard",
+        "type": "main dishes"
     },
 
     {
@@ -68,7 +72,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/hv.jpg"],        
         "time": "20-40min",
-        "difficulty": "easy"
+        "difficulty": "easy",
+        "type": "main dishes"
     },
 
     {
@@ -82,7 +87,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/l1.jpg"],        
         "time": "40-90min",
-        "difficulty": "medium"
+        "difficulty": "medium",
+        "type": "main dishes"
     },
 
     {
@@ -96,7 +102,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/eg.jpg"],        
         "time": "<20min",
-        "difficulty": "easy"
+        "difficulty": "easy",
+        "type": "salads"
     },
 
     {
@@ -110,7 +117,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/pc1.jpg"],        
         "time": "20-40min",
-        "difficulty": "medium"
+        "difficulty": "medium",
+        "type": "main dishes"
     },
 
     {
@@ -124,7 +132,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/tm1.jpg"],        
         "time": "40-90min",
-        "difficulty": "medium"
+        "difficulty": "medium",
+        "type": "desserts"
     },
 
     {
@@ -138,7 +147,8 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/lentejas.jpg"],        
         "time": "20-40min",
-        "difficulty": "easy"
+        "difficulty": "easy",
+        "type": "soups"
     },
 
     {
@@ -153,6 +163,21 @@
         ],
         "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/ra.jpg"],        
         "time": "40-90min",
-        "difficulty": "expert"
+        "difficulty": "expert",
+        "type": "main dishes"
+    },
+    {
+        "title": "Batido de Fresa",
+        "ingredients": "Fresas, Leche, Azúcar, Hielo, Yogur natural",
+        "procedure": [
+            "Lavar bien las fresas y quitarles las hojas.",
+            "Colocar las fresas en una licuadora junto con la leche, el azúcar, el hielo y el yogur natural.",
+            "Licuar todo hasta obtener una mezcla suave y cremosa.",
+            "Servir frío y disfrutar."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/batidofresa.jpg"],        
+        "time": "<20min",
+        "difficulty": "easy",
+        "type": "drinks"
     }
 ]

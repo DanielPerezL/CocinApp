@@ -14,9 +14,11 @@ class Recipe(db.Model):
     images = db.Column(db.JSON, nullable=True)  # Campo para almacenar URLs de imágenes, en formato JSON
     time = db.Column(db.Enum("<20min", "20-40min", "40-90min", ">90min", name='tiempo_enum'), nullable=False)  # Tiempo
     difficulty = db.Column(db.Enum("easy", "medium", "hard", "expert", name='dificultad_enum'), nullable=False)  # Dificultad
+    type = db.Column(db.Enum("appetizers", "main dishes", "desserts", "drinks", "soups", "salads", "snacks", "others", name='tipo_enum'), nullable=False)  # Tipo
     favorited_by = db.relationship('FavoriteRecipe',
                                    back_populates='recipe',
                                    cascade='all, delete-orphan')
+    
     @hybrid_property
     def favorites_count(self):
         return len(self.favorited_by)
@@ -35,14 +37,19 @@ class Recipe(db.Model):
     @staticmethod
     def get_difficulty_options():
         return ["easy", "medium", "hard", "expert"]
+    
+    @staticmethod
+    def get_type_options():
+        return ["appetizers", "main dishes", "desserts", "drinks", "soups", "salads", "snacks", "others"]
 
-    def __init__(self, title, user_id, ingredients, procedure, time, difficulty, images=None):
+    def __init__(self, title, user_id, ingredients, procedure, time, difficulty, type, images=None):
         self.title = title
         self.user_id = user_id
         self.ingredients = ingredients
         self.procedure = procedure
         self.time = time
         self.difficulty = difficulty
+        self.type = type
         self.images = images if images is not None else []  # Inicializa como lista vacía si no se proporcionan imágenes
 
     def __repr__(self):
@@ -58,6 +65,7 @@ class Recipe(db.Model):
             "procedure": self.procedure,
             "time": self.time,
             "difficulty": self.difficulty,
+            "type": self.type,
             "images": self.images  # Convertir la cadena de imágenes en una lista
         }
 

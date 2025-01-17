@@ -14,6 +14,7 @@ export interface RecipeDetailDTO {
   isFav: boolean;
   time: string;
   difficulty: string;
+  type: string;
   images: string[];
   ingredients: string;
   procedure: string[];
@@ -41,6 +42,6 @@ export interface ReportDTO {
 }
 
 export interface CategoryOptions {
-  name: "time" | "difficulty";
+  name: "time" | "difficulty" | "type";
   options: string[];
 }

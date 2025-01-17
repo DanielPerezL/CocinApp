@@ -200,13 +200,15 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         <ImageCarousel images={recipe.images} />
         <div className="mt-4 mb-1">
           <strong>{t("time")}:</strong>{" "}
-          <span className="badge bg-info">{t(recipe.time)}</span>
+          <span className="badge bg-primary">{t(recipe.time)}</span>
         </div>
-        <div className="mb-3">
+        <div className="mb-1">
           <strong>{t("difficulty")}:</strong>{" "}
-          <span className="badge bg-warning text-dark">
-            {t(recipe.difficulty)}
-          </span>
+          <span className="badge bg-primary">{t(recipe.difficulty)}</span>
+        </div>
+        <div className="mb-4">
+          <strong>{t("type")}:</strong>{" "}
+          <span className="badge bg-primary">{t(recipe.type)}</span>
         </div>
         {/* Sección de ingredientes */}
         <div className="mb-4">

@@ -89,9 +89,10 @@ def get_recommendations_for_user(user, offset, limit):
 
 def get_recipes_similar_to(recipe, offset, limit):
     similar_recipes = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
-        .filter((Recipe.time == recipe.time) | 
+        .filter((Recipe.time == recipe.time) |
                 (Recipe.difficulty == recipe.difficulty)) \
         .filter(Recipe.id != recipe.id) \
+        .filter(Recipe.type == recipe.type) \
         .offset(offset) \
         .limit(limit).all()
     recipes_data = [recipe.to_simple_dto() for recipe in similar_recipes]
@@ -104,7 +105,7 @@ def get_recipes_from_user(user, offset, limit):
 
 def new_recipe(user, data):
     # Verifica que se proporcione la información requerida
-    if not data or not all(key in data for key in ('title', 'ingredients', 'procedure', 'images', 'time', 'difficulty')) or len(data.get('procedure')) == 0 or len(data.get('images')) == 0:
+    if not data or not all(key in data for key in ('title', 'ingredients', 'procedure', 'images', 'time', 'difficulty', 'type')) or len(data.get('procedure')) == 0 or len(data.get('images')) == 0:
         return noRequestedInfoError()
 
     all_images_exist = True
@@ -129,7 +130,8 @@ def new_recipe(user, data):
         procedure=data.get('procedure'),
         images=data.get('images'),
         time=data.get('time'),
-        difficulty=data.get('difficulty')
+        difficulty=data.get('difficulty'),
+        type=data.get('type')
     )
     try:
         db.session.add(new_recipe)
@@ -143,8 +145,11 @@ def new_recipe(user, data):
 def get_recipe_categories():
     time_options = Recipe.get_time_options()  # Obtener los valores posibles de 'tiempo'
     difficulty_options = Recipe.get_difficulty_options()  # Obtener los valores posibles de 'dificultad'
+    type_options = Recipe.get_type_options()  # Obtener los valores posibles de 'tipo'
+    
     return jsonify({"name":"time", "options": time_options}, 
-                    {"name":"difficulty", "options": difficulty_options}), 200
+                    {"name":"difficulty", "options": difficulty_options},
+                    {"name":"type", "options": type_options}), 200
 
 @app.route('/api/recipes/<int:id>', methods=['GET', 'DELETE'])
 @jwt_required(optional=True)

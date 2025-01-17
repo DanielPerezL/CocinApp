@@ -15,8 +15,12 @@ import ReportsPage from "./pages/ReportsPage";
 
 {
   /*
-  TODO:   
-    categoria (entrante, postre, bebida...)
+  TODO:     
+    eliminar componente REVISADO EN REPORT Y QUE EN LA WEB SOLO PODER VER LOS QUE NO ESTAN REVISADOS
+    la bd ordena por nº de reports y te da los x primeros sin revisar: PUNTO!
+
+    MOVER DANGER_ZONE PERFIL USUARIOS
+
     modificar INPUT ingredientes:
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
             tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)
