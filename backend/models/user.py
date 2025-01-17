@@ -34,6 +34,9 @@ class User(db.Model):
         favorite_recipes = query.all() 
         return [favorite.recipe for favorite in favorite_recipes]    
 
+    def get_favorite_recipes_count(self):
+        return FavoriteRecipe.query.filter_by(user_id=self.id).count()
+
     def get_picture(self):
         return self.picture
     

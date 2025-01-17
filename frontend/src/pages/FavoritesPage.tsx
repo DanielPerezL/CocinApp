@@ -28,10 +28,12 @@ const FavoritesPage = () => {
     if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
     loadingRef.current = true;
     try {
-      const newRecipes = await fetchMyFavRecipes(offset); // Llama a la función para obtener las recetas
+      const data = await fetchMyFavRecipes(offset); // Llama a la función para obtener las recetas
+      const newRecipes = data.recipes;
+
       setFavRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
       setOffset((prev) => prev + newRecipes.length); // Incrementar el offset
-      if (newRecipes.length < RECIPE_LIMIT) setHasMore(false); // Si no hay más recetas, desactivar carga
+      setHasMore(data.has_more); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
       setError(err.message); // Captura el error y actualiza el estado
     } finally {
@@ -50,10 +52,9 @@ const FavoritesPage = () => {
     similarLoadingRef.current = true;
     try {
       const limit = RECIPE_LIMIT / 4 <= 1 ? 5 : RECIPE_LIMIT / 4;
-      const newRecipes = await fetchRecipesFavBySimilarUsers(
-        similarOffset,
-        limit
-      );
+      const data = await fetchRecipesFavBySimilarUsers(similarOffset, limit);
+      const newRecipes = data.recipes;
+
       setSimilarRecipes((prev) => {
         // Evitar duplicados combinando las nuevas recetas con las existentes
         const existingIds = new Set(prev.map((recipe) => recipe.id));
@@ -68,7 +69,7 @@ const FavoritesPage = () => {
 
         return [...prev, ...uniqueRecipes];
       });
-      if (newRecipes.length < limit) setSimilarHasMore(false); // Si no hay más recetas, desactivar carga
+      setSimilarHasMore(data.has_more); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
       setSimilarError(err.message); // Captura el error y actualiza el estado
     } finally {

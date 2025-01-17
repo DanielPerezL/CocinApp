@@ -18,7 +18,8 @@ const Home = () => {
     if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
     loadingRef.current = true;
     try {
-      const newRecipes = await fetchRecipes(offset);
+      const data = await fetchRecipes(offset);
+      const newRecipes = data.recipes;
       setRecipes((prev) => {
         // Evitar duplicados combinando las nuevas recetas con las existentes
         // porque se envian en orden segun su popularidad (popularidad variable)
@@ -34,7 +35,7 @@ const Home = () => {
 
         return [...prev, ...uniqueRecipes];
       });
-      if (newRecipes.length < RECIPE_LIMIT) setHasMore(false); // Si no hay más recetas, desactivar carga
+      setHasMore(data.has_more); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
       setError(err.message); // Captura el error y actualiza el estado
     } finally {

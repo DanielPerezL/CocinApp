@@ -44,3 +44,8 @@ export interface ReportDTO {
   reported_resource: string;
   count: number;
 }
+
+export interface FetchRecipesResponse {
+  recipes: RecipeSimpleDTO[];
+  has_more: boolean;
+}

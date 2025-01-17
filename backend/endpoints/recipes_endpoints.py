@@ -48,13 +48,21 @@ def recipes():
             return userNotFoundError()
         return new_recipe(user, request.json)
 
-def get_recipes_simple_dto(offset, limit):
-    recipes = Recipe.query \
-        .order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
-        .offset(offset).limit(limit).all()
-    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
-    return jsonify(recipes_data), 200
+def has_more_results(query, offset, limit):
+    return query.offset(offset + limit).first() is not None
 
+#GRID 1
+def get_recipes_simple_dto(offset, limit):
+    query = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc())
+    recipes = query.offset(offset).limit(limit).all()
+    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
+    has_more = has_more_results(query, offset, limit)
+    return jsonify({"recipes": recipes_data, 
+                    "has_more": has_more},
+                    ), 200
+
+
+#GRID 2
 def get_recommendations_for_user(user, offset, limit):
     # Obtenemos los IDs de las recetas favoritas del usuario
     user_favorite_recipe_ids = db.session.query(FavoriteRecipe.recipe_id).filter_by(user_id=user.id).all()
@@ -69,7 +77,7 @@ def get_recommendations_for_user(user, offset, limit):
 
     # Si no hay usuarios similares, no podemos obtener recomendaciones
     if not similar_users:
-        return jsonify([]), 200
+        return jsonify({"recipes": [], "has_more": False}), 200
 
     # Obtener las recetas favoritas de los usuarios similares
     similar_recipe_ids = db.session.query(FavoriteRecipe.recipe_id) \
@@ -79,29 +87,41 @@ def get_recommendations_for_user(user, offset, limit):
     similar_recipe_ids = [id[0] for id in similar_recipe_ids]
     
     #Excluir las ya favoritas
-    recommended_recipes = Recipe.query \
+    query = Recipe.query \
         .filter(Recipe.id.in_(similar_recipe_ids)) \
         .filter(Recipe.id.notin_(user_favorite_recipe_ids)) \
-        .order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
-        .offset(offset).limit(limit).all()
+        .order_by(Recipe.favorites_count.desc(), Recipe.id.asc())
+
+    recommended_recipes = query.offset(offset).limit(limit).all()
+    recommended_recipes_data = [recipe.to_simple_dto() for recipe in recommended_recipes]
+
+    has_more = has_more_results(query, offset, limit)
     # Devolver las recetas recomendadas como DTO
-    return jsonify([recipe.to_simple_dto() for recipe in recommended_recipes]), 200
+    return jsonify({"recipes": recommended_recipes_data, 
+                    "has_more": has_more},
+                    ), 200
 
+#GRID 3
 def get_recipes_similar_to(recipe, offset, limit):
-    similar_recipes = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
-        .filter((Recipe.time == recipe.time) |
-                (Recipe.difficulty == recipe.difficulty)) \
+    query = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
+        .filter((Recipe.time == recipe.time) | (Recipe.difficulty == recipe.difficulty)) \
         .filter(Recipe.id != recipe.id) \
-        .filter(Recipe.type == recipe.type if recipe.type != "others" else Recipe.type.isnot(None)) \
-        .offset(offset) \
-        .limit(limit).all()
-    recipes_data = [recipe.to_simple_dto() for recipe in similar_recipes]
-    return jsonify(recipes_data), 200
+        .filter(Recipe.type == recipe.type if recipe.type != "others" else Recipe.type.isnot(None))
 
+    similar_recipes = query.offset(offset).limit(limit).all()
+    recipes_data = [recipe.to_simple_dto() for recipe in similar_recipes]
+    has_more = has_more_results(query, offset, limit)
+    return jsonify({"recipes": recipes_data, "has_more": has_more}), 200
+
+
+#GRID 4
 def get_recipes_from_user(user, offset, limit):
-    recipes = Recipe.query.filter_by(user_id=user.id).offset(offset).limit(limit).all()
+    query = Recipe.query.filter_by(user_id=user.id)
+    recipes = query.offset(offset).limit(limit).all()
     recipes_data = [recipe.to_simple_dto() for recipe in recipes]
-    return jsonify(recipes_data), 200
+    has_more = has_more_results(query, offset, limit)
+    return jsonify({"recipes": recipes_data, "has_more": has_more}), 200
+
 
 def new_recipe(user, data):
     # Verifica que se proporcione la información requerida

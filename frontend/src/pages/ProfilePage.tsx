@@ -28,10 +28,12 @@ const ProfilePage: React.FC = () => {
     if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
     loadingRef.current = true;
     try {
-      const newRecipes = await fetchUserRecipes(user_id, offset); // Llama a la función para obtener las recetas
+      const data = await fetchUserRecipes(user_id, offset); // Llama a la función para obtener las recetas
+      const newRecipes = data.recipes;
+
       setRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
       setOffset((prev) => prev + newRecipes.length); // Incrementar el offset
-      if (newRecipes.length < RECIPE_LIMIT) setHasMore(false); // Si no hay más recetas, desactivar carga
+      setHasMore(data.has_more); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
       setError(err.message); // Captura el error y actualiza el estado
     } finally {

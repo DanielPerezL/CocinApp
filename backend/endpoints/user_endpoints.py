@@ -162,7 +162,11 @@ def favorites_recipes(id):
         return jsonify({"error": "No tienes los permisos necesarios."}), 403
 
     recipes = [recipe.to_simple_dto() for recipe in user.get_favorite_recipes(offset, limit)]
-    return jsonify(recipes), 200
+    total_favorites = user.get_favorite_recipes_count()  # Método para contar las recetas favoritas del usuario
+    has_more = (offset + limit) < total_favorites
+
+    # Devolver la respuesta con `recipes` y `has_more`
+    return jsonify({"recipes": recipes, "has_more": has_more}), 200
 
 @app.route('/api/users/<int:idU>/fav_recipes/<int:idR>', methods=['POST', 'DELETE'])
 @jwt_required()

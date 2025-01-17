@@ -36,11 +36,6 @@ import ReportsPage from "./pages/ReportsPage";
       
       arreglar logout cada vez que se entra a la app ¿?
       arreglar SIGTERM al vaciar el docker ¿?
-  
-
-    detalles:
-      hasMore como valor obtenido del backend
-
   */
   /*
   test:

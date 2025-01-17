@@ -14,7 +14,6 @@
         "difficulty": "medium",
         "type": "main dishes"
     },
-
     {
         "title": "Tacos de Pollo",
         "ingredients": "Pechuga de pollo, Tortillas, Lechuga, Tomate, Cebolla, Salsa de yogurt, Limón",
@@ -44,7 +43,6 @@
         "difficulty": "medium",
         "type": "main dishes"
     },
-
     {
         "title": "Sushi Roll",
         "ingredients": "Arroz para sushi, Alga nori, Pescado crudo, Aguacate, Pepino, Salsa de soja, Wasabi",
@@ -60,7 +58,6 @@
         "difficulty": "hard",
         "type": "main dishes"
     },
-
     {
         "title": "Hamburguesa Vegana",
         "ingredients": "Hamburguesas veganas, Pan de hamburguesa, Lechuga, Tomate, Cebolla, Ketchup, Mostaza",
@@ -75,7 +72,6 @@
         "difficulty": "easy",
         "type": "main dishes"
     },
-
     {
         "title": "Lasagna de Carne",
         "ingredients": "Carne molida, Láminas de lasaña, Salsa bechamel, Salsa de tomate, Queso rallado, Cebolla, Ajo, Aceite de oliva, Sal",
@@ -90,7 +86,6 @@
         "difficulty": "medium",
         "type": "main dishes"
     },
-
     {
         "title": "Ensalada Griega",
         "ingredients": "Pepino, Tomate, Aceitunas, Queso feta, Aceite de oliva, Limón, Orégano, Sal",
@@ -105,7 +100,6 @@
         "difficulty": "easy",
         "type": "salads"
     },
-
     {
         "title": "Pollo al Curry",
         "ingredients": "Pechuga de pollo, Leche de coco, Curry en polvo, Cebolla, Ajo, Aceite de oliva, Sal, Pimienta, Arroz",
@@ -120,7 +114,6 @@
         "difficulty": "medium",
         "type": "main dishes"
     },
-
     {
         "title": "Tarta de Manzana",
         "ingredients": "Manzanas, Masa quebrada, Azúcar, Canela, Mantequilla, Limón",
@@ -135,7 +128,6 @@
         "difficulty": "medium",
         "type": "desserts"
     },
-
     {
         "title": "Lentejas",
         "ingredients": "Lentejas, Zanahoria, Cebolla, Ajo, Caldo de verduras, Aceite de oliva, Sal, Pimienta",
@@ -150,7 +142,6 @@
         "difficulty": "easy",
         "type": "soups"
     },
-
     {
         "title": "Raviolis Caseros",
         "ingredients": "Harina, Huevos, Ricotta, Espinacas, Salsa de tomate, Queso parmesano",

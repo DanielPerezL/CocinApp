@@ -1,11 +1,11 @@
 import { t } from "i18next";
 import {
-  RecipeSimpleDTO,
   RecipeDetailDTO,
   UserDTO,
   UserPublicDTO,
   ReportDTO,
   CategoryOptions,
+  FetchRecipesResponse,
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
@@ -54,13 +54,13 @@ export const fetchRecipesCategories = async (): Promise<CategoryOptions[]> => {
 export const fetchRecipes = async (
   offset: number,
   limit?: number
-): Promise<RecipeSimpleDTO[]> => {
+): Promise<FetchRecipesResponse> => {
   return await withTokenRefresh(() => fetchRecipesUnsafe(offset, limit));
 };
 const fetchRecipesUnsafe = async (
   offset: number,
   limit?: number
-): Promise<RecipeSimpleDTO[]> => {
+): Promise<FetchRecipesResponse> => {
   let response: Response;
   try {
     response = await fetch(
@@ -82,7 +82,7 @@ export const fetchSimilarRecipes = async (
   idRecipe: string,
   offset: number,
   limit?: number
-): Promise<RecipeSimpleDTO[]> => {
+): Promise<FetchRecipesResponse> => {
   return await withTokenRefresh(() =>
     fetchSimilarRecipesUnsafe(idRecipe, offset, limit)
   );
@@ -91,7 +91,7 @@ const fetchSimilarRecipesUnsafe = async (
   idRecipe: string,
   offset: number,
   limit?: number
-): Promise<RecipeSimpleDTO[]> => {
+): Promise<FetchRecipesResponse> => {
   let response: Response;
   try {
     response = await fetch(
@@ -112,7 +112,7 @@ const fetchSimilarRecipesUnsafe = async (
 export const fetchRecipesFavBySimilarUsers = async (
   offset: number,
   limit?: number
-): Promise<RecipeSimpleDTO[]> => {
+): Promise<FetchRecipesResponse> => {
   return await withTokenRefresh(() =>
     fetchRecipesFavBySimilarUsersUnsafe(offset, limit)
   );
@@ -120,7 +120,7 @@ export const fetchRecipesFavBySimilarUsers = async (
 const fetchRecipesFavBySimilarUsersUnsafe = async (
   offset: number,
   limit?: number
-): Promise<RecipeSimpleDTO[]> => {
+): Promise<FetchRecipesResponse> => {
   let response: Response;
   try {
     response = await fetch(
@@ -384,7 +384,7 @@ export const fetchUserRecipes = async (id: string, offset: number) => {
 const fetchUserRecipesUnsafe = async (
   id: string,
   offset: number
-): Promise<RecipeSimpleDTO[]> => {
+): Promise<FetchRecipesResponse> => {
   let response: Response;
   try {
     response = await fetch(
@@ -455,7 +455,7 @@ export const fetchMyFavRecipes = async (offset: number) => {
 };
 const fetchMyFavRecipesUnsafe = async (
   offset: number
-): Promise<RecipeSimpleDTO[]> => {
+): Promise<FetchRecipesResponse> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
