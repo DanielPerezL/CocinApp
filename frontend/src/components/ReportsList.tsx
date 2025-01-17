@@ -29,7 +29,6 @@ const ReportsList: React.FC<ReportsListProps> = ({ reports, onChange }) => {
             <tr>
               <th>{t("reportedResource")}</th>
               <th>{t("count")}</th>
-              {/*<th>{t("reviewed")}</th>*/}
               <th>{t("actions")}</th>
             </tr>
           </thead>
@@ -38,7 +37,6 @@ const ReportsList: React.FC<ReportsListProps> = ({ reports, onChange }) => {
               <tr key={report.id}>
                 <td>{report.reported_resource}</td>
                 <td>{report.count}</td>
-                {/*<td>{report.reviewed ? t("yes") : t("no")}</td>*/}
                 <td>
                   <div className="d-flex justify-content-center align-items-center gap-2">
                     <button

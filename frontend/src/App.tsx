@@ -16,9 +16,6 @@ import ReportsPage from "./pages/ReportsPage";
 {
   /*
   TODO:     
-    eliminar componente REVISADO EN REPORT Y QUE EN LA WEB SOLO PODER VER LOS QUE NO ESTAN REVISADOS
-    la bd ordena por nº de reports y te da los x primeros sin revisar: PUNTO!
-
     MOVER DANGER_ZONE PERFIL USUARIOS
 
     modificar INPUT ingredientes:

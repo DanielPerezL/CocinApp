@@ -24,5 +24,4 @@ class Report(db.Model):
             'id': self.id,
             'reported_resource': self.reported_resource,
             'count': self.count,
-            'reviewed': self.reviewed,
         }

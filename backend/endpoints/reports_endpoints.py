@@ -8,7 +8,7 @@ from utils import get_user_from_token
 from utils import hasPermission
 from errors import noPermissionError, noRequestedInfoError, userNotFoundError, recipeNotFoundError, reportNotFoundError
 
-REPORT_QUERY_LIMIT = 50
+REPORT_QUERY_LIMIT = 20
 
 @app.route('/api/reports', methods=['GET', 'POST'])
 #@jwt_required(optional=True)

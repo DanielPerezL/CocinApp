@@ -20,6 +20,11 @@ export interface RecipeDetailDTO {
   procedure: string[];
 }
 
+export interface CategoryOptions {
+  name: "time" | "difficulty" | "type";
+  options: string[];
+}
+
 //DTOs de USUARIO
 export interface UserDTO {
   id: string;
@@ -38,10 +43,4 @@ export interface ReportDTO {
   id: string;
   reported_resource: string;
   count: number;
-  reviewed: boolean;
-}
-
-export interface CategoryOptions {
-  name: "time" | "difficulty" | "type";
-  options: string[];
 }
