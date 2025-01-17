@@ -92,7 +92,7 @@ def get_recipes_similar_to(recipe, offset, limit):
         .filter((Recipe.time == recipe.time) |
                 (Recipe.difficulty == recipe.difficulty)) \
         .filter(Recipe.id != recipe.id) \
-        .filter(Recipe.type == recipe.type) \
+        .filter(Recipe.type == recipe.type if recipe.type != "others" else Recipe.type.isnot(None)) \
         .offset(offset) \
         .limit(limit).all()
     recipes_data = [recipe.to_simple_dto() for recipe in similar_recipes]

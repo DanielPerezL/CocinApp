@@ -16,8 +16,6 @@ import ReportsPage from "./pages/ReportsPage";
 {
   /*
   TODO:     
-    MOVER DANGER_ZONE PERFIL USUARIOS
-
     modificar INPUT ingredientes:
       tabla de INGREDIENTE (nombre_es, nombre_en, unidad por defecto)
             tabla receta usa coleccion de -> tabla de INGREDIENTE_CONCRETO PK(fk_RECETA, fk_INGREDIENTE, cantidad)
@@ -38,6 +36,10 @@ import ReportsPage from "./pages/ReportsPage";
       
       arreglar logout cada vez que se entra a la app ¿?
       arreglar SIGTERM al vaciar el docker ¿?
+  
+
+    detalles:
+      MOVER DANGER_ZONE PERFIL USUARIOS  
   */
   /*
   test:
