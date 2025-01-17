@@ -179,5 +179,143 @@
         "time": "<20min",
         "difficulty": "easy",
         "type": "drinks"
-    }
+    },
+    {
+        "title": "Guisado de Garbanzos",
+        "ingredients": "Garbanzos, Tomate, Cebolla, Ajo, Zanahoria, Pimiento, Caldo de verduras, Aceite de oliva, Sal, Pimienta",
+        "procedure": [
+            "Remojar los garbanzos durante toda la noche.",
+            "Cocer los garbanzos en agua con sal hasta que estén tiernos.",
+            "Freír la cebolla, ajo, zanahoria y pimiento en aceite de oliva.",
+            "Añadir el tomate picado y cocinar hasta que el tomate se deshaga.",
+            "Agregar los garbanzos cocidos, el caldo de verduras y sazonar al gusto.",
+            "Cocinar a fuego lento durante 20 minutos y servir caliente."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/guisado_garbanzos.jpg"],        
+        "time": "40-90min",
+        "difficulty": "medium",
+        "type": "soups"
+    },
+    {
+        "title": "Ponche para Fiestas",
+        "ingredients": "Zumo de naranja, Zumo de piña, Ron blanco, Azúcar, Hielo, Rodajas de naranja, Limón, Fresas",
+        "procedure": [
+            "Mezclar el zumo de naranja y piña en una jarra grande.",
+            "Añadir el ron blanco y el azúcar al gusto, y remover bien.",
+            "Agregar hielo y rodajas de naranja, limón y fresas.",
+            "Dejar reposar en la nevera durante 30 minutos para que se enfríe.",
+            "Servir en copas decoradas con más frutas."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/ponche_fiestas.jpg"],        
+        "time": "20-40min",
+        "difficulty": "easy",
+        "type": "drinks"
+    },
+    {
+        "title": "Natillas",
+        "ingredients": "Leche, Azúcar, Yemas de huevo, Maicena, Canela en rama, Piel de limón",
+        "procedure": [
+            "Calentar la leche con la canela y la piel de limón en una cacerola.",
+            "Batir las yemas con el azúcar y la maicena.",
+            "Cuando la leche esté caliente, añadir poco a poco sobre la mezcla de huevos y azúcar.",
+            "Volver a poner la mezcla en la cacerola y cocinar a fuego medio, removiendo constantemente hasta que espese.",
+            "Verter en cuencos, dejar enfriar y decorar con canela."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/natillas.jpg"],        
+        "time": "40-90min",
+        "difficulty": "medium",
+        "type": "desserts"
+    },
+    {
+        "title": "Fingers de Pollo",
+        "ingredients": "Pechuga de pollo, Pan rallado, Harina, Huevos, Sal, Pimienta, Aceite para freír",
+        "procedure": [
+            "Cortar la pechuga de pollo en tiras delgadas.",
+            "Sazonar el pollo con sal y pimienta.",
+            "Pasar las tiras de pollo por harina, luego por huevo batido y finalmente por pan rallado.",
+            "Freír en aceite caliente hasta que estén doradas y crujientes.",
+            "Servir con salsa de tu elección."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/fingers_pollo.jpg"],        
+        "time": "20-40min",
+        "difficulty": "easy",
+        "type": "appetizers"
+    },
+    {
+        "title": "Ensalada César",
+        "ingredients": "Lechuga romana, Pollo a la parrilla, Crutones, Queso parmesano, Aderezo César",
+        "procedure": [
+            "Lavar y cortar la lechuga romana en trozos pequeños.",
+            "Cocinar el pollo a la parrilla y cortarlo en tiras.",
+            "Colocar la lechuga en un bol, agregar los crutones y el queso parmesano rallado.",
+            "Añadir el pollo a la parrilla y mezclar todo con el aderezo César.",
+            "Servir inmediatamente."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/ensalada_cesar.jpeg"],        
+        "time": "<20min",
+        "difficulty": "easy",
+        "type": "salads"
+    },
+    {
+        "title": "Nachos con Queso",
+        "ingredients": "Tortillas de maíz, Queso cheddar rallado, Jalapeños, Salsa de tomate, Crema agria",
+        "procedure": [
+            "Colocar las tortillas de maíz en una bandeja para hornear.",
+            "Espolvorear generosamente con queso cheddar rallado.",
+            "Añadir jalapeños al gusto.",
+            "Hornear a 180°C durante 10 minutos o hasta que el queso se derrita y las tortillas se vuelvan crujientes.",
+            "Servir con salsa de tomate y crema agria."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/nachos_queso.jpg"],        
+        "time": "20-40min",
+        "difficulty": "easy",
+        "type": "snacks"
+    },
+    {
+        "title": "Palitos de Mozzarella Empanados",
+        "ingredients": "Queso mozzarella, Pan rallado, Harina, Huevos, Aceite para freír, Sal, Pimienta",
+        "procedure": [
+            "Cortar los palitos de mozzarella en tiras.",
+            "Pasar los palitos de queso por harina, luego por huevo batido y finalmente por pan rallado.",
+            "Freír en aceite caliente hasta que estén dorados y crujientes.",
+            "Servir con salsa marinara o tu salsa favorita."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/palitos_mozzarella.jpg"],        
+        "time": "20-40min",
+        "difficulty": "easy",
+        "type": "snacks"
+    },
+    {
+        "title": "Ropa Vieja (Estilo Cubano)",
+        "ingredients": "Carne de res, Cebolla, Pimiento verde, Pimiento rojo, Ajo, Tomate, Caldo de carne, Comino, Orégano, Aceite de oliva, Aceitunas verdes, Pasas, Sal, Pimienta",
+        "procedure": [
+            "Cocer la carne de res en agua con sal durante 2-3 horas hasta que esté bien tierna.",
+            "Sacar la carne, desmenuzarla y reservar.",
+            "En una sartén grande, calentar el aceite de oliva y sofreír la cebolla, los pimientos y el ajo hasta que estén blandos.",
+            "Añadir los tomates picados, el caldo de carne, el comino, el orégano, sal y pimienta, y cocinar a fuego lento durante unos 20 minutos.",
+            "Agregar la carne desmenuzada a la sartén, junto con las aceitunas y las pasas, y cocinar a fuego lento por 30-40 minutos.",
+            "Servir con arroz blanco y disfrutar."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/ropa_vieja1.jpg","/home/dani/Documentos/CocinApp/iniciarBD/img/ropa_vieja2.jpg"],        
+        "time": ">90min",
+        "difficulty": "medium",
+        "type": "main dishes"
+    },
+    {
+        "title": "Pizza Margherita",
+        "ingredients": "Masa de pizza, Salsa de tomate, Mozzarella, Albahaca fresca, Aceite de oliva, Sal",
+        "procedure": [
+            "Precalentar el horno a 220°C.",
+            "Extender la masa de pizza sobre una bandeja para hornear.",
+            "Esparcir una capa de salsa de tomate sobre la masa.",
+            "Agregar la mozzarella desmenuzada sobre la salsa.",
+            "Hornear durante 10-12 minutos o hasta que la masa esté dorada y el queso derretido.",
+            "Sacar del horno y agregar hojas de albahaca fresca.",
+            "Rociar con un poco de aceite de oliva y sazonar con sal al gusto."
+        ],
+        "images": ["/home/dani/Documentos/CocinApp/iniciarBD/img/pizza_margherita.jpg"],        
+        "time": "20-40min",
+        "difficulty": "easy",
+        "type": "main dishes"
+    }    
 ]

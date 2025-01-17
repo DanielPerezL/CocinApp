@@ -28,10 +28,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           alt={recipe.title}
         />
         <div className="card-body">
-          <span className="badge bg-primary mb-1 me-1">{t(recipe.time)}</span>
+          <span className="badge bg-primary">{t(recipe.time)}</span>{" "}
           <span className="badge bg-primary mb-1">{t(recipe.difficulty)}</span>
           <br />
-          <h6 className="card-title text-white bg-dark bg-opacity-75 px-2 mb-0 rounded-2 d-inline-block ">
+          <h6 className="card-title text-white bg-dark bg-opacity-75 px-2 mb-0 rounded-2 d-inline-block">
             {recipe.title}
           </h6>
         </div>

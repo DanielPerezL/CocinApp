@@ -9,7 +9,7 @@ import {
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
-const NGROK = !false;
+const NGROK = false;
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (NGROK) {
