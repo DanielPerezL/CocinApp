@@ -51,8 +51,14 @@ const FavoritesPage = () => {
     if (similarLoadingRef.current || !similarHasMore) return; // Evitar solicitudes repetidas
     similarLoadingRef.current = true;
     try {
-      const limit = RECIPE_LIMIT / 4 <= 1 ? 5 : RECIPE_LIMIT / 4;
-      const data = await fetchRecipesFavBySimilarUsers(similarOffset, limit);
+      let data;
+      if (similarOffset == 0) {
+        const limit = 4;
+        data = await fetchRecipesFavBySimilarUsers(similarOffset, limit);
+      } else {
+        data = await fetchRecipesFavBySimilarUsers(similarOffset);
+      }
+
       const newRecipes = data.recipes;
 
       setSimilarRecipes((prev) => {

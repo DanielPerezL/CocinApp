@@ -54,13 +54,18 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
     if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
     loadingRef.current = true;
     try {
-      const limit = RECIPE_LIMIT / 4 <= 1 ? 5 : RECIPE_LIMIT / 4;
-      const data = await fetchSimilarRecipes(recipe.id, offset, limit);
+      let data;
+      if (offset == 0) {
+        const limit = 4;
+        data = await fetchSimilarRecipes(recipe.id, offset, limit);
+      } else {
+        data = await fetchSimilarRecipes(recipe.id, offset);
+      }
+
       const newRecipes = data.recipes;
 
       setRecipes((prev) => {
         // Evitar duplicados combinando las nuevas recetas con las existentes
-        // porque se envian en orden segun su popularidad (popularidad variable)
         const existingIds = new Set(prev.map((recipe) => recipe.id));
         const uniqueRecipes = newRecipes.filter(
           (recipe) => !existingIds.has(recipe.id)
