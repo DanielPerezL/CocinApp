@@ -1,0 +1,52 @@
+[
+  {
+    "name_en": "Rice",
+    "name_es": "Arroz",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Seafood",
+    "name_es": "Mariscos",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Chicken",
+    "name_es": "Pollo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Rabbit",
+    "name_es": "Conejo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Green beans",
+    "name_es": "Judías verdes",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Pepper",
+    "name_es": "Pimienta",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Tomato",
+    "name_es": "Tomate",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Fish",
+    "name_es": "Pescado",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Olive oil",
+    "name_es": "Aceite de oliva",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Saffron",
+    "name_es": "Azafrán",
+    "default_unit": "g"
+  }
+]

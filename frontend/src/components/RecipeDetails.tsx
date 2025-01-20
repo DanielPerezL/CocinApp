@@ -220,7 +220,16 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
         {/* Sección de ingredientes */}
         <div className="mb-4">
           <h3>{t("ingredients")}</h3>
-          <p className="receta-text">{recipe.ingredients}</p>
+          <ul className="receta-ingredients">
+            {recipe.ingredients.map((ingredient, index) => (
+              <li key={index}>
+                <span className="ingredient-name">{ingredient.name}:</span>{" "}
+                <span className="ingredient-amount">
+                  {ingredient.amount} {t(ingredient.default_unit)}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
         {/* Sección de procedimiento */}
         <div className="mb-4">

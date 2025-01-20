@@ -1,6 +1,10 @@
 {
+    "lang": "es",
+    
     "welcome": "Bienvenido a CocinApp",
     "loadMore": "Cargar más",
+    "remove": "Eliminar",
+    "units": "Unidades",
     "subwelcome": "Descubre y comparte tus recetas favoritas",
     "loadingRecipes": "Cargando recetas...",
     "loadingReports": "Cargando reportes...",
@@ -146,7 +150,7 @@
     "errorUpdatingPassword": "Error al actualizar la contraseña",
     "errorExpiredSession": "Sesión expirada",
     "errorLoadingUserRecipes": "Error al cargar las recetas del usuario",
-    "errorDeletingRecipe": "Error al eliminar la receta"
-
+    "errorDeletingRecipe": "Error al eliminar la receta",
+    "errorLoadingRecipesIngredients": "Error al cargar los ingredientes"
   }
   

@@ -28,8 +28,8 @@ app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
 app.config['JWT_CSRF_METHODS'] = ["POST", "PUT", "DELETE"]
 
-app.config['JWT_COOKIE_CSRF_PROTECT'] = True 
-app.config['JWT_COOKIE_SECURE'] = True
+app.config['JWT_COOKIE_CSRF_PROTECT'] = not True 
+app.config['JWT_COOKIE_SECURE'] = not True
 
 time.sleep(3)
 jwt = JWTManager(app)

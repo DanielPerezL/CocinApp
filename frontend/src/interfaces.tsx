@@ -7,6 +7,16 @@ export interface RecipeSimpleDTO {
   difficulty: string;
 }
 
+export interface Ingredient {
+  id: string;
+  name: string;
+  default_unit: string;
+}
+
+export interface ConcreteIngredient extends Ingredient {
+  amount: string;
+}
+
 export interface RecipeDetailDTO {
   id: string;
   user_id: string;
@@ -16,7 +26,7 @@ export interface RecipeDetailDTO {
   difficulty: string;
   type: string;
   images: string[];
-  ingredients: string;
+  ingredients: ConcreteIngredient[];
   procedure: string[];
 }
 

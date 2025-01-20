@@ -6,10 +6,12 @@ import {
   ReportDTO,
   CategoryOptions,
   FetchRecipesResponse,
+  ConcreteIngredient,
+  Ingredient,
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
-const NGROK = !false;
+const NGROK = false;
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (NGROK) {
@@ -46,6 +48,22 @@ export const fetchRecipesCategories = async (): Promise<CategoryOptions[]> => {
 
   if (!response.ok) {
     throw new Error(t("errorLoadingRecipesCategories"));
+  }
+  return await response.json();
+};
+
+// Función para obtener las categorias de las recetas
+export const fetchIngredients = async (): Promise<Ingredient[]> => {
+  let response: Response;
+  const lang = t("lang");
+  try {
+    response = await fetch(`${API_BASE_URL}/recipe/ingredients?lang=${lang}`);
+  } catch (error) {
+    throw new Error(t("errorLoadingRecipesIngredients"));
+  }
+
+  if (!response.ok) {
+    throw new Error(t("errorLoadingRecipesIngredients"));
   }
   return await response.json();
 };
@@ -146,8 +164,9 @@ const fetchRecipeDetailsUnsafe = async (
   id: string
 ): Promise<RecipeDetailDTO> => {
   let response: Response;
+  const lang = t("lang");
   try {
-    response = await fetch(`${API_BASE_URL}/recipes/${id}`, {
+    response = await fetch(`${API_BASE_URL}/recipes/${id}?lang=${lang}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -515,7 +534,7 @@ const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
 // Función para subir una nueva receta al servidor
 export const uploadRecipe = async (
   title: string,
-  ingredients: string,
+  ingredients: ConcreteIngredient[],
   procedure: string[],
   time: string,
   difficulty: string,
@@ -536,7 +555,7 @@ export const uploadRecipe = async (
 };
 const uploadRecipeUnsafe = async (
   title: string,
-  ingredients: string,
+  ingredients: ConcreteIngredient[],
   procedure: string[],
   time: string,
   difficulty: string,

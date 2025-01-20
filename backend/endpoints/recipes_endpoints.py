@@ -5,7 +5,7 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
-from utils import delete_images_by_filenames, hasPermission
+from utils import delete_images_by_filenames, hasPermission, isAdmin
 from errors import *
 
 @app.route('/api/recipes', methods=['GET', 'POST'])
@@ -141,25 +141,55 @@ def new_recipe(user, data):
         for file_path in existing_images:
             os.remove(file_path)
         return noRecipeUploadedError()
-    
-    # Crea una nueva receta
+
+    # Procesar los ingredientes: se espera que `data['ingredients']` sea un dict {id: cantidad}
+    ingredients_data = data.get('ingredients', [])
+    concrete_ingredients = []
+
+    # Crear la receta
     new_recipe = Recipe(
         title=data.get('title'),
         user_id=user.id,
-        ingredients=data.get('ingredients'),
         procedure=data.get('procedure'),
         images=data.get('images'),
         time=data.get('time'),
         difficulty=data.get('difficulty'),
         type=data.get('type')
     )
+
     try:
+        # Agregar la receta a la base de datos
         db.session.add(new_recipe)
+        db.session.flush()  # Para obtener el ID de la receta antes de hacer commit
+
+        # Crear los ingredientes concretos
+        for ingredient_data in ingredients_data:
+            ingredient_id = ingredient_data.get('id')
+            amount = ingredient_data.get('amount')
+
+            if ingredient_id is None or amount is None:
+                continue  # Salta si algún dato está incompleto
+
+            # Crear la entrada en ConcreteIngredient con recipe_id ya asignado
+            concrete_ingredient = ConcreteIngredient(
+                ingredient_id=ingredient_id,
+                amount=amount,
+                recipe_id=new_recipe.id  # Asignar el id de la receta recién creada
+            )
+
+            concrete_ingredients.append(concrete_ingredient)
+
+        # Guardar los ingredientes concretos en la base de datos
+        db.session.add_all(concrete_ingredients)
+
+        # Realizar un único commit para todas las operaciones
         db.session.commit()
-        return jsonify({"msg": "Receta publica con éxito", "new_id": new_recipe.id}), 201
+        return jsonify({"msg": "Receta publicada con éxito", "new_id": new_recipe.id}), 201
+
     except SQLAlchemyError as e:
         db.session.rollback()
         return noRecipeUploadedError()
+
 
 @app.route('/api/recipe/categories', methods=['GET'])
 def get_recipe_categories():
@@ -177,24 +207,26 @@ def recipes_id(id):
     if id < 0:
         return noValidIdProvided()
     
+    lang = request.args.get('lang', default="", type=str)
+
     #AQUI MANTENGO EL OPTIONAL PORQUE SI NO HAY TOKEN
     # CLIENT=None
     #SI HAY TOKEN DEBE SER VALIDO
     client = get_user_from_token(get_jwt())    
     method = request.method
     if method == 'GET':
-        return recipe_details(id, client)
+        return recipe_details(id, client, lang)
     if method == 'DELETE':
         recipe = Recipe.query.get(id)
         if not hasPermission(client, recipe):
             return noPermissionError()
         return delete_recipe(recipe)
 
-def recipe_details(id, client):
+def recipe_details(id, client, lang):
     recipe = Recipe.query.get(id)
     if recipe is None:
         return recipeNotFoundError()
-    recipe_dto = recipe.to_details_dto()
+    recipe_dto = recipe.to_details_dto(lang)
     recipe_dto["isFav"] = client.is_favorite(recipe) if client else False
     return jsonify(recipe_dto), 200
 
@@ -208,3 +240,64 @@ def delete_recipe(recipe):
     except SQLAlchemyError as e:
         db.session.rollback()
     return unexpectedError()
+
+@app.route('/api/recipe/ingredients', methods=['GET', 'POST'])
+def ingredients():
+    lang = request.args.get('lang', default="", type=str)
+    if request.method == 'GET':
+        # Obtener todos los ingredientes disponibles
+        ingredients = Ingredient.query.all()
+        ingredients_data = [ingredient.to_dto(lang) for ingredient in ingredients]
+        return jsonify(ingredients_data), 200
+
+    elif request.method == 'POST':
+        try:
+            verify_jwt_in_request() 
+        except Exception as e:
+            return jsonify({"error": "Authentication required or invalid token"}), 401
+        user = get_user_from_token(get_jwt())
+        if not isAdmin(user):
+            return noPermissionError()
+
+        try:
+            # Leer el cuerpo de la solicitud
+            data = request.get_json()
+            if not isinstance(data, list):
+                return jsonify({"error": "El cuerpo de la solicitud debe ser una lista de ingredientes"}), 400
+
+            errores = []
+            for ingredient_data in data:
+                # Validar los campos obligatorios
+                if not all(key in ingredient_data for key in ["name_en","name_es", "default_unit"]):
+                    errores.append(f"Faltan campos en el ingrediente: {ingredient_data}")
+                    continue
+
+                # Verificar si el ingrediente ya existe
+                existing_ingredient = Ingredient.query.filter_by(
+                    name_es=ingredient_data["name_es"],
+                    name_en=ingredient_data["name_en"],
+                    default_unit=ingredient_data["default_unit"]
+                ).first()
+
+                if existing_ingredient:
+                    errores.append(f"Ingrediente ya existente: {ingredient_data}")
+                    continue
+
+                # Crear el nuevo ingrediente
+                new_ingredient = Ingredient(
+                    name_es=ingredient_data["name_es"],
+                    name_en=ingredient_data["name_en"],
+                    default_unit=ingredient_data["default_unit"]
+                )
+                db.session.add(new_ingredient)
+
+            # Guardar los cambios
+            db.session.commit()
+
+            if errores:
+                return jsonify({"message": "Algunos ingredientes se agregaron con éxito, pero hubo errores.", "errors": errores}), 207
+            return jsonify({"message": "Todos los ingredientes se agregaron con éxito."}), 201
+
+        except Exception as e:
+            db.session.rollback()  # Deshacer los cambios en caso de error
+            return jsonify({"error": f"Error al procesar la solicitud: {str(e)}"}), 500
