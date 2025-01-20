@@ -1,43 +1,53 @@
 [
   {
-    "name_en": "Rice",
-    "name_es": "Arroz",
+    "name_en": "Flour",
+    "name_es": "Harina",
     "default_unit": "g"
   },
   {
-    "name_en": "Seafood",
-    "name_es": "Mariscos",
+    "name_en": "Sugar",
+    "name_es": "Azúcar",
     "default_unit": "g"
   },
   {
-    "name_en": "Chicken",
-    "name_es": "Pollo",
+    "name_en": "Salt",
+    "name_es": "Sal",
     "default_unit": "g"
   },
   {
-    "name_en": "Rabbit",
-    "name_es": "Conejo",
+    "name_en": "Butter",
+    "name_es": "Mantequilla",
     "default_unit": "g"
   },
   {
-    "name_en": "Green beans",
-    "name_es": "Judías verdes",
-    "default_unit": "g"
+    "name_en": "Milk",
+    "name_es": "Leche",
+    "default_unit": "ml"
   },
   {
-    "name_en": "Pepper",
-    "name_es": "Pimienta",
+    "name_en": "Eggs",
+    "name_es": "Huevos",
     "default_unit": "units"
   },
   {
-    "name_en": "Tomato",
-    "name_es": "Tomate",
-    "default_unit": "units"
+    "name_en": "Cheese",
+    "name_es": "Queso",
+    "default_unit": "g"
   },
   {
-    "name_en": "Fish",
-    "name_es": "Pescado",
-    "default_unit": "g"
+    "name_en": "Cream",
+    "name_es": "Nata",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Water",
+    "name_es": "Agua",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Oil",
+    "name_es": "Aceite",
+    "default_unit": "ml"
   },
   {
     "name_en": "Olive oil",
@@ -45,8 +55,208 @@
     "default_unit": "ml"
   },
   {
-    "name_en": "Saffron",
-    "name_es": "Azafrán",
+    "name_en": "Yeast",
+    "name_es": "Levadura",
     "default_unit": "g"
+  },
+  {
+    "name_en": "Honey",
+    "name_es": "Miel",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Vanilla extract",
+    "name_es": "Extracto de vainilla",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Baking powder",
+    "name_es": "Polvo de hornear",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Chocolate",
+    "name_es": "Chocolate",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Cocoa powder",
+    "name_es": "Cacao en polvo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Strawberries",
+    "name_es": "Fresas",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Bananas",
+    "name_es": "Plátanos",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Apples",
+    "name_es": "Manzanas",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Oranges",
+    "name_es": "Naranjas",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Lemons",
+    "name_es": "Limones",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Onions",
+    "name_es": "Cebollas",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Garlic",
+    "name_es": "Ajo",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Tomatoes",
+    "name_es": "Tomates",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Potatoes",
+    "name_es": "Patatas",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Carrots",
+    "name_es": "Zanahorias",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Celery",
+    "name_es": "Apio",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Parsley",
+    "name_es": "Perejil",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Thyme",
+    "name_es": "Tomillo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Rosemary",
+    "name_es": "Romero",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Basil",
+    "name_es": "Albahaca",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Cucumber",
+    "name_es": "Pepino",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Bell peppers",
+    "name_es": "Pimientos",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Chili peppers",
+    "name_es": "Chiles",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Spinach",
+    "name_es": "Espinacas",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Broccoli",
+    "name_es": "Brócoli",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Cauliflower",
+    "name_es": "Coliflor",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Zucchini",
+    "name_es": "Calabacín",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Mushrooms",
+    "name_es": "Champiñones",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Eggplant",
+    "name_es": "Berenjena",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Beef",
+    "name_es": "Carne de res",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Pork",
+    "name_es": "Carne de cerdo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Lamb",
+    "name_es": "Cordero",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Fish",
+    "name_es": "Pescado",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Shrimp",
+    "name_es": "Camarones",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Tuna",
+    "name_es": "Atún",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Salmon",
+    "name_es": "Salmón",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Octopus",
+    "name_es": "Pulpo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Squid",
+    "name_es": "Calamar",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Clams",
+    "name_es": "Almejas",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Oysters",
+    "name_es": "Ostras",
+    "default_unit": "units"
   }
 ]

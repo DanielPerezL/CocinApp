@@ -369,6 +369,9 @@ const RecipeUploader: React.FC = () => {
             selectedImages.length === 0 ||
             !title ||
             selectedIngredients.length === 0 ||
+            !selectedIngredients.every(
+              (ingredient) => ingredient.amount != ""
+            ) ||
             filteredProcedure.length === 0 ||
             !selectedCategories["time"] ||
             !selectedCategories["difficulty"] ||
