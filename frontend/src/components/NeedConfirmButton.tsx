@@ -7,7 +7,7 @@ interface NeedConfirmButtonProps {
   message: string;
   className: string;
   onConfirm: () => void;
-  buttonText: string;
+  children: React.ReactNode;
 }
 
 const NeedConfirmButton: React.FC<NeedConfirmButtonProps> = ({
@@ -15,7 +15,7 @@ const NeedConfirmButton: React.FC<NeedConfirmButtonProps> = ({
   message,
   className,
   onConfirm,
-  buttonText,
+  children,
 }) => {
   const { t } = useTranslation();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -35,7 +35,7 @@ const NeedConfirmButton: React.FC<NeedConfirmButtonProps> = ({
         className={className}
         onClick={() => setShowConfirmModal(true)} // Mostrar el modal de confirmación
       >
-        {buttonText}
+        {children}
       </button>
 
       <Modal show={showConfirmModal} onHide={handleCancel} centered>

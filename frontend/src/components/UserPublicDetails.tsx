@@ -43,11 +43,12 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
           //Soy admin, puedo eliminar
           <NeedConfirmButton
             className="btn btn-danger mt-3 ms-2"
-            buttonText={t("rmAccount")}
             title={t("confirmDeleteAccountTitle")}
             message={t("confirmDeleteAccountMessageADMIN")}
             onConfirm={handleDeleteAccount}
-          />
+          >
+            {t("rmAccount")}
+          </NeedConfirmButton>
         ) : (
           getLoggedUserId() != user.id && (
             //No soy admin y tampo es mi cuenta, puedo reportar

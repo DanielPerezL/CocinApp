@@ -16,24 +16,26 @@ import ReportsPage from "./pages/ReportsPage";
 {
   /*
   TODO:   
-    admin: añadir ingredientes
-
-    gestion de recetas:
-      modificar receta (PASOS, INGREDIENTES, CATEGORTIAS)
-
+    admin: añadir ingredientes -> con fichero json!
+    
+    funcionalidad:
+      lista de la compra
+      
     filtros:
       buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
       filtrar por numero de pasos
       por categorias (TIEMPO, DIFICULTAD, TIPO)
       por contiene x ingrediente
       por NO contiene x ingrediente
+  
+  
     
-    funcionalidad:
-      lista de la compra
-      añadir recetas similares POR INGREDIENTES
+    gestion de recetas:
+      modificar receta (PASOS, INGREDIENTES, CATEGORTIAS)
+
       
-      arreglar logout cada vez que se entra a la app ¿?
-      arreglar SIGTERM al vaciar el docker ¿?
+    arreglar logout cada vez que se entra a la app ¿?
+    arreglar SIGTERM al vaciar el docker ¿?
   */
   /*
   test:

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { reportResource } from "../services/apiService";
 import reportImg from "../assets/report.png";
 import NotifyReportModal from "./NotifyReportModal";
+import NeedConfirmButton from "./NeedConfirmButton";
+import { useTranslation } from "react-i18next";
 
 interface ReportButtonProps {
   text: string;
@@ -9,16 +11,20 @@ interface ReportButtonProps {
 }
 
 const ReportButton: React.FC<ReportButtonProps> = ({ text, className }) => {
+  const { t } = useTranslation();
+
   const [showReportModal, setShowReportModal] = useState<boolean>(false);
 
   return (
     <>
-      <button
+      <NeedConfirmButton
         className={className}
-        onClick={() => {
+        onConfirm={() => {
           reportResource(window.location.pathname + window.location.search);
           setShowReportModal(true);
         }}
+        message={t("reportButtonMessage")}
+        title={text}
       >
         <img
           className="me-2 img-fluid"
@@ -26,7 +32,7 @@ const ReportButton: React.FC<ReportButtonProps> = ({ text, className }) => {
           src={reportImg}
         ></img>
         {text}
-      </button>
+      </NeedConfirmButton>
       <NotifyReportModal
         show={showReportModal}
         onHide={() => {

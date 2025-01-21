@@ -158,14 +158,15 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
         </p>
         <NeedConfirmButton
           className="btn btn-danger"
-          buttonText={t("logout")}
           title={t("confirmLogoutTitle")}
           message={t("confirmLogoutMessage")}
           onConfirm={() => {
             logout();
             window.location.reload();
           }}
-        />
+        >
+          {t("logout")}
+        </NeedConfirmButton>
       </div>
 
       <div className="accordion mt-3" id="dangerZoneAccordion">
@@ -198,11 +199,12 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
                 </button>
                 <NeedConfirmButton
                   className="btn btn-danger mt-3 ms-2"
-                  buttonText={t("rmAccount")}
                   title={t("confirmDeleteAccountTitle")}
                   message={t("confirmDeleteAccountMessage")}
                   onConfirm={handleDeleteAccount}
-                />
+                >
+                  {t("rmAccount")}
+                </NeedConfirmButton>
               </div>
             </div>
           </div>

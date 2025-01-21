@@ -247,11 +247,12 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
           //Soy admin o dueño de receta, puedo eliminar
           <NeedConfirmButton
             className="btn btn-danger"
-            buttonText={t("deleteRecipe")}
             title={t("confirmDelteRecipeTitle")}
             message={t("confirmDelteRecipeMessage")}
             onConfirm={handleRecipeDelete}
-          />
+          >
+            {t("deleteRecipe")}
+          </NeedConfirmButton>
         ) : (
           //El cualquier otro caso puedo reportar
           <ReportButton className="btn btn-danger" text={t("reportRecipe")} />

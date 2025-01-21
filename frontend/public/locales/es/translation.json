@@ -119,6 +119,7 @@
     "reportModalTitle":"Reporte Enviado",
     "reportModalBody":"El reporte ha sido realizado con éxito. Gracias por tu colaboración.",
     "similarUsersLikes": "A usuarios similares les han gustado",
+    "reportButtonMessage": "Por favor, reporta el contenido sólo si no es apropiado.",
 
     "errorUpdatingPasswordNoValidNewPasswords":"La nueva constraseña no coincide.",
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",
