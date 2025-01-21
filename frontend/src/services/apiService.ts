@@ -11,7 +11,7 @@ import {
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
-const NGROK = false;
+const NGROK = !false;
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (NGROK) {
@@ -362,6 +362,32 @@ const setReportReviewedUnsafe = async (report: ReportDTO): Promise<void> => {
   }
   if (!response.ok) {
     throw new Error(t("errorSettingReportReviewed"));
+  }
+};
+
+export const postIngredients = async (jsonContent: string) => {
+  return await withTokenRefresh(() => postIngredientsUnsafe(jsonContent));
+};
+const postIngredientsUnsafe = async (jsonContent: string): Promise<void> => {
+  let response: Response;
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  try {
+    response = await fetch(`${API_BASE_URL}/recipe/ingredients`, {
+      method: "POST",
+      credentials: "include", // Incluye las cookies en la solicitud
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      body: jsonContent,
+    });
+  } catch (error) {
+    throw new Error(t("errorPostingIngredients"));
+  }
+  if (!response.ok) {
+    throw new Error(t("errorPostingIngredients"));
   }
 };
 

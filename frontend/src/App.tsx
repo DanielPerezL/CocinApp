@@ -15,9 +15,7 @@ import ReportsPage from "./pages/ReportsPage";
 
 {
   /*
-  TODO:   
-    admin: añadir ingredientes -> con fichero json!
-    
+  TODO:       
     funcionalidad:
       lista de la compra
       

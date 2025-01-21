@@ -294,8 +294,10 @@ def ingredients():
             # Guardar los cambios
             db.session.commit()
 
-            if errores:
+            if len(errores) < len(data):
                 return jsonify({"message": "Algunos ingredientes se agregaron con éxito, pero hubo errores.", "errors": errores}), 207
+            elif len(errores) == len(data):
+                return jsonify({"message": "Todos los ingredientes enviados ya estaban agregados."}), 202
             return jsonify({"message": "Todos los ingredientes se agregaron con éxito."}), 201
 
         except Exception as e:

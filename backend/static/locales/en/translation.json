@@ -120,6 +120,15 @@
     "reportModalBody": "The report has been successfully submitted. Thank you for your cooperation.",
     "similarUsersLikes": "Similar users liked",
     "reportButtonMessage": "Please report the content only if it is inappropriate.",
+    "uploadIngredients": "Upload ingredients",
+    "uploadIngredientsSuccessfull": "New ingredients uploaded successfully.",
+    "uploadIngredientsError": "An error occurred while uploading the new ingredients.",
+    "upload":"Upload",
+    "noFile":"No file selected.",
+    "uploadFormatExplanation": "Expected JSON file format",
+    "uploadFormatDetails": "Make sure your JSON file follows this format:",
+    "uploadFormatNote": "Note: The 'default_unit' field must be 'g', 'kg', 'l', 'ml', or 'units'.",
+
 
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",
@@ -152,5 +161,6 @@
     "errorExpiredSession": "Session expired",
     "errorLoadingUserRecipes": "Error loading user recipes",
     "errorDeletingRecipe": "Error deleting recipe",
-    "errorLoadingRecipesIngredients": "Error loading ingredients"
+    "errorLoadingRecipesIngredients": "Error loading ingredients",
+    "errorPostingIngredients": "Error posting ingredients"
 }

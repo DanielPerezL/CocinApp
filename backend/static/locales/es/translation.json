@@ -120,6 +120,15 @@
     "reportModalBody":"El reporte ha sido realizado con éxito. Gracias por tu colaboración.",
     "similarUsersLikes": "A usuarios similares les han gustado",
     "reportButtonMessage": "Por favor, reporta el contenido sólo si no es apropiado.",
+    "uploadIngredients":"Publicar ingredientes",
+    "uploadIngredientsSuccessfull":"Nuevos ingredientes publicados con éxito.",
+    "uploadIngredientsError":"Ha habido un error al publicar los nuevos ingredientes.",
+    "upload":"Publicar",
+    "noFile":"No has seleccionado ningún fichero.",
+    "uploadFormatExplanation": "Formato esperado del archivo JSON",
+    "uploadFormatDetails": "Asegúrate de que tu archivo JSON sigue el siguiente formato:",
+    "uploadFormatNote": "Nota: El campo 'default_unit' debe ser 'g', 'kg', 'l', 'ml' o 'units'.",
+
 
     "errorUpdatingPasswordNoValidNewPasswords":"La nueva constraseña no coincide.",
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",
@@ -152,6 +161,7 @@
     "errorExpiredSession": "Sesión expirada",
     "errorLoadingUserRecipes": "Error al cargar las recetas del usuario",
     "errorDeletingRecipe": "Error al eliminar la receta",
-    "errorLoadingRecipesIngredients": "Error al cargar los ingredientes"
+    "errorLoadingRecipesIngredients": "Error al cargar los ingredientes",
+    "errorPostingIngredients": "Error publicando ingredientes"
   }
   

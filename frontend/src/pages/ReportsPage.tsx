@@ -5,6 +5,7 @@ import ReportsList from "../components/ReportsList";
 import { fetchReports, isAdmin } from "../services/apiService";
 import { ReportDTO } from "../interfaces";
 import NoPage from "./NoPage";
+import IngredientUploader from "../components/IngredientUploader";
 
 const ReportsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -44,6 +45,8 @@ const ReportsPage: React.FC = () => {
       {!loading && reports.length > 0 && (
         <ReportsList reports={reports} onChange={refreshList} />
       )}
+
+      <IngredientUploader />
     </div>
   );
 };

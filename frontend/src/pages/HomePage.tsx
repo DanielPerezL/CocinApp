@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import RecipeGrid from "../components/RecipeGrid";
 import { RecipeSimpleDTO } from "../interfaces";
-import { RECIPE_LIMIT, fetchRecipes } from "../services/apiService";
+import { fetchRecipes } from "../services/apiService";
 import { useTranslation } from "react-i18next";
 
 const Home = () => {
