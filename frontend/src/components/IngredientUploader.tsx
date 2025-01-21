@@ -82,7 +82,7 @@ const IngredientUploader: React.FC = () => {
         />
         <button
           type="button"
-          className="btn btn-primary w-100"
+          className="btn btn-primary"
           onClick={handleUpload}
           disabled={!file}
         >
