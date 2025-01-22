@@ -191,18 +191,6 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
 
           <div className="d-flex gap-2 mt-3 mt-sm-0">
             <button
-              onClick={handleCartButtonClick}
-              className="btn btn-link p-0 d-flex align-items-center justify-content-center"
-              style={{ width: "2rem", height: "2rem" }}
-              title="Cart Button"
-            >
-              {isInCart ? (
-                <img className="img-fluid" src={greenCart} />
-              ) : (
-                <img className="img-fluid" src={pngCart} />
-              )}
-            </button>
-            <button
               onClick={handleFavButtonClick}
               className="btn btn-link p-0 d-flex align-items-center justify-content-center"
               style={{ width: "2rem", height: "2rem" }}
@@ -212,6 +200,19 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
                 <img className="img-fluid" src={redHeart} />
               ) : (
                 <img className="img-fluid" src={pngHeart} />
+              )}
+            </button>
+
+            <button
+              onClick={handleCartButtonClick}
+              className="btn btn-link p-0 d-flex align-items-center justify-content-center"
+              style={{ width: "2rem", height: "2rem" }}
+              title="Cart Button"
+            >
+              {isInCart ? (
+                <img className="img-fluid" src={greenCart} />
+              ) : (
+                <img className="img-fluid" src={pngCart} />
               )}
             </button>
 

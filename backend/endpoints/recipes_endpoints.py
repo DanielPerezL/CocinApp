@@ -275,6 +275,10 @@ def ingredients():
                     errores.append(f"Faltan campos en el ingrediente: {ingredient_data}")
                     continue
 
+                if ingredient_data["default_unit"] not in ["g", "kg", "ml", "l", "units"]:
+                    errores.append(f"Unidad no valida: {ingredient_data}")
+                    continue
+
                 # Verificar si el ingrediente ya existe
                 existing_ingredient = Ingredient.query.filter_by(
                     name_es=ingredient_data["name_es"],
