@@ -1,4 +1,4 @@
-from config import app, db
+from config import app, db, RECIPE_CART_SIZE
 from flask import jsonify, request, make_response
 from flask_jwt_extended import (
                                 jwt_required, 
@@ -156,12 +156,14 @@ def delete_account(deleting_user):
 def favorites_recipes(id):
     client = get_user_from_token(get_jwt())
     offset = request.args.get('offset', default=0, type=int)
-    limit = request.args.get('limit', default=10, type=int)    
+    limit = request.args.get('limit', default=10, type=int)   
+    lang = request.args.get('lang', default="", type=str)
+ 
     user = User.query.get(id)
     if not hasPermission(client, user):
         return jsonify({"error": "No tienes los permisos necesarios."}), 403
 
-    recipes = [recipe.to_simple_dto() for recipe in user.get_favorite_recipes(offset, limit)]
+    recipes = [recipe.to_simple_dto(lang) for recipe in user.get_favorite_recipes(offset, limit)]
     total_favorites = user.get_favorite_recipes_count()  # Método para contar las recetas favoritas del usuario
     has_more = (offset + limit) < total_favorites
 
@@ -212,3 +214,63 @@ def rm_favorite(user, recipe):
         db.session.rollback()
         return jsonify({"error": "Error al eliminar receta favorita."}), 400
     
+
+@app.route('/api/users/<int:id>/cart_recipes', methods=['GET'])
+@jwt_required()
+def cart_recipes(id):
+    client = get_user_from_token(get_jwt())  
+    user = User.query.get(id)
+    if not hasPermission(client, user):
+        return jsonify({"error": "No tienes los permisos necesarios."}), 403
+    
+    lang = request.args.get('lang', default="", type=str)
+    recipes = [recipe.to_simple_dto(lang) for recipe in user.get_cart_recipes()]
+    # Devolver la respuesta con `recipes` y `has_more`
+    return jsonify({"recipes": recipes, "has_more": False}), 200
+
+@app.route('/api/users/<int:idU>/cart_recipes/<int:idR>', methods=['POST', 'DELETE'])
+@jwt_required()
+def cart_recipes_mod(idU, idR):
+    if idU < 0 or idR < 0:
+        return jsonify({"error": "Al menos un id proporcionado no es válido."}), 404
+    
+    client = get_user_from_token(get_jwt())
+    recipe = Recipe.query.get(idR)
+    user = User.query.get(idU)
+    if not user or not recipe:
+        return jsonify({"error": "Usuario o receta no encontrados."}), 404
+    if not hasPermission(client, user):
+        return jsonify({"error": "No tienes permisos suficientes."}), 403
+    
+    method = request.method
+    if method == 'POST':
+        return add_cart_recipe(user, recipe)
+    if method == 'DELETE':
+        return rm_cart_recipe(user, recipe)
+
+def add_cart_recipe(user, recipe):
+    if(user.is_in_cart(recipe)):
+        return jsonify({"msg": "Receta añadida a la cesta."}), 201
+    if(user.get_cart_recipes_count() >= RECIPE_CART_SIZE):
+        return jsonify({"error": "No hay más espacio disponible en la cesta."}), 400
+    try:
+        cartEntry = CartRecipe(user_id=user.id, recipe_id=recipe.id)
+        db.session.add(cartEntry)
+        db.session.commit()
+        return jsonify({"msg": "Receta añadida a la cesta."}), 201
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al añadir receta a la cesta."}), 400
+    
+def rm_cart_recipe(user, recipe): 
+    cartEntry = CartRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
+    if not cartEntry:
+        return jsonify({"msg": "Receta eliminada de la cesta."}), 200
+    try:
+        db.session.delete(cartEntry)
+        db.session.commit()
+        return jsonify({"msg": "Receta eliminada de la cesta."}), 200
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al eliminar receta de la cesta."}), 400
+        

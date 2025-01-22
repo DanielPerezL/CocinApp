@@ -3,7 +3,6 @@ import RecetaGrid from "../components/RecipeGrid";
 import { RecipeSimpleDTO, UserDTO } from "../interfaces";
 import AuthWrapper from "../components/AuthWrapper";
 import {
-  RECIPE_LIMIT,
   fetchLoggedUserProfile,
   fetchMyFavRecipes,
   fetchRecipesFavBySimilarUsers,

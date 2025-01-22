@@ -65,7 +65,11 @@ class Recipe(db.Model):
     favorited_by = db.relationship('FavoriteRecipe',
                                    back_populates='recipe',
                                    cascade='all, delete-orphan')
+    carted_by = db.relationship('CartRecipe',
+                                back_populates='recipe',
+                                cascade='all, delete-orphan')
     
+
     @hybrid_property
     def favorites_count(self):
         return len(self.favorited_by)
@@ -112,15 +116,16 @@ class Recipe(db.Model):
             "time": self.time,
             "difficulty": self.difficulty,
             "type": self.type,
-            "images": self.images  # Convertir la cadena de imágenes en una lista
+            "images": self.images,  # Convertir la cadena de imágenes en una lista
         }
 
     # DTO para la vista simple de la receta
-    def to_simple_dto(self):
+    def to_simple_dto(self, lang):
         return {
             "id": self.id,
             "title": self.title,
             "image": self.images[0] if self.images else None,
             "time": self.time,
             "difficulty": self.difficulty,
+            "ingredients": [ingredient.to_dto(lang) for ingredient in self.ingredients],
         }

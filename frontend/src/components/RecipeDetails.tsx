@@ -8,21 +8,20 @@ import share from "../assets/share.png";
 import userDefaultPic from "../assets/user.png";
 import redHeart from "../assets/red_heart.png";
 import pngHeart from "../assets/heart.png";
-import report from "../assets/report.png";
+import pngCart from "../assets/cart.png";
+import greenCart from "../assets/green_cart.png";
 import {
-  RECIPE_LIMIT,
+  addRecipeCart,
   addRecipeFav,
-  fetchRecipes,
   fetchSimilarRecipes,
   getImage,
   getLoggedUserId,
   isAdmin,
   isLoggedIn,
   removeRecipe,
-  reportResource,
+  rmRecipeCart,
   rmRecipeFav,
 } from "../services/apiService";
-import NotifyReportModal from "./NotifyReportModal";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import NeedConfirmButton from "./NeedConfirmButton";
@@ -41,7 +40,10 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isFavorite, setFavorite] = useState(recipe.isFav);
+  const [isInCart, setInCart] = useState(recipe.isCart);
   const [showLoginModal, setShowLoginModal] = useState(false); // Modal para iniciar sesión
+  const [showErrorCartModal, setShowErrorCartModal] = useState(false); // Modal para iniciar sesión
+
   const [imgError, setImgError] = useState(false);
 
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
@@ -139,28 +141,37 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
     }
   };
 
+  const handleCartButtonClick = async () => {
+    if (!isLoggedIn()) {
+      setShowLoginModal(true);
+      return;
+    }
+    try {
+      if (isInCart) {
+        await rmRecipeCart(recipe.id);
+      } else {
+        await addRecipeCart(recipe.id);
+      }
+      setInCart(!isInCart);
+    } catch (error: any) {
+      setShowErrorCartModal(true);
+    }
+  };
+
   return (
     <>
       <div className="container">
-        <div
-          className="d-flex justify-content-between align-items-center mb-3"
-          style={{ height: "4rem" }}
-        >
-          <div
-            className="d-flex align-items-center flex-grow-1 me-3"
-            style={{ maxWidth: "calc(100% - 5rem)", overflow: "hidden" }}
-          >
+        <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center mb-3">
+          <div className="d-flex w-100 w-sm-25 w-md-50 justify-content-center justify-content-sm-start">
             <Link
               to={"/user/" + user.nickname}
-              className="d-flex align-items-center border border-primary rounded p-2 shadow hover-effect text-decoration-none"
+              className="d-flex align-items-center border border-primary rounded p-2 hover-effect text-decoration-none"
             >
               <img
                 src={!imgError ? getImage(user.picture) : userDefaultPic}
                 className="rounded-circle me-3"
                 style={{ width: "3rem", height: "3rem" }}
-                onError={() => {
-                  setImgError(true);
-                }}
+                onError={() => setImgError(true)}
               />
               <p
                 className="m-0 text-black"
@@ -170,18 +181,32 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
+                  maxWidth: "calc(18ch)",
                 }}
               >
                 {user.nickname}
               </p>
             </Link>
           </div>
-          <div className="d-flex gap-2">
+
+          <div className="d-flex gap-2 mt-3 mt-sm-0">
+            <button
+              onClick={handleCartButtonClick}
+              className="btn btn-link p-0 d-flex align-items-center justify-content-center"
+              style={{ width: "2rem", height: "2rem" }}
+              title="Cart Button"
+            >
+              {isInCart ? (
+                <img className="img-fluid" src={greenCart} />
+              ) : (
+                <img className="img-fluid" src={pngCart} />
+              )}
+            </button>
             <button
               onClick={handleFavButtonClick}
               className="btn btn-link p-0 d-flex align-items-center justify-content-center"
               style={{ width: "2rem", height: "2rem" }}
-              title="Perfil"
+              title="Favourite Button"
             >
               {isFavorite ? (
                 <img className="img-fluid" src={redHeart} />
@@ -193,13 +218,14 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
             <button
               className="btn btn-link p-0 d-flex align-items-center justify-content-center"
               style={{ width: "2rem", height: "2rem" }}
-              title="Copiar URL"
+              title="URL Button"
               onClick={copyToClipboard}
             >
               <img className="img-fluid" src={share} />
             </button>
           </div>
         </div>
+
         <div className="d-flex justify-content-between align-items-center mb-4 mt-3">
           <h1 className="display-5 text-primary">{recipe.title}</h1>
         </div>
@@ -297,6 +323,28 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({ recipe, user }) => {
               variant="secondary"
               onClick={() => {
                 setShowLoginModal(false);
+              }}
+            >
+              {t("close")}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          show={showErrorCartModal}
+          onHide={() => setShowErrorCartModal(false)}
+          size="lg"
+        >
+          <Modal.Header closeButton className="bg-light">
+            <Modal.Title>{t("cartError")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="bg-light">
+            <p>{t("cartErrorMessage")}</p>
+          </Modal.Body>
+          <Modal.Footer className="bg-light">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setShowErrorCartModal(false);
               }}
             >
               {t("close")}

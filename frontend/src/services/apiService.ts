@@ -55,9 +55,10 @@ export const fetchRecipesCategories = async (): Promise<CategoryOptions[]> => {
 // Función para obtener las categorias de las recetas
 export const fetchIngredients = async (): Promise<Ingredient[]> => {
   let response: Response;
-  const lang = t("lang");
   try {
-    response = await fetch(`${API_BASE_URL}/recipe/ingredients?lang=${lang}`);
+    response = await fetch(
+      `${API_BASE_URL}/recipe/ingredients?lang=${t("lang")}`
+    );
   } catch (error) {
     throw new Error(t("errorLoadingRecipesIngredients"));
   }
@@ -84,7 +85,7 @@ const fetchRecipesUnsafe = async (
     response = await fetch(
       `${API_BASE_URL}/recipes?offset=${offset}&limit=${
         limit ? limit : RECIPE_LIMIT
-      }`
+      }&lang=${t("lang")}`
     );
   } catch (error) {
     throw new Error(t("errorLoadingRecipes"));
@@ -115,7 +116,7 @@ const fetchSimilarRecipesUnsafe = async (
     response = await fetch(
       `${API_BASE_URL}/recipes?recipe_id=${idRecipe}&offset=${offset}&limit=${
         limit ? limit : RECIPE_LIMIT
-      }`
+      }&lang=${t("lang")}`
     );
   } catch (error) {
     throw new Error(t("errorLoadingRecipes"));
@@ -144,7 +145,7 @@ const fetchRecipesFavBySimilarUsersUnsafe = async (
     response = await fetch(
       `${API_BASE_URL}/recipes?recommendations_for_user_id=${getLoggedUserId()}&offset=${offset}&limit=${
         limit ? limit : RECIPE_LIMIT
-      }`
+      }&lang=${t("lang")}`
     );
   } catch (error) {
     throw new Error(t("errorLoadingRecipes"));
@@ -164,9 +165,8 @@ const fetchRecipeDetailsUnsafe = async (
   id: string
 ): Promise<RecipeDetailDTO> => {
   let response: Response;
-  const lang = t("lang");
   try {
-    response = await fetch(`${API_BASE_URL}/recipes/${id}?lang=${lang}`, {
+    response = await fetch(`${API_BASE_URL}/recipes/${id}?lang=${t("lang")}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -433,7 +433,9 @@ const fetchUserRecipesUnsafe = async (
   let response: Response;
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?user_id=${id}&offset=${offset}&limit=${RECIPE_LIMIT}`
+      `${API_BASE_URL}/recipes?user_id=${id}&offset=${offset}&limit=${RECIPE_LIMIT}&lang=${t(
+        "lang"
+      )}`
     );
   } catch (error) {
     throw new Error(t("errorLoadingUserRecipes"));
@@ -520,6 +522,86 @@ const fetchMyFavRecipesUnsafe = async (
 
   if (!response.ok) {
     throw new Error(t("errorLoadingMyFavRecipes"));
+  }
+
+  return await response.json();
+};
+
+export const addRecipeCart = async (id: string) => {
+  return await withTokenRefresh(() => addRecipeCartUnsafe(id));
+};
+const addRecipeCartUnsafe = async (id: string): Promise<void> => {
+  let response: Response;
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  try {
+    response = await fetch(
+      `${API_BASE_URL}/users/${getLoggedUserId()}/cart_recipes/${id}`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers,
+      }
+    );
+  } catch (error) {
+    throw new Error(t("errorRemovingCartRecipe"));
+  }
+  if (!response.ok) {
+    throw new Error(t("errorRemovingCartRecipe"));
+  }
+};
+
+export const rmRecipeCart = async (id: string) => {
+  return await withTokenRefresh(() => rmRecipeCartUnsafe(id));
+};
+const rmRecipeCartUnsafe = async (id: string): Promise<void> => {
+  let response: Response;
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  try {
+    response = await fetch(
+      `${API_BASE_URL}/users/${getLoggedUserId()}/cart_recipes/${id}`,
+      {
+        method: "DELETE",
+        credentials: "include", // Incluye las cookies en la solicitud
+        headers,
+      }
+    );
+  } catch (error) {
+    throw new Error(t("errorRemovingCartRecipe"));
+  }
+  if (!response.ok) {
+    throw new Error(t("errorRemovingCartRecipe"));
+  }
+};
+
+export const fetchMyCartRecipes = async () => {
+  if (!isLoggedIn()) throw new Error(t("errorLoadingMyCartRecipes"));
+  return await withTokenRefresh(() => fetchMyCartRecipesUnsafe());
+};
+const fetchMyCartRecipesUnsafe = async (): Promise<FetchRecipesResponse> => {
+  let response: Response;
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  try {
+    response = await fetch(
+      `${API_BASE_URL}/users/${getLoggedUserId()}/cart_recipes?lang=${t(
+        "lang"
+      )}`,
+      {
+        method: "GET",
+        credentials: "include", // Incluye las cookies en la solicitud
+        headers,
+      }
+    );
+  } catch (error) {
+    throw new Error(t("errorLoadingMyCartRecipes"));
+  }
+
+  if (!response.ok) {
+    throw new Error(t("errorLoadingMyCartRecipes"));
   }
 
   return await response.json();

@@ -19,24 +19,26 @@ def recipes():
 
         offset = request.args.get('offset', default=0, type=int)
         limit = request.args.get('limit', default=10, type=int)
+
+        lang = request.args.get('lang', default="", type=str)
         
         if user_id > 0:
             user = User.query.get(user_id)
             if user is None:
                 return userNotFoundError()
-            return get_recipes_from_user(user, offset, limit)
+            return get_recipes_from_user(user, offset, limit, lang)
         elif recipe_id > 0:
             recipe = Recipe.query.get(recipe_id)
             if recipe is None:
                 return recipeNotFoundError()
-            return get_recipes_similar_to(recipe, offset, limit)
+            return get_recipes_similar_to(recipe, offset, limit, lang)
         elif recommendations_for_user_id > 0:
             user = User.query.get(recommendations_for_user_id)
             if user is None:
                 return userNotFoundError()
-            return get_recommendations_for_user(user, offset, limit)
+            return get_recommendations_for_user(user, offset, limit, lang)
         else:
-            return get_recipes_simple_dto(offset, limit) 
+            return get_recipes_simple_dto(offset, limit, lang) 
     if method == 'POST':
         try:
             verify_jwt_in_request() 
@@ -52,10 +54,10 @@ def has_more_results(query, offset, limit):
     return query.offset(offset + limit).first() is not None
 
 #GRID 1
-def get_recipes_simple_dto(offset, limit):
+def get_recipes_simple_dto(offset, limit, lang):
     query = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc())
     recipes = query.offset(offset).limit(limit).all()
-    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
+    recipes_data = [recipe.to_simple_dto(lang) for recipe in recipes]
     has_more = has_more_results(query, offset, limit)
     return jsonify({"recipes": recipes_data, 
                     "has_more": has_more},
@@ -63,7 +65,7 @@ def get_recipes_simple_dto(offset, limit):
 
 
 #GRID 2
-def get_recommendations_for_user(user, offset, limit):
+def get_recommendations_for_user(user, offset, limit, lang):
     # Obtenemos los IDs de las recetas favoritas del usuario
     user_favorite_recipe_ids = db.session.query(FavoriteRecipe.recipe_id).filter_by(user_id=user.id).all()
     user_favorite_recipe_ids = [id[0] for id in user_favorite_recipe_ids]  # Extraer los IDs de la tupla
@@ -93,7 +95,7 @@ def get_recommendations_for_user(user, offset, limit):
         .order_by(Recipe.favorites_count.desc(), Recipe.id.asc())
 
     recommended_recipes = query.offset(offset).limit(limit).all()
-    recommended_recipes_data = [recipe.to_simple_dto() for recipe in recommended_recipes]
+    recommended_recipes_data = [recipe.to_simple_dto(lang) for recipe in recommended_recipes]
 
     has_more = has_more_results(query, offset, limit)
     # Devolver las recetas recomendadas como DTO
@@ -102,23 +104,23 @@ def get_recommendations_for_user(user, offset, limit):
                     ), 200
 
 #GRID 3
-def get_recipes_similar_to(recipe, offset, limit):
+def get_recipes_similar_to(recipe, offset, limit, lang):
     query = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
         .filter((Recipe.time == recipe.time) | (Recipe.difficulty == recipe.difficulty)) \
         .filter(Recipe.id != recipe.id) \
         .filter(Recipe.type == recipe.type if recipe.type != "others" else Recipe.type.isnot(None))
 
     similar_recipes = query.offset(offset).limit(limit).all()
-    recipes_data = [recipe.to_simple_dto() for recipe in similar_recipes]
+    recipes_data = [recipe.to_simple_dto(lang) for recipe in similar_recipes]
     has_more = has_more_results(query, offset, limit)
     return jsonify({"recipes": recipes_data, "has_more": has_more}), 200
 
 
 #GRID 4
-def get_recipes_from_user(user, offset, limit):
+def get_recipes_from_user(user, offset, limit, lang):
     query = Recipe.query.filter_by(user_id=user.id)
     recipes = query.offset(offset).limit(limit).all()
-    recipes_data = [recipe.to_simple_dto() for recipe in recipes]
+    recipes_data = [recipe.to_simple_dto(lang) for recipe in recipes]
     has_more = has_more_results(query, offset, limit)
     return jsonify({"recipes": recipes_data, "has_more": has_more}), 200
 
@@ -228,6 +230,7 @@ def recipe_details(id, client, lang):
         return recipeNotFoundError()
     recipe_dto = recipe.to_details_dto(lang)
     recipe_dto["isFav"] = client.is_favorite(recipe) if client else False
+    recipe_dto["isCart"] = client.is_in_cart(recipe) if client else False
     return jsonify(recipe_dto), 200
 
 def delete_recipe(recipe):

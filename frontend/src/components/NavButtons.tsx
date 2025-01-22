@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Importa Link desde react-router-dom
 import heart from "../assets/heart.png";
+import cart from "../assets/cart.png";
 import publish from "../assets/publish.png";
 import user from "../assets/user.png";
 import report from "../assets/report.png";
@@ -38,6 +39,15 @@ const NavButtons: React.FC = () => {
             }}
           >
             <img src={heart} />
+          </Link>
+          <Link
+            to="/cart"
+            className="btn nav-btn mx-1"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          >
+            <img src={cart} />
           </Link>
           <Link
             to="/publish"

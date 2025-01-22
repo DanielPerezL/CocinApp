@@ -160,8 +160,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
           className="btn btn-danger"
           title={t("confirmLogoutTitle")}
           message={t("confirmLogoutMessage")}
-          onConfirm={() => {
-            logout();
+          onConfirm={async () => {
+            await logout();
             window.location.reload();
           }}
         >

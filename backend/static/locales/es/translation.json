@@ -12,6 +12,14 @@
     "yourFavRecipes": "Tus Recetas Favoritas",
     "hereFavRecipes": "Aquí tienes tus recetas favoritas",
     "noFavRecipes": "Aún no hay recetas favoritas",
+    "yourCartRecipes": "Tu carrito",
+    "hereCartRecipes": "Aquí están las recetas de tu carrito",
+    "noCartRecipes": "No hay recetas en tu carrito",
+    "yourShoppingList": "Tu lista de la compra",
+    "emptyCart":"Vaciar carrito",
+    "emptyCartMessage":"¿Seguro que deseas vaciar tu carrito de la compra?",
+    "cartError": "Límite de recetas alcanzado",
+    "cartErrorMessage": "Has alcanzado el límite de recetas que puedes guardar en la cesta. Elimina alguna receta antes de añadir más.",
     "backHome": "Volver al Incio",
     "hereYourRecipes": "Aquí tienes tus recetas",
     "noYourRecipes": "Aún no has publicado ninguna receta",
@@ -162,6 +170,9 @@
     "errorLoadingUserRecipes": "Error al cargar las recetas del usuario",
     "errorDeletingRecipe": "Error al eliminar la receta",
     "errorLoadingRecipesIngredients": "Error al cargar los ingredientes",
-    "errorPostingIngredients": "Error publicando ingredientes"
+    "errorPostingIngredients": "Error publicando ingredientes",
+    "errorAddingCartRecipe":"Error al añadir la receta a la cesta",
+    "errorRemovingCartRecipe":"Error al eliminar la receta de la cesta",
+    "errorLoadingMyCartRecipes":"Error al recuperar las recetas de la cesta"
   }
   

@@ -12,13 +12,11 @@ import ProfilePage from "./pages/ProfilePage";
 import PublishPage from "./pages/PublishPage";
 import UserPage from "./pages/UserPage";
 import ReportsPage from "./pages/ReportsPage";
+import CartPage from "./pages/CartPage";
 
 {
   /*
-  TODO:       
-    funcionalidad:
-      lista de la compra
-      
+  TODO:             
     filtros:
       buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
       filtrar por numero de pasos
@@ -27,13 +25,15 @@ import ReportsPage from "./pages/ReportsPage";
       por NO contiene x ingrediente
   
   
-    
     gestion de recetas:
       modificar receta (PASOS, INGREDIENTES, CATEGORTIAS)
 
-      
-    arreglar logout cada vez que se entra a la app ¿?
-    arreglar SIGTERM al vaciar el docker ¿?
+    comprobar web con nombres de usuario largos largos -> capar nombres a X caracteres
+
+    refactoring codigo, pulir detalles:
+      errores backend, usar errors.py
+      arreglar logout cada vez que se entra a la app ¿?
+      arreglar SIGTERM al vaciar el docker ¿?
   */
   /*
   test:
@@ -57,6 +57,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="recipe" element={<RecetaPage />} />
           <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="cart" element={<CartPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="publish" element={<PublishPage />} />
           <Route path="user/:nickname" element={<UserPage />} />

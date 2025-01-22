@@ -5,6 +5,7 @@ export interface RecipeSimpleDTO {
   image: string;
   time: string;
   difficulty: string;
+  ingredients: ConcreteIngredient[];
 }
 
 export interface Ingredient {
@@ -22,6 +23,7 @@ export interface RecipeDetailDTO {
   user_id: string;
   title: string;
   isFav: boolean;
+  isCart: boolean;
   time: string;
   difficulty: string;
   type: string;

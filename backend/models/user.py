@@ -15,12 +15,14 @@ class User(db.Model):
     favorite_recipes = db.relationship('FavoriteRecipe', 
                                        back_populates='user',
                                        cascade='all, delete-orphan')
+    cart_recipes = db.relationship('CartRecipe', 
+                                    back_populates='user',
+                                    cascade='all, delete-orphan')
 
     def __init__(self, nickname, email, password):
         self.nickname = nickname
         self.email = email
         self.password_hash = generate_password_hash(password)
-        self.admin = False
 
     def is_favorite(self, recipe):
         return FavoriteRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).count() > 0
@@ -37,6 +39,17 @@ class User(db.Model):
     def get_favorite_recipes_count(self):
         return FavoriteRecipe.query.filter_by(user_id=self.id).count()
 
+    def get_cart_recipes(self):
+        query = CartRecipe.query.filter_by(user_id=self.id)   
+        cart_recipes = query.all() 
+        return [entry.recipe for entry in cart_recipes]    
+
+    def get_cart_recipes_count(self):
+        return CartRecipe.query.filter_by(user_id=self.id).count()
+
+    def is_in_cart(self, recipe):
+        return CartRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).count() > 0
+    
     def get_picture(self):
         return self.picture
     
@@ -76,3 +89,11 @@ class FavoriteRecipe(db.Model):
 
     user = db.relationship('User', back_populates='favorite_recipes')
     recipe = db.relationship('Recipe', back_populates='favorited_by')
+
+
+class CartRecipe(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
+
+    user = db.relationship('User', back_populates='cart_recipes')
+    recipe = db.relationship('Recipe', back_populates='carted_by')

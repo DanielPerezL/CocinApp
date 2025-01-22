@@ -12,6 +12,14 @@
     "yourFavRecipes": "Your Favorite Recipes",
     "hereFavRecipes": "Here are your favorite recipes",
     "noFavRecipes": "No favorite recipes yet",
+    "yourCartRecipes": "Your cart",
+    "hereCartRecipes": "Here are the recipes in your cart",
+    "noCartRecipes": "There are no recipes in your cart",
+    "yourShoppingList": "Your shopping list",
+    "emptyCart": "Empty cart",
+    "emptyCartMessage": "Are you sure you want to empty your shopping cart?",
+    "cartError": "Recipe limit reached",
+    "cartErrorMessage": "You have reached the limit of recipes in your cart. Remove some to add more.",  
     "backHome": "Back to Home",
     "hereYourRecipes": "Here are your recipes",
     "noYourRecipes": "You haven't published any recipes yet",
@@ -162,5 +170,8 @@
     "errorLoadingUserRecipes": "Error loading user recipes",
     "errorDeletingRecipe": "Error deleting recipe",
     "errorLoadingRecipesIngredients": "Error loading ingredients",
-    "errorPostingIngredients": "Error posting ingredients"
+    "errorPostingIngredients": "Error posting ingredients",
+    "errorAddingCartRecipe": "Error adding recipe to the cart",
+    "errorRemovingCartRecipe": "Error removing recipe from the cart",
+    "errorLoadingMyCartRecipes": "Error retrieving recipes from the cart"
 }
