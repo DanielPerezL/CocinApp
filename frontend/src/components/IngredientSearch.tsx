@@ -43,8 +43,6 @@ const IngredientSearch: React.FC<IngredientSearchProps> = ({
       try {
         const fetchedIngredients = await fetchIngredients();
         setIngredientsList(fetchedIngredients);
-        console.log("fetchedIngredients:", fetchedIngredients);
-        console.log("ingredientsToHide:", ingredientsToHide);
       } catch (err: any) {
         setError(true);
       }

@@ -297,6 +297,17 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
             type="button"
             className="btn btn-success me-3"
             onClick={handleSave}
+            disabled={
+              !title ||
+              selectedIngredients.length === 0 ||
+              !selectedIngredients.every(
+                (ingredient) => ingredient.amount != ""
+              ) ||
+              filteredProcedure.length === 0 ||
+              !selectedCategories["time"] ||
+              !selectedCategories["difficulty"] ||
+              !selectedCategories["type"]
+            }
           >
             {t("saveChanges")}
           </button>
