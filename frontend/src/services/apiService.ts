@@ -706,6 +706,73 @@ const uploadRecipeUnsafe = async (
   return responseData.new_id;
 };
 
+export const updateRecipe = async (
+  id: string, // ID de la receta a actualizar
+  title?: string,
+  ingredients?: ConcreteIngredient[],
+  procedure?: string[],
+  time?: string,
+  difficulty?: string,
+  type?: string,
+  imagePaths?: string[]
+) => {
+  return await withTokenRefresh(() =>
+    updateRecipeUnsafe(
+      id,
+      title,
+      ingredients,
+      procedure,
+      time,
+      difficulty,
+      type,
+      imagePaths
+    )
+  );
+};
+
+const updateRecipeUnsafe = async (
+  id: string, // ID de la receta a actualizar
+  title?: string,
+  ingredients?: ConcreteIngredient[],
+  procedure?: string[],
+  time?: string,
+  difficulty?: string,
+  type?: string,
+  imagePaths?: string[]
+): Promise<void> => {
+  let response: Response;
+
+  const recipeData: Record<string, any> = {};
+  if (title !== undefined) recipeData.title = title;
+  if (ingredients !== undefined) recipeData.ingredients = ingredients;
+  if (procedure !== undefined) recipeData.procedure = procedure;
+  if (time !== undefined) recipeData.time = time;
+  if (difficulty !== undefined) recipeData.difficulty = difficulty;
+  if (type !== undefined) recipeData.type = type;
+  if (imagePaths !== undefined) recipeData.images = imagePaths;
+
+  const csrfToken = getCookie("csrf_access_token");
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+
+  try {
+    response = await fetch(`${API_BASE_URL}/recipes/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json", // Especifica el tipo de contenido
+        ...headers,
+      },
+      credentials: "include", // Incluye las cookies en la solicitud
+      body: JSON.stringify(recipeData), // Enviar los datos de la receta en el cuerpo de la solicitud
+    });
+  } catch (error) {
+    throw new Error(t("errorUpdatingRecipe"));
+  }
+
+  if (!response.ok) {
+    throw new Error(t("errorUpdatingRecipe"));
+  }
+};
+
 // Función para actualizar imagen de perfil
 export const updateProfilePic = async (imagePath: string): Promise<void> => {
   return await withTokenRefresh(() => updateProfilePicUnsafe(imagePath));

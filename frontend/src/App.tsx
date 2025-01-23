@@ -16,7 +16,7 @@ import CartPage from "./pages/CartPage";
 
 {
   /*
-  TODO:             
+  TODO:           
     filtros:
       buscar por titulo (+ icono de lupa en navbar, al escribir titulo o pulsar la lupa -> /search (NUEVA PAGINA CON FILTROS))
       filtrar por numero de pasos
@@ -24,9 +24,6 @@ import CartPage from "./pages/CartPage";
       por contiene x ingrediente
       por NO contiene x ingrediente
   
-  
-    gestion de recetas:
-      modificar receta (PASOS, INGREDIENTES, CATEGORTIAS)
 
     rellenar paginas:
       contacto
@@ -38,6 +35,7 @@ import CartPage from "./pages/CartPage";
 
     refactoring codigo, pulir detalles:
       errores backend, usar errors.py
+      codigo duplicado HACER FUNCIONES BACKEND
       arreglar logout cada vez que se entra a la app ¿?
       arreglar SIGTERM al vaciar el docker ¿?
   */

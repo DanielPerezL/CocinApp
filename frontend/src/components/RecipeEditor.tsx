@@ -1,38 +1,57 @@
-import React, { useState, ChangeEvent, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 import {
   fetchRecipesCategories,
+  updateRecipe,
   uploadImage,
-  uploadRecipe,
-} from "../services/apiService"; // Asegúrate de que esta función esté disponible
+} from "../services/apiService";
 import { useTranslation } from "react-i18next";
-import { CategoryOptions, ConcreteIngredient, Ingredient } from "../interfaces";
+import {
+  CategoryOptions,
+  ConcreteIngredient,
+  Ingredient,
+  RecipeDetailDTO,
+} from "../interfaces";
 import IngredientSearch from "./IngredientSearch";
 
-const RecipeUploader: React.FC = () => {
+interface RecipeEditorProps {
+  recipe: RecipeDetailDTO;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+const RecipeEditor: React.FC<RecipeEditorProps> = ({
+  recipe,
+  onConfirm,
+  onCancel,
+}) => {
   const { t } = useTranslation();
 
+  // Estados iniciales basados en la receta proporcionada
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [procedure, setProcedure] = useState<string[]>([""]);
-  const filteredProcedure = procedure.filter((item) => item.trim() !== ""); //Solo quiero los NO VACIOS
+  const [title, setTitle] = useState<string>(recipe.title || "");
+  const [procedure, setProcedure] = useState<string[]>(
+    recipe.procedure || [""]
+  );
+  const filteredProcedure = procedure.filter((item) => item.trim() !== ""); // Filtra pasos vacíos
 
   const [selectedIngredients, setSelectedIngredients] = useState<
     ConcreteIngredient[]
-  >([]);
+  >(recipe.ingredients || []);
   const [aviableCategories, setAviableCategories] = useState<CategoryOptions[]>(
     []
   );
   const [selectedCategories, setSelectedCategories] = useState<{
     [key: string]: string;
-  }>({});
-  const [categoryError, setCategoryError] = useState<boolean>(false);
-
-  const [uploadStatus, setUploadStatus] = useState<string>("");
-  const [uploadSuccessMsg, setUploadSuccessMsg] = useState<string>("");
-  const [uploadErrorMsg, setUploadErrorMsg] = useState<string>("");
+  }>({
+    time: recipe.time || "",
+    difficulty: recipe.difficulty || "",
+    type: recipe.type || "",
+  });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [fileNames, setFileNames] = useState(t("noImagesSelected"));
+  const [fileNames, setFileNames] = useState(
+    `${recipe.images.length} ${t("nImagesSelected")}`
+  );
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -47,95 +66,29 @@ const RecipeUploader: React.FC = () => {
     }
   };
 
-  // Manejador de selección de ingrediente
-  const handleIngredientSelect = (ingredient: Ingredient): void => {
+  const handleIngredientSelect = (ingredient: Ingredient) => {
     setSelectedIngredients([
       ...selectedIngredients,
-      { ...ingredient, amount: "" }, // Agregar el ingrediente con una cantidad vacía
+      { ...ingredient, amount: "" },
     ]);
   };
 
-  // Manejador de cambio de cantidad
   const handleQuantityChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
-  ): void => {
+  ) => {
     const updatedIngredients = [...selectedIngredients];
-    updatedIngredients[index].amount = e.target.value; // Actualizar la cantidad en el ingrediente seleccionado
+    updatedIngredients[index].amount = e.target.value;
     setSelectedIngredients(updatedIngredients);
   };
 
   const handleIngredientRemove = (event: React.MouseEvent, index: number) => {
-    event.preventDefault(); // Prevenir el comportamiento por defecto (por ejemplo, un refresco)
-
+    event.preventDefault();
     const updatedIngredients = selectedIngredients.filter(
       (_, i) => i !== index
     );
     setSelectedIngredients(updatedIngredients);
   };
-
-  const handleUpload = async () => {
-    setUploadSuccessMsg("");
-    if (
-      selectedImages.length === 0 ||
-      !title ||
-      !selectedIngredients ||
-      filteredProcedure.length === 0 ||
-      !selectedCategories["time"] ||
-      !selectedCategories["difficulty"] ||
-      !selectedCategories["type"]
-    ) {
-      setUploadStatus(t("errorFillRecipeData"));
-      return;
-    }
-
-    try {
-      setUploadStatus(t("uploadingImages"));
-      const imagePaths = await Promise.all(
-        selectedImages.map((image) => uploadImage(image))
-      );
-      const id = await uploadRecipe(
-        title,
-        selectedIngredients,
-        filteredProcedure,
-        selectedCategories["time"],
-        selectedCategories["difficulty"],
-        selectedCategories["type"],
-        imagePaths
-      );
-      setUploadStatus("");
-      setUploadErrorMsg("");
-      setUploadSuccessMsg(t("recipeUploadedSuccesfully"));
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Espera 2 seg
-      window.location.href = `/recipe?id=${id}`;
-    } catch (error: any) {
-      setUploadStatus("");
-      setUploadErrorMsg(t("errorRecipeUpload"));
-      //window.location.reload();
-    } finally {
-      setTitle("");
-      setSelectedIngredients([]);
-      setProcedure([""]);
-      setSelectedImages([]);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ""; // Reset the input
-      }
-    }
-  };
-
-  useEffect(() => {
-    const loadRecipeCategories = async () => {
-      try {
-        const fetchedCategories = await fetchRecipesCategories();
-        setAviableCategories(fetchedCategories);
-      } catch (err: any) {
-        console.log(err);
-        setCategoryError(true);
-      }
-    };
-
-    loadRecipeCategories();
-  }, []);
 
   const handleCategoryChange = (
     categoryName: string,
@@ -147,7 +100,38 @@ const RecipeUploader: React.FC = () => {
     }));
   };
 
-  if (categoryError) return null;
+  const handleSave = async () => {
+    const imagePaths =
+      selectedImages.length > 0
+        ? await Promise.all(selectedImages.map((image) => uploadImage(image)))
+        : recipe.images || [];
+
+    /*GUARDAR EN SV*/
+    await updateRecipe(
+      recipe.id,
+      title,
+      selectedIngredients,
+      filteredProcedure,
+      selectedCategories["time"],
+      selectedCategories["difficulty"],
+      selectedCategories["type"],
+      imagePaths
+    );
+
+    onConfirm();
+  };
+
+  useEffect(() => {
+    const loadRecipeCategories = async () => {
+      try {
+        const fetchedCategories = await fetchRecipesCategories();
+        setAviableCategories(fetchedCategories);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    loadRecipeCategories();
+  }, []);
 
   return (
     <div className="container">
@@ -161,37 +145,33 @@ const RecipeUploader: React.FC = () => {
             id="title"
             name="title"
             className="form-control"
-            placeholder={t("enterTitlePlaceHolder")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
-        <div>
-          {aviableCategories.length > 0 &&
-            aviableCategories.map((category, index) => (
-              <div key={index} className="mb-3">
-                <label htmlFor={category.name} className="form-label">
-                  {t(category.name)}
-                </label>
-                <select
-                  id={category.name}
-                  value={selectedCategories[category.name] || ""}
-                  onChange={(e) =>
-                    handleCategoryChange(category.name, e.target.value)
-                  }
-                  className="form-select"
-                >
-                  <option value="">{t("selectOne")}</option>
-                  {category.options.map((option, idx) => (
-                    <option key={idx} value={option}>
-                      {t(option)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ))}
-        </div>
+        {aviableCategories.map((category, index) => (
+          <div key={index} className="mb-3">
+            <label htmlFor={category.name} className="form-label">
+              {t(category.name)}
+            </label>
+            <select
+              id={category.name}
+              value={selectedCategories[category.name] || ""}
+              onChange={(e) =>
+                handleCategoryChange(category.name, e.target.value)
+              }
+              className="form-select"
+            >
+              <option value="">{t("selectOne")}</option>
+              {category.options.map((option, idx) => (
+                <option key={idx} value={option}>
+                  {t(option)}
+                </option>
+              ))}
+            </select>
+          </div>
+        ))}
 
         <div className="task-form">
           <div className="mb-3">
@@ -209,14 +189,11 @@ const RecipeUploader: React.FC = () => {
             {selectedIngredients.map((ingredient, index) => (
               <div
                 key={index}
-                className="ingredient-item d-flex justify-content-between align-items-center mb-2"
-                style={{ fontSize: "0.875rem" }} // Establecer un tamaño de fuente más pequeño
+                className="d-flex justify-content-between align-items-center mb-2"
               >
-                <span
-                  style={{ fontSize: "0.875rem" }} // Hacer el texto más pequeño
-                >
-                  {ingredient.name} ({t(ingredient.default_unit)})
-                </span>
+                <span>{`${ingredient.name} (${t(
+                  ingredient.default_unit
+                )})`}</span>
                 <div className="d-flex align-items-center">
                   <input
                     type="number"
@@ -315,38 +292,21 @@ const RecipeUploader: React.FC = () => {
           />
         </div>
 
-        <button
-          type="button"
-          className="btn btn-primary w-100"
-          onClick={handleUpload}
-          disabled={
-            selectedImages.length === 0 ||
-            !title ||
-            selectedIngredients.length === 0 ||
-            !selectedIngredients.every(
-              (ingredient) => ingredient.amount != ""
-            ) ||
-            filteredProcedure.length === 0 ||
-            !selectedCategories["time"] ||
-            !selectedCategories["difficulty"] ||
-            !selectedCategories["type"]
-          }
-        >
-          {t("publishRecipe!")}
-        </button>
-
-        {uploadStatus && (
-          <p className="mt-3 alert alert-info">{uploadStatus}</p>
-        )}
-        {uploadErrorMsg && (
-          <p className="mt-3 alert alert-danger">{uploadErrorMsg}</p>
-        )}
-        {uploadSuccessMsg && (
-          <p className="mt-3 alert alert-success">{uploadSuccessMsg}</p>
-        )}
+        <div className="d-flex justify-content-between mt-3">
+          <button
+            type="button"
+            className="btn btn-success me-3"
+            onClick={handleSave}
+          >
+            {t("saveChanges")}
+          </button>
+          <button type="button" className="btn btn-danger" onClick={onCancel}>
+            {t("cancel")}
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
-export default RecipeUploader;
+export default RecipeEditor;

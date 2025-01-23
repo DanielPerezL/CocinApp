@@ -159,12 +159,12 @@ def new_recipe(user, data):
         type=data.get('type')
     )
 
+    # Agregar la receta a la base de datos
+    # Crear los ingredientes concretos
     try:
-        # Agregar la receta a la base de datos
         db.session.add(new_recipe)
         db.session.flush()  # Para obtener el ID de la receta antes de hacer commit
 
-        # Crear los ingredientes concretos
         for ingredient_data in ingredients_data:
             ingredient_id = ingredient_data.get('id')
             amount = ingredient_data.get('amount')
@@ -228,7 +228,85 @@ def recipes_id(id):
         return update_recipe(recipe, request.json)
     
 def update_recipe(recipe, data):
-    return recipeNotFoundError()
+    if not data or not any(key in data for key in ('title', 'ingredients', 'procedure', 'images', 'time', 'difficulty', 'type')):
+        return noRequestedInfoError()
+
+    try:
+        if 'title' in data:
+            recipe.title = data['title']
+        if 'time' in data:
+            recipe.time = data['time']
+        if 'difficulty' in data:
+            recipe.difficulty = data['difficulty']
+        if 'type' in data:
+            recipe.type = data['type']
+
+        if 'procedure' in data:
+            procedure = data['procedure']
+            if not procedure or len(procedure) == 0:
+                raise Exception()
+            recipe.procedure = procedure
+        
+        if 'ingredients' in data:
+            ingredients_data = data['ingredients']
+
+            # Eliminar ingredientes anteriores
+            ConcreteIngredient.query.filter_by(recipe_id=recipe.id).delete()
+
+            # Crear los nuevos ingredientes concretos
+            concrete_ingredients = []
+            for ingredient_data in ingredients_data:
+                ingredient_id = ingredient_data.get('id')
+                amount = ingredient_data.get('amount')
+
+                if ingredient_id is None or amount is None:
+                    continue
+
+                concrete_ingredient = ConcreteIngredient(
+                    ingredient_id=ingredient_id,
+                    amount=amount,
+                    recipe_id=recipe.id
+                )
+                concrete_ingredients.append(concrete_ingredient)
+
+            db.session.add_all(concrete_ingredients)
+
+        if 'images' in data:
+            new_images = data.get('images', [])
+            if len(new_images) == 0:
+                raise Exception()
+            # Identificar imágenes que ya no se necesitan
+            images_to_keep = set(recipe.images).intersection(set(new_images))
+            images_to_delete = set(recipe.images) - images_to_keep
+            images_to_add = set(new_images) - images_to_keep
+
+            # Validar que las imágenes nuevas existan en el servidor
+            all_images_exist = True
+            valid_new_images = []
+            for filename in images_to_add:
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                if os.path.isfile(file_path):
+                    valid_new_images.append(filename)
+                else:
+                    all_images_exist = False
+
+            if not all_images_exist:
+                # Si alguna de las nuevas imágenes no existe, aborta la operación
+                raise Exception()       
+            
+            # Actualizar las imágenes en la receta (manteniendo las existentes y agregando las nuevas)
+            recipe.images = list(images_to_keep.union(valid_new_images))
+
+        # Guardar los cambios en la base de datos
+        db.session.commit()
+        if 'images' in data:
+            delete_images_by_filenames(list(images_to_delete))
+        return jsonify({"msg": "Receta actualizada con éxito"}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return noRecipeUploadedError()
+
 
 def recipe_details(id, client, lang):
     recipe = Recipe.query.get(id)

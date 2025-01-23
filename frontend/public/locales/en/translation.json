@@ -25,6 +25,7 @@
     "noYourRecipes": "You haven't published any recipes yet",
     "loadingUserProfile": "Loading user profile...",
     "publishRecipe": "Publish a recipe",
+    "modifyRecipe": "Modify your recipe",
     "userProfile": "User Profile",
     "modifyPic": "Modify photo",
     "savePic": "Save photo",
@@ -136,7 +137,7 @@
     "uploadFormatExplanation": "Expected JSON file format",
     "uploadFormatDetails": "Make sure your JSON file follows this format:",
     "uploadFormatNote": "Note: The 'default_unit' field must be 'g', 'kg', 'l', 'ml', or 'units'.",
-
+    "saveChanges": "Save changes",
 
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",
@@ -173,5 +174,6 @@
     "errorPostingIngredients": "Error posting ingredients",
     "errorAddingCartRecipe": "Error adding recipe to the cart",
     "errorRemovingCartRecipe": "Error removing recipe from the cart",
-    "errorLoadingMyCartRecipes": "Error retrieving recipes from the cart"
+    "errorLoadingMyCartRecipes": "Error retrieving recipes from the cart",
+    "errorUpdatingRecipe": "Error updating the recipe"
 }

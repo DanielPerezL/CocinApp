@@ -25,6 +25,7 @@
     "noYourRecipes": "Aún no has publicado ninguna receta",
     "loadingUserProfile": "Cargando perfil del usuario...",
     "publishRecipe": "Publica una receta",
+    "modifyRecipe": "Edita tu receta",
     "userProfile": "Perfil de Usuario",
     "modifyPic": "Modificar foto",
     "savePic": "Guardar foto",
@@ -136,7 +137,7 @@
     "uploadFormatExplanation": "Formato esperado del archivo JSON",
     "uploadFormatDetails": "Asegúrate de que tu archivo JSON sigue el siguiente formato:",
     "uploadFormatNote": "Nota: El campo 'default_unit' debe ser 'g', 'kg', 'l', 'ml' o 'units'.",
-
+    "saveChanges": "Guardar cambios",
 
     "errorUpdatingPasswordNoValidNewPasswords":"La nueva constraseña no coincide.",
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",
@@ -173,6 +174,7 @@
     "errorPostingIngredients": "Error publicando ingredientes",
     "errorAddingCartRecipe":"Error al añadir la receta a la cesta",
     "errorRemovingCartRecipe":"Error al eliminar la receta de la cesta",
-    "errorLoadingMyCartRecipes":"Error al recuperar las recetas de la cesta"
+    "errorLoadingMyCartRecipes":"Error al recuperar las recetas de la cesta",
+    "errorUpdatingRecipe": "Error al acutalizar la receta"
   }
   

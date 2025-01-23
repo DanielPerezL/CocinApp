@@ -50,7 +50,13 @@ const RecipePage = () => {
       {loading && <p>{t("loagingRecipeDetails")}</p>}
       {error && <p className="text-danger">{error}</p>}
       {!loading && !error && recipe && user && (
-        <RecipeDetails recipe={recipe} user={user} />
+        <RecipeDetails
+          recipe={recipe}
+          user={user}
+          updateRecipe={() => {
+            loadRecipeDetails();
+          }}
+        />
       )}
     </div>
   );

@@ -6,11 +6,13 @@ import { fetchIngredients } from "../services/apiService";
 interface IngredientSearchProps {
   handleIngredientSelect: (ingredient: Ingredient) => void;
   placeholder: string;
+  ingredientsToHide: Ingredient[];
 }
 
 const IngredientSearch: React.FC<IngredientSearchProps> = ({
   handleIngredientSelect,
   placeholder,
+  ingredientsToHide,
 }) => {
   const { t } = useTranslation();
 
@@ -19,9 +21,16 @@ const IngredientSearch: React.FC<IngredientSearchProps> = ({
   const [error, setError] = useState<boolean>(false);
 
   // Filtrar ingredientes que coinciden con lo que el usuario escribe
-  const filteredIngredients = ingredientsList.filter((ingredient) =>
-    ingredient.name.toLowerCase().includes(ingredientInput.toLowerCase())
-  );
+  const filteredIngredients = ingredientsList
+    .filter((ingredient) =>
+      ingredient.name.toLowerCase().includes(ingredientInput.toLowerCase())
+    )
+    .filter(
+      (ingredient) =>
+        !ingredientsToHide.some(
+          (ingredientToHide) => ingredientToHide.id === ingredient.id
+        )
+    );
 
   const handleSelect = (ingredient: Ingredient): void => {
     setIngredientInput("");
@@ -34,6 +43,8 @@ const IngredientSearch: React.FC<IngredientSearchProps> = ({
       try {
         const fetchedIngredients = await fetchIngredients();
         setIngredientsList(fetchedIngredients);
+        console.log("fetchedIngredients:", fetchedIngredients);
+        console.log("ingredientsToHide:", ingredientsToHide);
       } catch (err: any) {
         setError(true);
       }
