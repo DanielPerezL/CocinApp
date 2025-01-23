@@ -28,6 +28,12 @@ import CartPage from "./pages/CartPage";
     gestion de recetas:
       modificar receta (PASOS, INGREDIENTES, CATEGORTIAS)
 
+    rellenar paginas:
+      contacto
+      sobre nosotros
+      politica de privacidad
+      terminos de uso
+    check de politica de privacidad y terminos de uso en REGISTER
     comprobar web con nombres de usuario largos largos -> capar nombres a X caracteres
 
     refactoring codigo, pulir detalles:
@@ -59,6 +65,7 @@ function App() {
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="search" element={<UnderConstructionPage />} />
           <Route path="publish" element={<PublishPage />} />
           <Route path="user/:nickname" element={<UserPage />} />
           <Route path="reports" element={<ReportsPage />} />

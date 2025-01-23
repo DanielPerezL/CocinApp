@@ -62,9 +62,15 @@ const Footer = () => {
               className="mb-2"
               style={{ maxWidth: "200px", margin: "0 auto", display: "block" }}
             />
-            <p className="mb-0">
+            <p className="mb-4">
               © {currentYear} CocinApp. {t("reserverRights")}
             </p>
+            <a
+              href="https://www.flaticon.com/"
+              className="fw-light text-white text-decoration-none"
+            >
+              Icons created by Freepik - Flaticon
+            </a>
           </div>
         </div>
       </div>

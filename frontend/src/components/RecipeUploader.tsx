@@ -1,12 +1,12 @@
 import React, { useState, ChangeEvent, useRef, useEffect } from "react";
 import {
-  fetchIngredients,
   fetchRecipesCategories,
   uploadImage,
   uploadRecipe,
 } from "../services/apiService"; // Asegúrate de que esta función esté disponible
 import { useTranslation } from "react-i18next";
 import { CategoryOptions, ConcreteIngredient, Ingredient } from "../interfaces";
+import IngredientSearch from "./IngredientSearch";
 
 const RecipeUploader: React.FC = () => {
   const { t } = useTranslation();
@@ -16,13 +16,9 @@ const RecipeUploader: React.FC = () => {
   const [procedure, setProcedure] = useState<string[]>([""]);
   const filteredProcedure = procedure.filter((item) => item.trim() !== ""); //Solo quiero los NO VACIOS
 
-  const [ingredientInput, setIngredientInput] = useState<string>(""); // Estado del input de ingredientes
   const [selectedIngredients, setSelectedIngredients] = useState<
     ConcreteIngredient[]
-  >([]); // Ingredientes seleccionados
-  const [ingredientsList, setIngredientsList] = useState<Ingredient[]>([]);
-  const [ingredientsError, setIngredientsError] = useState<boolean>(false);
-
+  >([]);
   const [aviableCategories, setAviableCategories] = useState<CategoryOptions[]>(
     []
   );
@@ -51,14 +47,8 @@ const RecipeUploader: React.FC = () => {
     }
   };
 
-  // Filtrar ingredientes que coinciden con lo que el usuario escribe
-  const filteredIngredients = ingredientsList.filter((ingredient) =>
-    ingredient.name.toLowerCase().includes(ingredientInput.toLowerCase())
-  );
-
   // Manejador de selección de ingrediente
   const handleIngredientSelect = (ingredient: Ingredient): void => {
-    setIngredientInput(""); // Limpiar el campo de entrada
     setSelectedIngredients([
       ...selectedIngredients,
       { ...ingredient, amount: "" }, // Agregar el ingrediente con una cantidad vacía
@@ -144,18 +134,7 @@ const RecipeUploader: React.FC = () => {
       }
     };
 
-    const loadIngredients = async () => {
-      try {
-        const fetchedIngredients = await fetchIngredients();
-        setIngredientsList(fetchedIngredients);
-      } catch (err: any) {
-        console.log(err);
-        setIngredientsError(true);
-      }
-    };
-
     loadRecipeCategories();
-    loadIngredients();
   }, []);
 
   const handleCategoryChange = (
@@ -168,7 +147,7 @@ const RecipeUploader: React.FC = () => {
     }));
   };
 
-  if (categoryError || ingredientsError) return null;
+  if (categoryError) return null;
 
   return (
     <div className="container">
@@ -219,36 +198,10 @@ const RecipeUploader: React.FC = () => {
             <label htmlFor="ingredient" className="form-label">
               {t("ingredients")}
             </label>
-            <input
-              id="ingredient"
-              name="ingredient"
-              type="text"
-              className="form-control"
+            <IngredientSearch
+              handleIngredientSelect={handleIngredientSelect}
               placeholder={t("enterIngredientsPlaceHolder")}
-              value={ingredientInput}
-              onChange={(e) => setIngredientInput(e.target.value)}
             />
-            <div className="suggestions mt-2">
-              {ingredientInput && filteredIngredients.length > 0 && (
-                <ul className="list-group">
-                  {filteredIngredients.map((ingredient) => (
-                    <li
-                      key={ingredient.name}
-                      className="list-group-item d-flex justify-content-between align-items-center"
-                      onClick={() => handleIngredientSelect(ingredient)}
-                    >
-                      {ingredient.name}
-                      <button
-                        className="btn btn-sm btn-outline-primary"
-                        onClick={() => handleIngredientSelect(ingredient)}
-                      >
-                        Select
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
           </div>
 
           <div className="selected-ingredients mt-3">

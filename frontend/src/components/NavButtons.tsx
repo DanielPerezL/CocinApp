@@ -5,6 +5,7 @@ import cart from "../assets/cart.png";
 import publish from "../assets/publish.png";
 import user from "../assets/user.png";
 import report from "../assets/report.png";
+import magnifyingGlass from "../assets/magnifying-glass.png";
 import { isAdmin, isLoggedIn } from "../services/apiService";
 import { authEvents } from "../events/authEvents";
 
@@ -72,6 +73,16 @@ const NavButtons: React.FC = () => {
           <img src={report} />
         </Link>
       )}
+
+      <Link
+        to="/search"
+        className="btn nav-btn mx-1"
+        onClick={() => {
+          window.scrollTo(0, 0);
+        }}
+      >
+        <img src={magnifyingGlass} />
+      </Link>
       <Link
         to="/profile"
         className="btn nav-btn mx-1"
