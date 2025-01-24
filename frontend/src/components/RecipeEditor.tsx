@@ -253,7 +253,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
           ))}
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-primary"
             disabled={!procedure[procedure.length - 1]} // Deshabilita si el último paso está vacío
             onClick={() => setProcedure([...procedure, ""])} // Añadir un nuevo paso vacío
           >
@@ -295,7 +295,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
         <div className="d-flex justify-content-between mt-3">
           <button
             type="button"
-            className="btn btn-success me-3"
+            className="btn btn-primary me-3"
             onClick={handleSave}
             disabled={
               !title ||

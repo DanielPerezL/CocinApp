@@ -276,7 +276,7 @@ const RecipeUploader: React.FC = () => {
           ))}
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-primary"
             disabled={!procedure[procedure.length - 1]} // Deshabilita si el último paso está vacío
             onClick={() => setProcedure([...procedure, ""])} // Añadir un nuevo paso vacío
           >
