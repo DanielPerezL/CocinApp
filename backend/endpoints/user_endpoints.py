@@ -66,8 +66,8 @@ def users_login():
                                       }))
     
     #En el login no necesitamos el token csrf protect
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, refresh_token)
+    set_access_cookies(response, access_token, max_age=app.config['JWT_ACCESS_TOKEN_EXPIRES'])
+    set_refresh_cookies(response, refresh_token, max_age=app.config['JWT_REFRESH_TOKEN_EXPIRES'])
     return response, 200
 
 @app.route('/api/users/logout', methods=['POST'])

@@ -36,8 +36,6 @@ import CartPage from "./pages/CartPage";
     refactoring codigo, pulir detalles:
       errores backend, usar errors.py
       codigo duplicado HACER FUNCIONES BACKEND
-
-    arreglar logout cada vez que se entra a la app ¿?
   */
   /*
   test:

@@ -936,6 +936,10 @@ const refreshAccessToken = async (): Promise<void> => {
 
 // Función auxiliar para manejar la renovación del token de acceso
 const withTokenRefresh = async <T>(asyncFunc: () => Promise<T>): Promise<T> => {
+  //POR SEGURIDAD EN ALGUNOS CASOS -> EVITAR SITUACIONES INCONSISTENTES
+  if (isLoggedIn() && !getCookie("csrf_access_token"))
+    await refreshAccessToken();
+
   try {
     return await asyncFunc(); // Intentar ejecutar la función original
   } catch (error) {
