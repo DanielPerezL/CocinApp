@@ -116,7 +116,7 @@ class Recipe(db.Model):
             "time": self.time,
             "difficulty": self.difficulty,
             "type": self.type,
-            "images": self.images,  # Convertir la cadena de imágenes en una lista
+            "images": self.images,
         }
 
     # DTO para la vista simple de la receta
@@ -127,5 +127,6 @@ class Recipe(db.Model):
             "image": self.images[0] if self.images else None,
             "time": self.time,
             "difficulty": self.difficulty,
+            "type": self.type,
             "ingredients": [ingredient.to_dto(lang) for ingredient in self.ingredients],
         }

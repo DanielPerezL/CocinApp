@@ -145,8 +145,99 @@ const fetchRecipesFavBySimilarUsersUnsafe = async (
     response = await fetch(
       `${API_BASE_URL}/recipes?recommendations_for_user_id=${getLoggedUserId()}&offset=${offset}&limit=${
         limit ? limit : RECIPE_LIMIT
-      }&lang=${t("lang")}`
+      }&lang=${t("lang")}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
     );
+  } catch (error) {
+    throw new Error(t("errorLoadingRecipes"));
+  }
+
+  if (!response.ok) {
+    throw new Error(t("errorLoadingRecipes"));
+  }
+  return await response.json();
+};
+
+export const fetchRecipesBySearch = async (
+  offset: number,
+  limit?: number,
+  title?: string, // Buscar por título
+  minSteps?: number, // Número mínimo de pasos
+  maxSteps?: number, // Número máximo de pasos
+  time?: string, // Filtrar por tiempo
+  difficulty?: string, // Filtrar por dificultad
+  type?: string, // Filtrar por tipo
+  containsIngredients?: string[], // IDs de ingredientes que debe contener
+  excludesIngredients?: string[] // IDs de ingredientes que no debe contener
+): Promise<FetchRecipesResponse> => {
+  return await withTokenRefresh(() =>
+    fetchRecipesBySearchUnsafe(
+      offset,
+      limit,
+      title,
+      minSteps,
+      maxSteps,
+      time,
+      difficulty,
+      type,
+      containsIngredients,
+      excludesIngredients
+    )
+  );
+};
+
+const fetchRecipesBySearchUnsafe = async (
+  offset: number,
+  limit?: number,
+  title?: string,
+  minSteps?: number,
+  maxSteps?: number,
+  time?: string,
+  difficulty?: string,
+  type?: string,
+  containsIngredients?: string[],
+  excludesIngredients?: string[]
+): Promise<FetchRecipesResponse> => {
+  let queryParams = `offset=${offset}&limit=${
+    limit ? limit : RECIPE_LIMIT
+  }&lang=${t("lang")}`;
+
+  // Agregar los parámetros de búsqueda condicionalmente
+  if (title !== undefined && title.length >= 0) {
+    queryParams += `&title=${encodeURIComponent(title)}`;
+  }
+  if (minSteps !== undefined) {
+    queryParams += `&min_steps=${minSteps}`;
+  }
+  if (maxSteps !== undefined) {
+    queryParams += `&max_steps=${maxSteps}`;
+  }
+  if (time !== undefined && time.length >= 0) {
+    queryParams += `&time=${encodeURIComponent(time)}`;
+  }
+  if (difficulty !== undefined && difficulty.length >= 0) {
+    queryParams += `&difficulty=${encodeURIComponent(difficulty)}`;
+  }
+  if (type !== undefined && type.length >= 0) {
+    queryParams += `&type=${encodeURIComponent(type)}`;
+  }
+  if (containsIngredients && containsIngredients.length > 0) {
+    containsIngredients.forEach((id) => {
+      queryParams += `&c_i=${id}`;
+    });
+  }
+  if (excludesIngredients && excludesIngredients.length > 0) {
+    excludesIngredients.forEach((id) => {
+      queryParams += `&e_i=${id}`;
+    });
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}/recipes?${queryParams}`);
   } catch (error) {
     throw new Error(t("errorLoadingRecipes"));
   }

@@ -36,6 +36,13 @@ def recipes():
             user = User.query.get(recommendations_for_user_id)
             if user is None:
                 return userNotFoundError()
+            try:
+                verify_jwt_in_request() 
+            except Exception as e:
+                return jsonify({"error": "Authentication required or invalid token"}), 401
+            client = get_user_from_token(get_jwt())
+            if not hasPermission(client, user):
+                return noPermissionError()
             return get_recommendations_for_user(user, offset, limit, lang)
         else:
             return get_recipes_simple_dto(offset, limit, lang) 
@@ -55,7 +62,48 @@ def has_more_results(query, offset, limit):
 
 #GRID 1
 def get_recipes_simple_dto(offset, limit, lang):
-    query = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc())
+    #PARAMETROS DE BUSQUEDA
+    title = request.args.get('title', default="", type=str)  
+    min_steps = request.args.get('min_steps', default=0, type=int)
+    max_steps = request.args.get('max_steps', default=None, type=int)
+    time = request.args.get('time', default=None, type=str)  
+    difficulty = request.args.get('difficulty', default=None, type=str)  
+    type = request.args.get('type', default=None, type=str)  
+    contains_ingredients = request.args.getlist('c_i', type=int)
+    excludes_ingredients = request.args.getlist('e_i', type=int)
+
+    query = Recipe.query
+
+    if title:
+        query = query.filter(Recipe.title.ilike(f"%{title}%"))
+    if min_steps > 0:
+        query = query.filter(db.func.json_length(Recipe.procedure) >= min_steps)
+    if max_steps is not None:
+        query = query.filter(db.func.json_length(Recipe.procedure) <= max_steps)
+    if time:
+        query = query.filter(Recipe.time == time)
+    if difficulty:
+        query = query.filter(Recipe.difficulty == difficulty)
+    if type:
+        query = query.filter(Recipe.type == type)
+
+    if contains_ingredients:
+        for ingredient_id in contains_ingredients:
+            query = query.filter(
+                Recipe.ingredients.any(ConcreteIngredient.ingredient_id == ingredient_id)
+            )
+
+    if excludes_ingredients:
+        query = query.filter(
+            ~Recipe.ingredients.any(
+                ConcreteIngredient.ingredient_id.in_(excludes_ingredients)
+            )
+        )
+
+    # Ordenar los resultados por número de favoritos y por ID
+    query = query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc())
+
+    # Obtener las recetas con paginación
     recipes = query.offset(offset).limit(limit).all()
     recipes_data = [recipe.to_simple_dto(lang) for recipe in recipes]
     has_more = has_more_results(query, offset, limit)

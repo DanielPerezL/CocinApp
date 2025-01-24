@@ -5,10 +5,7 @@ import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
 import { useLocation } from "react-router-dom"; // Para obtener parámetros de la URL
 import { fetchRecipeDetails, fetchUserPublic } from "../services/apiService";
 import { useTranslation } from "react-i18next";
-
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
+import { useQuery } from "../main";
 
 const RecipePage = () => {
   const { t } = useTranslation();

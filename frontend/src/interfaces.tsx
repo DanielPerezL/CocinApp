@@ -5,6 +5,7 @@ export interface RecipeSimpleDTO {
   image: string;
   time: string;
   difficulty: string;
+  type: string;
   ingredients: ConcreteIngredient[];
 }
 

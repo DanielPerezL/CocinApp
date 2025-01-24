@@ -13,6 +13,7 @@ import PublishPage from "./pages/PublishPage";
 import UserPage from "./pages/UserPage";
 import ReportsPage from "./pages/ReportsPage";
 import CartPage from "./pages/CartPage";
+import SearchPage from "./pages/SearchPage";
 
 {
   /*
@@ -61,7 +62,7 @@ function App() {
           <Route path="favorites" element={<FavoritesPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="profile" element={<ProfilePage />} />
-          <Route path="search" element={<UnderConstructionPage />} />
+          <Route path="search" element={<SearchPage />} />
           <Route path="publish" element={<PublishPage />} />
           <Route path="user/:nickname" element={<UserPage />} />
           <Route path="reports" element={<ReportsPage />} />
