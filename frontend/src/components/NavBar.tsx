@@ -17,8 +17,13 @@ const Navbar: React.FC = () => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Navegamos a la ruta /search con el query como parámetro de búsqueda
+    window.scrollTo(0, 0);
     navigate(`/search?title=${searchTitle}`);
+  };
+
+  const clearSearch = () => {
+    setSearchTitle("");
+    navigate(`/search`);
   };
 
   return (
@@ -31,21 +36,32 @@ const Navbar: React.FC = () => {
             title="CocinApp"
             onClick={() => {
               window.scrollTo(0, 0);
+              setSearchTitle("");
             }}
           >
             <img src={icon} className="icon-img d-block d-sm-none" />
             <img src={logo} className="logo-img d-none d-sm-block" />
           </Link>
-          <div className="mx-2 flex-grow-1">
-            <form onSubmit={handleSearchSubmit}>
+          <div className="mx-2 flex-grow-1 position-relative">
+            <form onSubmit={handleSearchSubmit} className="position-relative">
               <input
                 type="text"
                 placeholder={t("searchPlaceHolder")}
                 name="search-input"
-                className="form-control search-input"
+                className="form-control search-input pe-5"
                 value={searchTitle}
                 onChange={handleSearchChange}
               />
+              {searchTitle && (
+                <button
+                  type="button"
+                  className="btn-clear"
+                  onClick={clearSearch}
+                  aria-label={t("clearSearch")}
+                >
+                  |&times;
+                </button>
+              )}
             </form>
           </div>
           <div className="d-flex align-items-center d-none d-md-block">

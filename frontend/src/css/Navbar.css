@@ -19,3 +19,22 @@
   height: 24px;
 }
   
+.btn-clear {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.btn-clear:hover {
+  color: #000;
+}
+
+.search-input {
+  padding-right: 50px; /* Asegura espacio para el botón */
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Ingredient, ConcreteIngredient } from "../interfaces";
 import { useTranslation } from "react-i18next";
 import { fetchIngredients } from "../services/apiService";
+import "../css/IngredientSearch.css";
 
 interface IngredientSearchProps {
   handleIngredientSelect: (ingredient: Ingredient) => void;
@@ -65,7 +66,7 @@ const IngredientSearch: React.FC<IngredientSearchProps> = ({
         />
         <div className="mt-2">
           {ingredientInput && filteredIngredients.length > 0 && (
-            <ul className="list-group">
+            <ul className="list-group ingredient-list">
               {filteredIngredients.map((ingredient) => (
                 <li
                   key={ingredient.name}

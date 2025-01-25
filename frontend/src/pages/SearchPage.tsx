@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import RecipeGrid from "../components/RecipeGrid";
-import { RecipeSimpleDTO } from "../interfaces";
-import { fetchRecipesBySearch } from "../services/apiService";
+import SearchFilters from "../components/SearchFilters"; // Importamos el nuevo componente
+import { RecipeSimpleDTO, CategoryOptions } from "../interfaces";
+import {
+  fetchRecipesBySearch,
+  fetchRecipesCategories,
+} from "../services/apiService";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "../main";
 
@@ -17,7 +21,30 @@ const SearchPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [readyForLoad, setReadyForLoad] = useState<boolean>(false);
 
+  // Filtros
   const title = query.get("title") || undefined;
+  const [aviableCategories, setAviableCategories] = useState<CategoryOptions[]>(
+    []
+  );
+
+  const [filters, setFilters] = useState({
+    time: [] as string[],
+    difficulty: [] as string[],
+    type: undefined as string | undefined,
+    minSteps: undefined as number | undefined,
+    maxSteps: undefined as number | undefined,
+    containsIngredients: [] as string[],
+    excludesIngredients: [] as string[],
+  });
+
+  const loadRecipeCategories = async () => {
+    try {
+      const fetchedCategories = await fetchRecipesCategories();
+      setAviableCategories(fetchedCategories);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
 
   const loadRecipes = async () => {
     if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
@@ -29,13 +56,13 @@ const SearchPage = () => {
         offset,
         undefined, // limit
         title, // title
-        undefined, // minSteps
-        undefined, // maxSteps
-        undefined, // time
-        undefined, // difficulty
-        undefined, // type
-        undefined, // containsIngredients
-        undefined // excludesIngredients
+        filters.minSteps, // minSteps
+        filters.maxSteps, // maxSteps
+        filters.time, // time (array de tiempos)
+        filters.difficulty, // difficulty (array de dificultades)
+        filters.type, // type
+        filters.containsIngredients, // containsIngredients
+        filters.excludesIngredients // excludesIngredients
       );
 
       const newRecipes = data.recipes;
@@ -60,6 +87,10 @@ const SearchPage = () => {
     }
   };
 
+  useEffect(() => {
+    loadRecipeCategories();
+  }, []);
+
   //USE EFECT PARA ACTUALIZAR BUSQUEDA SEGUN LOS CAMPOS
   useEffect(() => {
     setRecipes([]); // Limpiar recetas anteriores
@@ -68,7 +99,7 @@ const SearchPage = () => {
     loadingRef.current = false;
 
     setReadyForLoad(true);
-  }, [title]);
+  }, [title, filters]);
 
   // Ejecutar la carga de recetas solo cuando esté listo para hacerlo
   useEffect(() => {
@@ -76,11 +107,21 @@ const SearchPage = () => {
       loadRecipes(); // Cargar recetas
       setReadyForLoad(false); // Desactivar el estado de "listo" después de la carga
     }
-  }, [readyForLoad]); // Este efecto se ejecuta solo cuando se marca como "listo" para cargar
+  }, [readyForLoad]);
 
   return (
-    <div className="container my-5">
+    <div className="container my-5 main-container">
+      <div className="text-center mb-5">
+        <h1 className="display-4 text-primary">{t("searchTitle")}</h1>
+      </div>
       {/* FILTROS */}
+      <SearchFilters
+        aviableCategories={aviableCategories}
+        selectedFilters={filters}
+        onFiltersChange={(updatedFilters) => setFilters(updatedFilters)}
+      />
+
+      {/* RECETAS */}
       {loadingRef.current && <p>{t("loadingRecipes")}</p>}
       {error && <p className="text-danger">{error}</p>}
       {!loadingRef.current && !error && (
