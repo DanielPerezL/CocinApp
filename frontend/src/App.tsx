@@ -26,9 +26,7 @@ import SearchPage from "./pages/SearchPage";
     check de politica de privacidad y terminos de uso en REGISTER
 
     refactoring codigo, pulir detalles:
-      errores backend, usar errors.py
-      codigo duplicado HACER FUNCIONES BACKEND
-  
+      evitar uso de style en html ¿?
       
 
 

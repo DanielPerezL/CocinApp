@@ -12,20 +12,19 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
-from utils import delete_images_by_uploader, create_tokens, hasPermission
-from errors import noPermissionError, noRequestedInfoError, userNotFoundError
+from utils import delete_images_by_uploader, create_tokens, has_permission
+from errors import *
 
 @app.route('/api/users', methods=['POST'])
 def register():
     data = request.json
     if not data or not all(key in data for key in ('nickname', 'email', 'password')):
-        return noRequestedInfoError()
+        return no_requested_info_error()
     if User.query.filter_by(email=data.get('email')).first() is not None:
-        return jsonify({"error": "Ya existe una cuenta asociada a ese email."}), 400
-
+        return user_already_exists_email()
     if len(data.get('nickname')) > NICKNAME_MAX_LENGTH:
-        return jsonify({"error": "El nombre de usuario excede el tamaño permitido."}), 400
-
+        return user_nick_too_long()
+    
     new_user = User(nickname = data.get('nickname'),
                     email = data.get('email'),
                     password = data.get('password')
@@ -36,15 +35,14 @@ def register():
         return jsonify({"msg": "Cuenta creada con éxito."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({"error": "Ya existe una cuenta asociada con ese nombre de usuario."}), 400
-        #return jsonify({"error": str(e.orig)}), 400
+        return user_already_exists_nickname()
 
 
 @app.route('/api/users/login', methods=['POST'])
 def users_login():
     data = request.json
     if not data or not all(key in data for key in ('email', 'password')):
-        return noRequestedInfoError()
+        return no_requested_info_error()
 
     email = data.get('email')
     password = data.get('password')
@@ -94,16 +92,16 @@ def users_id(id):
         #COMPROBAR SI SE RECIBE EL NICKNAME
         user = User.query.filter_by(nickname=id).first()
         if user is None:
-            return userNotFoundError()
+            return user_not_found_error()
 
     method = request.method
     if method == 'GET':
-        if hasPermission(client, user):
+        if has_permission(client, user):
             return jsonify(user.to_dto()), 200
         return jsonify(user.to_public_dto()), 200
         
-    if not hasPermission(client, user):
-        return noPermissionError()    
+    if not has_permission(client, user):
+        return no_permission_error()    
     if method == 'PUT':
         data = request.get_json()
         if data and all(key in data for key in ('current_password', 'new_password')):
@@ -116,7 +114,7 @@ def users_id(id):
 
 def new_user_picture(user, new_picture):
     if new_picture is None:
-        return noRequestedInfoError()
+        return no_requested_info_error()
     
     old_picture = user.get_picture() or ""
     old_path = os.path.join(app.config['UPLOAD_FOLDER'], old_picture)
@@ -141,7 +139,7 @@ def change_password(user, current_password, new_password):
         return jsonify({"msg": "Contraseña actualizada con éxito."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
+    return unexpected_error()
 
 def delete_account(deleting_user):
     try:
@@ -152,7 +150,7 @@ def delete_account(deleting_user):
         return jsonify({"msg": "Usuario eliminado."}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
+    return unexpected_error()
 
 @app.route('/api/users/<int:id>/fav_recipes', methods=['GET'])
 @jwt_required()
@@ -163,8 +161,8 @@ def favorites_recipes(id):
     lang = request.args.get('lang', default="", type=str)
  
     user = User.query.get(id)
-    if not hasPermission(client, user):
-        return jsonify({"error": "No tienes los permisos necesarios."}), 403
+    if not has_permission(client, user):
+        return no_permission_error()
 
     recipes = [recipe.to_simple_dto(lang) for recipe in user.get_favorite_recipes(offset, limit)]
     total_favorites = user.get_favorite_recipes_count()  # Método para contar las recetas favoritas del usuario
@@ -177,15 +175,17 @@ def favorites_recipes(id):
 @jwt_required()
 def favorites_recipes_mod(idU, idR):
     if idU < 0 or idR < 0:
-        return jsonify({"error": "Al menos un id proporcionado no es válido."}), 404
+        return no_valid_id_provided()
     
     client = get_user_from_token(get_jwt())
     recipe = Recipe.query.get(idR)
     user = User.query.get(idU)
-    if not user or not recipe:
-        return jsonify({"error": "Usuario o receta no encontrados."}), 404
-    if not hasPermission(client, user):
-        return jsonify({"error": "No tienes permisos suficientes."}), 403
+    if not user:
+       return user_not_found_error() 
+    if not recipe:
+        return recipe_not_found_error()
+    if not has_permission(client, user):
+        return no_permission_error()
     
     method = request.method
     if method == 'POST':
@@ -195,12 +195,12 @@ def favorites_recipes_mod(idU, idR):
 
 def add_favorite(user, recipe):
     if(user.is_favorite(recipe)):
-        return jsonify({"msg": "Receta añadida a favoritos."}), 201
+        return recipe_added_to_fav()
     try:
         favorite = FavoriteRecipe(user_id=user.id, recipe_id=recipe.id)
         db.session.add(favorite)
         db.session.commit()
-        return jsonify({"msg": "Receta añadida a favoritos."}), 201
+        return recipe_added_to_fav()
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al añadir receta favorita."}), 400
@@ -208,11 +208,11 @@ def add_favorite(user, recipe):
 def rm_favorite(user, recipe): 
     favorite = FavoriteRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
     if not favorite:
-        return jsonify({"msg": "Receta eliminada de favoritos."}), 200
+        return recipe_removed_from_fav()
     try:
         db.session.delete(favorite)
         db.session.commit()
-        return jsonify({"msg": "Receta eliminada de favoritos."}), 200
+        return recipe_removed_from_fav()
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al eliminar receta favorita."}), 400
@@ -223,27 +223,29 @@ def rm_favorite(user, recipe):
 def cart_recipes(id):
     client = get_user_from_token(get_jwt())  
     user = User.query.get(id)
-    if not hasPermission(client, user):
-        return jsonify({"error": "No tienes los permisos necesarios."}), 403
+    if not has_permission(client, user):
+        return no_permission_error()
     
     lang = request.args.get('lang', default="", type=str)
+    #No usamos limit/offset porque el carrito se limita a RECIPE_CART_SIZE recetas
     recipes = [recipe.to_simple_dto(lang) for recipe in user.get_cart_recipes()]
-    # Devolver la respuesta con `recipes` y `has_more`
     return jsonify({"recipes": recipes, "has_more": False}), 200
 
 @app.route('/api/users/<int:idU>/cart_recipes/<int:idR>', methods=['POST', 'DELETE'])
 @jwt_required()
 def cart_recipes_mod(idU, idR):
     if idU < 0 or idR < 0:
-        return jsonify({"error": "Al menos un id proporcionado no es válido."}), 404
+        return no_valid_id_provided()
     
     client = get_user_from_token(get_jwt())
     recipe = Recipe.query.get(idR)
     user = User.query.get(idU)
-    if not user or not recipe:
-        return jsonify({"error": "Usuario o receta no encontrados."}), 404
-    if not hasPermission(client, user):
-        return jsonify({"error": "No tienes permisos suficientes."}), 403
+    if not user:
+        return user_not_found_error()
+    if not recipe:
+        return recipe_not_found_error()
+    if not has_permission(client, user):
+        return no_permission_error()
     
     method = request.method
     if method == 'POST':
@@ -253,14 +255,14 @@ def cart_recipes_mod(idU, idR):
 
 def add_cart_recipe(user, recipe):
     if(user.is_in_cart(recipe)):
-        return jsonify({"msg": "Receta añadida a la cesta."}), 201
+        return recipe_added_to_cart()
     if(user.get_cart_recipes_count() >= RECIPE_CART_SIZE):
         return jsonify({"error": "No hay más espacio disponible en la cesta."}), 400
     try:
         cartEntry = CartRecipe(user_id=user.id, recipe_id=recipe.id)
         db.session.add(cartEntry)
         db.session.commit()
-        return jsonify({"msg": "Receta añadida a la cesta."}), 201
+        return recipe_added_to_cart()
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al añadir receta a la cesta."}), 400
@@ -268,12 +270,21 @@ def add_cart_recipe(user, recipe):
 def rm_cart_recipe(user, recipe): 
     cartEntry = CartRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
     if not cartEntry:
-        return jsonify({"msg": "Receta eliminada de la cesta."}), 200
+        return recipe_removed_from_cart()
     try:
         db.session.delete(cartEntry)
         db.session.commit()
-        return jsonify({"msg": "Receta eliminada de la cesta."}), 200
+        return recipe_removed_from_cart()
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al eliminar receta de la cesta."}), 400
         
+def recipe_added_to_fav():
+    return jsonify({"msg": "Receta añadida a favoritos."}), 201
+def recipe_removed_from_fav():
+    return jsonify({"msg": "Receta eliminada de favoritos."}), 200
+def recipe_added_to_cart():
+    return jsonify({"msg": "Receta añadida a la cesta."}), 201
+def recipe_removed_from_cart():
+    return jsonify({"msg": "Receta eliminada de la cesta."}), 200
+

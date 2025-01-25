@@ -24,6 +24,7 @@ services:
     ports:
       - "5000:5000" # Expone el puerto 5000
     environment:
+      ADMIN_USER: CocinApp
       ADMIN_PASSWORD: admin1
       DATABASE_HOST: mysql
       DATABASE_USER: backend_user

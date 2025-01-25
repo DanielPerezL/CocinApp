@@ -5,7 +5,7 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
-from utils import delete_images_by_filenames, hasPermission, isAdmin
+from utils import delete_images_by_filenames, has_permission, is_admin
 from errors import *
 
 @app.route('/api/recipes', methods=['GET', 'POST'])
@@ -25,24 +25,25 @@ def recipes():
         if user_id > 0:
             user = User.query.get(user_id)
             if user is None:
-                return userNotFoundError()
+                return user_not_found_error()
             return get_recipes_from_user(user, offset, limit, lang)
         elif recipe_id > 0:
             recipe = Recipe.query.get(recipe_id)
             if recipe is None:
-                return recipeNotFoundError()
+                return recipe_not_found_error()
             return get_recipes_similar_to(recipe, offset, limit, lang)
         elif recommendations_for_user_id > 0:
             user = User.query.get(recommendations_for_user_id)
             if user is None:
-                return userNotFoundError()
+                return user_not_found_error()
             try:
                 verify_jwt_in_request() 
             except Exception as e:
-                return jsonify({"error": "Authentication required or invalid token"}), 401
+                return invalid_token()
+            
             client = get_user_from_token(get_jwt())
-            if not hasPermission(client, user):
-                return noPermissionError()
+            if not has_permission(client, user):
+                return no_permission_error()
             return get_recommendations_for_user(user, offset, limit, lang)
         else:
             return get_recipes_simple_dto(offset, limit, lang) 
@@ -54,7 +55,7 @@ def recipes():
 
         user = get_user_from_token(get_jwt())
         if user is None:
-            return userNotFoundError()
+            return user_not_found_error()
         return new_recipe(user, request.json)
 
 def has_more_results(query, offset, limit):
@@ -178,7 +179,7 @@ def get_recipes_from_user(user, offset, limit, lang):
 def new_recipe(user, data):
     # Verifica que se proporcione la información requerida
     if not data or not all(key in data for key in ('title', 'ingredients', 'procedure', 'images', 'time', 'difficulty', 'type')) or len(data.get('procedure')) == 0 or len(data.get('images')) == 0:
-        return noRequestedInfoError()
+        return no_requested_info_error()
 
     all_images_exist = True
     existing_images = []  
@@ -192,7 +193,7 @@ def new_recipe(user, data):
     if not all_images_exist:
         for file_path in existing_images:
             os.remove(file_path)
-        return noRecipeUploadedError()
+        return no_recipe_uploaded_error()
 
     # Procesar los ingredientes: se espera que `data['ingredients']` sea un dict {id: cantidad}
     ingredients_data = data.get('ingredients', [])
@@ -220,8 +221,8 @@ def new_recipe(user, data):
             amount = ingredient_data.get('amount')
 
             if ingredient_id is None or amount is None:
-                continue  # Salta si algún dato está incompleto
-
+                continue 
+            
             # Crear la entrada en ConcreteIngredient con recipe_id ya asignado
             concrete_ingredient = ConcreteIngredient(
                 ingredient_id=ingredient_id,
@@ -240,7 +241,7 @@ def new_recipe(user, data):
 
     except SQLAlchemyError as e:
         db.session.rollback()
-        return noRecipeUploadedError()
+        return no_recipe_uploaded_error()
 
 
 @app.route('/api/recipe/categories', methods=['GET'])
@@ -257,7 +258,7 @@ def get_recipe_categories():
 @jwt_required(optional=True)
 def recipes_id(id):
     if id < 0:
-        return noValidIdProvided()
+        return no_valid_id_provided()
     
     lang = request.args.get('lang', default="", type=str)
 
@@ -270,8 +271,8 @@ def recipes_id(id):
         return recipe_details(id, client, lang)
     
     recipe = Recipe.query.get(id)
-    if not hasPermission(client, recipe):
-            return noPermissionError()
+    if not has_permission(client, recipe):
+            return no_permission_error()
     if method == 'DELETE':  
         return delete_recipe(recipe)
     if method == 'PUT':
@@ -279,7 +280,7 @@ def recipes_id(id):
     
 def update_recipe(recipe, data):
     if not data or not any(key in data for key in ('title', 'ingredients', 'procedure', 'images', 'time', 'difficulty', 'type')):
-        return noRequestedInfoError()
+        return no_requested_info_error()
 
     try:
         if 'title' in data:
@@ -355,13 +356,13 @@ def update_recipe(recipe, data):
 
     except Exception as e:
         db.session.rollback()
-        return noRecipeUploadedError()
+        return no_recipe_uploaded_error()
 
 
 def recipe_details(id, client, lang):
     recipe = Recipe.query.get(id)
     if recipe is None:
-        return recipeNotFoundError()
+        return recipe_not_found_error()
     recipe_dto = recipe.to_details_dto(lang)
     recipe_dto["isFav"] = client.is_favorite(recipe) if client else False
     recipe_dto["isCart"] = client.is_in_cart(recipe) if client else False
@@ -376,7 +377,7 @@ def delete_recipe(recipe):
         return jsonify({"msg": "Receta eliminada correctamente"}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
-    return unexpectedError()
+    return unexpected_error()
 
 @app.route('/api/recipe/ingredients', methods=['GET', 'POST'])
 def ingredients():
@@ -393,8 +394,8 @@ def ingredients():
         except Exception as e:
             return jsonify({"error": "Authentication required or invalid token"}), 401
         user = get_user_from_token(get_jwt())
-        if not isAdmin(user):
-            return noPermissionError()
+        if not is_admin(user):
+            return no_permission_error()
 
         try:
             # Leer el cuerpo de la solicitud

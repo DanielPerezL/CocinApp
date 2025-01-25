@@ -1,4 +1,4 @@
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token
 from models import *
 import os
 import re
@@ -8,10 +8,10 @@ import hashlib
 from datetime import datetime
 
 #Comprobar permisos
-def hasPermission(user, resource):
+def has_permission(user, resource):
     if user is None:
         return False
-    elif isAdmin(user):
+    elif is_admin(user):
         return True
     elif isinstance(resource, User):
         # Lógica para verificar permisos sobre un User
@@ -23,7 +23,7 @@ def hasPermission(user, resource):
         # Manejo de error o lógica para tipos desconocidos
         return False
 
-def isAdmin(user):
+def is_admin(user):
     return user.nickname == os.environ['ADMIN_USER']
 
 #MANEJO DE TOKENS
