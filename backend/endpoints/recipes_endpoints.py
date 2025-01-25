@@ -62,28 +62,29 @@ def has_more_results(query, offset, limit):
 
 #GRID 1
 def get_recipes_simple_dto(offset, limit, lang):
-    #PARAMETROS DE BUSQUEDA
+    # PARAMETROS DE BUSQUEDA
     title = request.args.get('title', default="", type=str)  
     min_steps = request.args.get('min_steps', default=0, type=int)
     max_steps = request.args.get('max_steps', default=None, type=int)
-    time = request.args.get('time', default=None, type=str)  
-    difficulty = request.args.get('difficulty', default=None, type=str)  
+    time_list = request.args.getlist('time', type=str)  # Lista de tiempos
+    difficulty_list = request.args.getlist('difficulty', type=str)  # Lista de dificultades
     type = request.args.get('type', default=None, type=str)  
     contains_ingredients = request.args.getlist('c_i', type=int)
     excludes_ingredients = request.args.getlist('e_i', type=int)
 
     query = Recipe.query
 
+    # Filtros de búsqueda
     if title:
         query = query.filter(Recipe.title.ilike(f"%{title}%"))
     if min_steps > 0:
         query = query.filter(db.func.json_length(Recipe.procedure) >= min_steps)
     if max_steps is not None:
         query = query.filter(db.func.json_length(Recipe.procedure) <= max_steps)
-    if time:
-        query = query.filter(Recipe.time == time)
-    if difficulty:
-        query = query.filter(Recipe.difficulty == difficulty)
+    if time_list:  # Si hay valores en la lista de tiempos
+        query = query.filter(Recipe.time.in_(time_list))
+    if difficulty_list:  # Si hay valores en la lista de dificultades
+        query = query.filter(Recipe.difficulty.in_(difficulty_list))
     if type:
         query = query.filter(Recipe.type == type)
 
@@ -110,6 +111,7 @@ def get_recipes_simple_dto(offset, limit, lang):
     return jsonify({"recipes": recipes_data, 
                     "has_more": has_more},
                     ), 200
+
 
 
 #GRID 2

@@ -167,8 +167,8 @@ export const fetchRecipesBySearch = async (
   title?: string, // Buscar por título
   minSteps?: number, // Número mínimo de pasos
   maxSteps?: number, // Número máximo de pasos
-  time?: string, // Filtrar por tiempo
-  difficulty?: string, // Filtrar por dificultad
+  time?: string[], // Filtrar por tiempo
+  difficulty?: string[], // Filtrar por dificultad
   type?: string, // Filtrar por tipo
   containsIngredients?: string[], // IDs de ingredientes que debe contener
   excludesIngredients?: string[] // IDs de ingredientes que no debe contener
@@ -195,8 +195,8 @@ const fetchRecipesBySearchUnsafe = async (
   title?: string,
   minSteps?: number,
   maxSteps?: number,
-  time?: string,
-  difficulty?: string,
+  time?: string[],
+  difficulty?: string[],
   type?: string,
   containsIngredients?: string[],
   excludesIngredients?: string[]
@@ -215,11 +215,15 @@ const fetchRecipesBySearchUnsafe = async (
   if (maxSteps !== undefined) {
     queryParams += `&max_steps=${maxSteps}`;
   }
-  if (time !== undefined && time.length >= 0) {
-    queryParams += `&time=${encodeURIComponent(time)}`;
+  if (time && time.length > 0) {
+    time.forEach((id) => {
+      queryParams += `&time=${encodeURIComponent(id)}`;
+    });
   }
-  if (difficulty !== undefined && difficulty.length >= 0) {
-    queryParams += `&difficulty=${encodeURIComponent(difficulty)}`;
+  if (difficulty && difficulty.length > 0) {
+    difficulty.forEach((id) => {
+      queryParams += `&difficulty=${encodeURIComponent(id)}`;
+    });
   }
   if (type !== undefined && type.length >= 0) {
     queryParams += `&type=${encodeURIComponent(type)}`;
