@@ -15,10 +15,29 @@
   height: 30px;
 }
 
-.nav-btn img {
-  height: 24px;
+.nav-btn {
+  display: flex; /* Flexbox para centrar las imágenes dentro de los botones */
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  max-width: 50px; /* Limita el tamaño máximo del botón */
+  flex: 1; /* Asegura que los botones se distribuyan uniformemente */
 }
-  
+
+.nav-btn img {
+  height: 24px; /* Define una altura base */
+  width: 24px; /* Asegura que las imágenes siempre tengan el mismo tamaño */
+  max-width: 100%; /* Asegura que no se estiren más allá de su contenedor */
+  object-fit: contain; /* Mantiene las proporciones de la imagen */
+}
+
+@media (max-width: 768px) {
+  .nav-btn img {
+    height: 20px; /* Reducir el tamaño de las imágenes en pantallas más pequeñas */
+    width: 20px; /* Asegura que las imágenes sigan siendo proporcionales */
+  }
+}
+
 .btn-clear {
   position: absolute;
   top: 50%;

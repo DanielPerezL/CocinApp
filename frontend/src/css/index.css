@@ -28,3 +28,8 @@
   background: transparent; /* Elimina el fondo del modal para que solo se vea la imagen */
   border: none; /* Elimina los bordes */
 }
+
+.long-text {
+  overflow: hidden;             /* Oculta cualquier texto que sobresalga */
+  text-overflow: ellipsis;      /* Añade los "..." al final del texto truncado */
+}

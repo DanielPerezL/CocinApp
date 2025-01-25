@@ -246,7 +246,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
           </div>
 
           <div className="d-flex justify-content-between align-items-center mb-4 mt-3">
-            <h1 className="display-5 text-primary">{recipe.title}</h1>
+            <h1 className="display-5 text-primary long-text">{recipe.title}</h1>
           </div>
           {/* Carrusel de imágenes */}
           <ImageCarousel images={recipe.images} />
