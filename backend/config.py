@@ -35,6 +35,7 @@ app.config['JWT_COOKIE_SECURE'] = True
 
 
 RECIPE_CART_SIZE = 10
+NICKNAME_MAX_LENGTH = 20
 time.sleep(3)
 jwt = JWTManager(app)
 db = SQLAlchemy(app)

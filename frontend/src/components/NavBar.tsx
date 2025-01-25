@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
 import icon from "../assets/icon.png";
 import NavButtons from "./NavButtons"; // Importa el componente NavButtons
 import "../css/Navbar.css"; // Archivo CSS para estilos personalizados
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { clearSearchEvents } from "../events/clearSearchEvents";
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
@@ -25,6 +26,16 @@ const Navbar: React.FC = () => {
     setSearchTitle("");
     navigate(`/search`);
   };
+
+  useEffect(() => {
+    // Suscribirse al evento 'clearSearch'
+    clearSearchEvents.on("clearSearch", clearSearch);
+
+    // Limpiar el listener cuando el componente se desmonte
+    return () => {
+      clearSearchEvents.off("clearSearch", clearSearch);
+    };
+  }, []);
 
   return (
     <nav className="navbar bg-primary">

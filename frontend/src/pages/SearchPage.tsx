@@ -8,6 +8,7 @@ import {
 } from "../services/apiService";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "../main";
+import { clearSearchEvents } from "../events/clearSearchEvents";
 
 const SearchPage = () => {
   const { t } = useTranslation();
@@ -91,6 +92,7 @@ const SearchPage = () => {
 
   const onResetFilters = () => {
     setFilters(initialFilters); // Restaura los filtros iniciales
+    clearSearchEvents.emit("clearSearch");
     loadRecipes(); // Vuelve a cargar las recetas
   };
 

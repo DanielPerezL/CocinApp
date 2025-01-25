@@ -51,6 +51,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           required
+          maxLength={20}
         />
       </div>
       <div className="mb-3">

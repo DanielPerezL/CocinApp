@@ -1,9 +1,9 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from config import db
+from config import db, NICKNAME_MAX_LENGTH
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nickname = db.Column(db.String(80), unique=True, nullable=False)
+    nickname = db.Column(db.String(NICKNAME_MAX_LENGTH), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     picture = db.Column(db.String(120))
     password_hash = db.Column(db.String(200), nullable=False)

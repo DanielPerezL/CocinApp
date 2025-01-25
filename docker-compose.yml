@@ -9,8 +9,6 @@ services:
       MYSQL_DATABASE: cocinappDB
       MYSQL_USER: backend_user
       MYSQL_PASSWORD: a5a7204dd776bbd48b3b7bda6865bfc2ae646e8adecfb1deb3a8398b01c881a1a6400738cb663d175a44117fa09131c1603081e727a87ef664f411c92d02a09c
-    ports:
-      - "3306:3306" #eliminar para produccion
     networks:
       - my_network
     volumes:

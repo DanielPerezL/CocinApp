@@ -1,4 +1,4 @@
-from config import app, db, RECIPE_CART_SIZE
+from config import app, db, RECIPE_CART_SIZE, NICKNAME_MAX_LENGTH
 from flask import jsonify, request, make_response
 from flask_jwt_extended import (
                                 jwt_required, 
@@ -22,6 +22,9 @@ def register():
         return noRequestedInfoError()
     if User.query.filter_by(email=data.get('email')).first() is not None:
         return jsonify({"error": "Ya existe una cuenta asociada a ese email."}), 400
+
+    if len(data.get('nickname')) > NICKNAME_MAX_LENGTH:
+        return jsonify({"error": "El nombre de usuario excede el tamaño permitido."}), 400
 
     new_user = User(nickname = data.get('nickname'),
                     email = data.get('email'),

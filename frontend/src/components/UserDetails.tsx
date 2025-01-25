@@ -15,6 +15,7 @@ import ImageModal from "./ImagenModal";
 import NeedConfirmButton from "./NeedConfirmButton";
 import { Button, Modal, Form } from "react-bootstrap";
 import ImageCropModal from "./ProfileCropModal";
+import "../css/UserDetails.css";
 
 interface UserDetailsProps {
   user: UserDTO;
@@ -154,8 +155,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
           <strong>{t("nickname")}:</strong> {user.nickname}
         </p>
         <p>
-          <strong>{t("email")}:</strong> {user.email}
+          <strong>{t("email")}:</strong>
+          <p className="email-text"> {user.email}</p>
         </p>
+
         <NeedConfirmButton
           className="btn btn-danger"
           title={t("confirmLogoutTitle")}
