@@ -199,6 +199,7 @@ const RecipeUploader: React.FC = () => {
               {t("ingredients")}
             </label>
             <IngredientSearch
+              id="ingredient"
               handleIngredientSelect={handleIngredientSelect}
               placeholder={t("enterIngredientsPlaceHolder")}
               ingredientsToHide={selectedIngredients}

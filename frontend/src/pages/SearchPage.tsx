@@ -27,7 +27,7 @@ const SearchPage = () => {
     []
   );
 
-  const [filters, setFilters] = useState({
+  const initialFilters = {
     time: [] as string[],
     difficulty: [] as string[],
     type: undefined as string | undefined,
@@ -35,7 +35,9 @@ const SearchPage = () => {
     maxSteps: undefined as number | undefined,
     containsIngredients: [] as string[],
     excludesIngredients: [] as string[],
-  });
+  };
+
+  const [filters, setFilters] = useState(initialFilters);
 
   const loadRecipeCategories = async () => {
     try {
@@ -87,6 +89,11 @@ const SearchPage = () => {
     }
   };
 
+  const onResetFilters = () => {
+    setFilters(initialFilters); // Restaura los filtros iniciales
+    loadRecipes(); // Vuelve a cargar las recetas
+  };
+
   useEffect(() => {
     loadRecipeCategories();
   }, []);
@@ -124,13 +131,28 @@ const SearchPage = () => {
       {/* RECETAS */}
       {loadingRef.current && <p>{t("loadingRecipes")}</p>}
       {error && <p className="text-danger">{error}</p>}
-      {!loadingRef.current && !error && (
+      {!loadingRef.current && !error && recipes.length > 0 && (
         <RecipeGrid
           hasMore={hasMore}
           loading={loadingRef.current}
           onLoadMore={loadRecipes}
           recipes={recipes}
         />
+      )}
+      {!loadingRef.current && !error && recipes.length === 0 && (
+        <div className="text-center mt-5">
+          <div className="alert alert-warning p-4 shadow-sm" role="alert">
+            <i className="bi bi-emoji-frown fs-1 text-warning"></i>
+            <h4 className="mt-3">{t("noSearchResults")}</h4>
+            <p className="text-muted">{t("noSearchResultsMessage")}</p>
+            <button
+              className="btn btn-primary mt-3"
+              onClick={() => onResetFilters()} // Llama una función para reiniciar los filtros
+            >
+              {t("resetFilters")}
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

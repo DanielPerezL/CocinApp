@@ -138,7 +138,18 @@
     "uploadFormatDetails": "Make sure your JSON file follows this format:",
     "uploadFormatNote": "Note: The 'default_unit' field must be 'g', 'kg', 'l', 'ml', or 'units'.",
     "saveChanges": "Save changes",
-
+    "searchTitle": "Find Ideal Recipes",
+    "filterRecipes": "Filter recipes",
+    "minSteps": "Minimum step number",
+    "maxSteps": "Maximum step number",
+    "includeIngredients": "Include ingredients",
+    "excludeIngredients": "Exclude ingredients",
+    "applyFilters": "Apply filters",
+    "noSearchResults":"No recipes found!",
+    "resetFilters":"Reset Filters",
+    "noSearchResultsMessage":" We couldn't find any recipes matching your search criteria. Try adjusting your filters or explore more recipes.",
+    
+    
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",
     "errorLoginBadPassword": "The password is incorrect. Please try again.",  

@@ -179,6 +179,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
               {t("ingredients")}
             </label>
             <IngredientSearch
+              id="ingredient"
               handleIngredientSelect={handleIngredientSelect}
               placeholder={t("enterIngredientsPlaceHolder")}
               ingredientsToHide={selectedIngredients}
@@ -197,6 +198,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
                 <div className="d-flex align-items-center">
                   <input
                     type="number"
+                    name="amount"
                     className="form-control form-control-sm me-2"
                     value={ingredient.amount}
                     onChange={(e) => handleQuantityChange(e, index)}

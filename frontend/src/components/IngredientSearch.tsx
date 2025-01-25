@@ -8,12 +8,14 @@ interface IngredientSearchProps {
   handleIngredientSelect: (ingredient: Ingredient) => void;
   placeholder: string;
   ingredientsToHide: Ingredient[];
+  id: string;
 }
 
 const IngredientSearch: React.FC<IngredientSearchProps> = ({
   handleIngredientSelect,
   placeholder,
   ingredientsToHide,
+  id,
 }) => {
   const { t } = useTranslation();
 
@@ -56,8 +58,8 @@ const IngredientSearch: React.FC<IngredientSearchProps> = ({
     return (
       <>
         <input
-          id="ingredient"
-          name="ingredient"
+          id={id}
+          name="ingredients"
           type="text"
           className="form-control"
           placeholder={placeholder}
