@@ -7,6 +7,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { CategoryOptions, ConcreteIngredient, Ingredient } from "../interfaces";
 import IngredientSearch from "./IngredientSearch";
+import "../css/RecipeUploader.css";
 
 const RecipeUploader: React.FC = () => {
   const { t } = useTranslation();
@@ -210,12 +211,9 @@ const RecipeUploader: React.FC = () => {
             {selectedIngredients.map((ingredient, index) => (
               <div
                 key={index}
-                className="ingredient-item d-flex justify-content-between align-items-center mb-2"
-                style={{ fontSize: "0.875rem" }} // Establecer un tamaño de fuente más pequeño
+                className="small-text ingredient-item d-flex justify-content-between align-items-center mb-2"
               >
-                <span
-                  style={{ fontSize: "0.875rem" }} // Hacer el texto más pequeño
-                >
+                <span>
                   {ingredient.name} ({t(ingredient.default_unit)})
                 </span>
                 <div className="d-flex align-items-center">
@@ -288,7 +286,7 @@ const RecipeUploader: React.FC = () => {
         <div className="mb-3">
           <p className="form-label">{t("addImages")}</p>
 
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className="d-flex align-items-center">
             <button
               type="button"
               onClick={() => {
@@ -312,7 +310,7 @@ const RecipeUploader: React.FC = () => {
             accept="image/*"
             onChange={handleFileChange}
             multiple
-            style={{ display: "none" }} // Hide the default file input
+            style={{ display: "none" }}
           />
         </div>
 

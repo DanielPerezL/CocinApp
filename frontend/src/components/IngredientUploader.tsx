@@ -47,10 +47,7 @@ const IngredientUploader: React.FC = () => {
         <div className="alert alert-info">
           <h6>{t("uploadFormatExplanation")}</h6>
           <p>{t("uploadFormatDetails")}</p>
-          <pre
-            className="bg-light p-3 border rounded text-start"
-            style={{ overflowX: "auto", whiteSpace: "pre-wrap" }}
-          >
+          <pre className="bg-light p-3 border rounded text-start">
             {`[
     {
       "name_en": "Rice",

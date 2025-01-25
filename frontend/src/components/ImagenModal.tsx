@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
+import "../css/ImagenModal.css";
 
 interface ImageModalProps {
   show: boolean;
@@ -16,19 +17,10 @@ const ImageModal: React.FC<ImageModalProps> = ({ show, image, onClose }) => {
       onHide={onClose}
     >
       <Modal.Body
-        className="d-flex justify-content-center align-items-center p-0"
+        className="imagen-modal d-flex justify-content-center align-items-center p-0"
         onClick={onClose}
       >
-        <img
-          src={image}
-          style={{
-            width: "100%", // Ocupa todo el ancho del contenedor
-            height: "100%", // Ocupa todo el alto del contenedor
-            maxWidth: "80vw", // Ancho máximo
-            maxHeight: "80vh", // Alto máximo
-            objectFit: "contain", // Escala la imagen manteniendo la relación de aspecto
-          }}
-        />
+        <img src={image} />
       </Modal.Body>
     </Modal>
   );

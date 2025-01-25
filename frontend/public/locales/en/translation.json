@@ -148,7 +148,7 @@
     "noSearchResults":"No recipes found!",
     "resetFilters":"Reset Filters",
     "noSearchResultsMessage":" We couldn't find any recipes matching your search criteria. Try adjusting your filters or explore more recipes.",
-    
+    "cropImage":"Crop Image",
     
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",

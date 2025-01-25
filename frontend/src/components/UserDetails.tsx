@@ -107,11 +107,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   return (
     <div className="container">
       <h2 className="text-primary">{t("userProfile")}</h2>
-      <div className="d-flex flex-column align-items-center p-3">
+      <div className="user-details d-flex flex-column align-items-center p-3">
         <img
           src={!imgError ? getImage(userPic) : userDefaultPic}
           className="rounded-circle"
-          style={{ width: "6rem", height: "6rem", objectFit: "cover" }}
           onError={() => {
             setImgError(true);
           }}
@@ -154,10 +153,12 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
         <p>
           <strong>{t("nickname")}:</strong> {user.nickname}
         </p>
-        <p>
-          <strong>{t("email")}:</strong>
-          <p className="email-text"> {user.email}</p>
-        </p>
+        <div>
+          <p className="email-text">
+            <strong>{t("email")}: </strong>
+            {user.email}
+          </p>
+        </div>
 
         <NeedConfirmButton
           className="btn btn-danger"

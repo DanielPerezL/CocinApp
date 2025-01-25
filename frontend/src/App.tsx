@@ -24,10 +24,7 @@ import SearchPage from "./pages/SearchPage";
       politica de privacidad
       terminos de uso
     check de politica de privacidad y terminos de uso en REGISTER
-
-    refactoring codigo, pulir detalles:
-      evitar uso de style en html ¿?
-      
+ 
 
 
 

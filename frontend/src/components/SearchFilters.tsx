@@ -251,8 +251,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
                     ingredient && (
                       <span
                         key={ingredient.id}
-                        style={{ cursor: "pointer" }}
-                        className="badge bg-primary text-white me-2 mb-2"
+                        className="badge bg-primary text-white me-2 mb-2 cursor-pointer"
                         onClick={() =>
                           handleRemoveIngredient(
                             ingredient.id,
@@ -287,8 +286,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
                     ingredient && (
                       <span
                         key={ingredient.id}
-                        className="badge bg-danger text-white me-2 mb-2"
-                        style={{ cursor: "pointer" }}
+                        className="cursor-pointer badge bg-danger text-white me-2 mb-2"
                         onClick={() =>
                           handleRemoveIngredient(
                             ingredient.id,

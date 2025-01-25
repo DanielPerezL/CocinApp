@@ -4,3 +4,8 @@
     text-overflow: ellipsis;      /* Añade los "..." al final del texto truncado */
   }
   
+.user-details img { 
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+ }

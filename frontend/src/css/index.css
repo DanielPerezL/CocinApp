@@ -33,3 +33,7 @@
   overflow: hidden;             /* Oculta cualquier texto que sobresalga */
   text-overflow: ellipsis;      /* Añade los "..." al final del texto truncado */
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}

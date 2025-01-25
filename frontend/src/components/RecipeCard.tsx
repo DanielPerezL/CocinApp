@@ -31,12 +31,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           <span className="badge bg-primary">{t(recipe.time)}</span>{" "}
           <span className="badge bg-primary mb-1">{t(recipe.difficulty)}</span>
           <br />
-          <h6
-            className="card-title d-inline-block text-white bg-dark bg-opacity-75 px-2 mb-0 rounded-2"
-            style={{
-              maxWidth: "100%", // Asegura que el texto no se desborde
-            }}
-          >
+          <h6 className="card-title d-inline-block text-white bg-dark bg-opacity-75 px-2 mb-0 rounded-2 w-100">
             {recipe.title}
           </h6>
         </div>

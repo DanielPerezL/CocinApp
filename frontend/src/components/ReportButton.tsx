@@ -4,6 +4,7 @@ import reportImg from "../assets/report.png";
 import NotifyReportModal from "./NotifyReportModal";
 import NeedConfirmButton from "./NeedConfirmButton";
 import { useTranslation } from "react-i18next";
+import "../css/ReportButton.css";
 
 interface ReportButtonProps {
   text: string;
@@ -18,7 +19,7 @@ const ReportButton: React.FC<ReportButtonProps> = ({ text, className }) => {
   return (
     <>
       <NeedConfirmButton
-        className={className}
+        className={className + " report-button"}
         onConfirm={() => {
           reportResource(window.location.pathname + window.location.search);
           setShowReportModal(true);
@@ -26,11 +27,7 @@ const ReportButton: React.FC<ReportButtonProps> = ({ text, className }) => {
         message={t("reportButtonMessage")}
         title={text}
       >
-        <img
-          className="me-2 img-fluid"
-          style={{ width: "2rem", height: "auto" }}
-          src={reportImg}
-        ></img>
+        <img className="me-2 img-fluid" src={reportImg}></img>
         {text}
       </NeedConfirmButton>
       <NotifyReportModal

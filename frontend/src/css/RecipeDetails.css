@@ -3,3 +3,21 @@
     line-height: 1.6;
     color: #555; /* Color gris para el texto */
 }
+.user-info img{
+    width: 3rem;
+    height: 3rem;
+}
+
+.user-info p{
+    font-size: 1.25rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(18ch);
+}
+
+.recipe-details-btn{
+    width: 2rem;
+    height: 2rem;
+}

@@ -183,35 +183,21 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
             <div className="d-flex w-100 w-sm-25 w-md-50 justify-content-center justify-content-sm-start">
               <Link
                 to={"/user/" + user.nickname}
-                className="d-flex align-items-center border border-primary rounded p-2 hover-effect text-decoration-none"
+                className="user-info d-flex align-items-center border border-primary rounded p-2 hover-effect text-decoration-none"
               >
                 <img
                   src={!imgError ? getImage(user.picture) : userDefaultPic}
                   className="rounded-circle me-3"
-                  style={{ width: "3rem", height: "3rem" }}
                   onError={() => setImgError(true)}
                 />
-                <p
-                  className="m-0 text-black"
-                  style={{
-                    fontSize: "1.25rem",
-                    fontWeight: "bold",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    maxWidth: "calc(18ch)",
-                  }}
-                >
-                  {user.nickname}
-                </p>
+                <p className="m-0 text-black">{user.nickname}</p>
               </Link>
             </div>
 
             <div className="d-flex gap-2 mt-3 mt-sm-0">
               <button
                 onClick={handleFavButtonClick}
-                className="btn btn-link p-0 d-flex align-items-center justify-content-center"
-                style={{ width: "2rem", height: "2rem" }}
+                className="recipe-details-btn btn btn-link p-0 d-flex align-items-center justify-content-center"
                 title="Favourite Button"
               >
                 {isFavorite ? (
@@ -223,8 +209,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
 
               <button
                 onClick={handleCartButtonClick}
-                className="btn btn-link p-0 d-flex align-items-center justify-content-center"
-                style={{ width: "2rem", height: "2rem" }}
+                className="recipe-details-btn btn btn-link p-0 d-flex align-items-center justify-content-center"
                 title="Cart Button"
               >
                 {isInCart ? (
@@ -235,8 +220,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
               </button>
 
               <button
-                className="btn btn-link p-0 d-flex align-items-center justify-content-center"
-                style={{ width: "2rem", height: "2rem" }}
+                className="recipe-details-btn btn btn-link p-0 d-flex align-items-center justify-content-center"
                 title="URL Button"
                 onClick={copyToClipboard}
               >

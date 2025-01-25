@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import ImageModal from "./ImagenModal";
 import NeedConfirmButton from "./NeedConfirmButton";
 import ReportButton from "./ReportButton";
+import "../css/UserPublicDetails.css";
 
 interface UserPublicDetailsProps {
   user: UserPublicDTO;
@@ -29,11 +30,10 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
   return (
     <div className="container text-center p-2 mb-4">
       <h2 className="title text-primary mb-3">{user.nickname}</h2>
-      <div className="d-flex flex-column align-items-center">
+      <div className="user-public-details d-flex flex-column align-items-center">
         <img
           src={!imgError ? getImage(user.picture) : userDefaultPic}
           className="rounded-circle border border-primary border-2 mb-3"
-          style={{ width: "10rem", height: "10rem", objectFit: "cover" }}
           onError={() => setImgError(true)}
           onClick={() => {
             setShowModal(true);

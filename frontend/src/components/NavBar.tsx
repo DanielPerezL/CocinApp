@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="navbar bg-primary">
-      <div className="container" style={{ maxWidth: "1400px" }}>
+      <div className="container">
         <div className="d-flex align-items-center w-100">
           <Link
             to="/"

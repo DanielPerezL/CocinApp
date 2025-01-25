@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
 import { useTranslation } from "react-i18next";
+import "../css/Footer.css";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -55,13 +56,8 @@ const Footer = () => {
           </div>
 
           {/* Sección de derechos de autor */}
-          <div className="col-md-4 text-center">
-            <img
-              src={logo}
-              alt="CocinApp Logo"
-              className="mb-2"
-              style={{ maxWidth: "200px", margin: "0 auto", display: "block" }}
-            />
+          <div className="copyright-section col-md-4 text-center">
+            <img src={logo} alt="CocinApp Logo" className="mb-2" />
             <p className="mb-4">
               © {currentYear} CocinApp. {t("reserverRights")}
             </p>

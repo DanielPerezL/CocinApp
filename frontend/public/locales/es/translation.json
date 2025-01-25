@@ -147,7 +147,7 @@
     "applyFilters": "Aplicar filtros","noSearchResults": "¡No se encontraron recetas!",
     "resetFilters": "Restablecer filtros",
     "noSearchResultsMessage": "No pudimos encontrar recetas que coincidan con tus criterios de búsqueda. Intenta ajustar los filtros o explora más recetas.",
-    
+    "cropImage": "Recortar Imagen",
 
     "errorUpdatingPasswordNoValidNewPasswords":"La nueva constraseña no coincide.",
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",

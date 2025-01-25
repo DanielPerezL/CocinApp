@@ -266,7 +266,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
         <div className="mb-3">
           <p className="form-label">{t("addImages")}</p>
 
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className="d-flex align-items-center">
             <button
               type="button"
               onClick={() => {

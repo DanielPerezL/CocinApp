@@ -3,6 +3,7 @@ import Cropper from "react-easy-crop";
 import { Area } from "react-easy-crop";
 import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import "../css/ProfileCropModal.css";
 
 interface ProfilePicCropProps {
   image: string; // URL de la imagen a recortar
@@ -77,10 +78,10 @@ const ProfilePicCrop: React.FC<ProfilePicCropProps> = ({
   return (
     <Modal show={true} onHide={onClose} centered>
       <Modal.Header closeButton className="bg-light">
-        <Modal.Title>Recortar Imagen</Modal.Title>
+        <Modal.Title>{t("cropImage")}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-light">
-        <div style={{ position: "relative", width: "100%", height: "400px" }}>
+        <div className="crop-modal">
           <Cropper
             image={image}
             crop={crop}
