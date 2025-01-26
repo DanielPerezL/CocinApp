@@ -1,48 +1,30 @@
-import requests
 import json
-import os
 
-# URL de la API
-DOMINIO = "http://localhost:5000"
-LOGOUT = DOMINIO + "/api/users/logout"
-LOGIN = DOMINIO + "/api/users/login"
-INGREDIENTS = DOMINIO + "/api/recipe/ingredients"
-ADMIN = {
-    "email": "Cocinapp",
-    "password": "admin1"
-}
+# Lista de unidades permitidas
+VALID_UNITS = ["g", "kg", "ml", "l", "units"]
 
-def sendPost(url, data=None, files=None):
-    req = requests.Request("POST", url, json=data, files=files)
-    prepared = session.prepare_request(req)
-    response = session.send(prepared)
-    if response.status_code < 200 or response.status_code >= 300:
-        print(f"Error al enviar datos a {url}. Status code: {response.status_code}")
-        print("Error:", response.text)
-        return None
-    return response.json()
+# Función para cargar el JSON
+def load_ingredients(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
 
-# Función para cargar ingredientes desde un archivo JSON
-def uploadIngredients(ingredients_file):
-    try:
-        with open(ingredients_file, 'r') as file:
-            ingredients = json.load(file)
-    except Exception as e:
-        print(f"Error al leer el archivo de ingredientes: {e}")
-        return
+# Función para realizar las comprobaciones
+def validate_ingredients(ingredients):
+    seen_names = set()
+    for ingredient in ingredients:
+        # Comprobar que no se repite el nombre en inglés
+        if ingredient['name_en'] in seen_names:
+            print(f"Duplicado encontrado: {ingredient['name_en']}")
+        seen_names.add(ingredient['name_en'])
 
-    print(f"Subiendo {len(ingredients)} ingredientes...")
+        # Comprobar que el default_unit tiene un valor permitido
+        if ingredient['default_unit'] not in VALID_UNITS:
+            print(f"Unidad no válida para {ingredient['name_en']}: {ingredient['default_unit']}")
 
-    response = sendPost(INGREDIENTS, data=ingredients)
-    print(response)
+# Ruta del archivo JSON
+file_path = "ingredientes.json"
 
-if __name__ == "__main__":
-    session = requests.Session()
-    sendPost(LOGIN, ADMIN)  # Inicia sesión
+# Cargar los ingredientes y realizar las comprobaciones
+ingredients = load_ingredients(file_path)
+validate_ingredients(ingredients)
 
-    # Subir ingredientes
-    print("Subiendo ingredientes...")
-    uploadIngredients('ingredientes.json')  # Archivo con los ingredientes
-
-    sendPost(LOGOUT)  # Cierra sesión
-    print("Fin.")

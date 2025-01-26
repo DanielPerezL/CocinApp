@@ -10,11 +10,6 @@
     "default_unit": "g"
   },
   {
-    "name_en": "Salt",
-    "name_es": "Sal",
-    "default_unit": "g"
-  },
-  {
     "name_en": "Butter",
     "name_es": "Mantequilla",
     "default_unit": "g"
@@ -30,28 +25,18 @@
     "default_unit": "units"
   },
   {
-    "name_en": "Cheese",
-    "name_es": "Queso",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Cream",
-    "name_es": "Nata",
-    "default_unit": "ml"
-  },
-  {
     "name_en": "Water",
     "name_es": "Agua",
     "default_unit": "ml"
   },
   {
-    "name_en": "Oil",
-    "name_es": "Aceite",
+    "name_en": "Olive Oil",
+    "name_es": "Aceite de Oliva",
     "default_unit": "ml"
   },
   {
-    "name_en": "Olive oil",
-    "name_es": "Aceite de oliva",
+    "name_en": "Vegetable Oil",
+    "name_es": "Aceite Vegetal",
     "default_unit": "ml"
   },
   {
@@ -60,163 +45,58 @@
     "default_unit": "g"
   },
   {
-    "name_en": "Honey",
-    "name_es": "Miel",
+    "name_en": "Baking Powder",
+    "name_es": "Polvo de Hornear",
     "default_unit": "g"
   },
   {
-    "name_en": "Vanilla extract",
-    "name_es": "Extracto de vainilla",
+    "name_en": "Vanilla Extract",
+    "name_es": "Extracto de Vainilla",
     "default_unit": "ml"
   },
   {
-    "name_en": "Baking powder",
-    "name_es": "Polvo de hornear",
+    "name_en": "Chocolate Chips",
+    "name_es": "Chispas de Chocolate",
     "default_unit": "g"
   },
   {
-    "name_en": "Chocolate",
-    "name_es": "Chocolate",
+    "name_en": "Cocoa Powder",
+    "name_es": "Cacao en Polvo",
     "default_unit": "g"
   },
   {
-    "name_en": "Cocoa powder",
-    "name_es": "Cacao en polvo",
+    "name_en": "Honey",
+    "name_es": "Miel",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Rice",
+    "name_es": "Arroz",
     "default_unit": "g"
   },
   {
-    "name_en": "Strawberries",
-    "name_es": "Fresas",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Bananas",
-    "name_es": "Plátanos",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Apples",
-    "name_es": "Manzanas",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Oranges",
-    "name_es": "Naranjas",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Lemons",
-    "name_es": "Limones",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Onions",
-    "name_es": "Cebollas",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Garlic",
-    "name_es": "Ajo",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Tomatoes",
-    "name_es": "Tomates",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Potatoes",
-    "name_es": "Patatas",
+    "name_en": "Pasta",
+    "name_es": "Pasta",
     "default_unit": "g"
   },
   {
-    "name_en": "Carrots",
-    "name_es": "Zanahorias",
+    "name_en": "Cheese",
+    "name_es": "Queso",
     "default_unit": "g"
   },
   {
-    "name_en": "Celery",
-    "name_es": "Apio",
-    "default_unit": "g"
+    "name_en": "Tomato Sauce",
+    "name_es": "Salsa de Tomate",
+    "default_unit": "ml"
   },
   {
-    "name_en": "Parsley",
-    "name_es": "Perejil",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Thyme",
-    "name_es": "Tomillo",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Rosemary",
-    "name_es": "Romero",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Basil",
-    "name_es": "Albahaca",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Cucumber",
-    "name_es": "Pepino",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Bell peppers",
-    "name_es": "Pimientos",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Chili peppers",
-    "name_es": "Chiles",
-    "default_unit": "units"
-  },
-  {
-    "name_en": "Spinach",
-    "name_es": "Espinacas",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Broccoli",
-    "name_es": "Brócoli",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Cauliflower",
-    "name_es": "Coliflor",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Zucchini",
-    "name_es": "Calabacín",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Mushrooms",
-    "name_es": "Champiñones",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Eggplant",
-    "name_es": "Berenjena",
+    "name_en": "Chicken Breast",
+    "name_es": "Pechuga de Pollo",
     "default_unit": "g"
   },
   {
     "name_en": "Beef",
-    "name_es": "Carne de res",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Pork",
-    "name_es": "Carne de cerdo",
-    "default_unit": "g"
-  },
-  {
-    "name_en": "Lamb",
-    "name_es": "Cordero",
+    "name_es": "Carne de Res",
     "default_unit": "g"
   },
   {
@@ -230,33 +110,533 @@
     "default_unit": "g"
   },
   {
-    "name_en": "Tuna",
-    "name_es": "Atún",
+    "name_en": "Carrots",
+    "name_es": "Zanahorias",
     "default_unit": "g"
   },
   {
-    "name_en": "Salmon",
-    "name_es": "Salmón",
+    "name_en": "Potatoes",
+    "name_es": "Papas",
     "default_unit": "g"
   },
   {
-    "name_en": "Octopus",
-    "name_es": "Pulpo",
+    "name_en": "Onions",
+    "name_es": "Cebollas",
     "default_unit": "g"
   },
   {
-    "name_en": "Squid",
-    "name_es": "Calamar",
+    "name_en": "Garlic",
+    "name_es": "Ajo",
     "default_unit": "g"
   },
   {
-    "name_en": "Clams",
-    "name_es": "Almejas",
+    "name_en": "Bell Peppers",
+    "name_es": "Pimientos",
     "default_unit": "g"
   },
   {
-    "name_en": "Oysters",
-    "name_es": "Ostras",
+    "name_en": "Spinach",
+    "name_es": "Espinacas",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Lettuce",
+    "name_es": "Lechuga",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Cucumber",
+    "name_es": "Pepino",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Tomatoes",
+    "name_es": "Tomates",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Avocado",
+    "name_es": "Aguacate",
     "default_unit": "units"
+  },
+  {
+    "name_en": "Apples",
+    "name_es": "Manzanas",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Bananas",
+    "name_es": "Plátanos",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Oranges",
+    "name_es": "Naranjas",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Strawberries",
+    "name_es": "Fresas",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Blueberries",
+    "name_es": "Arándanos",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Yogurt",
+    "name_es": "Yogur",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Cream",
+    "name_es": "Crema",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Cinnamon",
+    "name_es": "Canela",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Nutmeg",
+    "name_es": "Nuez Moscada",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Pepper",
+    "name_es": "Pimienta",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Parsley",
+    "name_es": "Perejil",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Basil",
+    "name_es": "Albahaca",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Thyme",
+    "name_es": "Tomillo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Rosemary",
+    "name_es": "Romero",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Bay Leaves",
+    "name_es": "Hojas de Laurel",
+    "default_unit": "units"
+  },
+  {
+    "name_en": "Lamb",
+    "name_es": "Cordero",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Pork",
+    "name_es": "Cerdo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Beef Stock",
+    "name_es": "Caldo de Res",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Chicken Stock",
+    "name_es": "Caldo de Pollo",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Vegetable Stock",
+    "name_es": "Caldo de Verduras",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Tomato Paste",
+    "name_es": "Pasta de Tomate",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Dried Beans",
+    "name_es": "Frijoles Secos",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Lentils",
+    "name_es": "Lentejas",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Chickpeas",
+    "name_es": "Garbanzos",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Quinoa",
+    "name_es": "Quinoa",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Couscous",
+    "name_es": "Cuscús",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Barley",
+    "name_es": "Cebada",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Oats",
+    "name_es": "Avena",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Almonds",
+    "name_es": "Almendras",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Cashews",
+    "name_es": "Anacardos",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Pistachios",
+    "name_es": "Pistachos",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Walnuts",
+    "name_es": "Nueces",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Hazelnuts",
+    "name_es": "Avellanas",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Peanuts",
+    "name_es": "Cacahuetes",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Pine Nuts",
+    "name_es": "Piñones",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Coconut Milk",
+    "name_es": "Leche de Coco",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Coconut Oil",
+    "name_es": "Aceite de Coco",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Soy Sauce",
+    "name_es": "Salsa de Soja",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Worcestershire Sauce",
+    "name_es": "Salsa Worcestershire",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Fish Sauce",
+    "name_es": "Salsa de Pescado",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Barbecue Sauce",
+    "name_es": "Salsa Barbacoa",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Mustard",
+    "name_es": "Mostaza",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Ketchup",
+    "name_es": "Ketchup",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Mayonnaise",
+    "name_es": "Mayonesa",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Sour Cream",
+    "name_es": "Crema Agria",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Maple Syrup",
+    "name_es": "Jarabe de Arce",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Cornstarch",
+    "name_es": "Maicena",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Rice Vinegar",
+    "name_es": "Vinagre de Arroz",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Apple Cider Vinegar",
+    "name_es": "Vinagre de Manzana",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Balsamic Vinegar",
+    "name_es": "Vinagre Balsámico",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "White Vinegar",
+    "name_es": "Vinagre Blanco",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Lemon Juice",
+    "name_es": "Jugo de Limón",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Lime Juice",
+    "name_es": "Jugo de Lima",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Orange Juice",
+    "name_es": "Jugo de Naranja",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Ginger",
+    "name_es": "Jengibre",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Turmeric",
+    "name_es": "Cúrcuma",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Paprika",
+    "name_es": "Pimentón",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Cumin",
+    "name_es": "Comino",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Coriander",
+    "name_es": "Cilantro",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Saffron",
+    "name_es": "Azafrán",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Mint",
+    "name_es": "Menta",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Oregano",
+    "name_es": "Orégano",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Chives",
+    "name_es": "Cebollín",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Tarragon",
+    "name_es": "Estragón",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Fennel",
+    "name_es": "Hinojo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Sage",
+    "name_es": "Salvia",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Rose Water",
+    "name_es": "Agua de Rosas",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Almond Extract",
+    "name_es": "Extracto de Almendra",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Cloves",
+    "name_es": "Clavos",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Allspice",
+    "name_es": "Pimienta de Jamaica",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Cardamom",
+    "name_es": "Cardamomo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Dark Chocolate",
+    "name_es": "Chocolate Negro",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Milk Chocolate",
+    "name_es": "Chocolate con Leche",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "White Chocolate",
+    "name_es": "Chocolate Blanco",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Sesame Oil",
+    "name_es": "Aceite de Sésamo",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Canola Oil",
+    "name_es": "Aceite de Canola",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Avocado Oil",
+    "name_es": "Aceite de Aguacate",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Peanut Butter",
+    "name_es": "Mantequilla de Cacahuate",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Tahini",
+    "name_es": "Tahini",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Agave Syrup",
+    "name_es": "Jarabe de Agave",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Stevia",
+    "name_es": "Stevia",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Brown Sugar",
+    "name_es": "Azúcar Moreno",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Molasses",
+    "name_es": "Melaza",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Corn Syrup",
+    "name_es": "Jarabe de Maíz",
+    "default_unit": "ml"
+  },
+  {
+    "name_en": "Baking Soda",
+    "name_es": "Bicarbonato de Sodio",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Salt",
+    "name_es": "Sal",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Chili Powder",
+    "name_es": "Polvo de Chile",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Curry Powder",
+    "name_es": "Polvo de Curry",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Garlic Powder",
+    "name_es": "Ajo en Polvo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Onion Powder",
+    "name_es": "Cebolla en Polvo",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Taco Seasoning",
+    "name_es": "Condimento para Tacos",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Fajita Seasoning",
+    "name_es": "Condimento para Fajitas",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Italian Seasoning",
+    "name_es": "Condimento Italiano",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Chinese Five Spice",
+    "name_es": "Especia China Cinco Especias",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Lemon Zest",
+    "name_es": "Ralladura de Limón",
+    "default_unit": "g"
+  },
+  {
+    "name_en": "Lime Zest",
+    "name_es": "Ralladura de Lima",
+    "default_unit": "g"
   }
 ]
