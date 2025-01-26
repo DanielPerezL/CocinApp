@@ -14,15 +14,14 @@ import UserPage from "./pages/UserPage";
 import ReportsPage from "./pages/ReportsPage";
 import CartPage from "./pages/CartPage";
 import SearchPage from "./pages/SearchPage";
+import ContactPage from "./pages/ContactPage";
+import AboutPage from "./pages/AboutPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
 
 {
   /*
   TODO:   
-    rellenar paginas:
-      contacto
-      sobre nosotros
-      politica de privacidad
-      terminos de uso
     check de politica de privacidad y terminos de uso en REGISTER
  
 
@@ -59,10 +58,10 @@ function App() {
           <Route path="user/:nickname" element={<UserPage />} />
           <Route path="reports" element={<ReportsPage />} />
 
-          <Route path="about" element={<UnderConstructionPage />} />
-          <Route path="contact" element={<UnderConstructionPage />} />
-          <Route path="privacy" element={<UnderConstructionPage />} />
-          <Route path="terms" element={<UnderConstructionPage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="privacy" element={<PrivacyPage />} />
+          <Route path="terms" element={<TermsPage />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
