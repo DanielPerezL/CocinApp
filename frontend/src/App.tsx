@@ -22,23 +22,12 @@ import TermsPage from "./pages/TermsPage";
 {
   /*
   TODO:   
-    check de politica de privacidad y terminos de uso en REGISTER
- 
-
-
-
-
-
-
-
-
-
+   
   test:
     probar comportamiento correcto incluse con access_token de 5/10 seg
 
   prod:
     config.py
-      añadir dominio de origin Ó eliminar cors (INVESTIGAR MEJOR SOLUCION)
       aumentar tiempo access_token 
   */
 }

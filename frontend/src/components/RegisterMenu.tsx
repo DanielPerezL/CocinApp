@@ -18,6 +18,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [registerMsg, setRegisterMsg] = useState<string | null>(null);
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +36,7 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
       setNickname("");
       setEmail("");
       setPassword("");
+      setTermsAccepted(false);
     }
   };
 
@@ -81,10 +83,30 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
           required
         />
       </div>
+      <div className="form-check mb-3">
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id="termsCheck"
+          checked={termsAccepted}
+          onChange={(e) => setTermsAccepted(e.target.checked)}
+          required
+        />
+        <label className="form-check-label" htmlFor="termsCheck">
+          {t("acceptTerms")}{" "}
+          <a href="/terms" target="_blank" rel="noopener noreferrer">
+            {t("useTerms")}
+          </a>{" "}
+          {t("and")}{" "}
+          <a href="/privacy" target="_blank" rel="noopener noreferrer">
+            {t("privacyPolicy")}
+          </a>
+        </label>
+      </div>
       <button
         type="submit"
         className="btn btn-primary w-100"
-        disabled={loading}
+        disabled={loading || !termsAccepted}
       >
         {loading ? t("loading...") : t("register")}
       </button>

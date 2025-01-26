@@ -171,8 +171,8 @@
     "termsPoint4Title": "Exención de Responsabilidad",
     "termsPoint4": "No somos responsables por inexactitudes o problemas que surjan al seguir recetas de esta plataforma.",
     "termsFooter": "Si tienes alguna pregunta sobre estos términos, no dudes en contactarnos.",
-
-  
+    "acceptTerms": "Acepto los",
+    "and": "y la",  
 
     "errorUpdatingPasswordNoValidNewPasswords":"La nueva constraseña no coincide.",
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",

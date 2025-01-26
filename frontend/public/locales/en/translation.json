@@ -172,7 +172,9 @@
     "termsPoint4Title": "Liability Disclaimer",
     "termsPoint4": "We are not liable for any inaccuracies or issues that arise from following recipes on this platform.",
     "termsFooter": "If you have any questions about these terms, feel free to contact us.",
-  
+    "acceptTerms": "I accept the",
+    "and": "and",
+
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",
     "errorLoginBadPassword": "The password is incorrect. Please try again.",  
