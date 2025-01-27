@@ -27,7 +27,7 @@ def refresh_access_token():
         return jsonify({"error": "Token inválido"}), 401
     new_access_token, _ = create_tokens(user)
     resp = jsonify({'refresh': True})
-    set_access_cookies(resp, new_access_token, max_age=app.config['JWT_REFRESH_TOKEN_EXPIRES'])
+    set_access_cookies(resp, new_access_token, max_age=app.config['JWT_ACCESS_TOKEN_EXPIRES'])
     return resp, 200
 
 with app.app_context():

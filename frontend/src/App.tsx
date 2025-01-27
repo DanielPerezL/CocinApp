@@ -22,13 +22,39 @@ import TermsPage from "./pages/TermsPage";
 {
   /*
   TODO:   
-   
-  test:
-    probar comportamiento correcto incluse con access_token de 5/10 seg
+    Registro:
+      Check box más llamativa
+      Al registrarse, login automático con pop-up informativo-> /profile
+      nombres case insensitive: comprobar error con Antonio
 
-  prod:
-    config.py
-      aumentar tiempo access_token 
+    Profile:
+      Confirmar eliminar foto perfil y COLOR BOTON
+      Cambiar contraseña COLOR BOTONES
+      Cerrar sesión COLOR BOTONES
+
+    PublicUserDetails:
+      CSS reportar
+
+    Search:
+      Boton para resetear filtros
+      Eliminar seleccion de radio button
+
+    Carrito:
+      Traducción unidades
+    
+    Publish y RecieEditor:
+      Indicar por qué no se puede publicar -> ademas de desactivar el button
+      
+    Banner:
+      Icono del footer lleva a "/"
+    
+    Mejoras ¿?:
+        Componente imagenes para tener preview
+        Sugerir nuevos ingredientes que no existen en la web
+        Foto de perfil en navbuttons
+        Opciones de reportes -> motivo de reporte 
+
+    AUMENTAR ACCESS TOKEN AGE -> 15 minutos
   */
 }
 
