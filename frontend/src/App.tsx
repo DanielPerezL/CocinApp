@@ -32,22 +32,13 @@ import TermsPage from "./pages/TermsPage";
       Cambiar contraseña COLOR BOTONES
       Cerrar sesión COLOR BOTONES
 
-    PublicUserDetails:
-      CSS reportar
-
     Search:
       Boton para resetear filtros
       Eliminar seleccion de radio button
 
-    Carrito:
-      Traducción unidades
-    
     Publish y RecieEditor:
       Indicar por qué no se puede publicar -> ademas de desactivar el button
       
-    Banner:
-      Icono del footer lleva a "/"
-    
     Mejoras ¿?:
         Componente imagenes para tener preview
         Sugerir nuevos ingredientes que no existen en la web
@@ -55,6 +46,8 @@ import TermsPage from "./pages/TermsPage";
         Opciones de reportes -> motivo de reporte 
 
     AUMENTAR ACCESS TOKEN AGE -> 15 minutos
+    CAMBIAR DOMINIO DE NUEVO
+    ELIMINAR EXPORT BD PORT
   */
 }
 

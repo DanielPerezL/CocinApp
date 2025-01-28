@@ -27,7 +27,7 @@ const ReportButton: React.FC<ReportButtonProps> = ({ text, className }) => {
         message={t("reportButtonMessage")}
         title={text}
       >
-        <img className="me-2 img-fluid" src={reportImg}></img>
+        <img className="me-2" src={reportImg}></img>
         {text}
       </NeedConfirmButton>
       <NotifyReportModal

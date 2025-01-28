@@ -53,7 +53,7 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
           getLoggedUserId() != user.id && (
             //No soy admin y tampo es mi cuenta, puedo reportar
             <ReportButton
-              className="btn btn-danger mt-3 ms-2"
+              className="btn btn-danger mt-3 ms-2 user-public-details-report"
               text={t("reportUser")}
             />
           )

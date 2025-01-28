@@ -76,7 +76,8 @@ const IngredientList: React.FC<IngredientListProps> = ({ recipes }) => {
             >
               <div className="d-flex align-items-center">
                 <span>
-                  <strong>{ingredient.name}</strong> ({ingredient.default_unit}
+                  <strong>{ingredient.name}</strong> (
+                  {t(ingredient.default_unit)}
                   ):
                 </span>
               </div>

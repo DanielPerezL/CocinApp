@@ -9,8 +9,8 @@ from sqlalchemy.exc import OperationalError
 # Inicializar Flask, SQLAlchemy y JWT
 app = Flask(__name__, static_folder='./static')
 
-#Definidir dominio para prod
-CORS(app, supports_credentials=True, origins=["master-stinkbug-slowly.ngrok-free.app"]) 
+#Definidir dominio para prod -> master-stinkbug-slowly.ngrok-free.app
+CORS(app, supports_credentials=True, origins=["*"]) 
 
 UPLOAD_FOLDER = '/cocinapp/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)

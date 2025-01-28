@@ -2,9 +2,11 @@ import React from "react";
 import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
 import { useTranslation } from "react-i18next";
 import "../css/Footer.css";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const currentYear = new Date().getFullYear();
 
@@ -57,7 +59,15 @@ const Footer = () => {
 
           {/* Sección de derechos de autor */}
           <div className="copyright-section col-md-4 text-center">
-            <img src={logo} alt="CocinApp Logo" className="mb-2" />
+            <img
+              src={logo}
+              alt="CocinApp Logo"
+              className="mb-2"
+              onClick={() => {
+                window.scrollTo(0, 0);
+                navigate("/");
+              }}
+            />
             <p className="mb-4">
               © {currentYear} CocinApp. {t("reserverRights")}
             </p>
