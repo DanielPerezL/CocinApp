@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // Importa Link desde react-router-dom
+import { Link } from "react-router-dom";
 import heart from "../assets/heart.png";
 import cart from "../assets/cart.png";
 import publish from "../assets/publish.png";

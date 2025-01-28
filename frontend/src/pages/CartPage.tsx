@@ -17,23 +17,23 @@ const CartPage = () => {
 
   const [user, setUser] = useState<UserDTO | null>(null);
   const [cartRecipes, setCartRecipes] = useState<RecipeSimpleDTO[]>([]);
-  const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
+  const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState<boolean>(false);
 
-  const loadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const loadingRef = useRef<boolean>(false);
 
   const loadMyCartRecipes = async () => {
-    if (loadingRef.current) return; // Evitar solicitudes repetidas
+    if (loadingRef.current) return;
     loadingRef.current = true;
     try {
-      const data = await fetchMyCartRecipes(); // Llama a la función para obtener las recetas
+      const data = await fetchMyCartRecipes();
       const newRecipes = data.recipes;
 
-      setCartRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
+      setCartRecipes((prev) => [...prev, ...newRecipes]);
     } catch (err: any) {
-      setError(err.message); // Captura el error y actualiza el estado
+      setError(err.message);
     } finally {
-      loadingRef.current = false; // Cambia el estado de carga a false al final
+      loadingRef.current = false;
     }
   };
 

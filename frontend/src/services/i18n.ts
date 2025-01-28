@@ -1,28 +1,24 @@
-// src/i18n.ts
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import HttpApi from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
-// Configuración inicial
 i18n
-  .use(HttpApi) // para cargar archivos de traducción desde el servidor
-  .use(LanguageDetector) // para detectar el idioma del navegador
-  .use(initReactI18next) // para integrarse con React
+  .use(HttpApi)
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
-    supportedLngs: ["en", "es"], // idiomas soportados
-    fallbackLng: "en", // idioma por defecto
+    supportedLngs: ["en", "es"],
     detection: {
-      order: ["cookie", "localStorage", "navigator"], // orden de detección
-      caches: ["cookie", "localStorage"], // almacenamiento del idioma detectado
+      order: ["cookie", "localStorage", "navigator"],
+      caches: ["cookie", "localStorage"],
     },
     backend: {
-      loadPath: "/locales/{{lng}}/translation.json", // ruta de las traducciones
+      loadPath: "/locales/{{lng}}/translation.json",
     },
     interpolation: {
-      escapeValue: false, // react ya se encarga de escapar el contenido
+      escapeValue: false,
     },
   });
 
-// Exporta `i18n` para configuraciones adicionales si es necesario
 export default i18n;

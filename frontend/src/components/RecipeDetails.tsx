@@ -48,19 +48,19 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [isFavorite, setFavorite] = useState(recipe.isFav);
   const [isInCart, setInCart] = useState(recipe.isCart);
-  const [showLoginModal, setShowLoginModal] = useState(false); // Modal para iniciar sesión
-  const [showErrorCartModal, setShowErrorCartModal] = useState(false); // Modal para iniciar sesión
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showErrorCartModal, setShowErrorCartModal] = useState(false);
 
   const [imgError, setImgError] = useState(false);
 
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
-  const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
+  const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const loadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const loadingRef = useRef<boolean>(false);
 
   const loadRecipes = async () => {
-    if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
+    if (loadingRef.current || !hasMore) return;
     loadingRef.current = true;
     try {
       let data;
@@ -89,9 +89,9 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
       });
       setHasMore(data.has_more); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
-      setError(err.message); // Captura el error y actualiza el estado
+      setError(err.message);
     } finally {
-      loadingRef.current = false; // Cambia el estado de carga a false al final
+      loadingRef.current = false;
     }
   };
 

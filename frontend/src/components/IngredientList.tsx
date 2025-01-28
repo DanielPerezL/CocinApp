@@ -24,26 +24,20 @@ const IngredientList: React.FC<IngredientListProps> = ({ recipes }) => {
     recipes.forEach((recipe) => {
       recipe.ingredients.forEach((ingredient) => {
         if (ingredientMap[ingredient.name]) {
-          // Si el ingrediente ya existe, sumamos la cantidad
           ingredientMap[ingredient.name].amount = (
             parseFloat(ingredientMap[ingredient.name].amount) +
             parseFloat(ingredient.amount)
           ).toString();
         } else {
-          // Si el ingrediente no existe, lo añadimos al map
           ingredientMap[ingredient.name] = { ...ingredient };
         }
       });
     });
-
-    // Convertimos el map a un array y lo retornamos
     return Object.values(ingredientMap);
   };
 
-  // Obtenemos la lista de ingredientes agregados
   const aggregatedIngredients = aggregateIngredients(recipes);
 
-  // Función para manejar el cambio en el estado del ingrediente (marcar/desmarcar)
   const handleCheck = (ingredientName: string) => {
     setCheckedIngredients((prev) => {
       const newChecked = new Set(prev);
@@ -72,7 +66,7 @@ const IngredientList: React.FC<IngredientListProps> = ({ recipes }) => {
                   ? "text-decoration-line-through bg-light"
                   : "cursor-pointer"
               }`}
-              onClick={() => handleCheck(ingredient.name)} // Maneja el cambio al hacer click en el li
+              onClick={() => handleCheck(ingredient.name)}
             >
               <div className="d-flex align-items-center">
                 <span>

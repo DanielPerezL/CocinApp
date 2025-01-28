@@ -1,11 +1,11 @@
-import React, { act, useEffect, useState } from "react";
-import LoginMenu from "./LoginMenu"; // Importar el componente LoginMenu
-import RegisterMenu from "./RegisterMenu"; // Importar el componente RegisterMenu
-import { login, registerUser } from "../services/apiService"; // Importar funciones de API
+import React, { useState } from "react";
+import LoginMenu from "./LoginMenu";
+import RegisterMenu from "./RegisterMenu";
+import { login, registerUser } from "../services/apiService";
 import { useTranslation } from "react-i18next";
 
 interface AccessMenuProps {
-  onLoginSuccess: () => void; // Definir el callback como prop
+  onLoginSuccess: () => void;
 }
 
 const AccessMenu: React.FC<AccessMenuProps> = ({ onLoginSuccess }) => {
@@ -16,7 +16,7 @@ const AccessMenu: React.FC<AccessMenuProps> = ({ onLoginSuccess }) => {
   const handleLoginSubmit = async (email: string, password: string) => {
     try {
       await login(email, password);
-      onLoginSuccess(); // Llama al callback en el componente padre para actualizar
+      onLoginSuccess();
     } catch (err: any) {
       throw new Error(err.message);
     }
@@ -44,7 +44,10 @@ const AccessMenu: React.FC<AccessMenuProps> = ({ onLoginSuccess }) => {
           <LoginMenu onSubmit={handleLoginSubmit} />
         ) : (
           <>
-            <RegisterMenu onSubmit={handleRegisterSubmit} />
+            <RegisterMenu
+              onSubmit={handleRegisterSubmit}
+              onLogin={handleLoginSubmit}
+            />
           </>
         )}
         <button

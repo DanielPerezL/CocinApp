@@ -14,7 +14,6 @@ const SearchPage = () => {
   const { t } = useTranslation();
   const query = useQuery();
 
-  // Estado para almacenar las recetas
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
   const loadingRef = useRef<boolean>(false);
@@ -50,7 +49,7 @@ const SearchPage = () => {
   };
 
   const loadRecipes = async () => {
-    if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
+    if (loadingRef.current || !hasMore) return;
 
     loadingRef.current = true;
 
@@ -92,7 +91,7 @@ const SearchPage = () => {
 
   const onResetFilters = () => {
     setFilters(initialFilters); // Restaura los filtros iniciales
-    clearSearchEvents.emit("clearSearch");
+    clearSearchEvents.emit("clearSearch"); //Para eliminar el texto de la barra de búsqueda superior (filtro titulo)
     loadRecipes(); // Vuelve a cargar las recetas
   };
 
@@ -102,9 +101,9 @@ const SearchPage = () => {
 
   //USE EFECT PARA ACTUALIZAR BUSQUEDA SEGUN LOS CAMPOS
   useEffect(() => {
-    setRecipes([]); // Limpiar recetas anteriores
-    setOffset(0); // Resetear offset
-    setHasMore(true); // Restablecer el estado de 'hasMore'
+    setRecipes([]);
+    setOffset(0);
+    setHasMore(true);
     loadingRef.current = false;
 
     setReadyForLoad(true);
@@ -113,8 +112,8 @@ const SearchPage = () => {
   // Ejecutar la carga de recetas solo cuando esté listo para hacerlo
   useEffect(() => {
     if (readyForLoad) {
-      loadRecipes(); // Cargar recetas
-      setReadyForLoad(false); // Desactivar el estado de "listo" después de la carga
+      loadRecipes();
+      setReadyForLoad(false);
     }
   }, [readyForLoad]);
 
@@ -149,7 +148,7 @@ const SearchPage = () => {
             <p className="text-muted">{t("noSearchResultsMessage")}</p>
             <button
               className="btn btn-primary mt-3"
-              onClick={() => onResetFilters()} // Llama una función para reiniciar los filtros
+              onClick={() => onResetFilters()}
             >
               {t("resetFilters")}
             </button>

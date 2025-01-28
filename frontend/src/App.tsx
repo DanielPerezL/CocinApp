@@ -21,32 +21,12 @@ import TermsPage from "./pages/TermsPage";
 
 {
   /*
-  TODO:   
-    Registro:
-      Al registrarse, login automático con pop-up informativo-> /profile
-
-    Publish y RecieEditor:
-      Indicar por qué no se puede publicar -> ademas de desactivar el button
-      
-    
-    COMENTAR CODIGO
-    AUMENTAR ACCESS TOKEN AGE -> 15 minutos
-    CAMBIAR DOMINIO DE NUEVO
-    ELIMINAR EXPORT BD PORT
-
-
-
-
-
-
-
-
-
-    Mejoras MEMORIA:
-      Componente imagenes para tener preview
-      Sugerir nuevos ingredientes que no existen en la web
-      Foto de perfil en navbuttons
-      Opciones de reportes -> motivo de reporte 
+  Mejoras MEMORIA:
+    Componente imagenes para tener preview
+    Sugerir nuevos ingredientes que no existen en la web
+    Indicar por qué no se puede publicar -> ademas de desactivar el button
+    Foto de perfil en navbuttons
+    Opciones de reportes -> motivo de reporte 
   */
 }
 

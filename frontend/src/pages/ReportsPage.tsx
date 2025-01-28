@@ -21,12 +21,12 @@ const ReportsPage: React.FC = () => {
 
   useEffect(() => {
     const loadReports = async () => {
-      const fetchedReports = await fetchReports(); // Llama a la función para obtener las recetas
-      setReports(fetchedReports); // Actualiza el estado con las recetas obtenidas
+      const fetchedReports = await fetchReports();
+      setReports(fetchedReports);
       setLoading(false);
     };
 
-    loadReports(); // Llama a la función para cargar las recetas
+    loadReports();
   }, [refresh]);
 
   if (!isAdmin()) return <NoPage />;

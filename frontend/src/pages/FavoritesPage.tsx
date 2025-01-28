@@ -16,38 +16,37 @@ const FavoritesPage = () => {
 
   const [user, setUser] = useState<UserDTO | null>(null);
   const [favRecipes, setFavRecipes] = useState<RecipeSimpleDTO[]>([]);
-  const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
+  const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState<boolean>(false);
-
-  const loadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const loadingRef = useRef<boolean>(false);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
   const loadMyFavRecipes = async () => {
-    if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
+    if (loadingRef.current || !hasMore) return;
     loadingRef.current = true;
     try {
-      const data = await fetchMyFavRecipes(offset); // Llama a la función para obtener las recetas
+      const data = await fetchMyFavRecipes(offset);
       const newRecipes = data.recipes;
 
-      setFavRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
-      setOffset((prev) => prev + newRecipes.length); // Incrementar el offset
-      setHasMore(data.has_more); // Si no hay más recetas, desactivar carga
+      setFavRecipes((prev) => [...prev, ...newRecipes]);
+      setOffset((prev) => prev + newRecipes.length);
+      setHasMore(data.has_more);
     } catch (err: any) {
-      setError(err.message); // Captura el error y actualiza el estado
+      setError(err.message);
     } finally {
-      loadingRef.current = false; // Cambia el estado de carga a false al final
+      loadingRef.current = false;
     }
   };
 
   const [similarRecipes, setSimilarRecipes] = useState<RecipeSimpleDTO[]>([]);
-  const [similarError, setSimilarError] = useState<string | null>(null); // Estado para gestionar errores
+  const [similarError, setSimilarError] = useState<string | null>(null);
   const [similarOffset, setSimilarOffset] = useState(0);
   const [similarHasMore, setSimilarHasMore] = useState(true);
-  const similarLoadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const similarLoadingRef = useRef<boolean>(false);
 
   const loadSimilarRecipes = async () => {
-    if (similarLoadingRef.current || !similarHasMore) return; // Evitar solicitudes repetidas
+    if (similarLoadingRef.current || !similarHasMore) return;
     similarLoadingRef.current = true;
     try {
       let data;
@@ -71,14 +70,13 @@ const FavoritesPage = () => {
         // Si existen duplicados, ajustamos el offset
         const newOffset = similarOffset + (newRecipes.length - duplicates);
         setSimilarOffset(newOffset); // Actualizar el offset con el valor correcto
-
         return [...prev, ...uniqueRecipes];
       });
       setSimilarHasMore(data.has_more); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
-      setSimilarError(err.message); // Captura el error y actualiza el estado
+      setSimilarError(err.message);
     } finally {
-      similarLoadingRef.current = false; // Cambia el estado de carga a false al final
+      similarLoadingRef.current = false;
     }
   };
 

@@ -3,6 +3,8 @@
     
     "welcome": "Welcome to CocinApp",
     "loadMore": "Load more",
+    "registerModal": "Successful Registration",
+    "registerModalMessage": "You have successfully registered. You will be logged in automatically with your new account.",
     "contactMessage": "You can reach the developer via",
     "aboutTitle": "About CocinApp",
     "aboutSubtitle": "Learn more about its development",

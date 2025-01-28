@@ -4,7 +4,7 @@ import { isLoggedIn } from "../services/apiService";
 
 interface AuthWrapperProps {
   children: ReactNode;
-  onLoginSuccess: () => void; // Definir el callback como prop
+  onLoginSuccess: () => void;
 }
 
 const AuthWrapper: React.FC<AuthWrapperProps> = ({

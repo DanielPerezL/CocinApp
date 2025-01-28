@@ -1,8 +1,6 @@
-// src/components/ImageCarousel.tsx
 import React, { useState } from "react";
 import "../css/ImageCarousel.css";
 import { getImage } from "../services/apiService";
-import { Modal } from "react-bootstrap";
 import ImageModal from "./ImagenModal";
 
 interface ImageCarouselProps {

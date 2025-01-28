@@ -1,37 +1,37 @@
-/* Estilo del contenedor principal para destacar el componente */
+
 .main-container {
-  background-color: #fbfbfb; /* Fondo gris claro */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  background-color: #fbfbfb; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   padding: 20px;
   border-radius: 8px;
-  margin-top: 20px; /* Separación del borde superior */
+  margin-top: 20px;
 }
 
 .mian-container h3 {
-  color: #343a40; /* Color oscuro para los títulos */
+  color: #343a40; 
 }
 
 .bottom-nav {
-  position: fixed; /* Fija la posición de los botones en la parte inferior */
+  position: fixed; 
   left: 0;
   bottom: 0;
-  width: 100%; /* Asegúrate de que ocupe todo el ancho */
-  z-index: 1000; /* Asegúrate de que estén encima del contenido */
+  width: 100%; 
+  z-index: 1000; 
 }
 
 .modal-dialog-custom {
-  max-width: 100%; /* Permite que el modal ocupe todo el ancho si es necesario */
-  margin: 0; /* Centra el modal */
+  max-width: 100%; 
+  margin: 0; 
 }
 
 .modal-content {
-  background: transparent; /* Elimina el fondo del modal para que solo se vea la imagen */
-  border: none; /* Elimina los bordes */
+  background: transparent; 
+  border: none; 
 }
 
 .long-text {
-  overflow: hidden;             /* Oculta cualquier texto que sobresalga */
-  text-overflow: ellipsis;      /* Añade los "..." al final del texto truncado */
+  overflow: hidden;             
+  text-overflow: ellipsis;      
 }
 
 .cursor-pointer{

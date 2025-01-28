@@ -21,20 +21,17 @@ const NeedConfirmButton: React.FC<NeedConfirmButtonProps> = ({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleConfirm = () => {
-    onConfirm(); // Ejecutar la acción confirmada
-    setShowConfirmModal(false); // Cerrar el modal
+    onConfirm();
+    setShowConfirmModal(false);
   };
 
   const handleCancel = () => {
-    setShowConfirmModal(false); // Cerrar el modal sin hacer nada
+    setShowConfirmModal(false);
   };
 
   return (
     <>
-      <button
-        className={className}
-        onClick={() => setShowConfirmModal(true)} // Mostrar el modal de confirmación
-      >
+      <button className={className} onClick={() => setShowConfirmModal(true)}>
         {children}
       </button>
 

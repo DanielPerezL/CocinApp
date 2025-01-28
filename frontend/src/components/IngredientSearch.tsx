@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Ingredient, ConcreteIngredient } from "../interfaces";
+import { Ingredient } from "../interfaces";
 import { useTranslation } from "react-i18next";
 import { fetchIngredients } from "../services/apiService";
 import "../css/IngredientSearch.css";

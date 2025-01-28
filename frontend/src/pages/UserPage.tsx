@@ -4,37 +4,37 @@ import {
   RECIPE_LIMIT,
   fetchUserPublicFromNick,
   fetchUserRecipes,
-} from "../services/apiService"; // Ajusta la ruta según tu proyecto
+} from "../services/apiService";
 import { UserPublicDTO, RecipeSimpleDTO } from "../interfaces";
-import RecipeGrid from "../components/RecipeGrid"; // Ajusta la ruta según tu proyecto
+import RecipeGrid from "../components/RecipeGrid";
 import { t } from "i18next";
 import UserPublicDetails from "../components/UserPublicDetails";
 import NoPage from "./NoPage";
 
 const UserPage: React.FC = () => {
-  const { nickname } = useParams<{ nickname: string }>(); // Obtenemos el nickname de la URL
+  const { nickname } = useParams<{ nickname: string }>();
   const [user, setUser] = useState<UserPublicDTO | null>(null);
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const loadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const loadingRef = useRef<boolean>(false);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
   const loadRecipes = async (user_id: string) => {
-    if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
+    if (loadingRef.current || !hasMore) return;
     loadingRef.current = true;
     try {
-      const data = await fetchUserRecipes(user_id, offset); // Llama a la función para obtener las recetas
+      const data = await fetchUserRecipes(user_id, offset);
       const newRecipes = data.recipes;
 
-      setRecipes((prev) => [...prev, ...newRecipes]); // Agregar recetas nuevas
-      setOffset((prev) => prev + newRecipes.length); // Incrementar el offset
-      setHasMore(data.has_more); // Si no hay más recetas, desactivar carga
+      setRecipes((prev) => [...prev, ...newRecipes]);
+      setOffset((prev) => prev + newRecipes.length);
+      setHasMore(data.has_more);
     } catch (err: any) {
-      setError(err.message); // Captura el error y actualiza el estado
+      setError(err.message);
     } finally {
-      loadingRef.current = false; // Cambia el estado de carga a false al final
+      loadingRef.current = false;
     }
   };
 
@@ -46,7 +46,6 @@ const UserPage: React.FC = () => {
       }
 
       try {
-        // Obtener los detalles del usuario por su nickname
         const userData = await fetchUserPublicFromNick(nickname);
         setUser(userData);
         loadRecipes(userData.id);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Button } from "react-bootstrap"; // Importar Bootstrap para el modal
 import { useTranslation } from "react-i18next";
 

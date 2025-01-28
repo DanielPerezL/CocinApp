@@ -5,7 +5,7 @@ import "../css/ImagenModal.css";
 interface ImageModalProps {
   show: boolean;
   image: string;
-  onClose: () => void; // Función para cerrar el modal
+  onClose: () => void;
 }
 
 const ImageModal: React.FC<ImageModalProps> = ({ show, image, onClose }) => {

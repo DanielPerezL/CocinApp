@@ -1,9 +1,9 @@
 .ingredient-list li {
     padding: 8px;
-    cursor: pointer; /* Cambia el puntero a mano cuando se pasa por encima */
+    cursor: pointer; 
   }
   
   .ingredient-list li:hover {
-    background-color: #f0f0f0; /* Color de fondo al pasar el mouse por encima */
+    background-color: #f0f0f0; 
   }
   

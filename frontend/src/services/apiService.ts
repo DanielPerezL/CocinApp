@@ -12,7 +12,7 @@ import {
 } from "../interfaces";
 import { authEvents } from "../events/authEvents";
 
-const NGROK = false;
+const NGROK = true;
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (NGROK) {
@@ -344,7 +344,7 @@ export const login = async (email: string, password: string): Promise<void> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include", // Permite que las cookies sean enviadas y recibidas
+      credentials: "include",
     });
   } catch (error) {
     throw new Error(t("errorLogin"));
@@ -380,7 +380,7 @@ export const getImage = (filename: string): string => {
 export const logout = async (): Promise<void> => {
   const response = await fetch(`${API_BASE_URL}/users/logout`, {
     method: "POST",
-    credentials: "include", // Incluye las cookies en la solicitud para que el backend pueda eliminarlas
+    credentials: "include",
   });
 
   localStorage.removeItem("isLoggedIn");
@@ -397,7 +397,7 @@ const reportResourceUnsafe = async (resource: string): Promise<void> => {
   let response: Response;
   const data = { reported_resource: resource };
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(`${API_BASE_URL}/reports`, {
@@ -424,11 +424,11 @@ export const fetchReports = async () => {
 const fetchReportsUnsafe = async (): Promise<ReportDTO[]> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(`${API_BASE_URL}/reports`, {
       method: "GET",
-      credentials: "include", // Incluye las cookies en la solicitud
+      credentials: "include",
       headers,
     });
   } catch (error) {
@@ -446,12 +446,12 @@ export const setReportReviewed = async (report: ReportDTO) => {
 const setReportReviewedUnsafe = async (report: ReportDTO): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(`${API_BASE_URL}/reports/${report.id}`, {
       method: "PUT",
-      credentials: "include", // Incluye las cookies en la solicitud
+      credentials: "include",
       headers,
     });
   } catch (error) {
@@ -468,12 +468,12 @@ export const postIngredients = async (jsonContent: string) => {
 const postIngredientsUnsafe = async (jsonContent: string): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(`${API_BASE_URL}/recipe/ingredients`, {
       method: "POST",
-      credentials: "include", // Incluye las cookies en la solicitud
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         ...headers,
@@ -496,12 +496,12 @@ export const fetchLoggedUserProfile = async () => {
 const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
       method: "GET",
-      credentials: "include", // Incluye las cookies en la solicitud
+      credentials: "include",
       headers,
     });
   } catch (error) {
@@ -549,7 +549,7 @@ export const addRecipeFav = async (id: string) => {
 const addRecipeFavUnsafe = async (id: string): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(
@@ -575,13 +575,13 @@ export const rmRecipeFav = async (id: string) => {
 const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(
       `${API_BASE_URL}/users/${getLoggedUserId()}/fav_recipes/${id}`,
       {
         method: "DELETE",
-        credentials: "include", // Incluye las cookies en la solicitud
+        credentials: "include",
         headers,
       }
     );
@@ -602,14 +602,14 @@ const fetchMyFavRecipesUnsafe = async (
 ): Promise<FetchRecipesResponse> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(
       `${API_BASE_URL}/users/${getLoggedUserId()}/fav_recipes?offset=${offset}&limit=${RECIPE_LIMIT}`,
       {
         method: "GET",
-        credentials: "include", // Incluye las cookies en la solicitud
+        credentials: "include",
         headers,
       }
     );
@@ -630,7 +630,7 @@ export const addRecipeCart = async (id: string) => {
 const addRecipeCartUnsafe = async (id: string): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(
@@ -655,13 +655,13 @@ export const rmRecipeCart = async (id: string) => {
 const rmRecipeCartUnsafe = async (id: string): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(
       `${API_BASE_URL}/users/${getLoggedUserId()}/cart_recipes/${id}`,
       {
         method: "DELETE",
-        credentials: "include", // Incluye las cookies en la solicitud
+        credentials: "include",
         headers,
       }
     );
@@ -680,7 +680,7 @@ export const fetchMyCartRecipes = async () => {
 const fetchMyCartRecipesUnsafe = async (): Promise<FetchRecipesResponse> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(
@@ -689,7 +689,7 @@ const fetchMyCartRecipesUnsafe = async (): Promise<FetchRecipesResponse> => {
       )}`,
       {
         method: "GET",
-        credentials: "include", // Incluye las cookies en la solicitud
+        credentials: "include",
         headers,
       }
     );
@@ -710,17 +710,17 @@ export const uploadImage = async (imageFile: File): Promise<string> => {
 };
 const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
   let response: Response;
+
+  // Crear un FormData para enviar la imagen
   const formData = new FormData();
   formData.append("image", imageFile);
 
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
-    // Crea un FormData para enviar la imagen
-
     response = await fetch(`${API_BASE_URL}/images`, {
       method: "POST",
-      credentials: "include", // Incluye las cookies en la solicitud
+      credentials: "include",
       headers,
       body: formData, // Enviar la imagen en el cuerpo de la solicitud
     });
@@ -776,20 +776,20 @@ const uploadRecipeUnsafe = async (
     time,
     difficulty,
     type,
-    images: imagePaths, // Puedes renombrar la clave si es necesario en el servidor
+    images: imagePaths,
   };
 
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(`${API_BASE_URL}/recipes`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json", // Especifica el tipo de contenido
+        "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include", // Incluye las cookies en la solicitud
-      body: JSON.stringify(recipeData), // Enviar los datos de la receta en el cuerpo de la solicitud
+      credentials: "include",
+      body: JSON.stringify(recipeData),
     });
   } catch (error) {
     throw new Error(t("errorUploadingRecipe"));
@@ -849,17 +849,17 @@ const updateRecipeUnsafe = async (
   if (imagePaths !== undefined) recipeData.images = imagePaths;
 
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
     response = await fetch(`${API_BASE_URL}/recipes/${id}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json", // Especifica el tipo de contenido
+        "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include", // Incluye las cookies en la solicitud
-      body: JSON.stringify(recipeData), // Enviar los datos de la receta en el cuerpo de la solicitud
+      credentials: "include",
+      body: JSON.stringify(recipeData),
     });
   } catch (error) {
     throw new Error(t("errorUpdatingRecipe"));
@@ -877,18 +877,18 @@ export const updateProfilePic = async (imagePath: string): Promise<void> => {
 const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   const data = { picture: imagePath };
 
   try {
     response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json", // Especifica el tipo de contenido
+        "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include", // Incluye las cookies en la solicitud
-      body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
+      credentials: "include",
+      body: JSON.stringify(data),
     });
   } catch (error) {
     throw new Error(t("errorUpdatingProfilePic"));
@@ -916,7 +916,7 @@ const updatePasswordUnsafe = async (
 ): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   const data = {
     current_password: current_password,
     new_password: new_password,
@@ -925,11 +925,11 @@ const updatePasswordUnsafe = async (
     response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json", // Especifica el tipo de contenido
+        "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include", // Incluye las cookies en la solicitud
-      body: JSON.stringify(data), // Enviar los datos de la receta en el cuerpo de la solicitud
+      credentials: "include",
+      body: JSON.stringify(data),
     });
   } catch (error) {
     throw new Error(t("errorUpdatingPassword"));
@@ -952,7 +952,7 @@ export const removeAccount = async (id: string): Promise<void> => {
 const removeAccountUnsafe = async (id: string): Promise<void> => {
   let response: Response;
   const csrfToken = getCookie("csrf_access_token");
-  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {}; // Deja los headers vacíos si csrfToken es undefined
+  const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(`${API_BASE_URL}/users/${id}`, {
       method: "DELETE",
@@ -986,7 +986,7 @@ const removeRecipeUnsafe = async (idR: string): Promise<void> => {
       headers: {
         ...headers,
       },
-      credentials: "include", // Incluye las cookies en la solicitud
+      credentials: "include",
     });
   } catch (error) {
     throw new Error(t("errorDeletingRecipe"));
@@ -1015,7 +1015,7 @@ const refreshAccessToken = async (): Promise<void> => {
     const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
     const response = await fetch(`${TOKEN_BASE_URL}/refresh`, {
       method: "POST",
-      credentials: "include", // Incluye las cookies en la solicitud
+      credentials: "include",
       headers,
     });
 

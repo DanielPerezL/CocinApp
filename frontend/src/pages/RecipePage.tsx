@@ -10,7 +10,7 @@ import { useQuery } from "../main";
 const RecipePage = () => {
   const { t } = useTranslation();
 
-  const location = useLocation(); // Aquí obtienes la ubicación completa
+  const location = useLocation();
   const query = useQuery();
   const id = query.get("id"); // Obtiene el valor del parámetro 'id'
   const [recipe, setRecipe] = useState<RecipeDetailDTO | null>(null);
@@ -18,7 +18,6 @@ const RecipePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Función para obtener los detalles de la receta
   const loadRecipeDetails = async () => {
     setLoading(true);
     if (!id) {
@@ -39,7 +38,7 @@ const RecipePage = () => {
   };
 
   useEffect(() => {
-    loadRecipeDetails(); // Llama a la función al montar el componente o si cambia el ID
+    loadRecipeDetails(); // Llama a la función al montar el componente o si cambia location(e.d. URL que contiene el ID)
   }, [location]);
 
   return (

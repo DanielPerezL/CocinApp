@@ -7,15 +7,13 @@ import { useTranslation } from "react-i18next";
 const Home = () => {
   const { t } = useTranslation();
 
-  // Estado para almacenar las recetas
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
-  const [error, setError] = useState<string | null>(null); // Estado para gestionar errores
-
-  const loadingRef = useRef<boolean>(false); // Estado para gestionar la carga
+  const [error, setError] = useState<string | null>(null);
+  const loadingRef = useRef<boolean>(false);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const loadRecipes = async () => {
-    if (loadingRef.current || !hasMore) return; // Evitar solicitudes repetidas
+    if (loadingRef.current || !hasMore) return;
     loadingRef.current = true;
     try {
       const data = await fetchRecipes(offset);
@@ -37,9 +35,9 @@ const Home = () => {
       });
       setHasMore(data.has_more); // Si no hay más recetas, desactivar carga
     } catch (err: any) {
-      setError(err.message); // Captura el error y actualiza el estado
+      setError(err.message);
     } finally {
-      loadingRef.current = false; // Cambia el estado de carga a false al final
+      loadingRef.current = false;
     }
   };
   useEffect(() => {

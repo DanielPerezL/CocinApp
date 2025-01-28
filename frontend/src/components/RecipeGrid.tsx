@@ -17,7 +17,7 @@ const RecipeGrid: React.FC<RecipesGridProps> = ({
   onLoadMore,
 }) => {
   const { t } = useTranslation();
-  const loadMoreButtonRef = useRef<HTMLButtonElement | null>(null); // Referencia al botón
+  const loadMoreButtonRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <>

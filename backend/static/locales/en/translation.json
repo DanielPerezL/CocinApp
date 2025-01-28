@@ -3,6 +3,8 @@
     
     "welcome": "Welcome to CocinApp",
     "loadMore": "Load more",
+    "registerModal": "Successful Registration",
+    "registerModalMessage": "You have successfully registered. You will be logged in automatically with your new account.",
     "contactMessage": "You can reach the developer via",
     "aboutTitle": "About CocinApp",
     "aboutSubtitle": "Learn more about its development",
@@ -174,6 +176,9 @@
     "termsFooter": "If you have any questions about these terms, feel free to contact us.",
     "acceptTerms": "I accept the",
     "and": "and",
+    "photoDelete": "Delete Photo",
+    "photoDeleteMessage": "Are you sure? This action cannot be undone and the photo will be permanently deleted.",
+    
 
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",

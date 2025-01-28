@@ -10,7 +10,7 @@ from sqlalchemy.exc import OperationalError
 app = Flask(__name__, static_folder='./static')
 
 #Definidir dominio para prod -> master-stinkbug-slowly.ngrok-free.app
-CORS(app, supports_credentials=True, origins=["*"]) 
+CORS(app, supports_credentials=True, origins=["master-stinkbug-slowly.ngrok-free.app"]) 
 
 UPLOAD_FOLDER = '/cocinapp/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -18,7 +18,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.environ['DATABASE_USER']}:{os.environ['DATABASE_PASSWORD']}@{os.environ['DATABASE_HOST']}/{os.environ['DATABASE_NAME']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY'] 
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(seconds=2)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=90)
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'

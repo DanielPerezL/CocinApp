@@ -1,5 +1,4 @@
-import React from "react";
-import logo from "../assets/logo.png"; // Ajusta la ruta según tu estructura
+import logo from "../assets/logo.png";
 import { useTranslation } from "react-i18next";
 import "../css/Footer.css";
 import { useNavigate } from "react-router-dom";

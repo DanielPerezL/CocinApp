@@ -3,7 +3,7 @@ import {
   fetchRecipesCategories,
   uploadImage,
   uploadRecipe,
-} from "../services/apiService"; // Asegúrate de que esta función esté disponible
+} from "../services/apiService";
 import { useTranslation } from "react-i18next";
 import { CategoryOptions, ConcreteIngredient, Ingredient } from "../interfaces";
 import IngredientSearch from "./IngredientSearch";
@@ -119,7 +119,7 @@ const RecipeUploader: React.FC = () => {
       setProcedure([""]);
       setSelectedImages([]);
       if (fileInputRef.current) {
-        fileInputRef.current.value = ""; // Reset the input
+        fileInputRef.current.value = "";
       }
     }
   };

@@ -1,4 +1,4 @@
-/* src/css/RecetasCarousel.css */
+
 .recipes-carousel {
   display: flex;
   flex-direction: column;
@@ -7,28 +7,28 @@
 
 .recipes-carousel .row {
   display: flex;
-  overflow-x: auto; /* Permite el desplazamiento horizontal */
+  overflow-x: auto; 
   width: 100%;
 }
 
 .recipe-carousel-controls {
   display: flex;
-  justify-content: center; /* Centra los botones */
-  margin-top: 20px; /* Espaciado entre las recipes y los botones */
+  justify-content: center; 
+  margin-top: 20px; 
 }
 
 .recipe-carousel-button {
-  background-color: #007bff; /* Color de fondo */
-  color: white; /* Color del texto */
-  border: none; /* Sin borde */
-  border-radius: 5px; /* Bordes redondeados */
-  padding: 10px 20px; /* Espaciado interno */
-  margin: 0 10px; /* Espaciado entre los botones */
-  cursor: pointer; /* Cambia el cursor al pasar el ratón */
-  transition: background-color 0.3s; /* Transición suave para el hover */
+  background-color: #007bff; 
+  color: white; 
+  border: none; 
+  border-radius: 5px; 
+  padding: 10px 20px; 
+  margin: 0 10px; 
+  cursor: pointer; 
+  transition: background-color 0.3s; 
 }
 
 .recipe-carousel-button:disabled {
-  background-color: #6c757d; /* Color de fondo para botones deshabilitados */
-  cursor: not-allowed; /* Cursor indicando que está deshabilitado */
+  background-color: #6c757d; 
+  cursor: not-allowed; 
 }

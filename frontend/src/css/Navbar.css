@@ -1,10 +1,10 @@
-/* src/css/Navbar.css */
+
 .top-nav {
-  position: fixed; /* Fija la posición de los botones en la parte inferior */
+  position: fixed; 
   left: 0;
   top: 0;
-  width: 100%; /* Asegúrate de que ocupe todo el ancho */
-  z-index: 1000; /* Asegúrate de que estén encima del contenido */
+  width: 100%; 
+  z-index: 1000; 
 }
 
 .logo-img {
@@ -16,25 +16,25 @@
 }
 
 .nav-btn {
-  display: flex; /* Flexbox para centrar las imágenes dentro de los botones */
+  display: flex; 
   justify-content: center;
   align-items: center;
   margin: 5px;
-  max-width: 50px; /* Limita el tamaño máximo del botón */
-  flex: 1; /* Asegura que los botones se distribuyan uniformemente */
+  max-width: 50px; 
+  flex: 1; 
 }
 
 .nav-btn img {
-  height: 24px; /* Define una altura base */
-  width: 24px; /* Asegura que las imágenes siempre tengan el mismo tamaño */
-  max-width: 100%; /* Asegura que no se estiren más allá de su contenedor */
-  object-fit: contain; /* Mantiene las proporciones de la imagen */
+  height: 24px; 
+  width: 24px; 
+  max-width: 100%; 
+  object-fit: contain; 
 }
 
 @media (max-width: 768px) {
   .nav-btn img {
-    height: 20px; /* Reducir el tamaño de las imágenes en pantallas más pequeñas */
-    width: 20px; /* Asegura que las imágenes sigan siendo proporcionales */
+    height: 20px; 
+    width: 20px; 
   }
 }
 
@@ -55,5 +55,5 @@
 }
 
 .search-input {
-  padding-right: 50px; /* Asegura espacio para el botón */
+  padding-right: 50px; 
 }

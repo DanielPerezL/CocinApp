@@ -1,7 +1,7 @@
 .email-text {
-    white-space: nowrap;          /* Evita que el texto se divida en varias líneas */
-    overflow: hidden;             /* Oculta cualquier texto que sobresalga */
-    text-overflow: ellipsis;      /* Añade los "..." al final del texto truncado */
+    white-space: nowrap;          
+    overflow: hidden;             
+    text-overflow: ellipsis;      
   }
   
 .user-details img { 
