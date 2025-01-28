@@ -14,18 +14,24 @@ from utils import get_user_from_token
 import os
 from utils import delete_images_by_uploader, create_tokens, has_permission
 from errors import *
+import re
 
 @app.route('/api/users', methods=['POST'])
 def register():
     data = request.json
     if not data or not all(key in data for key in ('nickname', 'email', 'password')):
         return no_requested_info_error()
+    nickname = data.get('nickname')
+    
+    if not re.match("^[a-zA-Z0-9ñÑ]*$", nickname):
+        return jsonify({"msg": "El nickname solo puede contener letras, números y 'ñ'."}), 400
+    
     if User.query.filter_by(email=data.get('email')).first() is not None:
         return user_already_exists_email()
-    if len(data.get('nickname')) > NICKNAME_MAX_LENGTH:
+    if len(nickname) > NICKNAME_MAX_LENGTH:
         return user_nick_too_long()
     
-    new_user = User(nickname = data.get('nickname'),
+    new_user = User(nickname = nickname,
                     email = data.get('email'),
                     password = data.get('password')
                     )

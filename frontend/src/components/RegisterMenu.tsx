@@ -51,7 +51,12 @@ const RegisterMenu: React.FC<RegisterMenuProps> = ({ onSubmit }) => {
           className="form-control"
           id="nickname"
           value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^[a-zA-Z0-9ñÑ]*$/.test(value)) {
+              setNickname(value);
+            }
+          }}
           required
           maxLength={20}
         />

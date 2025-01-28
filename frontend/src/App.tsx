@@ -24,7 +24,6 @@ import TermsPage from "./pages/TermsPage";
   TODO:   
     Registro:
       Al registrarse, login automático con pop-up informativo-> /profile
-      nombres case insensitive: comprobar error con Antonio
 
     Publish y RecieEditor:
       Indicar por qué no se puede publicar -> ademas de desactivar el button
@@ -34,9 +33,6 @@ import TermsPage from "./pages/TermsPage";
     AUMENTAR ACCESS TOKEN AGE -> 15 minutos
     CAMBIAR DOMINIO DE NUEVO
     ELIMINAR EXPORT BD PORT
-
-
-
 
 
 
