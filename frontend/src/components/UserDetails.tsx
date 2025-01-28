@@ -120,17 +120,19 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
         />
         <div className="d-flex flex-column flex-sm-row align-items-center mt-3">
           <button
-            className="btn btn-secondary ms-2 mt-3"
+            className="btn btn-primary ms-2 mt-3"
             onClick={() => document.getElementById("fileInput")?.click()}
           >
             {t("modifyPic")}
           </button>
-          <button
-            className="btn btn-primary ms-2 mt-3"
-            onClick={handlePhotoDelete}
+          <NeedConfirmButton
+            className="btn btn-danger ms-2 mt-3"
+            onConfirm={handlePhotoDelete}
+            title={t("photoDelete")}
+            message={t("photoDeleteMessage")}
           >
             {t("rmPic")}
-          </button>
+          </NeedConfirmButton>
           <input
             type="file"
             ref={fileInputRef}

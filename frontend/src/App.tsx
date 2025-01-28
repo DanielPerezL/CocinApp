@@ -23,31 +23,37 @@ import TermsPage from "./pages/TermsPage";
   /*
   TODO:   
     Registro:
-      Check box más llamativa
       Al registrarse, login automático con pop-up informativo-> /profile
       nombres case insensitive: comprobar error con Antonio
 
-    Profile:
-      Confirmar eliminar foto perfil y COLOR BOTON
-      Cambiar contraseña COLOR BOTONES
-      Cerrar sesión COLOR BOTONES
-
     Search:
-      Boton para resetear filtros
       Eliminar seleccion de radio button
 
     Publish y RecieEditor:
       Indicar por qué no se puede publicar -> ademas de desactivar el button
       
-    Mejoras ¿?:
-        Componente imagenes para tener preview
-        Sugerir nuevos ingredientes que no existen en la web
-        Foto de perfil en navbuttons
-        Opciones de reportes -> motivo de reporte 
+
 
     AUMENTAR ACCESS TOKEN AGE -> 15 minutos
     CAMBIAR DOMINIO DE NUEVO
     ELIMINAR EXPORT BD PORT
+
+
+
+
+
+
+
+
+
+
+
+
+    Mejoras MEMORIA:
+      Componente imagenes para tener preview
+      Sugerir nuevos ingredientes que no existen en la web
+      Foto de perfil en navbuttons
+      Opciones de reportes -> motivo de reporte 
   */
 }
 

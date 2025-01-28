@@ -8,6 +8,7 @@ import {
   FetchRecipesResponse,
   ConcreteIngredient,
   Ingredient,
+  LoginResponse,
 } from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
 import { authEvents } from "../events/authEvents";
 
@@ -361,11 +362,12 @@ export const login = async (email: string, password: string): Promise<void> => {
     throw new Error(t("errorLogin"));
   }
 
+  const loginOkData: LoginResponse = responseData;
   // Indicar que el usuario ha iniciado sesión
-  authEvents.emit("login");
   localStorage.setItem("isLoggedIn", "true");
-  localStorage.setItem("loggedUserId", responseData.id);
-  localStorage.setItem("isAdmin", responseData.isAdmin);
+  localStorage.setItem("loggedUserId", loginOkData.id);
+  localStorage.setItem("isAdmin", loginOkData.isAdmin);
+  authEvents.emit("login");
 };
 
 // Aquí retornamos la URL completa de la imagen
@@ -381,10 +383,10 @@ export const logout = async (): Promise<void> => {
     credentials: "include", // Incluye las cookies en la solicitud para que el backend pueda eliminarlas
   });
 
-  authEvents.emit("logout");
   localStorage.removeItem("isLoggedIn");
   localStorage.removeItem("loggedUserId");
   localStorage.removeItem("isAdmin");
+  authEvents.emit("logout");
 };
 
 //Funcion para reportar un recurso

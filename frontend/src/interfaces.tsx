@@ -62,3 +62,9 @@ export interface FetchRecipesResponse {
   recipes: RecipeSimpleDTO[];
   has_more: boolean;
 }
+
+export interface LoginResponse {
+  msg: string;
+  id: string;
+  isAdmin: string;
+}

@@ -172,7 +172,9 @@
     "termsPoint4": "No somos responsables por inexactitudes o problemas que surjan al seguir recetas de esta plataforma.",
     "termsFooter": "Si tienes alguna pregunta sobre estos términos, no dudes en contactarnos.",
     "acceptTerms": "Acepto los",
-    "and": "y la",  
+    "and": "y la", 
+    "photoDelete": "Eliminar foto",
+    "photoDeleteMessage": "¿Estás seguro? Esta acción no se puede deshacer y la foto será eliminada permanentemente.",
 
     "errorUpdatingPasswordNoValidNewPasswords":"La nueva constraseña no coincide.",
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",
