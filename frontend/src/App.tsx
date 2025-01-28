@@ -26,14 +26,11 @@ import TermsPage from "./pages/TermsPage";
       Al registrarse, login automático con pop-up informativo-> /profile
       nombres case insensitive: comprobar error con Antonio
 
-    Search:
-      Eliminar seleccion de radio button
-
     Publish y RecieEditor:
       Indicar por qué no se puede publicar -> ademas de desactivar el button
       
-
-
+    
+    COMENTAR CODIGO
     AUMENTAR ACCESS TOKEN AGE -> 15 minutos
     CAMBIAR DOMINIO DE NUEVO
     ELIMINAR EXPORT BD PORT

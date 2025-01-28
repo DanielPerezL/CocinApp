@@ -9,7 +9,7 @@ import {
   ConcreteIngredient,
   Ingredient,
   LoginResponse,
-} from "../interfaces"; // Asegúrate de ajustar la ruta a tus interfaces.
+} from "../interfaces";
 import { authEvents } from "../events/authEvents";
 
 const NGROK = false;

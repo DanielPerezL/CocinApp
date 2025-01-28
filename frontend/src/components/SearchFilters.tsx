@@ -131,7 +131,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
                             ? localFilters.time.includes(option)
                             : localFilters.difficulty.includes(option)
                         }
-                        onChange={() =>
+                        onClick={() =>
                           setLocalFilters({
                             ...localFilters,
                             [category.name]:
