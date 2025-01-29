@@ -25,6 +25,7 @@ import TermsPage from "./pages/TermsPage";
     Indicar campos obligatorios formulario nueva receta
     Acceso directo a iniciar sesión con modal "Para ... necesitas iniciar sesión".
     Acceso a versión en ingles desde algún MENU
+    Comprobar title de botones!
 
   Mejoras MEMORIA:
     Posibilidad de uncluir duración/paso
