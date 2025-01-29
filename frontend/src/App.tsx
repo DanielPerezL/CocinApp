@@ -34,6 +34,7 @@ import TermsPage from "./pages/TermsPage";
     Indicar por qué no se puede publicar -> ademas de desactivar el button
     Foto de perfil en navbuttons
     Opciones de reportes -> motivo de reporte 
+    Tema Claro/Oscuro
   */
 }
 

@@ -24,6 +24,7 @@ Desarrollada como Trabajo de Fin de Grado, esta aplicación combina una interfaz
 
 🔹 Posibilidad de sugerir nuevos ingredientes  
 🔹 Posibilidad de añadir videos e imágenes asociados a cada paso del proceso  
+🔹 Posibilidad de cambiar el tema visual (Claro/Oscuro)  
 
 ## 🏆 Sobre el Autor
 
