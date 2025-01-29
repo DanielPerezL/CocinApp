@@ -21,7 +21,14 @@ import TermsPage from "./pages/TermsPage";
 
 {
   /*
+  TODO:
+    Indicar campos obligatorios formulario nueva receta
+    Acceso directo a iniciar sesión con modal "Para ... necesitas iniciar sesión".
+    Acceso a versión en ingles desde algún MENU
+
   Mejoras MEMORIA:
+    Posibilidad de uncluir duración/paso
+    Añadir videos/imaganes reflejando el proceso por pasos
     Componente imagenes para tener preview
     Sugerir nuevos ingredientes que no existen en la web
     Indicar por qué no se puede publicar -> ademas de desactivar el button
