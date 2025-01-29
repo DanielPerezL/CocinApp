@@ -16,14 +16,14 @@ Desarrollada como Trabajo de Fin de Grado, esta aplicación combina una interfaz
 ✔️ Registro e inicio de sesión de usuarios  
 ✔️ Publicación y edición de recetas  
 ✔️ Búsqueda y filtrado avanzado de recetas  
-✔️ Favoritos y gestión de recetas guardadas
+✔️ Favoritos y gestión de recetas guardadas  
 ✔️ Generación automática de listas de la compra  
 ✔️ Diseño responsive y accesible  
 
 ## 📌 Próximos pasos
 
-🔹 Posibilidad de sugerir nuevos ingredientes
-🔹 Posibilidad de añadir videos e imágenes asociados a cada paso del proceso
+🔹 Posibilidad de sugerir nuevos ingredientes  
+🔹 Posibilidad de añadir videos e imágenes asociados a cada paso del proceso  
 
 ## 🏆 Sobre el Autor
 
