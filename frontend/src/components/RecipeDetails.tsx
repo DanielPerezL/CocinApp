@@ -28,6 +28,7 @@ import NeedConfirmButton from "./NeedConfirmButton";
 import ReportButton from "./ReportButton";
 import RecipeGrid from "./RecipeGrid";
 import RecipeEditor from "./RecipeEditor";
+import AccessMenu from "./AccessMenu";
 
 interface RecipeDetailsProps {
   recipe: RecipeDetailDTO;
@@ -294,6 +295,8 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
             //El cualquier otro caso puedo reportar
             <ReportButton className="btn btn-danger" text={t("reportRecipe")} />
           )}
+
+          {/*MODAL COMPARTIR*/}
           <Modal
             show={showModal}
             onHide={() => {
@@ -322,6 +325,8 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
               </Button>
             </Modal.Footer>
           </Modal>
+
+          {/*NECESITAS INICIAR SESION*/}
           <Modal
             show={showLoginModal}
             onHide={() => setShowLoginModal(false)}
@@ -332,6 +337,12 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
             </Modal.Header>
             <Modal.Body className="bg-light">
               <p>{t("addFavRecipeCondition")}</p>
+              <AccessMenu
+                onLoginSuccess={() => {
+                  setShowLoginModal(false);
+                  updateRecipe();
+                }}
+              ></AccessMenu>
             </Modal.Body>
             <Modal.Footer className="bg-light">
               <Button
@@ -344,6 +355,8 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
               </Button>
             </Modal.Footer>
           </Modal>
+
+          {/*CARRITO LLENO*/}
           <Modal
             show={showErrorCartModal}
             onHide={() => setShowErrorCartModal(false)}

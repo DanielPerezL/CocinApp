@@ -22,9 +22,7 @@ import TermsPage from "./pages/TermsPage";
 {
   /*
   TODO:
-    Acceso directo a iniciar sesión con modal "Para ... necesitas iniciar sesión".
-    Acceso a versión en ingles desde algún MENU
-
+    Acceso a versión en ingles desde algún MENU¿?
     CORS
 
   Mejoras MEMORIA:
