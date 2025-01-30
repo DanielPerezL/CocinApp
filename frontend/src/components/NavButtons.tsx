@@ -8,8 +8,11 @@ import report from "../assets/report.png";
 import magnifyingGlass from "../assets/magnifying-glass.png";
 import { isAdmin, isLoggedIn } from "../services/apiService";
 import { authEvents } from "../events/authEvents";
+import { useTranslation } from "react-i18next";
 
 const NavButtons: React.FC = () => {
+  const { t } = useTranslation();
+
   const [update, setUpdate] = useState(0); // Estado para forzar re-render
 
   useEffect(() => {
@@ -34,6 +37,7 @@ const NavButtons: React.FC = () => {
         <>
           <Link
             to="/favorites"
+            title={t("favoritesList")}
             className="btn nav-btn mx-1"
             onClick={() => {
               window.scrollTo(0, 0);
@@ -43,6 +47,7 @@ const NavButtons: React.FC = () => {
           </Link>
           <Link
             to="/cart"
+            title={t("cartList")}
             className="btn nav-btn mx-1"
             onClick={() => {
               window.scrollTo(0, 0);
@@ -52,6 +57,7 @@ const NavButtons: React.FC = () => {
           </Link>
           <Link
             to="/publish"
+            title={t("publishRecipe")}
             className="btn nav-btn mx-1"
             onClick={() => {
               window.scrollTo(0, 0);
@@ -65,6 +71,7 @@ const NavButtons: React.FC = () => {
       {isAdmin() && (
         <Link
           to="/reports"
+          title={t("reports")}
           className="btn nav-btn mx-1"
           onClick={() => {
             window.scrollTo(0, 0);
@@ -76,6 +83,7 @@ const NavButtons: React.FC = () => {
 
       <Link
         to="/search"
+        title={t("searchRecipes")}
         className="btn nav-btn mx-1"
         onClick={() => {
           window.scrollTo(0, 0);
@@ -85,6 +93,7 @@ const NavButtons: React.FC = () => {
       </Link>
       <Link
         to="/profile"
+        title={t("userProfile")}
         className="btn nav-btn mx-1"
         onClick={() => {
           window.scrollTo(0, 0);

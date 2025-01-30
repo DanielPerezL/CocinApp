@@ -198,7 +198,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
               <button
                 onClick={handleFavButtonClick}
                 className="recipe-details-btn btn btn-link p-0 d-flex align-items-center justify-content-center"
-                title="Favourite Button"
+                title={t("favouriteButton")}
               >
                 {isFavorite ? (
                   <img className="img-fluid" src={redHeart} />
@@ -210,7 +210,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
               <button
                 onClick={handleCartButtonClick}
                 className="recipe-details-btn btn btn-link p-0 d-flex align-items-center justify-content-center"
-                title="Cart Button"
+                title={t("cartButton")}
               >
                 {isInCart ? (
                   <img className="img-fluid" src={greenCart} />
@@ -221,7 +221,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
 
               <button
                 className="recipe-details-btn btn btn-link p-0 d-flex align-items-center justify-content-center"
-                title="URL Button"
+                title={t("copyToClipboardButton")}
                 onClick={copyToClipboard}
               >
                 <img className="img-fluid" src={share} />

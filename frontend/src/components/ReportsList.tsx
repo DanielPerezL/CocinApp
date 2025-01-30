@@ -28,7 +28,7 @@ const ReportsList: React.FC<ReportsListProps> = ({ reports, onChange }) => {
           <thead className="thead-light">
             <tr>
               <th>{t("reportedResource")}</th>
-              <th>{t("count")}</th>
+              <th>{t("reports")}</th>
               <th>{t("actions")}</th>
             </tr>
           </thead>

@@ -12,7 +12,7 @@ import {
 } from "../interfaces";
 import { authEvents } from "../events/authEvents";
 
-const NGROK = true;
+const NGROK = false;
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (NGROK) {

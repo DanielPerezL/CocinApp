@@ -124,7 +124,6 @@
     "yes": "Yes",
     "no": "No",
     "reportedResource": "Reported Resource",
-    "count": "Reports",
     "reviewed": "Reviewed",
     "actions": "Actions",
     "open": "Open",
@@ -178,7 +177,12 @@
     "and": "and",
     "photoDelete": "Delete Photo",
     "photoDeleteMessage": "Are you sure? This action cannot be undone and the photo will be permanently deleted.",
-    
+    "favouriteButton": "Add to Favorites",
+    "cartButton": "Add to Cart",
+    "copyToClipboardButton": "Copy to Clipboard",
+    "searchRecipes": "Search Recipes",
+    "favoritesList": "Favorites list",
+    "cartList": "Shopping list",
 
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",
