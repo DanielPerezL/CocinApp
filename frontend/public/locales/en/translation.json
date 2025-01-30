@@ -183,6 +183,8 @@
     "searchRecipes": "Search Recipes",
     "favoritesList": "Favorites list",
     "cartList": "Shopping list",
+    "requiredFieldsMessage": "Fields marked with * are required.",
+
 
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",

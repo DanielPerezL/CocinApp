@@ -80,6 +80,7 @@ const RecipeUploader: React.FC = () => {
     if (
       selectedImages.length === 0 ||
       !title ||
+      title.trim().length == 0 ||
       !selectedIngredients ||
       filteredProcedure.length === 0 ||
       !selectedCategories["time"] ||
@@ -96,7 +97,7 @@ const RecipeUploader: React.FC = () => {
         selectedImages.map((image) => uploadImage(image))
       );
       const id = await uploadRecipe(
-        title,
+        title.trim(),
         selectedIngredients,
         filteredProcedure,
         selectedCategories["time"],
@@ -155,7 +156,10 @@ const RecipeUploader: React.FC = () => {
       <form className="p-2">
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
-            {t("title")}
+            {t("title")}{" "}
+            <span style={{ color: title.trim().length > 0 ? "black" : "red" }}>
+              *
+            </span>
           </label>
           <input
             type="text"
@@ -173,7 +177,18 @@ const RecipeUploader: React.FC = () => {
             aviableCategories.map((category, index) => (
               <div key={index} className="mb-3">
                 <label htmlFor={category.name} className="form-label">
-                  {t(category.name)}
+                  {t(category.name)}{" "}
+                  <span
+                    style={{
+                      color:
+                        selectedCategories[category.name] &&
+                        selectedCategories[category.name].length > 0
+                          ? "black"
+                          : "red",
+                    }}
+                  >
+                    *
+                  </span>
                 </label>
                 <select
                   id={category.name}
@@ -197,7 +212,14 @@ const RecipeUploader: React.FC = () => {
         <div className="task-form">
           <div className="mb-3">
             <label htmlFor="ingredient" className="form-label">
-              {t("ingredients")}
+              {t("ingredients")}{" "}
+              <span
+                style={{
+                  color: selectedIngredients.length > 0 ? "black" : "red",
+                }}
+              >
+                *
+              </span>
             </label>
             <IngredientSearch
               id="ingredient"
@@ -219,11 +241,19 @@ const RecipeUploader: React.FC = () => {
                 <div className="d-flex align-items-center">
                   <input
                     type="number"
-                    className="form-control form-control-sm me-2"
+                    className="form-control form-control-sm me-1"
                     value={ingredient.amount}
                     onChange={(e) => handleQuantityChange(e, index)}
                     placeholder="Cantidad"
                   />
+                  <span
+                    style={{
+                      color: ingredient.amount != "" ? "black" : "red",
+                    }}
+                    className="me-1"
+                  >
+                    *
+                  </span>
                   <button
                     className="btn btn-sm btn-outline-danger"
                     onClick={(e) => handleIngredientRemove(e, index)}
@@ -237,7 +267,16 @@ const RecipeUploader: React.FC = () => {
         </div>
 
         <div className="mb-3">
-          <p className="form-label">{t("procedure")}</p>
+          <p className="form-label">
+            {t("procedure")}{" "}
+            <span
+              style={{
+                color: filteredProcedure.length > 0 ? "black" : "red",
+              }}
+            >
+              *
+            </span>
+          </p>
           {procedure.map((step, index) => (
             <div key={index} className="d-flex flex-column mb-4">
               <label htmlFor={`procedure-step-${index}`} className="form-label">
@@ -284,7 +323,14 @@ const RecipeUploader: React.FC = () => {
         </div>
 
         <div className="mb-3">
-          <p className="form-label">{t("addImages")}</p>
+          <p className="form-label">
+            {t("addImages")}{" "}
+            <span
+              style={{ color: selectedImages.length > 0 ? "black" : "red" }}
+            >
+              *
+            </span>
+          </p>
 
           <div className="d-flex align-items-center">
             <button
@@ -321,6 +367,7 @@ const RecipeUploader: React.FC = () => {
           disabled={
             selectedImages.length === 0 ||
             !title ||
+            title.trim().length == 0 ||
             selectedIngredients.length === 0 ||
             !selectedIngredients.every(
               (ingredient) => ingredient.amount != ""
@@ -333,6 +380,7 @@ const RecipeUploader: React.FC = () => {
         >
           {t("publishRecipe!")}
         </button>
+        <p className="text-muted mt-2">{t("requiredFieldsMessage")}</p>
 
         {uploadStatus && (
           <p className="mt-3 alert alert-info">{uploadStatus}</p>

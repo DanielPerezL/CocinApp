@@ -182,6 +182,7 @@
     "searchRecipes": "Buscar recetas",
     "favoritesList": "Lista de favoritos",
     "cartList": "Lista de la compra",
+    "requiredFieldsMessage": "Los campos marcados con * son obligatorios.",
 
     "errorUpdatingPasswordNoValidNewPasswords":"La nueva constraseña no coincide.",
     "errorLoginUserNotFound": "Usuario no encontrado. Por favor, verifica tus credenciales.",

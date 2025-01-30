@@ -109,7 +109,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
     /*GUARDAR EN SV*/
     await updateRecipe(
       recipe.id,
-      title,
+      title.trim(),
       selectedIngredients,
       filteredProcedure,
       selectedCategories["time"],
@@ -138,7 +138,10 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
       <form className="p-2">
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
-            {t("title")}
+            {t("title")}{" "}
+            <span style={{ color: title.trim().length > 0 ? "black" : "red" }}>
+              *
+            </span>
           </label>
           <input
             type="text"
@@ -153,7 +156,18 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
         {aviableCategories.map((category, index) => (
           <div key={index} className="mb-3">
             <label htmlFor={category.name} className="form-label">
-              {t(category.name)}
+              {t(category.name)}{" "}
+              <span
+                style={{
+                  color:
+                    selectedCategories[category.name] &&
+                    selectedCategories[category.name].length > 0
+                      ? "black"
+                      : "red",
+                }}
+              >
+                *
+              </span>
             </label>
             <select
               id={category.name}
@@ -176,7 +190,14 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
         <div className="task-form">
           <div className="mb-3">
             <label htmlFor="ingredient" className="form-label">
-              {t("ingredients")}
+              {t("ingredients")}{" "}
+              <span
+                style={{
+                  color: selectedIngredients.length > 0 ? "black" : "red",
+                }}
+              >
+                *
+              </span>
             </label>
             <IngredientSearch
               id="ingredient"
@@ -192,18 +213,26 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
                 key={index}
                 className="d-flex justify-content-between align-items-center mb-2"
               >
-                <span>{`${ingredient.name} (${t(
-                  ingredient.default_unit
-                )})`}</span>
+                <span>
+                  {ingredient.name} {t(ingredient.default_unit)}
+                </span>
                 <div className="d-flex align-items-center">
                   <input
                     type="number"
                     name="amount"
-                    className="form-control form-control-sm me-2"
+                    className="form-control form-control-sm me-1"
                     value={ingredient.amount}
                     onChange={(e) => handleQuantityChange(e, index)}
                     placeholder="Cantidad"
                   />
+                  <span
+                    style={{
+                      color: ingredient.amount != "" ? "black" : "red",
+                    }}
+                    className="me-1"
+                  >
+                    *
+                  </span>
                   <button
                     className="btn btn-sm btn-outline-danger"
                     onClick={(e) => handleIngredientRemove(e, index)}
@@ -217,7 +246,16 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
         </div>
 
         <div className="mb-3">
-          <p className="form-label">{t("procedure")}</p>
+          <p className="form-label">
+            {t("procedure")}{" "}
+            <span
+              style={{
+                color: filteredProcedure.length > 0 ? "black" : "red",
+              }}
+            >
+              *
+            </span>
+          </p>
           {procedure.map((step, index) => (
             <div key={index} className="d-flex flex-column mb-4">
               <label htmlFor={`procedure-step-${index}`} className="form-label">
@@ -264,7 +302,19 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
         </div>
 
         <div className="mb-3">
-          <p className="form-label">{t("addImages")}</p>
+          <p className="form-label">
+            {t("addImages")}{" "}
+            <span
+              style={{
+                color:
+                  selectedImages.length > 0 || recipe.images.length > 0
+                    ? "black"
+                    : "red",
+              }}
+            >
+              *
+            </span>
+          </p>
 
           <div className="d-flex align-items-center">
             <button
@@ -272,6 +322,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
               onClick={() => {
                 if (fileInputRef && fileInputRef.current) {
                   fileInputRef.current.click();
+                  recipe.images = [];
                 }
               }}
               className="btn btn-primary"
@@ -301,6 +352,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
             onClick={handleSave}
             disabled={
               !title ||
+              title.trim().length == 0 ||
               selectedIngredients.length === 0 ||
               !selectedIngredients.every(
                 (ingredient) => ingredient.amount != ""
@@ -308,15 +360,18 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
               filteredProcedure.length === 0 ||
               !selectedCategories["time"] ||
               !selectedCategories["difficulty"] ||
-              !selectedCategories["type"]
+              !selectedCategories["type"] ||
+              (selectedImages.length === 0 && recipe.images.length === 0)
             }
           >
             {t("saveChanges")}
           </button>
+
           <button type="button" className="btn btn-danger" onClick={onCancel}>
             {t("cancel")}
           </button>
         </div>
+        <p className="text-muted mt-2">{t("requiredFieldsMessage")}</p>
       </form>
     </div>
   );
