@@ -23,16 +23,7 @@ import TermsPage from "./pages/TermsPage";
   /*
   TODO:
     Acceso a versión en ingles desde algún MENU¿?
-    CORS
-
-  Mejoras MEMORIA:
-    Posibilidad de uncluir duración/paso
-    Añadir videos/imaganes reflejando el proceso por pasos
-    Componente imagenes para tener preview
-    Sugerir nuevos ingredientes que no existen en la web
-    Foto de perfil en navbuttons
-    Opciones de reportes -> motivo de reporte 
-    Tema Claro/Oscuro
+    Despliegue -> CORS
   */
 }
 

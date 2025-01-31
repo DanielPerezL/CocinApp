@@ -12,7 +12,7 @@ import {
 } from "../interfaces";
 import { authEvents } from "../events/authEvents";
 
-const NGROK = false;
+const NGROK = import.meta.env.VITE_NGROK === "true";
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (NGROK) {
@@ -23,7 +23,7 @@ if (NGROK) {
   API_BASE_URL = `http://${window.location.hostname}:5000/api`;
   TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
 }
-export const RECIPE_LIMIT = 20;
+export const RECIPE_LIMIT = Number(import.meta.env.VITE_RECIPE_LIMIT) || 20;
 
 export const isLoggedIn = () => {
   return localStorage.getItem("isLoggedIn") == "true";
