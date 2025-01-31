@@ -68,8 +68,8 @@ const Footer = () => {
               }}
             />
             <p className="mb-4">
-              © {currentYear} CocinApp. {t("reserverRights")}
-            </p>
+              © {currentYear} CocinApp. {t("reservedRights")}
+            </p>{" "}
             <a
               href="https://www.flaticon.com/"
               className="fw-light text-white text-decoration-none"
