@@ -1,3 +1,6 @@
 backend/__pycache__/
 backend/models/__pycache__/
 backend/endpoints/__pycache__/
+
+# Fichero de configuracion de docker-compose
+.env
