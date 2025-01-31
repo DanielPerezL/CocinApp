@@ -84,7 +84,9 @@ const CartPage = () => {
           <>
             <div className="text-center mb-4">
               {cartRecipes.length > 0 ? (
-                <p className="fs-6 fw-light">{t("hereCartRecipes")}</p>
+                <p className="fs-6 fw-light">
+                  {t("hereCartRecipes")} ({cartRecipes.length}/10)
+                </p>
               ) : (
                 <p className="fs-6 fw-light">{t("noCartRecipes")}</p>
               )}

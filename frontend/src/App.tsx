@@ -19,13 +19,6 @@ import AboutPage from "./pages/AboutPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
 
-{
-  /*
-  TODO:
-    Despliegue -> CORS
-  */
-}
-
 function App() {
   return (
     <BrowserRouter>
