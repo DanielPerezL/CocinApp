@@ -22,7 +22,6 @@ import TermsPage from "./pages/TermsPage";
 {
   /*
   TODO:
-    Acceso a versión en ingles desde algún MENU¿?
     Despliegue -> CORS
   */
 }

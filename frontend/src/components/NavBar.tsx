@@ -6,6 +6,7 @@ import "../css/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { clearSearchEvents } from "../events/clearSearchEvents";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
@@ -53,13 +54,13 @@ const Navbar: React.FC = () => {
             <img src={icon} className="icon-img d-block d-sm-none" />
             <img src={logo} className="logo-img d-none d-sm-block" />
           </Link>
-          <div className="mx-2 flex-grow-1 position-relative">
+          <div className="mx-1 flex-grow-1 position-relative">
             <form onSubmit={handleSearchSubmit} className="position-relative">
               <input
                 type="text"
                 placeholder={t("searchPlaceHolder")}
                 name="search-input"
-                className="form-control search-input pe-5"
+                className="form-control search-input pe-4"
                 value={searchTitle}
                 onChange={handleSearchChange}
               />
@@ -75,6 +76,8 @@ const Navbar: React.FC = () => {
               )}
             </form>
           </div>
+          <LanguageSwitcher />
+
           <div className="d-flex align-items-center d-none d-md-block">
             <NavButtons />
           </div>
