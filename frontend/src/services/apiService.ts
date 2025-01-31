@@ -12,8 +12,8 @@ import {
 } from "../interfaces";
 import { authEvents } from "../events/authEvents";
 
-const API_BASE_URL = `http://${window.location.hostname}:5000/api`;
-const TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
+const API_BASE_URL = `https://${window.location.hostname}:5000/api`;
+const TOKEN_BASE_URL = `https://${window.location.hostname}:5000/token`;
 export const RECIPE_LIMIT = 20;
 
 export const isLoggedIn = () => {

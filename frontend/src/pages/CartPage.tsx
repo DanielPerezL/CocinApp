@@ -15,6 +15,8 @@ import NeedConfirmButton from "../components/NeedConfirmButton";
 const CartPage = () => {
   const { t } = useTranslation();
 
+  const RECIPE_CART_MAX_SIZE = 10;
+
   const [user, setUser] = useState<UserDTO | null>(null);
   const [cartRecipes, setCartRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -85,7 +87,8 @@ const CartPage = () => {
             <div className="text-center mb-4">
               {cartRecipes.length > 0 ? (
                 <p className="fs-6 fw-light">
-                  {t("hereCartRecipes")} ({cartRecipes.length}/10)
+                  {t("hereCartRecipes")} ({cartRecipes.length}/
+                  {RECIPE_CART_MAX_SIZE})
                 </p>
               ) : (
                 <p className="fs-6 fw-light">{t("noCartRecipes")}</p>
