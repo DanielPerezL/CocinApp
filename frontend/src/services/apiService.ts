@@ -12,9 +12,18 @@ import {
 } from "../interfaces";
 import { authEvents } from "../events/authEvents";
 
-const API_BASE_URL = `https://${window.location.hostname}:5000/api`;
-const TOKEN_BASE_URL = `https://${window.location.hostname}:5000/token`;
-export const RECIPE_LIMIT = 20;
+const RENDER = import.meta.env.VITE_RENDER === "true"; //ENTORNO DE PRODUCCIÓN
+let API_BASE_URL: string;
+let TOKEN_BASE_URL: string;
+if (RENDER) {
+  // Cadenas de conexion usando RENDER
+  API_BASE_URL = `${window.location.protocol}/api`;
+  TOKEN_BASE_URL = `${window.location.protocol}/token`;
+} else {
+  API_BASE_URL = `http://${window.location.hostname}:5000/api`;
+  TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
+}
+export const RECIPE_LIMIT = Number(import.meta.env.VITE_RECIPE_LIMIT) || 20;
 
 export const isLoggedIn = () => {
   return localStorage.getItem("isLoggedIn") == "true";
