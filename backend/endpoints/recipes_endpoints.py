@@ -185,14 +185,15 @@ def new_recipe(user, data):
     existing_images = []  
     for filename in data.get('images', []):
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        if os.path.isfile(file_path):
+        if os.path.isfile(file_path) or Image.query.filter_by(filename=filename).first() != None:
             existing_images.append(file_path)  # Guarda la ruta de las imágenes que existen
         else:
             all_images_exist = False
+   
     # Elimina las imágenes que sí están en el servidor si alguna falta
     if not all_images_exist:
         for file_path in existing_images:
-            os.remove(file_path)
+            delete_recipe(os.path.basename(file_path))
         return no_recipe_uploaded_error()
 
     # Procesar los ingredientes: se espera que `data['ingredients']` sea un dict {id: cantidad}

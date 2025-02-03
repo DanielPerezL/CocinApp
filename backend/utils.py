@@ -2,7 +2,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from models import *
 import os
 import re
-from config import app
+from config import app, db, IMG_BACKUP
 from flask import current_app
 import hashlib
 from datetime import datetime
@@ -66,23 +66,40 @@ def delete_images_by_uploader(user):
 
 #BORRADO
 def delete_images_by_pattern(pattern):
-    upload_folder = app.config['UPLOAD_FOLDER']
-
     # Compila la expresión regular
     regex = re.compile(pattern)
-
-    # Recorre los archivos en el directorio de subida
-    for filename in os.listdir(upload_folder):
+    
+    upload_folder = app.config['UPLOAD_FOLDER']
+    file_list = set(os.listdir(upload_folder))
+    if IMG_BACKUP:
+        db_filenames = set(image.filename for image in Image.query.all())
+        file_list = file_list.union(db_filenames)
+    
+    for filename in file_list:
         # Verifica si el nombre del archivo coincide con la expresión regular
         if regex.match(filename):
-            filepath = os.path.join(upload_folder, filename)
-            os.remove(filepath)  # Elimina el archivo
+            delete_image(filename)
+
 
 #BORRADO    
 def delete_images_by_filenames(filenames):
-    upload_folder = current_app.config['UPLOAD_FOLDER']
     for filename in filenames:
-        filepath = os.path.join(upload_folder, filename)
-        if os.path.exists(filepath):
-            os.remove(filepath)  # Elimina el archivo
+        delete_image(filename)
     return
+
+def delete_image(filename):
+    if filename == "":
+        return
+    
+    upload_folder = current_app.config['UPLOAD_FOLDER']
+    filepath = os.path.join(upload_folder, filename)
+    if os.path.exists(filepath):
+        os.remove(filepath)
+    if IMG_BACKUP:
+        image = Image.query.filter_by(filename=filename).first()
+        if image:
+            try:
+                db.session.delete(image)
+                db.session.commit()
+            except:
+                db.session.rollback()

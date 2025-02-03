@@ -10,7 +10,7 @@ from sqlalchemy.exc import OperationalError
 app = Flask(__name__, static_folder='./static')
 
 # Añadido origins de RENDER
-CORS(app, supports_credentials=True, origins=["https://cocinapp.onrender.com/"]) 
+CORS(app, supports_credentials=True, origins=[os.environ['CORS_ORIGINS'] or "*"]) 
 
 UPLOAD_FOLDER = '/cocinapp/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -30,6 +30,7 @@ app.config['JWT_COOKIE_SECURE'] = True
 RECIPE_CART_SIZE = 10
 NICKNAME_MAX_LENGTH = 20
 REPORT_QUERY_LIMIT = 20
+IMG_BACKUP = os.environ['COPY_IMG_MYSQL'] == "true"
 
 jwt = JWTManager(app)
 db = SQLAlchemy(app)

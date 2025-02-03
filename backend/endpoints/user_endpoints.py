@@ -12,7 +12,7 @@ from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
 import os
-from utils import delete_images_by_uploader, create_tokens, has_permission
+from utils import delete_images_by_uploader, create_tokens, has_permission, delete_image
 from errors import *
 import re
 
@@ -122,11 +122,10 @@ def new_user_picture(user, new_picture):
     if new_picture is None:
         return no_requested_info_error()
     
-    old_picture = user.get_picture() or ""
-    old_path = os.path.join(app.config['UPLOAD_FOLDER'], old_picture)
-    if os.path.isfile(old_path):
-        os.remove(old_path)
-        
+    old_picture = user.get_picture()
+    if old_picture:
+        delete_image(old_picture)
+
     user.set_picture(new_picture)
     try:
         db.session.commit()
