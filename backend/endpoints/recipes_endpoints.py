@@ -1,4 +1,4 @@
-from config import app, db
+from config import app, db, RECIPE_CART_SIZE
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt, verify_jwt_in_request
 from models import *
@@ -16,7 +16,9 @@ def recipes():
         user_id = request.args.get('user_id', default=-1, type=int)
         recipe_id = request.args.get('recipe_id', default=-1, type=int)
         recommendations_for_user_id = request.args.get('recommendations_for_user_id', default=-1, type=int)
-
+        favourited_by = request.args.get('favourited_by', default=-1, type=int)
+        carted_by = request.args.get('carted_by', default=-1, type=int)
+ 
         offset = request.args.get('offset', default=0, type=int)
         limit = request.args.get('limit', default=10, type=int)
 
@@ -45,6 +47,32 @@ def recipes():
             if not has_permission(client, user):
                 return no_permission_error()
             return get_recommendations_for_user(user, offset, limit, lang)
+        elif favourited_by > 0:
+            user = User.query.get(favourited_by)
+            if user is None:
+                return user_not_found_error()
+            try:
+                verify_jwt_in_request() 
+            except Exception as e:
+                return invalid_token()
+            
+            client = get_user_from_token(get_jwt())
+            if not has_permission(client, user):
+                return no_permission_error()
+            return get_favorites_recipes(user, offset, limit, lang)
+        elif carted_by > 0:    
+            user = User.query.get(carted_by)
+            if user is None:
+                return user_not_found_error()
+            try:
+                verify_jwt_in_request() 
+            except Exception as e:
+                return invalid_token()
+            
+            client = get_user_from_token(get_jwt())
+            if not has_permission(client, user):
+                return no_permission_error()
+            return get_cart_recipes(user, lang)
         else:
             return get_recipes_simple_dto(offset, limit, lang) 
     if method == 'POST':
@@ -61,7 +89,7 @@ def recipes():
 def has_more_results(query, offset, limit):
     return query.offset(offset + limit).first() is not None
 
-#GRID 1
+# GRID 1
 def get_recipes_simple_dto(offset, limit, lang):
     # PARAMETROS DE BUSQUEDA
     title = request.args.get('title', default="", type=str)  
@@ -113,9 +141,7 @@ def get_recipes_simple_dto(offset, limit, lang):
                     "has_more": has_more},
                     ), 200
 
-
-
-#GRID 2
+# GRID 2
 def get_recommendations_for_user(user, offset, limit, lang):
     # Obtenemos los IDs de las recetas favoritas del usuario
     user_favorite_recipe_ids = db.session.query(FavoriteRecipe.recipe_id).filter_by(user_id=user.id).all()
@@ -154,7 +180,7 @@ def get_recommendations_for_user(user, offset, limit, lang):
                     "has_more": has_more},
                     ), 200
 
-#GRID 3
+# GRID 3
 def get_recipes_similar_to(recipe, offset, limit, lang):
     query = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
         .filter((Recipe.time == recipe.time) | (Recipe.difficulty == recipe.difficulty)) \
@@ -166,14 +192,28 @@ def get_recipes_similar_to(recipe, offset, limit, lang):
     has_more = has_more_results(query, offset, limit)
     return jsonify({"recipes": recipes_data, "has_more": has_more}), 200
 
-
-#GRID 4
+# GRID 4
 def get_recipes_from_user(user, offset, limit, lang):
     query = Recipe.query.filter_by(user_id=user.id)
     recipes = query.offset(offset).limit(limit).all()
     recipes_data = [recipe.to_simple_dto(lang) for recipe in recipes]
     has_more = has_more_results(query, offset, limit)
     return jsonify({"recipes": recipes_data, "has_more": has_more}), 200
+
+# GRID 5
+def get_favorites_recipes(user, offset, limit, lang):
+    recipes = [recipe.to_simple_dto(lang) for recipe in user.get_favorite_recipes(offset, limit)]
+    total_favorites = user.get_favorite_recipes_count()  # Método para contar las recetas favoritas del usuario
+    has_more = (offset + limit) < total_favorites
+
+    # Devolver la respuesta con `recipes` y `has_more`
+    return jsonify({"recipes": recipes, "has_more": has_more}), 200
+
+# GRID 6
+def get_cart_recipes(user, lang):    
+    # No usamos limit/offset porque el carrito se limita a RECIPE_CART_SIZE recetas
+    recipes = [recipe.to_simple_dto(lang) for recipe in user.get_cart_recipes()]
+    return jsonify({"recipes": recipes, "has_more": False}), 200
 
 
 def new_recipe(user, data):
@@ -449,3 +489,106 @@ def ingredients():
         except Exception as e:
             db.session.rollback()  # Deshacer los cambios en caso de error
             return jsonify({"error": f"Error al procesar la solicitud: {str(e)}"}), 500
+
+@app.route('/api/recipes/<int:idR>/like/<int:idU>', methods=['POST', 'DELETE'])
+@jwt_required()
+def favorites_recipes_mod(idU, idR):
+    if idU < 0 or idR < 0:
+        return no_valid_id_provided()
+    
+    client = get_user_from_token(get_jwt())
+    recipe = Recipe.query.get(idR)
+    user = User.query.get(idU)
+    if not user:
+       return user_not_found_error() 
+    if not recipe:
+        return recipe_not_found_error()
+    if not has_permission(client, user):
+        return no_permission_error()
+    
+    method = request.method
+    if method == 'POST':
+        return add_favorite(user, recipe)
+    if method == 'DELETE':
+        return rm_favorite(user, recipe)
+
+def add_favorite(user, recipe):
+    if(user.is_favorite(recipe)):
+        return recipe_added_to_fav()
+    try:
+        favorite = FavoriteRecipe(user_id=user.id, recipe_id=recipe.id)
+        db.session.add(favorite)
+        db.session.commit()
+        return recipe_added_to_fav()
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al añadir receta favorita."}), 400
+    
+def rm_favorite(user, recipe): 
+    favorite = FavoriteRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
+    if not favorite:
+        return recipe_removed_from_fav()
+    try:
+        db.session.delete(favorite)
+        db.session.commit()
+        return recipe_removed_from_fav()
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al eliminar receta favorita."}), 400
+    
+@app.route('/api/recipes/<int:idR>/cart/<int:idU>', methods=['POST', 'DELETE'])
+@jwt_required()
+def cart_recipes_mod(idU, idR):
+    if idU < 0 or idR < 0:
+        return no_valid_id_provided()
+    
+    client = get_user_from_token(get_jwt())
+    recipe = Recipe.query.get(idR)
+    user = User.query.get(idU)
+    if not user:
+        return user_not_found_error()
+    if not recipe:
+        return recipe_not_found_error()
+    if not has_permission(client, user):
+        return no_permission_error()
+    
+    method = request.method
+    if method == 'POST':
+        return add_cart_recipe(user, recipe)
+    if method == 'DELETE':
+        return rm_cart_recipe(user, recipe)
+
+def add_cart_recipe(user, recipe):
+    if(user.is_in_cart(recipe)):
+        return recipe_added_to_cart()
+    if(user.get_cart_recipes_count() >= RECIPE_CART_SIZE):
+        return jsonify({"error": "No hay más espacio disponible en la cesta."}), 409
+    try:
+        cartEntry = CartRecipe(user_id=user.id, recipe_id=recipe.id)
+        db.session.add(cartEntry)
+        db.session.commit()
+        return recipe_added_to_cart()
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al añadir receta a la cesta."}), 400
+    
+def rm_cart_recipe(user, recipe): 
+    cartEntry = CartRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
+    if not cartEntry:
+        return recipe_removed_from_cart()
+    try:
+        db.session.delete(cartEntry)
+        db.session.commit()
+        return recipe_removed_from_cart()
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al eliminar receta de la cesta."}), 400
+        
+def recipe_added_to_fav():
+    return jsonify({"msg": "Receta añadida a favoritos."}), 201
+def recipe_removed_from_fav():
+    return jsonify({"msg": "Receta eliminada de favoritos."}), 204
+def recipe_added_to_cart():
+    return jsonify({"msg": "Receta añadida a la cesta."}), 201
+def recipe_removed_from_cart():
+    return jsonify({"msg": "Receta eliminada de la cesta."}), 204

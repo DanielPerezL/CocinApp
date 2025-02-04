@@ -563,7 +563,7 @@ const addRecipeFavUnsafe = async (id: string): Promise<void> => {
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${getLoggedUserId()}/fav_recipes/${id}`,
+      `${API_BASE_URL}/recipes/${id}/like/${getLoggedUserId()}`,
       {
         method: "POST",
         credentials: "include",
@@ -588,7 +588,7 @@ const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${getLoggedUserId()}/fav_recipes/${id}`,
+      `${API_BASE_URL}/recipes/${id}/like/${getLoggedUserId()}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -616,7 +616,7 @@ const fetchMyFavRecipesUnsafe = async (
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${getLoggedUserId()}/fav_recipes?offset=${offset}&limit=${RECIPE_LIMIT}`,
+      `${API_BASE_URL}/recipes?favourited_by=${getLoggedUserId()}&offset=${offset}&limit=${RECIPE_LIMIT}`,
       {
         method: "GET",
         credentials: "include",
@@ -644,7 +644,7 @@ const addRecipeCartUnsafe = async (id: string): Promise<void> => {
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${getLoggedUserId()}/cart_recipes/${id}`,
+      `${API_BASE_URL}/recipes/${id}/cart/${getLoggedUserId()}`,
       {
         method: "POST",
         credentials: "include",
@@ -668,7 +668,7 @@ const rmRecipeCartUnsafe = async (id: string): Promise<void> => {
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${getLoggedUserId()}/cart_recipes/${id}`,
+      `${API_BASE_URL}/recipes/${id}/cart/${getLoggedUserId()}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -694,9 +694,7 @@ const fetchMyCartRecipesUnsafe = async (): Promise<FetchRecipesResponse> => {
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/users/${getLoggedUserId()}/cart_recipes?lang=${t(
-        "lang"
-      )}`,
+      `${API_BASE_URL}/recipes?carted_by=${getLoggedUserId()}`,
       {
         method: "GET",
         credentials: "include",
