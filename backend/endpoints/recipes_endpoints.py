@@ -238,7 +238,10 @@ def new_recipe(user, data):
 
         # Realizar un único commit para todas las operaciones
         db.session.commit()
-        return jsonify({"msg": "Receta publicada con éxito", "new_id": new_recipe.id}), 201
+        response = jsonify({"msg": "Receta publicada con éxito"})
+        response.status_code = 201
+        response.headers["Location"] = f"/api/recipes/{new_recipe.id}"
+        return response
 
     except SQLAlchemyError as e:
         db.session.rollback()

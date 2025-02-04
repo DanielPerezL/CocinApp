@@ -362,10 +362,20 @@ export const login = async (email: string, password: string): Promise<void> => {
     throw new Error(t("errorLogin"));
   }
 
+  const location = response.headers.get("Location");
+  if (!location) {
+    throw new Error(t("errorLogin"));
+  }
+
+  const id = location.split("/").pop();
+  if (!id) {
+    throw new Error(t("errorLogin"));
+  }
+
   const loginOkData: LoginResponse = responseData;
   // Indicar que el usuario ha iniciado sesión
   localStorage.setItem("isLoggedIn", "true");
-  localStorage.setItem("loggedUserId", loginOkData.id);
+  localStorage.setItem("loggedUserId", id);
   localStorage.setItem("isAdmin", loginOkData.isAdmin);
   authEvents.emit("login");
 };
@@ -732,8 +742,16 @@ const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
     throw new Error(t("errorUploadingImage"));
   }
 
-  const responseData = await response.json();
-  return responseData.filename;
+  const location = response.headers.get("Location");
+  if (!location) {
+    throw new Error(t("errorUploadingImage"));
+  }
+
+  const filename = location.split("/").pop();
+  if (!filename) {
+    throw new Error(t("errorUploadingImage"));
+  }
+  return filename;
 };
 
 // Función para subir una nueva receta al servidor
@@ -799,8 +817,17 @@ const uploadRecipeUnsafe = async (
     throw new Error(t("errorUploadingRecipe"));
   }
 
-  const responseData = await response.json();
-  return responseData.new_id;
+  const location = response.headers.get("Location");
+  if (!location) {
+    throw new Error(t("errorUploadingRecipe"));
+  }
+
+  const id = location.split("/").pop();
+  if (!id) {
+    throw new Error(t("errorUploadingRecipe"));
+  }
+
+  return id;
 };
 
 export const updateRecipe = async (

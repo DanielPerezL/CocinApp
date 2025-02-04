@@ -53,14 +53,15 @@ def upload_image():
             db.session.add(new_image)
             db.session.commit()
         except Exception as e:
-            print("\n\n")
-            print(e)
-            print("\n\n")
             db.session.rollback()
             return unexpected_error()
-
 
     # Guardar el volumen Docker
     image.save(filepath)
 
-    return jsonify({"msg": "Imagen publicada con éxito", "filename": new_filename}), 200
+    # Devolver respuesta con la cabecera Location
+    response = jsonify({"msg": "Imagen publicada con éxito"})
+    response.status_code = 201
+    response.headers["Location"] = f"/api/images/{new_filename}"
+    
+    return response

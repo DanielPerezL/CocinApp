@@ -68,10 +68,10 @@ def users_login():
 
     # Retorna los tokens en el cuerpo de la respuesta
     response = make_response(jsonify({"msg": "Inicio de sesión exitoso.", 
-                                      "id": user.id,
                                       "isAdmin": user.nickname == os.environ['ADMIN_USER'],
                                       }))
-    
+    response.headers["Location"] = f"/api/users/{user.id}"
+        
     #En el login no necesitamos el token csrf protect
     set_access_cookies(response, access_token, max_age=app.config['JWT_ACCESS_TOKEN_EXPIRES'])
     set_refresh_cookies(response, refresh_token, max_age=app.config['JWT_REFRESH_TOKEN_EXPIRES'])
