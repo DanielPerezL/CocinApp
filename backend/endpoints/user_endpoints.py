@@ -129,7 +129,7 @@ def new_user_picture(user, new_picture):
     user.set_picture(new_picture)
     try:
         db.session.commit()
-        return jsonify({"msg": "Imagen de perfil actualizada correctamente."}), 201
+        return jsonify({"msg": "Imagen de perfil actualizada correctamente."}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al publicar modificar la imagen de su perfil. Inténtelo de nuevo más tarde."}), 400
@@ -141,7 +141,7 @@ def change_password(user, current_password, new_password):
     user.set_password(new_password)
     try:
         db.session.commit()
-        return jsonify({"msg": "Contraseña actualizada con éxito."}), 201
+        return jsonify({"msg": "Contraseña actualizada con éxito."}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
     return unexpected_error()
