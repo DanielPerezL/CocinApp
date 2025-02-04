@@ -23,7 +23,7 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=90)
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
-app.config['JWT_CSRF_METHODS'] = ["POST", "PUT", "DELETE"]
+app.config['JWT_CSRF_METHODS'] = ["POST", "PUT", "PATCH", "DELETE"]
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True 
 app.config['JWT_COOKIE_SECURE'] = True
 

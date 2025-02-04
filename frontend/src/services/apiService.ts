@@ -853,7 +853,7 @@ const updateRecipeUnsafe = async (
 
   try {
     response = await fetch(`${API_BASE_URL}/recipes/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         ...headers,
@@ -882,7 +882,7 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
 
   try {
     response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         ...headers,
@@ -923,7 +923,7 @@ const updatePasswordUnsafe = async (
   };
   try {
     response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         ...headers,

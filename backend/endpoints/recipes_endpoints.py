@@ -255,7 +255,7 @@ def get_recipe_categories():
                     {"name":"difficulty", "options": difficulty_options},
                     {"name":"type", "options": type_options}), 200
 
-@app.route('/api/recipes/<int:id>', methods=['GET', 'DELETE', 'PUT'])
+@app.route('/api/recipes/<int:id>', methods=['GET', 'DELETE', 'PATCH'])
 @jwt_required(optional=True)
 def recipes_id(id):
     if id < 0:
@@ -276,7 +276,7 @@ def recipes_id(id):
             return no_permission_error()
     if method == 'DELETE':  
         return delete_recipe(recipe)
-    if method == 'PUT':
+    if method == 'PATCH':
         return update_recipe(recipe, request.json)
     
 def update_recipe(recipe, data):

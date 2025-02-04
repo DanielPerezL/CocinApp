@@ -83,7 +83,7 @@ def users_logout():
     unset_jwt_cookies(response)
     return response, 200
 
-@app.route('/api/users/<string:id>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/api/users/<string:id>', methods=['GET', 'PATCH', 'DELETE'])
 @jwt_required(optional=True)
 def users_id(id):
     try:
@@ -108,7 +108,7 @@ def users_id(id):
         
     if not has_permission(client, user):
         return no_permission_error()    
-    if method == 'PUT':
+    if method == 'PATCH':
         data = request.get_json()
         if data and all(key in data for key in ('current_password', 'new_password')):
             #Cambiar contraseña
