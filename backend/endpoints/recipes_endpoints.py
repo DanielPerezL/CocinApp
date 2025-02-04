@@ -245,7 +245,7 @@ def new_recipe(user, data):
         return no_recipe_uploaded_error()
 
 
-@app.route('/api/recipe/categories', methods=['GET'])
+@app.route('/api/recipes/categories', methods=['GET'])
 def get_recipe_categories():
     time_options = Recipe.get_time_options()  # Obtener los valores posibles de 'tiempo'
     difficulty_options = Recipe.get_difficulty_options()  # Obtener los valores posibles de 'dificultad'
@@ -380,7 +380,7 @@ def delete_recipe(recipe):
         db.session.rollback()
     return unexpected_error()
 
-@app.route('/api/recipe/ingredients', methods=['GET', 'POST'])
+@app.route('/api/recipes/ingredients', methods=['GET', 'POST'])
 def ingredients():
     lang = request.args.get('lang', default="", type=str)
     if request.method == 'GET':

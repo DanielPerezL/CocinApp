@@ -42,7 +42,7 @@ export const getLoggedUserId = () => {
 export const fetchRecipesCategories = async (): Promise<CategoryOptions[]> => {
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/recipe/categories`);
+    response = await fetch(`${API_BASE_URL}/recipes/categories`);
   } catch (error) {
     throw new Error(t("errorLoadingRecipesCategories"));
   }
@@ -58,7 +58,7 @@ export const fetchIngredients = async (): Promise<Ingredient[]> => {
   let response: Response;
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipe/ingredients?lang=${t("lang")}`
+      `${API_BASE_URL}/recipes/ingredients?lang=${t("lang")}`
     );
   } catch (error) {
     throw new Error(t("errorLoadingRecipesIngredients"));
@@ -471,7 +471,7 @@ const postIngredientsUnsafe = async (jsonContent: string): Promise<void> => {
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
 
   try {
-    response = await fetch(`${API_BASE_URL}/recipe/ingredients`, {
+    response = await fetch(`${API_BASE_URL}/recipes/ingredients`, {
       method: "POST",
       credentials: "include",
       headers: {
