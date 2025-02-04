@@ -1,5 +1,20 @@
 [
     {
+        "name_en": "Corn tortillas",
+        "name_es": "Tortillas de maíz",
+        "default_unit": "units"
+    },
+    {
+        "name_en": "Jalapeños",
+        "name_es": "Jalapeños",
+        "default_unit": "g"
+    },
+    {
+        "name_en": "Mozzarella cheese",
+        "name_es": "Queso mozzarella",
+        "default_unit": "g"
+    },
+    {
         "name_en": "Olives",
         "name_es": "Aceitunas",
         "default_unit": "g"
