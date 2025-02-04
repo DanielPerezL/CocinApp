@@ -1,5 +1,25 @@
 [
     {
+        "name_en": "Olives",
+        "name_es": "Aceitunas",
+        "default_unit": "g"
+    },
+    {
+        "name_en": "Feta cheese",
+        "name_es": "Queso feta",
+        "default_unit": "g"
+    },
+    {
+        "name_en": "Breadcrumbs",
+        "name_es": "Pan rallado",
+        "default_unit": "g"
+    },
+    {
+        "name_en": "Caesar dressing",
+        "name_es": "Salsa César",
+        "default_unit": "ml"
+    },
+    {
         "name_en": "Avocado Oil",
         "name_es": "Aceite de Aguacate",
         "default_unit": "ml"

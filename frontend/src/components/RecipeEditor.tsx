@@ -214,7 +214,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
                 className="d-flex justify-content-between align-items-center mb-2"
               >
                 <span>
-                  {ingredient.name} {t(ingredient.default_unit)}
+                  {ingredient.name} ({t(ingredient.default_unit)})
                 </span>
                 <div className="d-flex align-items-center">
                   <input
