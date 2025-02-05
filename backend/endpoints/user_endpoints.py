@@ -110,11 +110,14 @@ def users_id(id):
         return no_permission_error()    
     if method == 'PATCH':
         data = request.get_json()
-        if data and all(key in data for key in ('current_password', 'new_password')):
+        if data and all(key in data for key in ('current_password', 'new_password'))\
+                and not any(key in data for key in ('picture',)):
             #Cambiar contraseña
             return change_password(user, data.get('current_password'), data.get('new_password'))
-        #Cambiar/Borrar foto
-        return new_user_picture(user, data.get("picture"))        
+        if data and not any(key in data for key in ('current_password', 'new_password')):
+            #Cambiar/Borrar foto
+            return new_user_picture(user, data.get("picture"))  
+        return no_requested_info_error()
     if method == 'DELETE':
         return delete_account(user)
 
