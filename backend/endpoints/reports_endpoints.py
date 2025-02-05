@@ -39,19 +39,19 @@ def handle_report(data):
         report.increment_count()
         try:
             db.session.commit()
-            return reportSuccessfully()
+            return jsonify({"msg": "Reporte enviado correctamente."}), 201
         except SQLAlchemyError as e:
             db.session.rollback()
-            return reportError()
+            return send_report_error()
     
     new_report = Report(reported_resource=reported_resource)
     try:
         db.session.add(new_report)
         db.session.commit()
-        return reportSuccessfully()
+        return jsonify({"msg": "Reporte enviado correctamente."}), 201
     except SQLAlchemyError as e:
         db.session.rollback()
-        return reportError()
+        return send_report_error()
 
 @app.route('/api/reports/<int:id>', methods=['PUT'])
 @jwt_required()
@@ -68,14 +68,7 @@ def review_report(id):
     report.set_reviewed()
     try:
         db.session.commit()
-        return jsonify({"msg": "Reporte revisado correctamente."}), 201
+        return '', 204
     except SQLAlchemyError as e:
         db.session.rollback()
-    return jsonify({"error": "Ha ocurrido un error inesperado. Inténtelo de nuevo más tarde."}), 400
-
-
-def reportSuccessfully():
-    return jsonify({"msg": "Reporte enviado correctamente."}), 201
- 
-def reportError(): 
-    return jsonify({"error": "Error al enviar el reporte. Inténtelo de nuevo más tarde."}), 400
+    return unexpected_error()

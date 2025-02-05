@@ -129,7 +129,7 @@ def new_user_picture(user, new_picture):
     user.set_picture(new_picture)
     try:
         db.session.commit()
-        return jsonify({"msg": "Imagen de perfil actualizada correctamente."}), 200
+        return '', 204
     except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"error": "Error al publicar modificar la imagen de su perfil. Inténtelo de nuevo más tarde."}), 400
@@ -141,7 +141,7 @@ def change_password(user, current_password, new_password):
     user.set_password(new_password)
     try:
         db.session.commit()
-        return jsonify({"msg": "Contraseña actualizada con éxito."}), 200
+        return '', 204
     except SQLAlchemyError as e:
         db.session.rollback()
     return unexpected_error()
@@ -152,7 +152,7 @@ def delete_account(deleting_user):
         #DELETE ORPHAN ELIMINA LAS RECETAS
         db.session.commit()
         delete_images_by_uploader(deleting_user)
-        return jsonify({"msg": "Usuario eliminado."}), 200
+        return '', 204
     except SQLAlchemyError as e:
         db.session.rollback()
     return unexpected_error()

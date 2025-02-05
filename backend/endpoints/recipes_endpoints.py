@@ -78,9 +78,9 @@ def recipes():
     if method == 'POST':
         try:
             verify_jwt_in_request() 
-        except Exception as e:
-            return jsonify({"error": "Authentication required or invalid token"}), 401
-
+        except Exception:
+            return invalid_token()
+        
         user = get_user_from_token(get_jwt())
         if user is None:
             return user_not_found_error()
@@ -215,7 +215,6 @@ def get_cart_recipes(user, lang):
     recipes = [recipe.to_simple_dto(lang) for recipe in user.get_cart_recipes()]
     return jsonify({"recipes": recipes, "has_more": False}), 200
 
-
 def new_recipe(user, data):
     # Verifica que se proporcione la información requerida
     if not data or not all(key in data for key in ('title', 'ingredients', 'procedure', 'images', 'time', 'difficulty', 'type')) or len(data.get('procedure')) == 0 or len(data.get('images')) == 0:
@@ -286,7 +285,6 @@ def new_recipe(user, data):
     except SQLAlchemyError as e:
         db.session.rollback()
         return no_recipe_uploaded_error()
-
 
 @app.route('/api/recipes/categories', methods=['GET'])
 def get_recipe_categories():
@@ -396,12 +394,11 @@ def update_recipe(recipe, data):
         db.session.commit()
         if 'images' in data:
             delete_images_by_filenames(list(images_to_delete))
-        return jsonify({"msg": "Receta actualizada con éxito"}), 200
+        return '', 204
 
     except Exception as e:
         db.session.rollback()
         return no_recipe_uploaded_error()
-
 
 def recipe_details(id, client, lang):
     recipe = Recipe.query.get(id)
@@ -418,7 +415,7 @@ def delete_recipe(recipe):
         db.session.delete(recipe)
         db.session.commit()
         delete_images_by_filenames(filenames)
-        return jsonify({"msg": "Receta eliminada correctamente"}), 200
+        return '', 204
     except SQLAlchemyError as e:
         db.session.rollback()
     return unexpected_error()
@@ -435,8 +432,8 @@ def ingredients():
     elif request.method == 'POST':
         try:
             verify_jwt_in_request() 
-        except Exception as e:
-            return jsonify({"error": "Authentication required or invalid token"}), 401
+        except Exception:
+            return invalid_token()
         user = get_user_from_token(get_jwt())
         if not is_admin(user):
             return no_permission_error()
@@ -445,7 +442,7 @@ def ingredients():
             # Leer el cuerpo de la solicitud
             data = request.get_json()
             if not isinstance(data, list):
-                return jsonify({"error": "El cuerpo de la solicitud debe ser una lista de ingredientes"}), 400
+                return no_requested_info_error()
 
             errores = []
             for ingredient_data in data:
@@ -486,11 +483,11 @@ def ingredients():
                 return jsonify({"message": "Todos los ingredientes enviados ya estaban agregados."}), 202
             return jsonify({"message": "Todos los ingredientes se agregaron con éxito."}), 201
 
-        except Exception as e:
+        except Exception:
             db.session.rollback()  # Deshacer los cambios en caso de error
-            return jsonify({"error": f"Error al procesar la solicitud: {str(e)}"}), 500
-
-@app.route('/api/recipes/<int:idR>/like/<int:idU>', methods=['POST', 'DELETE'])
+            return unexpected_error()
+        
+@app.route('/api/recipes/<int:idR>/favourite/<int:idU>', methods=['POST', 'DELETE'])
 @jwt_required()
 def favorites_recipes_mod(idU, idR):
     if idU < 0 or idR < 0:
@@ -587,8 +584,8 @@ def rm_cart_recipe(user, recipe):
 def recipe_added_to_fav():
     return jsonify({"msg": "Receta añadida a favoritos."}), 201
 def recipe_removed_from_fav():
-    return jsonify({"msg": "Receta eliminada de favoritos."}), 204
+    return '', 204
 def recipe_added_to_cart():
     return jsonify({"msg": "Receta añadida a la cesta."}), 201
 def recipe_removed_from_cart():
-    return jsonify({"msg": "Receta eliminada de la cesta."}), 204
+    return '', 204

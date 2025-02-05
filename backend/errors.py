@@ -22,6 +22,9 @@ def no_recipe_uploaded_error():
 def report_not_found_error():
     return jsonify({"error": "Reporte no encontrado."}), 404
 
+def send_report_error():
+    return jsonify({"error": "Error al enviar el reporte. Inténtelo de nuevo más tarde."}), 400
+
 def image_not_found_error():
     return jsonify({"error": "Imagen no encontrada."}), 404
 
