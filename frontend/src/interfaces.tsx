@@ -2,7 +2,7 @@
 export interface RecipeSimpleDTO {
   id: string;
   title: string;
-  image: string;
+  imageURL: string;
   time: string;
   difficulty: string;
   type: string;
@@ -28,7 +28,7 @@ export interface RecipeDetailDTO {
   time: string;
   difficulty: string;
   type: string;
-  images: string[];
+  imagesURL: string[];
   ingredients: ConcreteIngredient[];
   procedure: string[];
 }
@@ -42,14 +42,14 @@ export interface CategoryOptions {
 export interface UserDTO {
   id: string;
   nickname: string;
-  picture: string;
+  pictureURL: string;
   email: string;
 }
 
 export interface UserPublicDTO {
   id: string;
   nickname: string;
-  picture: string;
+  pictureURL: string;
 }
 
 export interface ReportDTO {

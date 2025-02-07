@@ -13,13 +13,16 @@ import {
 import { authEvents } from "../events/authEvents";
 
 const RENDER = import.meta.env.VITE_RENDER === "true"; //ENTORNO DE PRODUCCIÓN
+let SERVER_BASE_URL: string;
 let API_BASE_URL: string;
 let TOKEN_BASE_URL: string;
 if (RENDER) {
   // Cadenas de conexion usando RENDER
+  SERVER_BASE_URL = `${window.location.protocol}`;
   API_BASE_URL = `${window.location.protocol}/api`;
   TOKEN_BASE_URL = `${window.location.protocol}/token`;
 } else {
+  SERVER_BASE_URL = `http://${window.location.hostname}:5000`;
   API_BASE_URL = `http://${window.location.hostname}:5000/api`;
   TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
 }
@@ -381,9 +384,9 @@ export const login = async (email: string, password: string): Promise<void> => {
 };
 
 // Aquí retornamos la URL completa de la imagen
-export const getImage = (filename: string): string => {
-  if (!filename) return "";
-  return `${API_BASE_URL}/images/${filename}`;
+export const getImage = (imagePath: string): string => {
+  if (!imagePath) return "";
+  return `${SERVER_BASE_URL}${imagePath}`;
 };
 
 // Función para hacer logout (NECESITA LOGIN PERO SI DA ERROR NO SE NECESITA TRATAR)

@@ -50,7 +50,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [fileNames, setFileNames] = useState(
-    `${recipe.images.length} ${t("nImagesSelected")}`
+    `${recipe.imagesURL.length} ${t("nImagesSelected")}`
   );
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +104,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
     const imagePaths =
       selectedImages.length > 0
         ? await Promise.all(selectedImages.map((image) => uploadImage(image)))
-        : recipe.images || [];
+        : recipe.imagesURL || [];
 
     /*GUARDAR EN SV*/
     await updateRecipe(
@@ -307,7 +307,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
             <span
               style={{
                 color:
-                  selectedImages.length > 0 || recipe.images.length > 0
+                  selectedImages.length > 0 || recipe.imagesURL.length > 0
                     ? "black"
                     : "red",
               }}
@@ -322,7 +322,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
               onClick={() => {
                 if (fileInputRef && fileInputRef.current) {
                   fileInputRef.current.click();
-                  recipe.images = [];
+                  recipe.imagesURL = [];
                 }
               }}
               className="btn btn-primary"
@@ -361,7 +361,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
               !selectedCategories["time"] ||
               !selectedCategories["difficulty"] ||
               !selectedCategories["type"] ||
-              (selectedImages.length === 0 && recipe.images.length === 0)
+              (selectedImages.length === 0 && recipe.imagesURL.length === 0)
             }
           >
             {t("saveChanges")}

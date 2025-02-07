@@ -116,7 +116,7 @@ class Recipe(db.Model):
             "time": self.time,
             "difficulty": self.difficulty,
             "type": self.type,
-            "images": self.images,
+            "imagesURL": [f"/api/images/{image}" for image in self.images],
         }
 
     # DTO para la vista simple de la receta
@@ -124,7 +124,7 @@ class Recipe(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "image": self.images[0] if self.images else None,
+            "imageURL": f"/api/images/{self.images[0]}" if self.images else None,
             "time": self.time,
             "difficulty": self.difficulty,
             "type": self.type,

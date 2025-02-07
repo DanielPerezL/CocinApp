@@ -27,7 +27,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
   const [imgError, setImgError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [userPic, setUserPic] = useState<string>(user.picture);
+  const [userPic, setUserPic] = useState<string>(user.pictureURL);
   const [showModal, setShowModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -82,9 +82,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   };
 
   const handleCropSave = async (croppedImage: File) => {
-    const imageUrl = await uploadImage(croppedImage); // Sube la imagen recortada
-    await updateProfilePic(imageUrl); // Actualiza la imagen de perfil
-    setUserPic(imageUrl);
+    const filename = await uploadImage(croppedImage); // Sube la imagen recortada
+    await updateProfilePic(filename); // Actualiza la imagen de perfil
+    setUserPic("/api/images/" + filename);
     setImgError(false); //Para volver a buscar la img al servidor
     setImageToCrop(null);
 

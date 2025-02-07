@@ -106,7 +106,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
   };
 
   useEffect(() => {
-    if (user.picture === "") setImgError(true);
+    if (user.pictureURL === "") setImgError(true);
     loadRecipes();
   }, []);
 
@@ -187,7 +187,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
                 className="user-info d-flex align-items-center border border-primary rounded p-2 hover-effect text-decoration-none"
               >
                 <img
-                  src={!imgError ? getImage(user.picture) : userDefaultPic}
+                  src={!imgError ? getImage(user.pictureURL) : userDefaultPic}
                   className="rounded-circle me-3"
                   onError={() => setImgError(true)}
                 />
@@ -234,7 +234,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
             <h1 className="display-5 text-primary long-text">{recipe.title}</h1>
           </div>
           {/* Carrusel de imágenes */}
-          <ImageCarousel images={recipe.images} />
+          <ImageCarousel images={recipe.imagesURL} />
           <div className="mt-4 mb-1">
             <strong>{t("time")}:</strong>{" "}
             <span className="badge bg-primary">{t(recipe.time)}</span>
@@ -288,7 +288,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
                 className="mt-3 btn btn-danger"
                 onClick={handleCancelModify}
               >
-                Modificar receta
+                {t("modifyRecipe")}
               </button>
             </div>
           ) : (

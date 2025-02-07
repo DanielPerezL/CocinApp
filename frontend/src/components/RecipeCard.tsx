@@ -22,7 +22,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
     >
       <div className="card h-100">
         <img
-          src={getImage(recipe.image)}
+          src={getImage(recipe.imageURL)}
           className="card-img-top recipe-img"
           alt={recipe.title}
         />

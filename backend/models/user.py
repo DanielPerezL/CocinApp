@@ -64,7 +64,7 @@ class User(db.Model):
         return {
             'id': self.id,
             'nickname': self.nickname,
-            'picture': self.picture,
+            'pictureURL': f"/api/images/{self.picture}" if self.picture and self.picture != "" else "",
             'email': self.email,
         }
     
@@ -73,8 +73,8 @@ class User(db.Model):
         return {            
             'id': self.id,
             'nickname': self.nickname,
-            'picture': self.picture,
-        }
+            'pictureURL': f"/api/images/{self.picture}" if self.picture and self.picture != "" else "",
+            }
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
