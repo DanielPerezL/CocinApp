@@ -43,7 +43,7 @@ const RecipePage = () => {
 
   return (
     <div className="main-container container">
-      {loading && <p>{t("loagingRecipeDetails")}</p>}
+      {loading && <p>{t("loadingRecipeDetails")}</p>}
       {error && <p className="text-danger">{error}</p>}
       {!loading && !error && recipe && user && (
         <RecipeDetails
