@@ -1,6 +1,6 @@
 {
     "lang": "en",
-    
+
     "welcome": "Welcome to CocinApp",
     "loadMore": "Load more",
     "registerModal": "Successful Registration",
@@ -14,7 +14,7 @@
     "subwelcome": "Discover and share your favorite recipes",
     "loadingRecipes": "Loading recipes...",
     "loadingReports": "Loading reports...",
-    "loadingRecipeDetails": "Loading recipe details...",
+    "loagingRecipeDetails": "Loading recipe details...",
     "yourFavRecipes": "Your Favorite Recipes",
     "hereFavRecipes": "Here are your favorite recipes",
     "noFavRecipes": "No favorite recipes yet",
@@ -184,7 +184,6 @@
     "favoritesList": "Favorites list",
     "cartList": "Shopping list",
     "requiredFieldsMessage": "Fields marked with * are required.",
-
 
     "errorUpdatingPasswordNoValidNewPasswords":"The new password does not match.",
     "errorLoginUserNotFound": "User not found. Please check your credentials.",

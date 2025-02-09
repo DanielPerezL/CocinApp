@@ -1,6 +1,6 @@
 {
     "lang": "es",
-    
+
     "welcome": "Bienvenido a CocinApp",
     "loadMore": "Cargar más",
     "registerModal": "Registro Exitoso",
@@ -221,5 +221,4 @@
     "errorRemovingCartRecipe":"Error al eliminar la receta de la cesta",
     "errorLoadingMyCartRecipes":"Error al recuperar las recetas de la cesta",
     "errorUpdatingRecipe": "Error al acutalizar la receta"
-  }
-  
+}
