@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import db, NICKNAME_MAX_LENGTH
+from flask import request 
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -60,20 +61,24 @@ class User(db.Model):
         return f'<p>{self.nickname}</p>'
     
     def to_dto(self):
+        base_url = request.host_url.rstrip('/')
+
         #Usuario DTO
         return {
             'id': self.id,
             'nickname': self.nickname,
-            'pictureURL': f"/api/images/{self.picture}" if self.picture and self.picture != "" else "",
+            'pictureURL': f"{base_url}/api/images/{self.picture}" if self.picture and self.picture != "" else "",
             'email': self.email,
         }
     
     #Usuario DTO publico     
     def to_public_dto(self):
+        base_url = request.host_url.rstrip('/')
+
         return {            
             'id': self.id,
             'nickname': self.nickname,
-            'pictureURL': f"/api/images/{self.picture}" if self.picture and self.picture != "" else "",
+            'pictureURL': f"{base_url}/api/images/{self.picture}" if self.picture and self.picture != "" else "",
             }
 
     def set_password(self, password):

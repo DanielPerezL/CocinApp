@@ -2,6 +2,7 @@ from config import db
 from .user import User, FavoriteRecipe
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import select, func
+from flask import request 
 
 class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -107,6 +108,8 @@ class Recipe(db.Model):
 
     # DTO para la vista detallada de la receta
     def to_details_dto(self, lang):
+        base_url = request.host_url.rstrip('/')
+
         return {
             "id": self.id,
             "title": self.title,
@@ -116,17 +119,20 @@ class Recipe(db.Model):
             "time": self.time,
             "difficulty": self.difficulty,
             "type": self.type,
-            "imagesURL": [f"/api/images/{image}" for image in self.images],
+            "imagesURL": [f"{base_url}/api/images/{image}" for image in self.images],
         }
 
     # DTO para la vista simple de la receta
     def to_simple_dto(self, lang):
+        base_url = request.host_url.rstrip('/')
+
         return {
             "id": self.id,
             "title": self.title,
-            "imageURL": f"/api/images/{self.images[0]}" if self.images else None,
+            "imageURL": f"{base_url}/api/images/{self.images[0]}" if self.images else None,
             "time": self.time,
             "difficulty": self.difficulty,
             "type": self.type,
             "ingredients": [ingredient.to_dto(lang) for ingredient in self.ingredients],
+            "url": f"{base_url}/api/recipes/{self.id}",
         }

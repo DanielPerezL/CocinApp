@@ -7,6 +7,7 @@ export interface RecipeSimpleDTO {
   difficulty: string;
   type: string;
   ingredients: ConcreteIngredient[];
+  url: string;
 }
 
 export interface Ingredient {

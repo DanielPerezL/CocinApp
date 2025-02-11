@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { UserPublicDTO } from "../interfaces";
 import {
-  getImage,
   getLoggedUserId,
   isAdmin,
   removeAccount,
@@ -32,7 +31,7 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
       <h2 className="title text-primary mb-3">{user.nickname}</h2>
       <div className="user-public-details d-flex flex-column align-items-center">
         <img
-          src={!imgError ? getImage(user.pictureURL) : userDefaultPic}
+          src={!imgError ? user.pictureURL : userDefaultPic}
           className="rounded-circle border border-primary border-2 mb-3"
           onError={() => setImgError(true)}
           onClick={() => {
@@ -61,7 +60,7 @@ const UserPublicDetails: React.FC<UserPublicDetailsProps> = ({ user }) => {
       </div>
       <ImageModal
         show={showModal}
-        image={!imgError ? getImage(user.pictureURL) : userDefaultPic}
+        image={!imgError ? user.pictureURL : userDefaultPic}
         onClose={() => setShowModal(false)}
       />
     </div>

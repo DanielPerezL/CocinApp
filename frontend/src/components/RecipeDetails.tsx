@@ -14,7 +14,6 @@ import {
   addRecipeCart,
   addRecipeFav,
   fetchSimilarRecipes,
-  getImage,
   getLoggedUserId,
   isAdmin,
   isLoggedIn,
@@ -187,7 +186,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
                 className="user-info d-flex align-items-center border border-primary rounded p-2 hover-effect text-decoration-none"
               >
                 <img
-                  src={!imgError ? getImage(user.pictureURL) : userDefaultPic}
+                  src={!imgError ? user.pictureURL : userDefaultPic}
                   className="rounded-circle me-3"
                   onError={() => setImgError(true)}
                 />

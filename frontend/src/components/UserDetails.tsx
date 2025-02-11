@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useRef, useState } from "react";
 import { UserDTO } from "../interfaces";
 import {
-  getImage,
   logout,
   removeAccount,
   removeProfilePic,
@@ -109,7 +108,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
       <h2 className="text-primary">{t("userProfile")}</h2>
       <div className="user-details d-flex flex-column align-items-center p-3">
         <img
-          src={!imgError ? getImage(userPic) : userDefaultPic}
+          src={!imgError ? userPic : userDefaultPic}
           className="rounded-circle"
           onError={() => {
             setImgError(true);
@@ -219,7 +218,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
 
       <ImageModal
         show={showModal}
-        image={!imgError ? getImage(userPic) : userDefaultPic}
+        image={!imgError ? userPic : userDefaultPic}
         onClose={() => setShowModal(false)}
       />
 

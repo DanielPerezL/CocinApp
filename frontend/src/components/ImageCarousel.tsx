@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../css/ImageCarousel.css";
-import { getImage } from "../services/apiService";
 import ImageModal from "./ImagenModal";
 
 interface ImageCarouselProps {
@@ -50,7 +49,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             }}
           >
             <img
-              src={getImage(image)}
+              src={image}
               className="d-block w-100 carousel-img"
               alt={`Imagen ${index + 1}`}
             />
@@ -80,7 +79,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       </button>
       <ImageModal
         show={showModal}
-        image={getImage(images[activeIndex])}
+        image={images[activeIndex]}
         onClose={() => setShowModal(false)}
       />
     </div>
