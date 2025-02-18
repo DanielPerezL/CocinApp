@@ -330,7 +330,7 @@ const RecipeEditor: React.FC<RecipeEditorProps> = ({
               {t("addImages")}
             </button>
 
-            <span className="ms-3">{fileNames}</span>
+            <span className="ms-3 text-truncate">{fileNames}</span>
           </div>
 
           <input
