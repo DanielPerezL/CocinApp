@@ -688,7 +688,8 @@ const fetchMyCartRecipesUnsafe = async (): Promise<FetchRecipesResponse> => {
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?carted_by=${getLoggedUserId()}`,
+      `${API_BASE_URL}/recipes?carted_by=${getLoggedUserId()}
+                              &lang=${t("lang")}`,
       {
         method: "GET",
         credentials: "include",
