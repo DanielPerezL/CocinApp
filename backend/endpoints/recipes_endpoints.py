@@ -1,5 +1,5 @@
-from config import app, db, RECIPE_CART_SIZE
-from flask import jsonify, request
+from config import app, db
+from flask import jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt, verify_jwt_in_request
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
@@ -40,7 +40,7 @@ def recipes():
                 return user_not_found_error()
             try:
                 verify_jwt_in_request() 
-            except Exception as e:
+            except Exception:
                 return invalid_token()
             
             client = get_user_from_token(get_jwt())
@@ -53,7 +53,7 @@ def recipes():
                 return user_not_found_error()
             try:
                 verify_jwt_in_request() 
-            except Exception as e:
+            except Exception:
                 return invalid_token()
             
             client = get_user_from_token(get_jwt())
@@ -66,7 +66,7 @@ def recipes():
                 return user_not_found_error()
             try:
                 verify_jwt_in_request() 
-            except Exception as e:
+            except Exception:
                 return invalid_token()
             
             client = get_user_from_token(get_jwt())
@@ -277,12 +277,14 @@ def new_recipe(user, data):
 
         # Realizar un único commit para todas las operaciones
         db.session.commit()
-        response = jsonify({"msg": "Receta publicada con éxito"})
-        response.status_code = 201
-        response.headers["Location"] = f"/api/recipes/{new_recipe.id}"
+        response = make_response()
+        response.status_code = 204
+
+        base_url = request.host_url.rstrip('/')
+        response.headers["Location"] = f"{base_url}/api/recipes/{new_recipe.id}"
         return response
 
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         db.session.rollback()
         return no_recipe_uploaded_error()
 
@@ -337,7 +339,7 @@ def update_recipe(recipe, data):
         if 'procedure' in data:
             procedure = data['procedure']
             if not procedure or len(procedure) == 0:
-                raise Exception()
+                raise Exception("Procedimiento vacio")
             recipe.procedure = procedure
         
         if 'ingredients' in data:
@@ -366,14 +368,15 @@ def update_recipe(recipe, data):
 
         if 'images' in data:
             new_images = data.get('images', [])
+            new_images = [os.path.basename(image) for image in new_images]
             if len(new_images) == 0:
-                raise Exception()
+                raise Exception("Imagenes vacias")
             # Identificar imágenes que ya no se necesitan
             images_to_keep = set(recipe.images).intersection(set(new_images))
             images_to_delete = set(recipe.images) - images_to_keep
             images_to_add = set(new_images) - images_to_keep
 
-            # Validar que las imágenes nuevas existan en el servidor
+            # Validar que las imágenes nuexistan en el servidor
             all_images_exist = True
             valid_new_images = []
             for filename in images_to_add:
@@ -385,9 +388,9 @@ def update_recipe(recipe, data):
 
             if not all_images_exist:
                 # Si alguna de las nuevas imágenes no existe, aborta la operación
-                raise Exception()       
+                raise Exception("Alguna imagen  no existe")       
             
-            # Actualizar las imágenes en la receta (manteniendo las existentes y agregando las nuevas)
+            # Actualizar las imágenes en la receta (manteniendo xistentes y agregando las nuevas)
             recipe.images = list(images_to_keep.union(valid_new_images))
 
         # Guardar los cambios en la base de datos
@@ -396,7 +399,7 @@ def update_recipe(recipe, data):
             delete_images_by_filenames(list(images_to_delete))
         return '', 204
 
-    except Exception as e:
+    except Exception:
         db.session.rollback()
         return no_recipe_uploaded_error()
 
@@ -416,7 +419,7 @@ def delete_recipe(recipe):
         db.session.commit()
         delete_images_by_filenames(filenames)
         return '', 204
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         db.session.rollback()
     return unexpected_error()
 
@@ -479,113 +482,8 @@ def ingredients():
 
             if len(errores) < len(data):
                 return jsonify({"message": "Algunos ingredientes se agregaron con éxito, pero hubo errores.", "errors": errores}), 207
-            elif len(errores) == len(data):
-                return jsonify({"message": "Todos los ingredientes enviados ya estaban agregados."}), 202
-            return jsonify({"message": "Todos los ingredientes se agregaron con éxito."}), 201
+            return '', 204
 
         except Exception:
             db.session.rollback()  # Deshacer los cambios en caso de error
             return unexpected_error()
-        
-@app.route('/api/recipes/<int:idR>/favourite/<int:idU>', methods=['POST', 'DELETE'])
-@jwt_required()
-def favorites_recipes_mod(idU, idR):
-    if idU < 0 or idR < 0:
-        return no_valid_id_provided()
-    
-    client = get_user_from_token(get_jwt())
-    recipe = Recipe.query.get(idR)
-    user = User.query.get(idU)
-    if not user:
-       return user_not_found_error() 
-    if not recipe:
-        return recipe_not_found_error()
-    if not has_permission(client, user):
-        return no_permission_error()
-    
-    method = request.method
-    if method == 'POST':
-        return add_favorite(user, recipe)
-    if method == 'DELETE':
-        return rm_favorite(user, recipe)
-
-def add_favorite(user, recipe):
-    if(user.is_favorite(recipe)):
-        return recipe_added_to_fav()
-    try:
-        favorite = FavoriteRecipe(user_id=user.id, recipe_id=recipe.id)
-        db.session.add(favorite)
-        db.session.commit()
-        return recipe_added_to_fav()
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({"error": "Error al añadir receta favorita."}), 400
-    
-def rm_favorite(user, recipe): 
-    favorite = FavoriteRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
-    if not favorite:
-        return recipe_removed_from_fav()
-    try:
-        db.session.delete(favorite)
-        db.session.commit()
-        return recipe_removed_from_fav()
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({"error": "Error al eliminar receta favorita."}), 400
-    
-@app.route('/api/recipes/<int:idR>/cart/<int:idU>', methods=['POST', 'DELETE'])
-@jwt_required()
-def cart_recipes_mod(idU, idR):
-    if idU < 0 or idR < 0:
-        return no_valid_id_provided()
-    
-    client = get_user_from_token(get_jwt())
-    recipe = Recipe.query.get(idR)
-    user = User.query.get(idU)
-    if not user:
-        return user_not_found_error()
-    if not recipe:
-        return recipe_not_found_error()
-    if not has_permission(client, user):
-        return no_permission_error()
-    
-    method = request.method
-    if method == 'POST':
-        return add_cart_recipe(user, recipe)
-    if method == 'DELETE':
-        return rm_cart_recipe(user, recipe)
-
-def add_cart_recipe(user, recipe):
-    if(user.is_in_cart(recipe)):
-        return recipe_added_to_cart()
-    if(user.get_cart_recipes_count() >= RECIPE_CART_SIZE):
-        return jsonify({"error": "No hay más espacio disponible en la cesta."}), 409
-    try:
-        cartEntry = CartRecipe(user_id=user.id, recipe_id=recipe.id)
-        db.session.add(cartEntry)
-        db.session.commit()
-        return recipe_added_to_cart()
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({"error": "Error al añadir receta a la cesta."}), 400
-    
-def rm_cart_recipe(user, recipe): 
-    cartEntry = CartRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
-    if not cartEntry:
-        return recipe_removed_from_cart()
-    try:
-        db.session.delete(cartEntry)
-        db.session.commit()
-        return recipe_removed_from_cart()
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({"error": "Error al eliminar receta de la cesta."}), 400
-        
-def recipe_added_to_fav():
-    return jsonify({"msg": "Receta añadida a favoritos."}), 201
-def recipe_removed_from_fav():
-    return '', 204
-def recipe_added_to_cart():
-    return jsonify({"msg": "Receta añadida a la cesta."}), 201
-def recipe_removed_from_cart():
-    return '', 204

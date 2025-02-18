@@ -1,5 +1,5 @@
 from config import app, db, IMG_BACKUP
-from flask import jsonify, request, send_from_directory
+from flask import make_response, request, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt
 import os
 from utils import get_user_from_token, get_new_image_name, delete_image
@@ -52,7 +52,7 @@ def upload_image():
         try:
             db.session.add(new_image)
             db.session.commit()
-        except Exception as e:
+        except Exception:
             db.session.rollback()
             return unexpected_error()
 
@@ -60,8 +60,10 @@ def upload_image():
     image.save(filepath)
 
     # Devolver respuesta con la cabecera Location
-    response = jsonify({"msg": "Imagen publicada con éxito"})
-    response.status_code = 201
-    response.headers["Location"] = f"/api/images/{new_filename}"
+    response = make_response()
+    response.status_code = 204
+
+    base_url = request.host_url.rstrip('/')
+    response.headers["Location"] = f"{base_url}/api/images/{new_filename}"
     
     return response

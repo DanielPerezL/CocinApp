@@ -15,7 +15,7 @@ def reports():
     if method == 'GET':
         try:
             verify_jwt_in_request() 
-        except Exception as e:
+        except Exception:
             return invalid_token()
         client = get_user_from_token(get_jwt())  
         
@@ -39,8 +39,8 @@ def handle_report(data):
         report.increment_count()
         try:
             db.session.commit()
-            return jsonify({"msg": "Reporte enviado correctamente."}), 201
-        except SQLAlchemyError as e:
+            return '', 204
+        except SQLAlchemyError:
             db.session.rollback()
             return send_report_error()
     
@@ -48,8 +48,8 @@ def handle_report(data):
     try:
         db.session.add(new_report)
         db.session.commit()
-        return jsonify({"msg": "Reporte enviado correctamente."}), 201
-    except SQLAlchemyError as e:
+        return '', 204
+    except SQLAlchemyError:
         db.session.rollback()
         return send_report_error()
 
@@ -69,6 +69,6 @@ def review_report(id):
     try:
         db.session.commit()
         return '', 204
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         db.session.rollback()
     return unexpected_error()

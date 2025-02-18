@@ -65,6 +65,5 @@ export interface FetchRecipesResponse {
 }
 
 export interface LoginResponse {
-  msg: string;
   isAdmin: string;
 }

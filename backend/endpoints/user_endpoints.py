@@ -1,4 +1,4 @@
-from config import app, db, NICKNAME_MAX_LENGTH
+from config import app, db, NICKNAME_MAX_LENGTH, RECIPE_CART_SIZE
 from flask import jsonify, request, make_response
 from flask_jwt_extended import (
                                 jwt_required, 
@@ -38,8 +38,8 @@ def register():
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({"msg": "Cuenta creada con éxito."}), 201
-    except SQLAlchemyError as e:
+        return '', 204
+    except SQLAlchemyError:
         db.session.rollback()
         return user_already_exists_nickname()
 
@@ -67,10 +67,10 @@ def users_login():
     access_token, refresh_token = create_tokens(user)
 
     # Retorna los tokens en el cuerpo de la respuesta
-    response = make_response(jsonify({"msg": "Inicio de sesión exitoso.", 
-                                      "isAdmin": user.nickname == os.environ['ADMIN_USER'],
-                                      }))
-    response.headers["Location"] = f"/api/users/{user.id}"
+    response = make_response(jsonify({"isAdmin": user.nickname == os.environ['ADMIN_USER']}))
+    
+    base_url = request.host_url.rstrip('/')
+    response.headers["Location"] = f"{base_url}/api/users/{user.id}"
         
     #En el login no necesitamos el token csrf protect
     set_access_cookies(response, access_token, max_age=app.config['JWT_ACCESS_TOKEN_EXPIRES'])
@@ -79,9 +79,9 @@ def users_login():
 
 @app.route('/api/users/logout', methods=['POST'])
 def users_logout():
-    response = jsonify({"msg": "Cierre de sesión exitoso."})
+    response = make_response()
     unset_jwt_cookies(response)
-    return response, 200
+    return response, 204
 
 @app.route('/api/users/<string:id>', methods=['GET', 'PATCH', 'DELETE'])
 @jwt_required(optional=True)
@@ -89,7 +89,7 @@ def users_id(id):
     try:
         verify_jwt_in_request() 
         client = get_user_from_token(get_jwt())    
-    except Exception as e:
+    except Exception:
         client = None
         
     # Buscar al usuario por ID
@@ -133,7 +133,7 @@ def new_user_picture(user, new_picture):
     try:
         db.session.commit()
         return '', 204
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         db.session.rollback()
         return jsonify({"error": "Error al publicar modificar la imagen de su perfil. Inténtelo de nuevo más tarde."}), 400
     
@@ -145,7 +145,7 @@ def change_password(user, current_password, new_password):
     try:
         db.session.commit()
         return '', 204
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         db.session.rollback()
     return unexpected_error()
 
@@ -156,6 +156,101 @@ def delete_account(deleting_user):
         db.session.commit()
         delete_images_by_uploader(deleting_user)
         return '', 204
-    except SQLAlchemyError as e:
+    except SQLAlchemyError:
         db.session.rollback()
     return unexpected_error()
+
+@app.route('/api/users/<int:idU>/favourites/<int:idR>', methods=['POST', 'DELETE'])
+@jwt_required()
+def favorites_recipes_mod(idU, idR):
+    if idU < 0 or idR < 0:
+        return no_valid_id_provided()
+    
+    client = get_user_from_token(get_jwt())
+    recipe = Recipe.query.get(idR)
+    user = User.query.get(idU)
+    if not user:
+       return user_not_found_error() 
+    if not recipe:
+        return recipe_not_found_error()
+    if not has_permission(client, user):
+        return no_permission_error()
+    
+    method = request.method
+    if method == 'POST':
+        return add_favorite(user, recipe)
+    if method == 'DELETE':
+        return rm_favorite(user, recipe)
+
+def add_favorite(user, recipe):
+    if(user.is_favorite(recipe)):
+        return '', 204
+    try:
+        favorite = FavoriteRecipe(user_id=user.id, recipe_id=recipe.id)
+        db.session.add(favorite)
+        db.session.commit()
+        return '', 204
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "Error al añadir receta favorita."}), 400
+    
+def rm_favorite(user, recipe): 
+    favorite = FavoriteRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
+    if not favorite:
+        return '', 204
+    try:
+        db.session.delete(favorite)
+        db.session.commit()
+        return '', 204
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "Error al eliminar receta favorita."}), 400
+    
+@app.route('/api/users/<int:idU>/cart/<int:idR>', methods=['POST', 'DELETE'])
+@jwt_required()
+def cart_recipes_mod(idU, idR):
+    if idU < 0 or idR < 0:
+        return no_valid_id_provided()
+    
+    client = get_user_from_token(get_jwt())
+    recipe = Recipe.query.get(idR)
+    user = User.query.get(idU)
+    if not user:
+        return user_not_found_error()
+    if not recipe:
+        return recipe_not_found_error()
+    if not has_permission(client, user):
+        return no_permission_error()
+    
+    method = request.method
+    if method == 'POST':
+        return add_cart_recipe(user, recipe)
+    if method == 'DELETE':
+        return rm_cart_recipe(user, recipe)
+
+def add_cart_recipe(user, recipe):
+    if(user.is_in_cart(recipe)):
+        return '', 204
+    if(user.get_cart_recipes_count() >= RECIPE_CART_SIZE):
+        return jsonify({"error": "No hay más espacio disponible en la cesta."}), 409
+    try:
+        cartEntry = CartRecipe(user_id=user.id, recipe_id=recipe.id)
+        db.session.add(cartEntry)
+        db.session.commit()
+        return '', 204
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "Error al añadir receta a la cesta."}), 400
+    
+def rm_cart_recipe(user, recipe): 
+    cartEntry = CartRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
+    if not cartEntry:
+        return '', 204
+    try:
+        db.session.delete(cartEntry)
+        db.session.commit()
+        return '', 204
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "Error al eliminar receta de la cesta."}), 400
+        

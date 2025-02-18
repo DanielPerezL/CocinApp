@@ -557,7 +557,7 @@ const addRecipeFavUnsafe = async (id: string): Promise<void> => {
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes/${id}/favourite/${getLoggedUserId()}`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/favourites/${id}`,
       {
         method: "POST",
         credentials: "include",
@@ -582,7 +582,7 @@ const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes/${id}/favourite/${getLoggedUserId()}`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/favourites/${id}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -638,7 +638,7 @@ const addRecipeCartUnsafe = async (id: string): Promise<void> => {
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes/${id}/cart/${getLoggedUserId()}`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/cart/${id}`,
       {
         method: "POST",
         credentials: "include",
@@ -662,7 +662,7 @@ const rmRecipeCartUnsafe = async (id: string): Promise<void> => {
   const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes/${id}/cart/${getLoggedUserId()}`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/cart/${id}`,
       {
         method: "DELETE",
         credentials: "include",
