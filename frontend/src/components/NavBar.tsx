@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import icon from "../assets/icon.png";
+import xmark from "../assets/x-mark.png";
 import NavButtons from "./NavButtons";
 import "../css/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -71,7 +72,11 @@ const Navbar: React.FC = () => {
                   onClick={clearSearch}
                   aria-label={t("clearSearch")}
                 >
-                  &times;
+                  <img
+                    src={xmark}
+                    alt={t("clearSearch")}
+                    className="close-icon"
+                  />
                 </button>
               )}
             </form>
