@@ -193,7 +193,6 @@
     "errorRegisterNameExists": "This username is already taken. Please choose another one.",
     "errorRecipeUpload": "Error publishing the recipe",
     "errorFillRecipeData": "Please fill out all fields and add at least one image.",
-    "errorNoIDRecipe": "Recipe ID not provided",
     "errorOnDevelopment": "In Development",
     "errorWokingOn": "We are working to bring you a better experience.",
     "errorUnderConstruction": "The page you are trying to visit is still under construction. Check back soon for updates.",

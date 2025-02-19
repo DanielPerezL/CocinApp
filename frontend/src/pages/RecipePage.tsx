@@ -17,13 +17,12 @@ const RecipePage = () => {
   const [recipe, setRecipe] = useState<RecipeDetailDTO | null>(null);
   const [user, setUser] = useState<UserPublicDTO | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [fatalError, setFatalError] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
   const loadRecipeDetails = async () => {
     setLoading(true);
     if (!id) {
-      setError(t("errorNoIDRecipe"));
+      setError(true);
       setLoading(false);
       return;
     }
@@ -33,8 +32,7 @@ const RecipePage = () => {
       const fetchedUser = await fetchUserPublic(fetchedRecipe.user_id);
       setUser(fetchedUser);
     } catch (err: any) {
-      setError(err.message);
-      setFatalError(true);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -44,14 +42,13 @@ const RecipePage = () => {
     loadRecipeDetails(); // Llama a la función al montar el componente o si cambia location(e.d. URL que contiene el ID)
   }, [location]);
 
-  if (fatalError) {
+  if (error) {
     return <NoPage />;
   }
 
   return (
     <div className="main-container container">
       {loading && <p>{t("loadingRecipeDetails")}</p>}
-      {error && <p className="text-danger">{error}</p>}
       {!loading && !error && recipe && user && (
         <RecipeDetails
           recipe={recipe}

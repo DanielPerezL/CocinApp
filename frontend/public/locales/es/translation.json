@@ -192,7 +192,6 @@
     "errorRegisterNameExists": "El nombre de usuario ya está en uso. Por favor, elige otro.",
     "errorRecipeUpload": "Error al publicar la receta",
     "errorFillRecipeData": "Por favor, rellena todos los campos y al menos una imágen.",
-    "errorNoIDRecipe": "ID de receta no proporcionado",
     "errorOnDevelopment": "En Desarrollo",
     "errorWokingOn": "Estamos trabajando para traerte una mejor experiencia.",
     "errorUnderConstruction": "La página que intentas visitar aún está en construcción. Vuelve pronto para ver las novedades.",
