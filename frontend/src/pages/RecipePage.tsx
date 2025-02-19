@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom"; // Para obtener parámetros de l
 import { fetchRecipeDetails, fetchUserPublic } from "../services/apiService";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "../main";
+import NoPage from "./NoPage";
 
 const RecipePage = () => {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ const RecipePage = () => {
   const [user, setUser] = useState<UserPublicDTO | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fatalError, setFatalError] = useState<boolean>(false);
 
   const loadRecipeDetails = async () => {
     setLoading(true);
@@ -28,10 +30,11 @@ const RecipePage = () => {
     try {
       const fetchedRecipe = await fetchRecipeDetails(id); // Llama a la función para obtener las recetas
       setRecipe(fetchedRecipe); // Actualiza el estado con las recetas obtenidas
-      const fetchedUser = await fetchUserPublic(fetchedRecipe.user_id); // Llama a la función para obtener las recetas
-      setUser(fetchedUser); // Actualiza el estado con las recetas obtenidas
+      const fetchedUser = await fetchUserPublic(fetchedRecipe.user_id);
+      setUser(fetchedUser);
     } catch (err: any) {
       setError(err.message);
+      setFatalError(true);
     } finally {
       setLoading(false);
     }
@@ -40,6 +43,10 @@ const RecipePage = () => {
   useEffect(() => {
     loadRecipeDetails(); // Llama a la función al montar el componente o si cambia location(e.d. URL que contiene el ID)
   }, [location]);
+
+  if (fatalError) {
+    return <NoPage />;
+  }
 
   return (
     <div className="main-container container">

@@ -26,7 +26,7 @@ const TermsPage = () => {
             </li>
           </ul>
           <div className="mt-4">
-            <p className="text-muted">{t("termsFooter")}</p>
+            <p className="fs-5">{t("termsFooter")}</p>
           </div>
         </div>
       </div>

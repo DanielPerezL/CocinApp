@@ -7,6 +7,7 @@ const ContactPage = () => {
     <div className="container my-5">
       <div className="text-center mb-4">
         <h1 className="display-4 text-primary">{t("contact")}</h1>
+        <p className="fs-5 fw-light">{t("contactSubtitle")}</p>
       </div>
       <div className="text-center">
         <p className="fs-5">
