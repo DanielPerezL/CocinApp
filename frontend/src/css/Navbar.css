@@ -40,9 +40,10 @@
 
 .btn-clear {
   position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
+  top: 0%;
+  height: 100%;
+  right: 7px;
+  
   background: none;
   border: none;
   font-size: 1.2rem;
@@ -55,5 +56,5 @@
 }
 
 .search-input {
-  padding-right: 50px; 
+  padding-right: 2.5rem;
 }

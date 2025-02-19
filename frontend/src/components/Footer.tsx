@@ -71,8 +71,10 @@ const Footer = () => {
               © {currentYear} CocinApp. {t("reservedRights")}
             </p>{" "}
             <a
+              className="fw-light text-light text-decoration-none"
               href="https://www.flaticon.com/"
-              className="fw-light text-white text-decoration-none"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Icons created by Freepik - Flaticon
             </a>

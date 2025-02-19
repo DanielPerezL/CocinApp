@@ -71,7 +71,7 @@ const Navbar: React.FC = () => {
                   onClick={clearSearch}
                   aria-label={t("clearSearch")}
                 >
-                  |&times;
+                  &times;
                 </button>
               )}
             </form>
