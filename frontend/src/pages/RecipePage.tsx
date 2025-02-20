@@ -1,5 +1,4 @@
-// src/pages/RecipePage.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import RecipeDetails from "../components/RecipeDetails";
 import { RecipeDetailDTO, UserPublicDTO } from "../interfaces";
 import { useLocation } from "react-router-dom"; // Para obtener parámetros de la URL
@@ -7,16 +6,15 @@ import { fetchRecipeDetails, fetchUserPublic } from "../services/apiService";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "../main";
 import NoPage from "./NoPage";
+import { Spinner } from "react-bootstrap";
 
 const RecipePage = () => {
-  const { t } = useTranslation();
-
   const location = useLocation();
   const query = useQuery();
   const id = query.get("id"); // Obtiene el valor del parámetro 'id'
   const [recipe, setRecipe] = useState<RecipeDetailDTO | null>(null);
   const [user, setUser] = useState<UserPublicDTO | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<boolean>(false);
 
   const loadRecipeDetails = async () => {
@@ -48,7 +46,12 @@ const RecipePage = () => {
 
   return (
     <div className="main-container container">
-      {loading && <p>{t("loadingRecipeDetails")}</p>}
+      {loading && (
+        <div className="spinner-container h-50">
+          <Spinner animation="grow" variant="primary" role="status" />
+        </div>
+      )}
+
       {!loading && !error && recipe && user && (
         <RecipeDetails
           recipe={recipe}

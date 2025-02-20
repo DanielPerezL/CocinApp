@@ -6,6 +6,7 @@ import { fetchReports, isAdmin } from "../services/apiService";
 import { ReportDTO } from "../interfaces";
 import NoPage from "./NoPage";
 import IngredientUploader from "../components/IngredientUploader";
+import { Spinner } from "react-bootstrap";
 
 const ReportsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -33,7 +34,11 @@ const ReportsPage: React.FC = () => {
   return (
     <div className="container mb-5 main-container text-center">
       <h1 className="display-5 text-primary mb-4">{t("reports")}</h1>
-      {loading && <p className="fs-6 fw-light">{t("loadingReports")}</p>}
+      {loading && (
+        <div className="spinner-container">
+          <Spinner animation="grow" variant="primary" role="status" />
+        </div>
+      )}
       {!loading && reports.length == 0 && (
         <>
           <p className="fs-6 fw-light">{t("noReports")}</p>

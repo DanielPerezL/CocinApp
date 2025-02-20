@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import RecipeGrid from "../components/RecipeGrid";
 import IngredientList from "../components/IngredientList";
 import NeedConfirmButton from "../components/NeedConfirmButton";
+import { Spinner } from "react-bootstrap";
 
 const CartPage = () => {
   const { t } = useTranslation();
@@ -22,7 +23,7 @@ const CartPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState<boolean>(false);
 
-  const loadingRef = useRef<boolean>(false);
+  const loadingRef = useRef<boolean>(true);
 
   const loadMyCartRecipes = async () => {
     if (loadingRef.current) return;
@@ -65,6 +66,7 @@ const CartPage = () => {
     };
     if (!isLoggedIn()) return;
     getUserProfile();
+    loadingRef.current = false;
     loadMyCartRecipes();
   }, [refresh]);
 
@@ -79,7 +81,11 @@ const CartPage = () => {
           setRefresh(!refresh);
         }}
       >
-        {loadingRef.current && <p>{t("loadingRecipes")}</p>}
+        {loadingRef.current && (
+          <div className="spinner-container">
+            <Spinner animation="grow" variant="primary" role="status" />
+          </div>
+        )}
         {error && <p className="text-danger">{error}</p>}
 
         {!loadingRef.current && !error && user && (

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RecipeGrid from "../components/RecipeGrid";
 import SearchFilters from "../components/SearchFilters"; // Importamos el nuevo componente
 import { RecipeSimpleDTO, CategoryOptions } from "../interfaces";
@@ -9,6 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useQuery } from "../main";
 import { clearSearchEvents } from "../events/clearSearchEvents";
+import { Spinner } from "react-bootstrap";
 
 const SearchPage = () => {
   const { t } = useTranslation();
@@ -129,9 +130,14 @@ const SearchPage = () => {
         onFiltersChange={(updatedFilters) => setFilters(updatedFilters)}
       />
 
+      {loadingRef.current && (
+        <div className="spinner-container">
+          <Spinner animation="grow" variant="primary" role="status" />
+        </div>
+      )}
+      {!loadingRef.current && error && <p className="text-danger">{error}</p>}
+
       {/* RECETAS */}
-      {loadingRef.current && <p>{t("loadingRecipes")}</p>}
-      {error && <p className="text-danger">{error}</p>}
       {!loadingRef.current && !error && recipes.length > 0 && (
         <RecipeGrid
           hasMore={hasMore}

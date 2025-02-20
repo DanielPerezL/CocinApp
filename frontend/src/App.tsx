@@ -6,7 +6,6 @@ import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";
 import RecetaPage from "./pages/RecipePage";
 import NoPage from "./pages/NoPage";
-import UnderConstructionPage from "./pages/UnderConstructionPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import ProfilePage from "./pages/ProfilePage";
 import PublishPage from "./pages/PublishPage";

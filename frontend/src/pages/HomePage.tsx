@@ -3,13 +3,14 @@ import RecipeGrid from "../components/RecipeGrid";
 import { RecipeSimpleDTO } from "../interfaces";
 import { fetchRecipes } from "../services/apiService";
 import { useTranslation } from "react-i18next";
+import { Spinner } from "react-bootstrap";
 
 const Home = () => {
   const { t } = useTranslation();
 
   const [recipes, setRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const loadingRef = useRef<boolean>(false);
+  const loadingRef = useRef<boolean>(true);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const loadRecipes = async () => {
@@ -41,6 +42,7 @@ const Home = () => {
     }
   };
   useEffect(() => {
+    loadingRef.current = false;
     loadRecipes(); // Llama a la función para cargar las recetas
   }, []); // Se ejecuta solo al montar el componente
 
@@ -50,8 +52,12 @@ const Home = () => {
         <h1 className="display-4 text-primary">{t("welcome")}</h1>
         <p className="fs-5 fw-light">{t("subwelcome")}</p>
       </div>
-      {loadingRef.current && <p>{t("loadingRecipes")}</p>}{" "}
-      {error && <p className="text-danger">{error}</p>}{" "}
+      {loadingRef.current && (
+        <div className="spinner-container">
+          <Spinner animation="grow" variant="primary" role="status" />
+        </div>
+      )}
+      {error && <p className="text-danger">{error}</p>}
       {!loadingRef.current && !error && (
         <RecipeGrid
           hasMore={hasMore}

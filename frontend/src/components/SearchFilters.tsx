@@ -131,7 +131,19 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
                             ? localFilters.time.includes(option)
                             : localFilters.difficulty.includes(option)
                         }
-                        onClick={() =>
+                        onClick={() => {
+                          if (
+                            category.name === "type" &&
+                            localFilters.type === option
+                          ) {
+                            // Si el radio ya está seleccionado, lo deseleccionamos
+                            setLocalFilters((prevFilters) => ({
+                              ...prevFilters,
+                              type: undefined,
+                            }));
+                          }
+                        }}
+                        onChange={() =>
                           setLocalFilters({
                             ...localFilters,
                             [category.name]:

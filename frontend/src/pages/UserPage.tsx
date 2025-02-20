@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  RECIPE_LIMIT,
   fetchUserPublicFromNick,
   fetchUserRecipes,
 } from "../services/apiService";
@@ -10,6 +9,7 @@ import RecipeGrid from "../components/RecipeGrid";
 import { t } from "i18next";
 import UserPublicDetails from "../components/UserPublicDetails";
 import NoPage from "./NoPage";
+import { Spinner } from "react-bootstrap";
 
 const UserPage: React.FC = () => {
   const { nickname } = useParams<{ nickname: string }>();
@@ -90,7 +90,9 @@ const UserPage: React.FC = () => {
           )}
         </>
       ) : (
-        <p>{t("loadingUserProfile")}</p>
+        <div className="spinner-container">
+          <Spinner animation="grow" variant="primary" role="status" />
+        </div>
       )}
     </div>
   );

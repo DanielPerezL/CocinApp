@@ -11,6 +11,7 @@ import RecipeGrid from "../components/RecipeGrid";
 import UserDetails from "../components/UserDetails";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const ProfilePage: React.FC = () => {
   const { t } = useTranslation();
@@ -69,29 +70,39 @@ const ProfilePage: React.FC = () => {
             {recipes && (
               <div className="container mt-5">
                 <div className="text-center mt4 mb-2">
-                  {recipes.length > 0 ? (
-                    <p className="fs-6 fw-light mt-4 mb-3">
-                      {t("hereYourRecipes")}
-                    </p>
-                  ) : (
-                    <>
-                      <p className="fs-6 fw-light mt-4 mb-3">
-                        {t("noYourRecipes")}
-                      </p>
-                      <Link
-                        to="/publish"
-                        onClick={() => {
-                          window.scroll(0, 0);
-                        }}
-                      >
-                        <button className="btn btn-secondary">
-                          {t("startPublishing")}
-                        </button>
-                      </Link>
-                    </>
+                  {loadingRef.current && (
+                    <div className="mt-5 spinner-container">
+                      <Spinner
+                        animation="grow"
+                        variant="primary"
+                        role="status"
+                      />
+                    </div>
                   )}
-                  {loadingRef.current && <p>{t("loadingRecipes")}</p>}
                   {error && <p className="text-danger">{error}</p>}
+                  {!loadingRef.current && !error ? (
+                    recipes.length > 0 ? (
+                      <p className="fs-6 fw-light mt-4 mb-3">
+                        {t("hereYourRecipes")}
+                      </p>
+                    ) : (
+                      <>
+                        <p className="fs-6 fw-light mt-4 mb-3">
+                          {t("noYourRecipes")}
+                        </p>
+                        <Link
+                          to="/publish"
+                          onClick={() => {
+                            window.scroll(0, 0);
+                          }}
+                        >
+                          <button className="btn btn-secondary">
+                            {t("startPublishing")}
+                          </button>
+                        </Link>
+                      </>
+                    )
+                  ) : null}
                   {!loadingRef.current && !error && (
                     <RecipeGrid
                       hasMore={hasMore}

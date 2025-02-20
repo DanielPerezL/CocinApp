@@ -10,6 +10,7 @@ import {
 } from "../services/apiService";
 import { useTranslation } from "react-i18next";
 import RecipeGrid from "../components/RecipeGrid";
+import { Spinner } from "react-bootstrap";
 
 const FavoritesPage = () => {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ const FavoritesPage = () => {
   const [favRecipes, setFavRecipes] = useState<RecipeSimpleDTO[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState<boolean>(false);
-  const loadingRef = useRef<boolean>(false);
+  const loadingRef = useRef<boolean>(true);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
@@ -91,6 +92,7 @@ const FavoritesPage = () => {
     };
     if (!isLoggedIn()) return;
     getUserProfile();
+    loadingRef.current = false;
     loadMyFavRecipes();
     loadSimilarRecipes();
   }, [refresh]);
@@ -106,7 +108,11 @@ const FavoritesPage = () => {
           setRefresh(!refresh);
         }}
       >
-        {loadingRef.current && <p>{t("loadingRecipes")}</p>}
+        {loadingRef.current && (
+          <div className="spinner-container">
+            <Spinner animation="grow" variant="primary" role="status" />
+          </div>
+        )}
         {error && <p className="text-danger">{error}</p>}
 
         {!loadingRef.current && !error && user && (
