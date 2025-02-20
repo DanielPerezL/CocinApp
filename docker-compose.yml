@@ -33,7 +33,7 @@ services:
       DATABASE_NAME: ${MYSQL_DATABASE_NAME}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       COPY_IMG_MYSQL: ${COPY_IMG_MYSQL}
-      CORS_ORIGINS: ${CORS_ORIGINS}
+      CORS_CONFIG: ${CORS_CONFIG}
     depends_on:
       - mysql
     networks:

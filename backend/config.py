@@ -9,8 +9,9 @@ from sqlalchemy.exc import OperationalError
 # Inicializar Flask, SQLAlchemy y JWT
 app = Flask(__name__, static_folder='./static')
 
-# Añadido origins de RENDER
-CORS(app, supports_credentials=True, origins=[os.environ['CORS_ORIGINS'] or "*"]) 
+# CORS PARA PRUEBAS EN LOCAL
+if os.environ['CORS_CONFIG'] == "true":
+    CORS(app, supports_credentials=True, origins=["*"], expose_headers=["Location"]) 
 
 UPLOAD_FOLDER = '/cocinapp/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
