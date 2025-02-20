@@ -118,7 +118,9 @@ const ProfilePage: React.FC = () => {
             )}
           </>
         ) : (
-          <p>{t("loadingUserProfile")}</p>
+          <div className="spinner-container">
+            <Spinner animation="grow" variant="primary" role="status" />
+          </div>
         )}
       </div>
     </AuthWrapper>

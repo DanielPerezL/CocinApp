@@ -64,7 +64,7 @@ const UserPage: React.FC = () => {
       {user ? (
         <>
           <UserPublicDetails user={user} />
-          {recipes && (
+          {!loadingRef.current && recipes ? (
             <div className="container mt-4">
               <div className="text-center mb-2">
                 {recipes.length > 0 ? (
@@ -86,6 +86,10 @@ const UserPage: React.FC = () => {
                   />
                 )}
               </div>
+            </div>
+          ) : (
+            <div className="spinner-container">
+              <Spinner animation="grow" variant="primary" role="status" />
             </div>
           )}
         </>
