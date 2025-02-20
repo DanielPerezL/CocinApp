@@ -115,7 +115,7 @@ const fetchSimilarRecipesUnsafe = async (
   let response: Response;
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?recipe_id=${idRecipe}&offset=${offset}&limit=${
+      `${API_BASE_URL}/recipes/${idRecipe}/similars?offset=${offset}&limit=${
         limit ? limit : RECIPE_LIMIT
       }&lang=${t("lang")}`
     );
@@ -144,7 +144,7 @@ const fetchRecipesFavBySimilarUsersUnsafe = async (
   let response: Response;
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?recommendations_for_user_id=${getLoggedUserId()}&offset=${offset}&limit=${
+      `${API_BASE_URL}/users/${getLoggedUserId()}/recommendations?offset=${offset}&limit=${
         limit ? limit : RECIPE_LIMIT
       }&lang=${t("lang")}`,
       {
@@ -534,7 +534,7 @@ const fetchUserRecipesUnsafe = async (
   let response: Response;
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?user_id=${id}&offset=${offset}&limit=${RECIPE_LIMIT}&lang=${t(
+      `${API_BASE_URL}/users/${id}/recipes?&offset=${offset}&limit=${RECIPE_LIMIT}&lang=${t(
         "lang"
       )}`
     );
@@ -610,7 +610,7 @@ const fetchMyFavRecipesUnsafe = async (
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?favourited_by=${getLoggedUserId()}&offset=${offset}&limit=${RECIPE_LIMIT}`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/favourites?offset=${offset}&limit=${RECIPE_LIMIT}`,
       {
         method: "GET",
         credentials: "include",
@@ -688,8 +688,7 @@ const fetchMyCartRecipesUnsafe = async (): Promise<FetchRecipesResponse> => {
 
   try {
     response = await fetch(
-      `${API_BASE_URL}/recipes?carted_by=${getLoggedUserId()}
-                              &lang=${t("lang")}`,
+      `${API_BASE_URL}/users/${getLoggedUserId()}/cart?lang=${t("lang")}`,
       {
         method: "GET",
         credentials: "include",

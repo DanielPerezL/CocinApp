@@ -26,6 +26,9 @@ def has_permission(user, resource):
 def is_admin(user):
     return user.nickname == os.environ['ADMIN_USER']
 
+def has_more_results(query, offset, limit):
+    return query.offset(offset + limit).first() is not None
+
 #MANEJO DE TOKENS
 #CREACION    
 def create_tokens(user):

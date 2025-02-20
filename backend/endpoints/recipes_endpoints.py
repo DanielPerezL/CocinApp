@@ -3,7 +3,7 @@ from flask import jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt, verify_jwt_in_request
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
-from utils import get_user_from_token
+from utils import get_user_from_token, has_more_results
 import os
 from utils import delete_images_by_filenames, has_permission, is_admin
 from errors import *
@@ -13,68 +13,11 @@ from errors import *
 def recipes():
     method = request.method
     if method == 'GET':
-        user_id = request.args.get('user_id', default=-1, type=int)
-        recipe_id = request.args.get('recipe_id', default=-1, type=int)
-        recommendations_for_user_id = request.args.get('recommendations_for_user_id', default=-1, type=int)
-        favourited_by = request.args.get('favourited_by', default=-1, type=int)
-        carted_by = request.args.get('carted_by', default=-1, type=int)
- 
         offset = request.args.get('offset', default=0, type=int)
         limit = request.args.get('limit', default=10, type=int)
-
         lang = request.args.get('lang', default="", type=str)
         
-        if user_id > 0:
-            user = User.query.get(user_id)
-            if user is None:
-                return user_not_found_error()
-            return get_recipes_from_user(user, offset, limit, lang)
-        elif recipe_id > 0:
-            recipe = Recipe.query.get(recipe_id)
-            if recipe is None:
-                return recipe_not_found_error()
-            return get_recipes_similar_to(recipe, offset, limit, lang)
-        elif recommendations_for_user_id > 0:
-            user = User.query.get(recommendations_for_user_id)
-            if user is None:
-                return user_not_found_error()
-            try:
-                verify_jwt_in_request() 
-            except Exception:
-                return invalid_token()
-            
-            client = get_user_from_token(get_jwt())
-            if not has_permission(client, user):
-                return no_permission_error()
-            return get_recommendations_for_user(user, offset, limit, lang)
-        elif favourited_by > 0:
-            user = User.query.get(favourited_by)
-            if user is None:
-                return user_not_found_error()
-            try:
-                verify_jwt_in_request() 
-            except Exception:
-                return invalid_token()
-            
-            client = get_user_from_token(get_jwt())
-            if not has_permission(client, user):
-                return no_permission_error()
-            return get_favorites_recipes(user, offset, limit, lang)
-        elif carted_by > 0:    
-            user = User.query.get(carted_by)
-            if user is None:
-                return user_not_found_error()
-            try:
-                verify_jwt_in_request() 
-            except Exception:
-                return invalid_token()
-            
-            client = get_user_from_token(get_jwt())
-            if not has_permission(client, user):
-                return no_permission_error()
-            return get_cart_recipes(user, lang)
-        else:
-            return get_recipes_simple_dto(offset, limit, lang) 
+        return get_recipes_simple_dto(offset, limit, lang) 
     if method == 'POST':
         try:
             verify_jwt_in_request() 
@@ -85,10 +28,18 @@ def recipes():
         if user is None:
             return user_not_found_error()
         return new_recipe(user, request.json)
-
-def has_more_results(query, offset, limit):
-    return query.offset(offset + limit).first() is not None
-
+    
+@app.route('/api/recipes/<int:id>/similars', methods=['GET'])
+def get_similar_recipes(id):
+    recipe = Recipe.query.get(id)
+    if recipe is None:
+        return recipe_not_found_error()
+    
+    offset = request.args.get('offset', default=0, type=int)
+    limit = request.args.get('limit', default=10, type=int)
+    lang = request.args.get('lang', default="", type=str)
+    return get_recipes_similar_to(recipe, offset, limit, lang)
+       
 # GRID 1
 def get_recipes_simple_dto(offset, limit, lang):
     # PARAMETROS DE BUSQUEDA
@@ -142,45 +93,6 @@ def get_recipes_simple_dto(offset, limit, lang):
                     ), 200
 
 # GRID 2
-def get_recommendations_for_user(user, offset, limit, lang):
-    # Obtenemos los IDs de las recetas favoritas del usuario
-    user_favorite_recipe_ids = db.session.query(FavoriteRecipe.recipe_id).filter_by(user_id=user.id).all()
-    user_favorite_recipe_ids = [id[0] for id in user_favorite_recipe_ids]  # Extraer los IDs de la tupla
-
-    # Obtener usuarios que han marcado como favorita al menos una receta en común con el usuario
-    similar_users = User.query \
-        .join(FavoriteRecipe, User.id == FavoriteRecipe.user_id) \
-        .filter(FavoriteRecipe.recipe_id.in_(user_favorite_recipe_ids)) \
-        .filter(User.id != user.id) \
-        .distinct().all()
-
-    # Si no hay usuarios similares, no podemos obtener recomendaciones
-    if not similar_users:
-        return jsonify({"recipes": [], "has_more": False}), 200
-
-    # Obtener las recetas favoritas de los usuarios similares
-    similar_recipe_ids = db.session.query(FavoriteRecipe.recipe_id) \
-        .filter(FavoriteRecipe.user_id.in_([similar_user.id for similar_user in similar_users])) \
-        .all()
-    # Extraer los IDs de las recetas
-    similar_recipe_ids = [id[0] for id in similar_recipe_ids]
-    
-    #Excluir las ya favoritas
-    query = Recipe.query \
-        .filter(Recipe.id.in_(similar_recipe_ids)) \
-        .filter(Recipe.id.notin_(user_favorite_recipe_ids)) \
-        .order_by(Recipe.favorites_count.desc(), Recipe.id.asc())
-
-    recommended_recipes = query.offset(offset).limit(limit).all()
-    recommended_recipes_data = [recipe.to_simple_dto(lang) for recipe in recommended_recipes]
-
-    has_more = has_more_results(query, offset, limit)
-    # Devolver las recetas recomendadas como DTO
-    return jsonify({"recipes": recommended_recipes_data, 
-                    "has_more": has_more},
-                    ), 200
-
-# GRID 3
 def get_recipes_similar_to(recipe, offset, limit, lang):
     query = Recipe.query.order_by(Recipe.favorites_count.desc(), Recipe.id.asc()) \
         .filter((Recipe.time == recipe.time) | (Recipe.difficulty == recipe.difficulty)) \
@@ -191,29 +103,6 @@ def get_recipes_similar_to(recipe, offset, limit, lang):
     recipes_data = [recipe.to_simple_dto(lang) for recipe in similar_recipes]
     has_more = has_more_results(query, offset, limit)
     return jsonify({"recipes": recipes_data, "has_more": has_more}), 200
-
-# GRID 4
-def get_recipes_from_user(user, offset, limit, lang):
-    query = Recipe.query.filter_by(user_id=user.id)
-    recipes = query.offset(offset).limit(limit).all()
-    recipes_data = [recipe.to_simple_dto(lang) for recipe in recipes]
-    has_more = has_more_results(query, offset, limit)
-    return jsonify({"recipes": recipes_data, "has_more": has_more}), 200
-
-# GRID 5
-def get_favorites_recipes(user, offset, limit, lang):
-    recipes = [recipe.to_simple_dto(lang) for recipe in user.get_favorite_recipes(offset, limit)]
-    total_favorites = user.get_favorite_recipes_count()  # Método para contar las recetas favoritas del usuario
-    has_more = (offset + limit) < total_favorites
-
-    # Devolver la respuesta con `recipes` y `has_more`
-    return jsonify({"recipes": recipes, "has_more": has_more}), 200
-
-# GRID 6
-def get_cart_recipes(user, lang):    
-    # No usamos limit/offset porque el carrito se limita a RECIPE_CART_SIZE recetas
-    recipes = [recipe.to_simple_dto(lang) for recipe in user.get_cart_recipes()]
-    return jsonify({"recipes": recipes, "has_more": False}), 200
 
 def new_recipe(user, data):
     # Verifica que se proporcione la información requerida
