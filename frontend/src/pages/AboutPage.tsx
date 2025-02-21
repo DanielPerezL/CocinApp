@@ -9,7 +9,7 @@ const AboutPage = () => {
         <h1 className="display-4 text-primary">{t("aboutTitle")}</h1>
         <p className="fs-5 fw-light">{t("aboutSubtitle")}</p>
       </div>
-      <div className="text-center">
+      <div className="col-md-8 offset-md-2 text-center">
         <p className="fs-5">{t("aboutMessage")}</p>
       </div>
     </div>

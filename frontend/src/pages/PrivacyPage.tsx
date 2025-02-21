@@ -9,7 +9,7 @@ const PrivacyPage = () => {
         <h1 className="display-4 text-primary">{t("privacyTitle")}</h1>
         <p className="fs-5 fw-light">{t("privacySubtitle")}</p>
       </div>
-      <div className="text-start">
+      <div className="col-md-8 offset-md-2">
         <p className="fs-5 mb-3">{t("privacyIntro")}</p>
         <ul className="fs-6">
           <li>{t("privacyPoint1")}</li>
