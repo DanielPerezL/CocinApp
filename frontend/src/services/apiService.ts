@@ -14,14 +14,14 @@ import { authEvents } from "../events/authEvents";
 
 const RENDER = import.meta.env.VITE_RENDER === "true"; //ENTORNO DE PRODUCCIÓN
 let API_BASE_URL: string;
-let TOKEN_BASE_URL: string;
+let AUTH_BASE_URL: string;
 if (RENDER) {
   // Cadenas de conexion usando RENDER
   API_BASE_URL = `${window.location.protocol}/api`;
-  TOKEN_BASE_URL = `${window.location.protocol}/token`;
+  AUTH_BASE_URL = `${window.location.protocol}/api/auth`;
 } else {
   API_BASE_URL = `http://${window.location.hostname}:5000/api`;
-  TOKEN_BASE_URL = `http://${window.location.hostname}:5000/token`;
+  AUTH_BASE_URL = `http://${window.location.hostname}:5000/api/auth`;
 }
 export const RECIPE_LIMIT = Number(import.meta.env.VITE_RECIPE_LIMIT) || 20;
 
@@ -338,7 +338,7 @@ export const registerUser = async (
 export const login = async (email: string, password: string): Promise<void> => {
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/users/login`, {
+    response = await fetch(`${AUTH_BASE_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -382,7 +382,7 @@ export const login = async (email: string, password: string): Promise<void> => {
 
 // Función para hacer logout (NECESITA LOGIN PERO SI DA ERROR NO SE NECESITA TRATAR)
 export const logout = async (): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/users/logout`, {
+  const response = await fetch(`${AUTH_BASE_URL}/logout`, {
     method: "POST",
     credentials: "include",
   });
@@ -570,7 +570,6 @@ const addRecipeFavUnsafe = async (id: string): Promise<void> => {
   if (!response.ok) {
     throw new Error(t("errorAddingFavRecipe"));
   }
-  return await response.json();
 };
 
 export const rmRecipeFav = async (id: string) => {
@@ -1032,7 +1031,7 @@ const refreshAccessToken = async (): Promise<void> => {
   try {
     const csrfToken = getCookie("csrf_refresh_token");
     const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
-    const response = await fetch(`${TOKEN_BASE_URL}/refresh`, {
+    const response = await fetch(`${AUTH_BASE_URL}/refresh`, {
       method: "POST",
       credentials: "include",
       headers,

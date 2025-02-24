@@ -1,18 +1,14 @@
 from config import app, db, NICKNAME_MAX_LENGTH, RECIPE_CART_SIZE
-from flask import jsonify, request, make_response
+from flask import jsonify, request
 from flask_jwt_extended import (
                                 jwt_required, 
                                 get_jwt, 
-                                set_access_cookies, 
-                                set_refresh_cookies, 
-                                unset_jwt_cookies,
                                 verify_jwt_in_request
                                 )
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
-import os
-from utils import delete_images_by_uploader, create_tokens, has_permission, delete_image, has_more_results
+from utils import delete_images_by_uploader, has_permission, delete_image, has_more_results
 from errors import *
 import re
 
@@ -43,45 +39,6 @@ def register():
         db.session.rollback()
         return user_already_exists_nickname()
 
-
-@app.route('/api/users/login', methods=['POST'])
-def users_login():
-    data = request.json
-    if not data or not all(key in data for key in ('email', 'password')):
-        return no_requested_info_error()
-
-    email = data.get('email')
-    password = data.get('password')
-
-    user = User.query.filter_by(email=email).first()
-    if user is None:
-        #COMPROBAMOS SI SE HA INTRODUCIDO EL NICKNAME QUE TAMBIEN ES UNICO
-        nickname = email
-        user = User.query.filter_by(nickname=nickname).first()
-        if user is None:
-            return jsonify({"error": "No existe ningún usuario con ese nombre o email."}), 400
-
-    if not user.check_password(password):
-        return jsonify({"error": "La contraseña introducida no es correcta."}), 401
-        
-    access_token, refresh_token = create_tokens(user)
-
-    # Retorna los tokens en el cuerpo de la respuesta
-    response = make_response(jsonify({"isAdmin": user.nickname == os.environ['ADMIN_USER']}))
-    
-    base_url = request.host_url.rstrip('/')
-    response.headers["Location"] = f"{base_url}/api/users/{user.id}"
-        
-    #En el login no necesitamos el token csrf protect
-    set_access_cookies(response, access_token, max_age=app.config['JWT_ACCESS_TOKEN_EXPIRES'])
-    set_refresh_cookies(response, refresh_token, max_age=app.config['JWT_REFRESH_TOKEN_EXPIRES'])
-    return response, 200
-
-@app.route('/api/users/logout', methods=['POST'])
-def users_logout():
-    response = make_response()
-    unset_jwt_cookies(response)
-    return response, 204
 
 @app.route('/api/users/<string:id>', methods=['GET', 'PATCH', 'DELETE'])
 @jwt_required(optional=True)
