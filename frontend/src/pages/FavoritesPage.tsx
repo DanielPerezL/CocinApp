@@ -98,7 +98,7 @@ const FavoritesPage = () => {
   }, [refresh]);
 
   return (
-    <div className="container mb-5 main-container">
+    <main className="container mb-5 main-container">
       <div className="text-center mb-4">
         <h1 className="display-5 text-primary">{t("yourFavRecipes")}</h1>
       </div>
@@ -153,7 +153,7 @@ const FavoritesPage = () => {
           </>
         )}
       </AuthWrapper>
-    </div>
+    </main>
   );
 };
 

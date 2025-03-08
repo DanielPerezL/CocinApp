@@ -6,9 +6,9 @@ const UnderConstruction: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="container mb-5 main-container">
+    <main className="container mb-5 main-container">
       <div className="d-flex align-items-center justify-content-center mx-5">
-        <div className="text-center">
+        <article className="text-center">
           <h1 className="display-3 fw-bold text-warning">
             ⚠️ {t("errorOnDevelopment")}
           </h1>
@@ -23,9 +23,9 @@ const UnderConstruction: React.FC = () => {
           >
             {t("backHome")}
           </Link>
-        </div>
+        </article>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -4,7 +4,7 @@ const TermsPage = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="container my-5">
+    <main className="container my-5">
       <div className="text-center mb-4">
         <h1 className="display-4 text-primary">{t("termsTitle")}</h1>
         <p className="fs-5 fw-light">{t("termsSubtitle")}</p>
@@ -30,7 +30,7 @@ const TermsPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

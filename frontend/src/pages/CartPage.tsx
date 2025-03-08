@@ -71,7 +71,7 @@ const CartPage = () => {
   }, [refresh]);
 
   return (
-    <div className="container mb-5 main-container">
+    <main className="container mb-5 main-container">
       <div className="text-center mb-4">
         <h1 className="display-5 text-primary">{t("yourCartRecipes")}</h1>
       </div>
@@ -125,7 +125,7 @@ const CartPage = () => {
           </>
         )}
       </AuthWrapper>
-    </div>
+    </main>
   );
 };
 

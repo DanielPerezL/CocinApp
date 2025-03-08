@@ -45,7 +45,7 @@ const RecipePage = () => {
   }
 
   return (
-    <div className="main-container container">
+    <main className="main-container container">
       {loading && (
         <div className="spinner-container">
           <Spinner animation="grow" variant="primary" role="status" />
@@ -61,7 +61,7 @@ const RecipePage = () => {
           }}
         />
       )}
-    </div>
+    </main>
   );
 };
 

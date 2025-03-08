@@ -4,7 +4,7 @@ const ContactPage = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="container my-5">
+    <main className="container my-5">
       <div className="text-center mb-4">
         <h1 className="display-4 text-primary">{t("contact")}</h1>
         <p className="fs-5 fw-light">{t("contactSubtitle")}</p>
@@ -23,7 +23,7 @@ const ContactPage = () => {
           .
         </p>
       </div>
-    </div>
+    </main>
   );
 };
 

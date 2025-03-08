@@ -6,7 +6,7 @@ const NoPage: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="container main-container">
+    <main className="container main-container">
       <div className="d-flex align-items-center justify-content-center">
         <div className="text-center">
           <h1 className="display-1 fw-bold text-danger">404</h1>
@@ -26,7 +26,7 @@ const NoPage: React.FC = () => {
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

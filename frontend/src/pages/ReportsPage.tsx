@@ -32,7 +32,7 @@ const ReportsPage: React.FC = () => {
 
   if (!isAdmin()) return <NoPage />;
   return (
-    <div className="container mb-5 main-container text-center">
+    <main className="container mb-5 main-container text-center">
       <h1 className="display-5 text-primary mb-4">{t("reports")}</h1>
       {loading && (
         <div className="spinner-container">
@@ -52,7 +52,7 @@ const ReportsPage: React.FC = () => {
       )}
 
       <IngredientUploader />
-    </div>
+    </main>
   );
 };
 

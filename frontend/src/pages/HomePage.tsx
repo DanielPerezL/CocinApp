@@ -47,7 +47,7 @@ const Home = () => {
   }, []); // Se ejecuta solo al montar el componente
 
   return (
-    <div className="container my-5">
+    <main className="container my-5">
       <div className="text-center mb-4">
         <h1 className="display-4 text-primary">{t("welcome")}</h1>
         <p className="fs-5 fw-light">{t("subwelcome")}</p>
@@ -66,7 +66,7 @@ const Home = () => {
           recipes={recipes}
         />
       )}
-    </div>
+    </main>
   );
 };
 

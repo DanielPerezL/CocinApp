@@ -62,7 +62,7 @@ const ProfilePage: React.FC = () => {
         setRefresh(!refresh);
       }}
     >
-      <div className="main-container container">
+      <main className="main-container container">
         {user ? (
           <>
             <UserDetails user={user} />
@@ -122,7 +122,7 @@ const ProfilePage: React.FC = () => {
             <Spinner animation="grow" variant="primary" role="status" />
           </div>
         )}
-      </div>
+      </main>
     </AuthWrapper>
   );
 };

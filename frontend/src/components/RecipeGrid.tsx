@@ -21,11 +21,11 @@ const RecipeGrid: React.FC<RecipesGridProps> = ({
 
   return (
     <>
-      <div className="row">
+      <section className="row">
         {recipes.map((recipe, index) => (
           <RecipeCard key={index} recipe={recipe} />
         ))}
-      </div>
+      </section>
       {hasMore && !loading && (
         <div className="d-flex justify-content-center mt-5">
           <button

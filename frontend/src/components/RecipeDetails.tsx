@@ -178,7 +178,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
   if (!showModify)
     return (
       <>
-        <div className="container">
+        <section className="container">
           <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between align-items-center mb-3">
             <div className="d-flex w-100 w-sm-25 w-md-50 justify-content-center justify-content-sm-start">
               <Link
@@ -294,91 +294,86 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = ({
             //El cualquier otro caso puedo reportar
             <ReportButton className="btn btn-danger" text={t("reportRecipe")} />
           )}
+        </section>
+        {/*MODAL COMPARTIR*/}
+        <Modal
+          show={showModal}
+          onHide={() => {
+            setShowModal(false);
+          }}
+          size="lg"
+        >
+          <Modal.Header closeButton className="bg-light">
+            <Modal.Title>{t("shareRecipe!")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="bg-light">
+            {copySuccess ? <p>{t("urlCopied")}</p> : <p>{t("urlNoCopied")}</p>}
+          </Modal.Body>
+          <Modal.Footer className="bg-light">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setShowModal(false);
+              }}
+            >
+              {t("close")}
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
-          {/*MODAL COMPARTIR*/}
-          <Modal
-            show={showModal}
-            onHide={() => {
-              setShowModal(false);
-            }}
-            size="lg"
-          >
-            <Modal.Header closeButton className="bg-light">
-              <Modal.Title>{t("shareRecipe!")}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="bg-light">
-              {copySuccess ? (
-                <p>{t("urlCopied")}</p>
-              ) : (
-                <p>{t("urlNoCopied")}</p>
-              )}
-            </Modal.Body>
-            <Modal.Footer className="bg-light">
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setShowModal(false);
-                }}
-              >
-                {t("close")}
-              </Button>
-            </Modal.Footer>
-          </Modal>
+        {/*NECESITAS INICIAR SESION*/}
+        <Modal
+          show={showLoginModal}
+          onHide={() => setShowLoginModal(false)}
+          size="lg"
+        >
+          <Modal.Header closeButton className="bg-light">
+            <Modal.Title>{t("addFavRecipe!")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="bg-light">
+            <p>{t("addFavRecipeCondition")}</p>
+            <AccessMenu
+              onLoginSuccess={() => {
+                setShowLoginModal(false);
+                updateRecipe();
+              }}
+            ></AccessMenu>
+          </Modal.Body>
+          <Modal.Footer className="bg-light">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setShowLoginModal(false);
+              }}
+            >
+              {t("close")}
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
-          {/*NECESITAS INICIAR SESION*/}
-          <Modal
-            show={showLoginModal}
-            onHide={() => setShowLoginModal(false)}
-            size="lg"
-          >
-            <Modal.Header closeButton className="bg-light">
-              <Modal.Title>{t("addFavRecipe!")}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="bg-light">
-              <p>{t("addFavRecipeCondition")}</p>
-              <AccessMenu
-                onLoginSuccess={() => {
-                  setShowLoginModal(false);
-                  updateRecipe();
-                }}
-              ></AccessMenu>
-            </Modal.Body>
-            <Modal.Footer className="bg-light">
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setShowLoginModal(false);
-                }}
-              >
-                {t("close")}
-              </Button>
-            </Modal.Footer>
-          </Modal>
-
-          {/*CARRITO LLENO*/}
-          <Modal
-            show={showErrorCartModal}
-            onHide={() => setShowErrorCartModal(false)}
-            size="lg"
-          >
-            <Modal.Header closeButton className="bg-light">
-              <Modal.Title>{t("cartError")}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="bg-light">
-              <p>{t("cartErrorMessage")}</p>
-            </Modal.Body>
-            <Modal.Footer className="bg-light">
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setShowErrorCartModal(false);
-                }}
-              >
-                {t("close")}
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
+        {/*CARRITO LLENO*/}
+        <Modal
+          show={showErrorCartModal}
+          onHide={() => setShowErrorCartModal(false)}
+          size="lg"
+        >
+          <Modal.Header closeButton className="bg-light">
+            <Modal.Title>{t("cartError")}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="bg-light">
+            <p>{t("cartErrorMessage")}</p>
+          </Modal.Body>
+          <Modal.Footer className="bg-light">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setShowErrorCartModal(false);
+              }}
+            >
+              {t("close")}
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <div className="mt-4">
           {!loadingRef.current && !error && recipes.length > 0 && (
             <>

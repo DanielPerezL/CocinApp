@@ -119,7 +119,7 @@ const SearchPage = () => {
   }, [readyForLoad]);
 
   return (
-    <div className="container my-5 main-container">
+    <main className="container my-5 main-container">
       <div className="text-center mb-5">
         <h1 className="display-4 text-primary">{t("searchTitle")}</h1>
       </div>
@@ -161,7 +161,7 @@ const SearchPage = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

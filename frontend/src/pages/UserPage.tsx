@@ -60,7 +60,7 @@ const UserPage: React.FC = () => {
   if (error) return <NoPage />;
 
   return (
-    <div className="container main-container">
+    <main className="container main-container">
       {user ? (
         <>
           <UserPublicDetails user={user} />
@@ -98,7 +98,7 @@ const UserPage: React.FC = () => {
           <Spinner animation="grow" variant="primary" role="status" />
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

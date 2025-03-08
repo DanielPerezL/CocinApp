@@ -8,7 +8,7 @@ const PublishPage: React.FC = () => {
   const [refresh, setRefresh] = useState<boolean>(false);
 
   return (
-    <div className="main-container container">
+    <main className="main-container container">
       <div className="text-center mb-4">
         <h1 className="display-5 text-primary">{t("publishRecipe")}</h1>
       </div>
@@ -19,7 +19,7 @@ const PublishPage: React.FC = () => {
       >
         <RecipeUploader />
       </AuthWrapper>
-    </div>
+    </main>
   );
 };
 

@@ -19,7 +19,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         window.scrollTo(0, 0);
       }}
     >
-      <div className="card h-100">
+      <article className="card h-100">
         <img
           src={recipe.imageURL}
           className="card-img-top recipe-img"
@@ -33,7 +33,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             {recipe.title}
           </h6>
         </div>
-      </div>
+      </article>
     </Link>
   );
 };
