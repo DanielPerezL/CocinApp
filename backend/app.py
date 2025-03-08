@@ -3,7 +3,13 @@ from flask import send_from_directory
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import *
-from endpoints import *
+from controllers import (
+    auth_controller,
+    images_controller,
+    recipes_controller,
+    reports_controller,
+    user_controller,
+)
 
 @app.route('/')
 def serve():

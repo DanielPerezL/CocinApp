@@ -10,7 +10,6 @@ from flask_jwt_extended import (
 from models import *
 from sqlalchemy.exc import SQLAlchemyError
 from utils import *
-from endpoints import *
 from errors import no_requested_info_error
 
 @app.route('/api/auth/login', methods=['POST'])

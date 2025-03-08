@@ -8,28 +8,24 @@ from utils import get_user_from_token
 from utils import has_permission
 from errors import *
 
-@app.route('/api/reports', methods=['GET', 'POST'])
-#@jwt_required(optional=True)
+@app.route('/api/reports', methods=['GET'])
 def reports():
-    method = request.method
-    if method == 'GET':
-        try:
-            verify_jwt_in_request() 
-        except Exception:
-            return invalid_token()
-        client = get_user_from_token(get_jwt())  
-        
-        #SI CLIENT ES ADMIN TENDRA PERMISOS  
-        if not has_permission(client, Report):
-            return no_permission_error() 
-        reports = Report.query.order_by(desc(Report.count)) \
-                    .filter(Report.reviewed == False) \
-                    .limit(REPORT_QUERY_LIMIT).all()
-        report_data = [report.to_dto() for report in reports]
-        return jsonify(report_data), 200
-    if method == 'POST':
-        return handle_report(request.get_json())
+    try:
+        verify_jwt_in_request() 
+    except Exception:
+        return invalid_token()
+    client = get_user_from_token(get_jwt())  
     
+    #SI CLIENT ES ADMIN TENDRA PERMISOS  
+    if not has_permission(client, Report):
+        return no_permission_error() 
+    reports = Report.query.order_by(desc(Report.count)) \
+                .filter(Report.reviewed == False) \
+                .limit(REPORT_QUERY_LIMIT).all()
+    report_data = [report.to_dto() for report in reports]
+    return jsonify(report_data), 200
+   
+@app.route('/api/reports', methods=['POST'])
 def handle_report(data):
     if not data or not all(key in data for key in ('reported_resource',)):
         return no_requested_info_error()

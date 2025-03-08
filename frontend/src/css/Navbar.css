@@ -32,7 +32,7 @@
 }
 
 .btn.nav-btn:focus {
-  outline: 2px solid black !important; /* Aplica un borde negro con mayor prioridad */
+  outline: 1px solid black !important; /* Aplica un borde negro con mayor prioridad */
 }
 
 

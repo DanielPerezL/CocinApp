@@ -8,27 +8,22 @@ import os
 from utils import delete_images_by_filenames, has_permission, is_admin
 from errors import *
 
-@app.route('/api/recipes', methods=['GET', 'POST'])
-#@jwt_required(optional=True)
-def recipes():
-    method = request.method
-    if method == 'GET':
-        offset = request.args.get('offset', default=0, type=int)
-        limit = request.args.get('limit', default=10, type=int)
-        lang = request.args.get('lang', default="", type=str)
-        
-        return get_recipes_simple_dto(offset, limit, lang) 
-    if method == 'POST':
-        try:
-            verify_jwt_in_request() 
-        except Exception:
-            return invalid_token()
-        
-        user = get_user_from_token(get_jwt())
-        if user is None:
-            return user_not_found_error()
-        return new_recipe(user, request.json)
+@app.route('/api/recipes', methods=['GET'])
+def get_recipes():
+    offset = request.args.get('offset', default=0, type=int)
+    limit = request.args.get('limit', default=10, type=int)
+    lang = request.args.get('lang', default="", type=str)
     
+    return get_recipes_simple_dto(offset, limit, lang) 
+        
+@app.route('/api/recipes', methods=['POST'])
+@jwt_required()
+def post_recipes():
+    user = get_user_from_token(get_jwt())
+    if user is None:
+        return user_not_found_error()
+    return new_recipe(user, request.json)
+
 @app.route('/api/recipes/<int:id>/similars', methods=['GET'])
 def get_similar_recipes(id):
     recipe = Recipe.query.get(id)
@@ -194,10 +189,6 @@ def recipes_id(id):
         return no_valid_id_provided()
     
     lang = request.args.get('lang', default="", type=str)
-
-    #AQUI MANTENGO EL OPTIONAL PORQUE SI NO HAY TOKEN
-    # CLIENT=None
-    #SI HAY TOKEN DEBE SER VALIDO
     client = get_user_from_token(get_jwt())    
     method = request.method
     if method == 'GET':
@@ -312,67 +303,65 @@ def delete_recipe(recipe):
         db.session.rollback()
     return unexpected_error()
 
-@app.route('/api/recipes/ingredients', methods=['GET', 'POST'])
-def ingredients():
+@app.route('/api/recipes/ingredients', methods=['GET'])
+def get_ingredients():
     lang = request.args.get('lang', default="", type=str)
-    if request.method == 'GET':
-        # Obtener todos los ingredientes disponibles
-        ingredients = Ingredient.query.all()
-        ingredients_data = [ingredient.to_dto(lang) for ingredient in ingredients]
-        return jsonify(ingredients_data), 200
 
-    elif request.method == 'POST':
-        try:
-            verify_jwt_in_request() 
-        except Exception:
-            return invalid_token()
-        user = get_user_from_token(get_jwt())
-        if not is_admin(user):
-            return no_permission_error()
+    # Obtener todos los ingredientes disponibles
+    ingredients = Ingredient.query.all()
+    ingredients_data = [ingredient.to_dto(lang) for ingredient in ingredients]
+    return jsonify(ingredients_data), 200
+    
+@app.route('/api/recipes/ingredients', methods=['POST'])
+@jwt_required()
+def post_ingredients():
+    user = get_user_from_token(get_jwt())
+    if not is_admin(user):
+        return no_permission_error()
 
-        try:
-            # Leer el cuerpo de la solicitud
-            data = request.get_json()
-            if not isinstance(data, list):
-                return no_requested_info_error()
+    try:
+        # Leer el cuerpo de la solicitud
+        data = request.get_json()
+        if not isinstance(data, list):
+            return no_requested_info_error()
 
-            errores = []
-            for ingredient_data in data:
-                # Validar los campos obligatorios
-                if not all(key in ingredient_data for key in ["name_en","name_es", "default_unit"]):
-                    errores.append(f"Faltan campos en el ingrediente: {ingredient_data}")
-                    continue
+        errores = []
+        for ingredient_data in data:
+            # Validar los campos obligatorios
+            if not all(key in ingredient_data for key in ["name_en","name_es", "default_unit"]):
+                errores.append(f"Faltan campos en el ingrediente: {ingredient_data}")
+                continue
 
-                if ingredient_data["default_unit"] not in ["g", "kg", "ml", "l", "units"]:
-                    errores.append(f"Unidad no valida: {ingredient_data}")
-                    continue
+            if ingredient_data["default_unit"] not in ["g", "kg", "ml", "l", "units"]:
+                errores.append(f"Unidad no valida: {ingredient_data}")
+                continue
 
-                # Verificar si el ingrediente ya existe
-                existing_ingredient = Ingredient.query.filter_by(
-                    name_es=ingredient_data["name_es"],
-                    name_en=ingredient_data["name_en"],
-                    default_unit=ingredient_data["default_unit"]
-                ).first()
+            # Verificar si el ingrediente ya existe
+            existing_ingredient = Ingredient.query.filter_by(
+                name_es=ingredient_data["name_es"],
+                name_en=ingredient_data["name_en"],
+                default_unit=ingredient_data["default_unit"]
+            ).first()
 
-                if existing_ingredient:
-                    errores.append(f"Ingrediente ya existente: {ingredient_data}")
-                    continue
+            if existing_ingredient:
+                errores.append(f"Ingrediente ya existente: {ingredient_data}")
+                continue
 
-                # Crear el nuevo ingrediente
-                new_ingredient = Ingredient(
-                    name_es=ingredient_data["name_es"],
-                    name_en=ingredient_data["name_en"],
-                    default_unit=ingredient_data["default_unit"]
-                )
-                db.session.add(new_ingredient)
+            # Crear el nuevo ingrediente
+            new_ingredient = Ingredient(
+                name_es=ingredient_data["name_es"],
+                name_en=ingredient_data["name_en"],
+                default_unit=ingredient_data["default_unit"]
+            )
+            db.session.add(new_ingredient)
 
-            # Guardar los cambios
-            db.session.commit()
+        # Guardar los cambios
+        db.session.commit()
 
-            if len(errores) < len(data):
-                return jsonify({"message": "Algunos ingredientes se agregaron con éxito, pero hubo errores.", "errors": errores}), 207
-            return '', 204
+        if len(errores) < len(data):
+            return jsonify({"message": "Algunos ingredientes se agregaron con éxito, pero hubo errores.", "errors": errores}), 207
+        return '', 204
 
-        except Exception:
-            db.session.rollback()  # Deshacer los cambios en caso de error
-            return unexpected_error()
+    except Exception:
+        db.session.rollback()  # Deshacer los cambios en caso de error
+        return unexpected_error()
