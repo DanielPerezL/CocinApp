@@ -40,9 +40,14 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="navbar bg-primary">
+    <nav
+      className="navbar bg-primary"
+      role="navigation"
+      aria-label={t("mainNavigation")}
+    >
       <div className="container">
         <div className="d-flex align-items-center w-100">
+          {/* Logo con nombre accesible */}
           <Link
             to="/"
             className="btn"
@@ -51,19 +56,39 @@ const Navbar: React.FC = () => {
               window.scrollTo(0, 0);
               setSearchTitle("");
             }}
+            aria-label={t("goHome")}
           >
-            <img src={icon} className="icon-img d-block d-sm-none" />
-            <img src={logo} className="logo-img d-none d-sm-block" />
+            <img
+              src={icon}
+              className="icon-img d-block d-sm-none"
+              alt={t("appLogo")}
+            />
+            <img
+              src={logo}
+              className="logo-img d-none d-sm-block"
+              alt={t("appLogo")}
+            />
           </Link>
+
+          {/* Barra de búsqueda accesible */}
           <div className="mx-1 flex-grow-1 position-relative">
-            <form onSubmit={handleSearchSubmit} className="position-relative">
+            <form
+              onSubmit={handleSearchSubmit}
+              className="position-relative"
+              role="search"
+            >
+              <label htmlFor="search-input" className="visually-hidden">
+                {t("search")}
+              </label>
               <input
+                id="search-input"
                 type="text"
                 placeholder={t("searchPlaceHolder")}
                 name="search-input"
                 className="form-control search-input pe-4"
                 value={searchTitle}
                 onChange={handleSearchChange}
+                aria-label={t("search")}
               />
               {searchTitle && (
                 <button
@@ -81,8 +106,11 @@ const Navbar: React.FC = () => {
               )}
             </form>
           </div>
+
+          {/* Selector de idioma accesible */}
           <LanguageSwitcher />
 
+          {/* Botones de navegación accesibles */}
           <div className="d-flex align-items-center d-none d-md-block">
             <NavButtons />
           </div>

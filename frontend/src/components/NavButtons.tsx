@@ -32,38 +32,36 @@ const NavButtons: React.FC = () => {
   }, []);
 
   return (
-    <div className="d-flex justify-content-around">
+    <div
+      className="d-flex justify-content-around"
+      role="navigation"
+      aria-label={t("mainNavigation")}
+    >
       {isLoggedIn() && (
         <>
           <Link
             to="/favorites"
-            title={t("favoritesList")}
             className="btn nav-btn mx-1"
-            onClick={() => {
-              window.scrollTo(0, 0);
-            }}
+            onClick={() => window.scrollTo(0, 0)}
+            aria-label={t("favoritesList")}
           >
-            <img src={heart} />
+            <img src={heart} alt={t("favoritesList")} />
           </Link>
           <Link
             to="/cart"
-            title={t("cartList")}
             className="btn nav-btn mx-1"
-            onClick={() => {
-              window.scrollTo(0, 0);
-            }}
+            onClick={() => window.scrollTo(0, 0)}
+            aria-label={t("cartList")}
           >
-            <img src={cart} />
+            <img src={cart} alt={t("cartList")} />
           </Link>
           <Link
             to="/publish"
-            title={t("publishRecipe")}
             className="btn nav-btn mx-1"
-            onClick={() => {
-              window.scrollTo(0, 0);
-            }}
+            onClick={() => window.scrollTo(0, 0)}
+            aria-label={t("publishRecipe")}
           >
-            <img src={publish} />
+            <img src={publish} alt={t("publishRecipe")} />
           </Link>
         </>
       )}
@@ -71,35 +69,29 @@ const NavButtons: React.FC = () => {
       {isAdmin() && (
         <Link
           to="/reports"
-          title={t("reports")}
           className="btn nav-btn mx-1"
-          onClick={() => {
-            window.scrollTo(0, 0);
-          }}
+          onClick={() => window.scrollTo(0, 0)}
+          aria-label={t("reports")}
         >
-          <img src={report} />
+          <img src={report} alt={t("reports")} />
         </Link>
       )}
 
       <Link
         to="/search"
-        title={t("searchRecipes")}
         className="btn nav-btn mx-1"
-        onClick={() => {
-          window.scrollTo(0, 0);
-        }}
+        onClick={() => window.scrollTo(0, 0)}
+        aria-label={t("searchRecipes")}
       >
-        <img src={magnifyingGlass} />
+        <img src={magnifyingGlass} alt={t("searchRecipes")} />
       </Link>
       <Link
         to="/profile"
-        title={t("userProfile")}
         className="btn nav-btn mx-1"
-        onClick={() => {
-          window.scrollTo(0, 0);
-        }}
+        onClick={() => window.scrollTo(0, 0)}
+        aria-label={t("userProfile")}
       >
-        <img src={user} />
+        <img src={user} alt={t("userProfile")} />
       </Link>
     </div>
   );

@@ -243,6 +243,7 @@ const RecipeUploader: React.FC = () => {
                     type="number"
                     className="form-control form-control-sm me-1"
                     value={ingredient.amount}
+                    name="amount"
                     onChange={(e) => handleQuantityChange(e, index)}
                     placeholder="Cantidad"
                   />

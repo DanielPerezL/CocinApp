@@ -70,12 +70,14 @@ const IngredientSearch: React.FC<IngredientSearchProps> = ({
           {ingredientInput && filteredIngredients.length > 0 && (
             <ul className="list-group ingredient-list">
               {filteredIngredients.map((ingredient) => (
-                <li
-                  key={ingredient.name}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                  onClick={() => handleSelect(ingredient)}
-                >
-                  {ingredient.name}
+                <li key={ingredient.name} className="list-group-item p-0">
+                  <button
+                    className="w-100 d-flex justify-content-between align-items-center border-0 bg-transparent text-start p-2"
+                    onClick={() => handleSelect(ingredient)}
+                    aria-label={`Seleccionar ${ingredient.name}`}
+                  >
+                    {ingredient.name}
+                  </button>
                 </li>
               ))}
             </ul>
