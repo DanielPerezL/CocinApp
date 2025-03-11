@@ -1,23 +1,19 @@
 from config import app, db, REPORT_QUERY_LIMIT
 from flask import jsonify, request
-from flask_jwt_extended import jwt_required, get_jwt, verify_jwt_in_request
+from flask_jwt_extended import jwt_required, get_jwt
 from models import *
 from sqlalchemy import desc
 from sqlalchemy.exc import SQLAlchemyError
 from utils import get_user_from_token
-from utils import has_permission
+from utils import is_admin
 from errors import *
 
 @app.route('/api/reports', methods=['GET'])
+@jwt_required()
 def reports():
-    try:
-        verify_jwt_in_request() 
-    except Exception:
-        return invalid_token()
     client = get_user_from_token(get_jwt())  
     
-    #SI CLIENT ES ADMIN TENDRA PERMISOS  
-    if not has_permission(client, Report):
+    if not is_admin(client):
         return no_permission_error() 
     reports = Report.query.order_by(desc(Report.count)) \
                 .filter(Report.reviewed == False) \
@@ -26,7 +22,8 @@ def reports():
     return jsonify(report_data), 200
    
 @app.route('/api/reports', methods=['POST'])
-def handle_report(data):
+def handle_report():
+    data = request.get_json()
     if not data or not all(key in data for key in ('reported_resource',)):
         return no_requested_info_error()
     reported_resource = data.get("reported_resource")
@@ -53,8 +50,8 @@ def handle_report(data):
 @jwt_required()
 def review_report(id):
     client = get_user_from_token(get_jwt())  
-    #SI CLIENT ES ADMIN TENDRA PERMISOS  
-    if not has_permission(client, Report):
+
+    if not is_admin(client):
         return no_permission_error() 
     
     report = Report.query.get(id)
