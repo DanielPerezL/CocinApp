@@ -21,7 +21,7 @@ const ReportButton: React.FC<ReportButtonProps> = ({ text, className }) => {
       <NeedConfirmButton
         className={className + " report-button"}
         onConfirm={() => {
-          reportResource(window.location.pathname + window.location.search);
+          reportResource(window.location.href);
           setShowReportModal(true);
         }}
         message={t("reportButtonMessage")}

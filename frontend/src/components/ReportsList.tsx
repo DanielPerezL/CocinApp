@@ -12,8 +12,7 @@ const ReportsList: React.FC<ReportsListProps> = ({ reports, onChange }) => {
   const { t } = useTranslation();
 
   const handleOpenResource = (resource: string) => {
-    const url = `${window.location.origin}${resource}`;
-    window.open(url, "_blank");
+    window.open(resource, "_blank");
   };
 
   const handleSetReviewedReport = async (report: ReportDTO) => {
