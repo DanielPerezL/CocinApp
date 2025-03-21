@@ -27,18 +27,13 @@ def register():
     if len(nickname) > NICKNAME_MAX_LENGTH:
         return user_nick_too_long()
     
-    new_user = User(nickname = nickname,
+    new_user = User.store_user(nickname = nickname,
                     email = data.get('email'),
                     password = data.get('password')
                     )
-    try:
-        db.session.add(new_user)
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
+    if not new_user:
         return user_already_exists_nickname()
-
+    return '', 204
 
 @app.route('/api/users/<string:id>', methods=['GET', 'PATCH', 'DELETE'])
 @jwt_required(optional=True)
@@ -63,54 +58,53 @@ def users_id(id):
             return jsonify(user.to_dto()), 200
         return jsonify(user.to_public_dto()), 200
         
+    # Sin permisos solo se puede hacer el GET
     if not has_permission(client, user):
         return no_permission_error()    
+    
     if method == 'PATCH':
         data = request.get_json()
+
+        #Cambiar contraseña
         if data and all(key in data for key in ('current_password', 'new_password'))\
-                and not any(key in data for key in ('picture',)):
-            #Cambiar contraseña
+                and not any(key in data for key in ('picture', )):
             return change_password(user, data.get('current_password'), data.get('new_password'))
-        if data and not any(key in data for key in ('current_password', 'new_password')):
-            #Cambiar/Borrar foto
+        
+        #Cambiar/Borrar foto
+        if data and all(key in data for key in ('picture', ))\
+                and not any(key in data for key in ('current_password', 'new_password')):
             return new_user_picture(user, data.get("picture"))  
+        
         return no_requested_info_error()
     if method == 'DELETE':
         return delete_account(user)
 
-def new_user_picture(user, new_picture):
-    if new_picture is None:
-        return no_requested_info_error()
-    
+def new_user_picture(user, new_picture): 
     old_picture = user.get_picture()
     if old_picture:
         delete_image(old_picture)
 
-    user.set_picture(new_picture)
-    try:
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
+    status = user.set_picture(new_picture)
+    if not status:
         return jsonify({"error": "Error al publicar modificar la imagen de su perfil. Inténtelo de nuevo más tarde."}), 400
+    return '', 204
     
 def change_password(user, current_password, new_password):
     if not user.check_password(current_password):
         return jsonify({"error": "La contraseña actual introducida no es correcta."}), 401
     
-    user.set_password(new_password)
-    try:
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
-    return unexpected_error()
-
+    status = user.set_password(new_password)
+    if not status:
+        return unexpected_error()
+    return '', 204
+    
 def delete_account(deleting_user):
     try:
         db.session.delete(deleting_user)
-        #DELETE ORPHAN ELIMINA LAS RECETAS
+        # DELETE ORPHAN ELIMINA LAS RECETAS
         db.session.commit()
+
+        # Al eliminar su cuenta eliminamos tambien todas sus recetas del sistema
         delete_images_by_uploader(deleting_user)
         return '', 204
     except SQLAlchemyError:
@@ -183,27 +177,19 @@ def favorites_recipes_mod(idU, idR):
 def add_favorite(user, recipe):
     if(user.is_favorite(recipe)):
         return '', 204
-    try:
-        favorite = FavoriteRecipe(user_id=user.id, recipe_id=recipe.id)
-        db.session.add(favorite)
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
+    status = user.add_favorite(recipe)
+    if not status:
         return jsonify({"error": "Error al añadir receta favorita."}), 400
+    return '', 204
     
 def rm_favorite(user, recipe): 
-    favorite = FavoriteRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
-    if not favorite:
+    if not user.is_favorite(recipe):
         return '', 204
-    try:
-        db.session.delete(favorite)
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
+    status = user.rm_favorite(recipe)
+    if not status:
         return jsonify({"error": "Error al eliminar receta favorita."}), 400
-    
+    return '', 204
+        
 @app.route('/api/users/<int:id>/cart', methods=['GET'])
 @jwt_required()
 def get_cart(id):
@@ -240,31 +226,22 @@ def cart_recipes_mod(idU, idR):
         return rm_cart_recipe(user, recipe)
 
 def add_cart_recipe(user, recipe):
-    if(user.is_in_cart(recipe)):
+    if user.is_in_cart(recipe):
         return '', 204
-    if(user.get_cart_recipes_count() >= RECIPE_CART_SIZE):
+    if user.get_cart_recipes_count() >= RECIPE_CART_SIZE:
         return jsonify({"error": "No hay más espacio disponible en la cesta."}), 409
-    try:
-        cartEntry = CartRecipe(user_id=user.id, recipe_id=recipe.id)
-        db.session.add(cartEntry)
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
+    status = user.add_cart_recipe(recipe)
+    if not status:
         return jsonify({"error": "Error al añadir receta a la cesta."}), 400
+    return '', 204
     
 def rm_cart_recipe(user, recipe): 
-    cartEntry = CartRecipe.query.filter_by(user_id=user.id, recipe_id=recipe.id).first()
-    if not cartEntry:
+    if not user.is_in_cart(recipe):
         return '', 204
-    try:
-        db.session.delete(cartEntry)
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
+    status = user.rm_cart_recipe(recipe)
+    if not status:
         return jsonify({"error": "Error al eliminar receta de la cesta."}), 400
-        
+    return '', 204
 
 # GRID 3
 def get_recommendations_for_user(user, offset, limit, lang):

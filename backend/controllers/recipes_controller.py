@@ -41,34 +41,32 @@ def get_recipes_simple_dto(offset, limit, lang):
     title = request.args.get('title', default="", type=str)  
     min_steps = request.args.get('min_steps', default=0, type=int)
     max_steps = request.args.get('max_steps', default=None, type=int)
-    time_list = request.args.getlist('time', type=str)  # Lista de tiempos
-    difficulty_list = request.args.getlist('difficulty', type=str)  # Lista de dificultades
+    time_list = request.args.getlist('time', type=str)
+    difficulty_list = request.args.getlist('difficulty', type=str)
     type = request.args.get('type', default=None, type=str)  
     contains_ingredients = request.args.getlist('c_i', type=int)
     excludes_ingredients = request.args.getlist('e_i', type=int)
 
     query = Recipe.query
 
-    # Filtros de búsqueda
+    # Aplicar filtros de búsqueda
     if title:
         query = query.filter(Recipe.title.ilike(f"%{title}%"))
     if min_steps > 0:
         query = query.filter(db.func.json_length(Recipe.procedure) >= min_steps)
     if max_steps is not None:
         query = query.filter(db.func.json_length(Recipe.procedure) <= max_steps)
-    if time_list:  # Si hay valores en la lista de tiempos
+    if time_list:
         query = query.filter(Recipe.time.in_(time_list))
-    if difficulty_list:  # Si hay valores en la lista de dificultades
+    if difficulty_list:
         query = query.filter(Recipe.difficulty.in_(difficulty_list))
     if type:
         query = query.filter(Recipe.type == type)
-
     if contains_ingredients:
         for ingredient_id in contains_ingredients:
             query = query.filter(
                 Recipe.ingredients.any(ConcreteIngredient.ingredient_id == ingredient_id)
             )
-
     if excludes_ingredients:
         query = query.filter(
             ~Recipe.ingredients.any(
@@ -119,58 +117,15 @@ def new_recipe(user, data):
             delete_recipe(os.path.basename(file_path))
         return no_recipe_uploaded_error()
 
-    # Procesar los ingredientes: se espera que `data['ingredients']` sea un dict {id: cantidad}
-    ingredients_data = data.get('ingredients', [])
-    concrete_ingredients = []
-
-    # Crear la receta
-    new_recipe = Recipe(
-        title=data.get('title'),
-        user_id=user.id,
-        procedure=data.get('procedure'),
-        images=data.get('images'),
-        time=data.get('time'),
-        difficulty=data.get('difficulty'),
-        type=data.get('type')
-    )
-
-    # Agregar la receta a la base de datos
-    # Crear los ingredientes concretos
-    try:
-        db.session.add(new_recipe)
-        db.session.flush()  # Para obtener el ID de la receta antes de hacer commit
-
-        for ingredient_data in ingredients_data:
-            ingredient_id = ingredient_data.get('id')
-            amount = ingredient_data.get('amount')
-
-            if ingredient_id is None or amount is None:
-                continue 
-            
-            # Crear la entrada en ConcreteIngredient con recipe_id ya asignado
-            concrete_ingredient = ConcreteIngredient(
-                ingredient_id=ingredient_id,
-                amount=amount,
-                recipe_id=new_recipe.id  # Asignar el id de la receta recién creada
-            )
-
-            concrete_ingredients.append(concrete_ingredient)
-
-        # Guardar los ingredientes concretos en la base de datos
-        db.session.add_all(concrete_ingredients)
-
-        # Realizar un único commit para todas las operaciones
-        db.session.commit()
-        response = make_response()
-        response.status_code = 204
-
-        base_url = request.host_url.rstrip('/')
-        response.headers["Location"] = f"{base_url}/api/recipes/{new_recipe.id}"
-        return response
-
-    except SQLAlchemyError:
-        db.session.rollback()
+    new_recipe = Recipe.store_recipe(data=data, user=user)
+    if not new_recipe:
         return no_recipe_uploaded_error()
+
+    response = make_response()
+    response.status_code = 204
+    base_url = request.host_url.rstrip('/')
+    response.headers["Location"] = f"{base_url}/api/recipes/{new_recipe.id}"
+    return response
 
 @app.route('/api/recipes/categories', methods=['GET'])
 def get_recipe_categories():
@@ -194,9 +149,11 @@ def recipes_id(id):
     if method == 'GET':
         return recipe_details(id, client, lang)
     
+    # Sin permisos solo podemos hacer GET
     recipe = Recipe.query.get(id)
     if not has_permission(client, recipe):
             return no_permission_error()
+    
     if method == 'DELETE':  
         return delete_recipe(recipe)
     if method == 'PATCH':
@@ -268,7 +225,7 @@ def update_recipe(recipe, data):
 
             if not all_images_exist:
                 # Si alguna de las nuevas imágenes no existe, aborta la operación
-                raise Exception("Alguna imagen  no existe")       
+                raise Exception("Alguna imagen no existe")       
             
             # Actualizar las imágenes en la receta (manteniendo xistentes y agregando las nuevas)
             recipe.images = list(images_to_keep.union(valid_new_images))

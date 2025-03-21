@@ -13,10 +13,22 @@ class Report(db.Model):
         self.count += 1
         #POR SI YA SE REVISÓ, QUE VUELVA A REVISARSE (por posibles cambios en los recursos)
         self.reviewed = False
+        try:
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
 
     def set_reviewed(self):
         self.reviewed = True
         self.count = 0
+        try:
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
 
     def to_dto(self):
         #Report DTO
@@ -25,3 +37,14 @@ class Report(db.Model):
             'reported_resource': self.reported_resource,
             'count': self.count,
         }
+    
+    @staticmethod
+    def store_report(reported_resource):
+        new_report = Report(reported_resource=reported_resource)
+        try:
+            db.session.add(new_report)
+            db.session.commit()
+            return new_report
+        except Exception:
+            db.session.rollback()
+            return None

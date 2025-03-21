@@ -29,22 +29,16 @@ def handle_report():
     reported_resource = data.get("reported_resource")
     report = Report.query.filter_by(reported_resource=reported_resource).first()
     if report is not None:
-        report.increment_count()
-        try:
-            db.session.commit()
+        status = report.increment_count()
+        if status:
             return '', 204
-        except SQLAlchemyError:
-            db.session.rollback()
+        else:
             return send_report_error()
     
-    new_report = Report(reported_resource=reported_resource)
-    try:
-        db.session.add(new_report)
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
+    new_report = Report.store_report(reported_resource=reported_resource)
+    if not new_report:
         return send_report_error()
+    return '', 204
 
 @app.route('/api/reports/<int:id>', methods=['PUT'])
 @jwt_required()
@@ -58,10 +52,7 @@ def review_report(id):
     if report is None:
         return report_not_found_error()
     
-    report.set_reviewed()
-    try:
-        db.session.commit()
-        return '', 204
-    except SQLAlchemyError:
-        db.session.rollback()
-    return unexpected_error()
+    status = report.set_reviewed()
+    if not status:
+        return unexpected_error()
+    return '', 204

@@ -56,6 +56,12 @@ class User(db.Model):
     
     def set_picture(self, new_picture):
         self.picture = new_picture
+        try:
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
 
     def __repr__(self):
         return f'<p>{self.nickname}</p>'
@@ -83,9 +89,67 @@ class User(db.Model):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
+        try:
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    @staticmethod
+    def store_user(nickname, email, password):
+        new_user = User(nickname=nickname, email=email, password=password)
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            return new_user
+        except Exception:
+            db.session.rollback()
+            return None
+    
+    def add_favorite(self, recipe):
+        try:
+            favorite = FavoriteRecipe(user_id=self.id, recipe_id=recipe.id)
+            db.session.add(favorite)
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
+    
+    def rm_favorite(self, recipe):
+        favorite = FavoriteRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).first()
+        try:
+            db.session.delete(favorite)
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
+    
+    def add_cart_recipe(self, recipe):
+        try:
+            cartEntry = CartRecipe(user_id=self.id, recipe_id=recipe.id)
+            db.session.add(cartEntry)
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
+    
+    def rm_cart_recipe(self, recipe):
+        cartEntry = CartRecipe.query.filter_by(user_id=self.id, recipe_id=recipe.id).first()
+        try:
+            db.session.delete(cartEntry)
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
+        
 
 class FavoriteRecipe(db.Model):
     __tablename__ = 'favorite_recipes'

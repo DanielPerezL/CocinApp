@@ -48,12 +48,8 @@ def upload_image():
         image_data = image.read()
         image.seek(0)
 
-        new_image = Image(filename=new_filename, binary_data=image_data)
-        try:
-            db.session.add(new_image)
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
+        new_image = Image.store_image(filename=new_filename, binary_data=image_data)
+        if not new_image:
             return unexpected_error()
 
     # Guardar el volumen Docker

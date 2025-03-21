@@ -136,3 +136,48 @@ class Recipe(db.Model):
             "ingredients": [ingredient.to_dto(lang) for ingredient in self.ingredients],
             "url": f"{base_url}/api/recipes/{self.id}",
         }
+    
+    @staticmethod
+    def store_recipe(data, user):
+        # Crear la receta
+        new_recipe = Recipe(
+            title=data.get('title'),
+            user_id=user.id,
+            procedure=data.get('procedure'),
+            images=data.get('images'),
+            time=data.get('time'),
+            difficulty=data.get('difficulty'),
+            type=data.get('type')
+        )
+
+        try:
+            db.session.add(new_recipe)
+            db.session.flush()  # Para obtener el ID antes del commit
+
+            # Agregar la receta a la base de datos
+            # Crear los ingredientes concretos
+
+            ingredients_data = data.get('ingredients', [])
+            concrete_ingredients = []
+            for ingredient_data in ingredients_data:
+                ingredient_id = ingredient_data.get('id')
+                amount = ingredient_data.get('amount')
+
+                if ingredient_id is None or amount is None:
+                    continue
+
+                # Crear la entrada en ConcreteIngredient con recipe_id ya asignado
+                concrete_ingredient = ConcreteIngredient(
+                    ingredient_id=ingredient_id,
+                    amount=amount,
+                    recipe_id=new_recipe.id
+                )
+                concrete_ingredients.append(concrete_ingredient)
+
+            db.session.add_all(concrete_ingredients)
+            db.session.commit()
+            return new_recipe
+
+        except Exception:
+            db.session.rollback()
+            return False
