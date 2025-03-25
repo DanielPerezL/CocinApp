@@ -149,7 +149,6 @@ const fetchRecipesFavBySimilarUsersUnsafe = async (
       }&lang=${t("lang")}`,
       {
         method: "GET",
-        credentials: "include",
       }
     );
   } catch (error) {
@@ -267,7 +266,6 @@ const fetchRecipeDetailsUnsafe = async (
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
     });
   } catch (error) {
     throw new Error(t("errorLoadingRecipeDetails"));
@@ -344,7 +342,6 @@ export const login = async (email: string, password: string): Promise<void> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-      credentials: "include",
     });
   } catch (error) {
     throw new Error(t("errorLogin"));
@@ -384,7 +381,6 @@ export const login = async (email: string, password: string): Promise<void> => {
 export const logout = async (): Promise<void> => {
   const response = await fetch(`${AUTH_BASE_URL}/logout`, {
     method: "POST",
-    credentials: "include",
   });
 
   localStorage.removeItem("isLoggedIn");
@@ -432,7 +428,6 @@ const fetchReportsUnsafe = async (): Promise<ReportDTO[]> => {
   try {
     response = await fetch(`${API_BASE_URL}/reports`, {
       method: "GET",
-      credentials: "include",
       headers,
     });
   } catch (error) {
@@ -455,7 +450,6 @@ const setReportReviewedUnsafe = async (report: ReportDTO): Promise<void> => {
   try {
     response = await fetch(`${API_BASE_URL}/reports/${report.id}`, {
       method: "PUT",
-      credentials: "include",
       headers,
     });
   } catch (error) {
@@ -477,7 +471,6 @@ const postIngredientsUnsafe = async (jsonContent: string): Promise<void> => {
   try {
     response = await fetch(`${API_BASE_URL}/recipes/ingredients`, {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         ...headers,
@@ -505,7 +498,6 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
   try {
     response = await fetch(`${API_BASE_URL}/users/${getLoggedUserId()}`, {
       method: "GET",
-      credentials: "include",
       headers,
     });
   } catch (error) {
@@ -515,7 +507,7 @@ const fetchLoggedUserProfileUnsafe = async (): Promise<UserDTO> => {
     throw new Error(t("errorLoadingLoggedUser"));
   }
   const data = await response.json();
-  if (!data.email) {
+  if (!data.email || data.email.length == 0) {
     //el back devuelve el dto publico si el token ha expirado, pero quiero el dto privado
     throw new Error(t("errorLoadingLoggedUser"));
   }
@@ -560,7 +552,6 @@ const addRecipeFavUnsafe = async (id: string): Promise<void> => {
       `${API_BASE_URL}/users/${getLoggedUserId()}/favourites/${id}`,
       {
         method: "POST",
-        credentials: "include",
         headers,
       }
     );
@@ -584,7 +575,6 @@ const rmRecipeFavUnsafe = async (id: string): Promise<void> => {
       `${API_BASE_URL}/users/${getLoggedUserId()}/favourites/${id}`,
       {
         method: "DELETE",
-        credentials: "include",
         headers,
       }
     );
@@ -612,7 +602,6 @@ const fetchMyFavRecipesUnsafe = async (
       `${API_BASE_URL}/users/${getLoggedUserId()}/favourites?offset=${offset}&limit=${RECIPE_LIMIT}`,
       {
         method: "GET",
-        credentials: "include",
         headers,
       }
     );
@@ -640,7 +629,6 @@ const addRecipeCartUnsafe = async (id: string): Promise<void> => {
       `${API_BASE_URL}/users/${getLoggedUserId()}/cart/${id}`,
       {
         method: "POST",
-        credentials: "include",
         headers,
       }
     );
@@ -664,7 +652,6 @@ const rmRecipeCartUnsafe = async (id: string): Promise<void> => {
       `${API_BASE_URL}/users/${getLoggedUserId()}/cart/${id}`,
       {
         method: "DELETE",
-        credentials: "include",
         headers,
       }
     );
@@ -690,7 +677,6 @@ const fetchMyCartRecipesUnsafe = async (): Promise<FetchRecipesResponse> => {
       `${API_BASE_URL}/users/${getLoggedUserId()}/cart?lang=${t("lang")}`,
       {
         method: "GET",
-        credentials: "include",
         headers,
       }
     );
@@ -721,7 +707,6 @@ const uploadImageUnsafe = async (imageFile: File): Promise<string> => {
   try {
     response = await fetch(`${API_BASE_URL}/images`, {
       method: "POST",
-      credentials: "include",
       headers,
       body: formData, // Enviar la imagen en el cuerpo de la solicitud
     });
@@ -797,7 +782,6 @@ const uploadRecipeUnsafe = async (
         "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include",
       body: JSON.stringify(recipeData),
     });
   } catch (error) {
@@ -876,7 +860,6 @@ const updateRecipeUnsafe = async (
         "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include",
       body: JSON.stringify(recipeData),
     });
   } catch (error) {
@@ -905,7 +888,6 @@ const updateProfilePicUnsafe = async (imagePath: string): Promise<void> => {
         "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include",
       body: JSON.stringify(data),
     });
   } catch (error) {
@@ -946,7 +928,6 @@ const updatePasswordUnsafe = async (
         "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include",
       body: JSON.stringify(data),
     });
   } catch (error) {
@@ -978,7 +959,6 @@ const removeAccountUnsafe = async (id: string): Promise<void> => {
         "Content-Type": "application/json",
         ...headers,
       },
-      credentials: "include",
     });
   } catch (error) {
     throw new Error(t("errorUpdatingProfilePic??"));
@@ -1004,7 +984,6 @@ const removeRecipeUnsafe = async (idR: string): Promise<void> => {
       headers: {
         ...headers,
       },
-      credentials: "include",
     });
   } catch (error) {
     throw new Error(t("errorDeletingRecipe"));
@@ -1033,7 +1012,6 @@ const refreshAccessToken = async (): Promise<void> => {
     const headers: HeadersInit = csrfToken ? { "X-CSRF-TOKEN": csrfToken } : {};
     const response = await fetch(`${AUTH_BASE_URL}/refresh`, {
       method: "POST",
-      credentials: "include",
       headers,
     });
 
