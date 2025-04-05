@@ -10,6 +10,7 @@ from controllers import (
     reports_controller,
     user_controller,
 )
+from exceptions import AppException
 
 @app.route('/')
 def serve():
@@ -22,6 +23,30 @@ def static_files(path):
 @app.errorhandler(404)
 def not_found(e):
         return send_from_directory(app.static_folder, "index.html")
+
+@app.errorhandler(AppException)
+def handle_app_exception(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+@app.errorhandler(SQLAlchemyError)
+def handle_sqlalchemy_error(error):
+    response = jsonify({
+        "error": "database_error",
+        "message": "Error en la base de datos."
+    })
+    response.status_code = 500
+    return response
+
+@app.errorhandler(Exception)
+def handle_unexpected_error(error):
+    response = jsonify({
+        "error": "unexpected_error",
+        "message": str(error)
+    })
+    response.status_code = 500
+    return response
 
 with app.app_context():
     db.create_all()
