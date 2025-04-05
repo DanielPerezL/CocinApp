@@ -320,7 +320,7 @@ export const registerUser = async (
   }
   if (!response.ok) {
     const responseData = await response.json();
-    const errorMessage = responseData.error.toLowerCase(); // Convertir a minúsculas para comparar sin problemas
+    const errorMessage = responseData.message.toLowerCase(); // Convertir a minúsculas para comparar sin problemas
     if (errorMessage.includes("email")) {
       throw new Error(t("errorRegisterEmailExists"));
     }
@@ -349,11 +349,10 @@ export const login = async (email: string, password: string): Promise<void> => {
 
   const responseData = await response.json();
   if (!response.ok) {
-    const errorMessage = responseData.error.toLowerCase(); // Convertir a minúsculas para comparar sin problemas
-    if (errorMessage.includes("email")) {
+    if (response.status === 404) {
       throw new Error(t("errorLoginUserNotFound"));
     }
-    if (errorMessage.includes("contraseña")) {
+    if (response.status === 401) {
       throw new Error(t("errorLoginBadPassword"));
     }
     throw new Error(t("errorLogin"));
