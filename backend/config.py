@@ -32,6 +32,7 @@ RECIPE_CART_SIZE = 10
 NICKNAME_MAX_LENGTH = 20
 REPORT_QUERY_LIMIT = 20
 IMG_BACKUP = os.environ['COPY_IMG_MYSQL'] == "true"
+SERVER_PORT = 5000
 
 jwt = JWTManager(app)
 db = SQLAlchemy(app)
